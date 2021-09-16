@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "pug node ./dev/compile_templates.js",
+    "build": "node ./dev/compile_templates.js",
     "start": "node server/server.js"
   },
   "keywords": [],

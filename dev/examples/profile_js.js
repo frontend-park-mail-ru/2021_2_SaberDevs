@@ -1,3 +1,5 @@
+// пример классового компонента без шаблонизации
+
 export default class profileComponent {
     #parent
     #data

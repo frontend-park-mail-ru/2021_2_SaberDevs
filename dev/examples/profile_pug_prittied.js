@@ -1,3 +1,5 @@
+// если интересно, что генерирует pug
+
 function pug_escape(e) {
     var a=""+e,t=pug_match_html.exec(a);
     if(!t) return e;
