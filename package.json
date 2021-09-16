@@ -4,7 +4,8 @@
   "description": "vs.ru alike web-spa",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "node ./dev/compile_templates.js"
   },
   "keywords": [],
   "author": "Denis, Svetlana, Yuriy, Alexey",

@@ -1,7 +1,7 @@
 // 'use strict';
 
 import {switchIsRegistered, signupPage, authCfg} from "./components/authorizationForm.js";
-import profileComponent from "./components/profile_js.js"
+import profileComponent from "./components/profile.js"
 
 // TODO: разбить по функциональным элементам, выделить конфиг
 
@@ -104,11 +104,8 @@ function mainPage() {
 function profilePage() {
   root.innerHTML = "";
   if (state.isAuthenticated) {
-    const profile = new profileComponent(root);
-    profile.data = {name: "Developer"};
-    profile.render();
-    setTimeout(() => {profile.data = {name: "Developer1000"}; profile.render();}, 1000);
-    //root.innerHTML = puglatizer["profile"]({name: "Developer"});
+    setTimeout(() => {root.innerHTML = profileComponent({name: "Developer1000"})}, 1000);
+    root.innerHTML = profileComponent({name: "Developer"});
   }
 }
 
