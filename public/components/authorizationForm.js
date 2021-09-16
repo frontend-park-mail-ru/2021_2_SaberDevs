@@ -60,23 +60,12 @@ function signupPage() {
     backBtn.textContent = "Назад";
     backBtn.href = '/';
     backBtn.dataset.section = 'main';
-    // backBtn.addEventListener("click", (e) => {
-    //   e.preventDefault();
-    //   // перерисовываем меню заново
-    //   mainPage();
-    // });
-  
-    // const changeFormTypeBtn = document.createElement('button');
-    // changeFormTypeBtn.type = "button";
+
     const changeFormTypeBtn = document.createElement('a');
     changeFormTypeBtn.textContent = isRegistered ? "Создать аккаунт" : "У меня уже есть аккаунт";
     changeFormTypeBtn.href = !isRegistered ? "/login" : "/register";
     changeFormTypeBtn.dataset.section = "changeRegFormType"
-    // changeFormTypeBtn.addEventListener("click", (e) => {
-    //   authCfg.isRegistered = !isRegistered;
-    //   signupPage()
-    // })
-  
+
     form.appendChild(submitBtn);
     form.appendChild(backBtn);
   

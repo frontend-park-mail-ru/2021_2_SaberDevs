@@ -1,6 +1,7 @@
 // 'use strict';
 
 import {switchIsRegistered, signupPage, authCfg} from "./components/authorizationForm.js";
+import profileComponent from "./components/profile_js.js"
 
 // TODO: разбить по функциональным элементам, выделить конфиг
 
@@ -9,9 +10,13 @@ import {switchIsRegistered, signupPage, authCfg} from "./components/authorizatio
 //          Globals
 //
 /////////////////////////////////////
-const root = document.getElementById('root')
+const root = document.getElementById('root');
 
-const menuElements = ['signup', 'login', 'profile']
+const menuElements = ['signup', 'login', 'profile'];
+
+const state = {
+  isAuthenticated: true
+};
 
 const configuration = {
   main: {
@@ -46,7 +51,9 @@ const configuration = {
   profile: {
     href: '/profile',
     name: "Профиль",
-    //open: profilePage
+    open: [
+      profilePage
+    ]
   },
 
   // others (no menu)
@@ -92,6 +99,17 @@ function mainPage() {
 
     root.appendChild(menuElement);
   });
+}
+
+function profilePage() {
+  root.innerHTML = "";
+  if (state.isAuthenticated) {
+    const profile = new profileComponent(root);
+    profile.data = {name: "Developer"};
+    profile.render();
+    setTimeout(() => {profile.data = {name: "Developer1000"}; profile.render();}, 1000);
+    //root.innerHTML = puglatizer["profile"]({name: "Developer"});
+  }
 }
 
 ////////////////////////////////
