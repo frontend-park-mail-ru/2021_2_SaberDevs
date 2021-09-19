@@ -1,7 +1,11 @@
-// 'use strict';
+'use strict';
 
+// components
 import {switchIsRegistered, signupPage, authCfg} from "./components/authorizationForm.js";
 import profileComponent from "./components/profile.js"
+
+// modules
+// import Ajax from "modules/ajax.js"
 
 // TODO: разбить по функциональным элементам, выделить конфиг
 
@@ -23,46 +27,63 @@ const configuration = {
     href: '/',
     name: "Главная",
     open: [
-      mainPage
+      {action: mainPage}
     ]
   },
   signup: {
     href: '/signup',
     name: "Регистрация",
     open: [
-      () => {
-        console.log("set IsRegistered to false");
-        authCfg.isRegistered = false;
+      {
+        action: () => {
+          console.log("set IsRegistered to false");
+          authCfg.isRegistered = false;
+        },
       },
-      signupPage
+      {
+        action: signupPage,
+        props: {onLogin: profilePage}
+      }
     ]
   },
   login: {
     href: '/login',
     name: "Авторизация",
     open: [
-      () => {
-        console.log("set IsRegistered to true");
-        authCfg.isRegistered = true;
+      {
+        action: () => {
+          console.log("set IsRegistered to true");
+          authCfg.isRegistered = true;
+        },
       },
-      signupPage
+      {
+        action: signupPage,
+        props: {onLogin: profilePage}
+      },
     ]
   },
   profile: {
     href: '/profile',
     name: "Профиль",
     open: [
-      profilePage
+      {
+        action: profilePageTEST
+      },
     ]
   },
 
   // others (no menu)
+
+  // auth form
   changeRegFormType: {
     open: [
-      switchIsRegistered,
-      signupPage
+      {action: switchIsRegistered},
+      {
+        action: signupPage,
+        props: {onLogin: profilePage}
+      },
     ]
-  },
+  }
 };
 
 /////////////////////////////////////
@@ -101,11 +122,21 @@ function mainPage() {
   });
 }
 
-function profilePage() {
+function profilePageTEST() {
   root.innerHTML = "";
   if (state.isAuthenticated) {
     setTimeout(() => {root.innerHTML = profileComponent({name: "Developer1000"})}, 1000);
     root.innerHTML = profileComponent({name: "Developer"});
+  }
+}
+
+function profilePage(props) {
+  console.log("ProfilePage props: ", JSON.stringify(props));
+  root.innerHTML = "";
+  if (state.isAuthenticated) {
+    root.innerHTML = profileComponent(props);
+  } else {
+    signupPage({onLogin: profilePage});
   }
 }
 
@@ -130,7 +161,7 @@ root.addEventListener('click', e => {
 
           console.log("targeter: ", target.dataset.section)
 
-          configuration[target.dataset.section]?.open.map(action => action())
+          configuration[target.dataset.section]?.open.map(action => action.action(action.props));
       }
   })
   
