@@ -21,7 +21,7 @@ const users = {
         login: 'DenisTest',
         name: 'Денис',
         surname: 'Турчин',
-        email: 'd.dorofeev@corp.mail.ru',
+        email: 'd.turchin@mail.ru',
         password: 'DenisTest1',
         score: 3,
     },
@@ -32,6 +32,12 @@ const users = {
 //          utils
 //
 /////////////////////////////////////
+
+function sendUserdata(login) {
+    userData = Object.assign({login}, users[login]);
+    delete userData.password;
+    return userData;
+}
 
 function fullfillError(res, msg) {
     console.log("\t\tresponse: 400 - " + msg);
@@ -94,7 +100,8 @@ function executeAPICall(req, res) {
                     if (users[req_body.login].password === req_body.password) {
                         // TODO: setcookie
                         // 3-й параметр: высылаем данные из БД на клиент
-                        fullfillOKResponse(res, 'Welcome back, ' + req_body.login, users[req_body.login]);
+                        // пароль на фронт не отправляем, лол))
+                        fullfillOKResponse(res, 'Welcome back, ' + req_body.login, sendUserdata(req_body.login));
                     } else {
                         fullfillIncorrectLogin(res);
                     }
@@ -118,8 +125,10 @@ function executeAPICall(req, res) {
                             score: 0
                         }
                         // отвечаем, что регистрация успешна
+                        // TODO: server-side validation
                         // TODO: setcookie
-                        fullfillOKResponse(res, 'Success! Welcome, ' + req_body.login);
+                        // пароль на фронт не отправляем, лол))
+                        fullfillOKResponse(res, 'Success! Welcome, ' + req_body.login, sendUserdata(req_body.login));
                     }
                 }
             }

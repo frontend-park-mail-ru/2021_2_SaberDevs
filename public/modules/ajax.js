@@ -1,5 +1,3 @@
-const ajaxDebug = true;
-
 const ajaxMethods = {
     post: 'POST',
     get: 'GET'
@@ -23,14 +21,11 @@ function ajax(requestParams) {
     xhr.withCredentials = true;  // true means CORS
 
     xhr.addEventListener('readystatechange', () => {
-        if (ajaxDebug) {
-            console.log("ajax resolved: " + xhr.status, ": " + xhr.responseText);
-        }    
-
         if (xhr.readyState !== XMLHttpRequest.DONE) {
             return;
         }
 
+        if (ajaxDebug) console.log("ajax resolved: " + xhr.status, ": " + xhr.responseText);
         callback(xhr.status, xhr.responseText);
     });
 

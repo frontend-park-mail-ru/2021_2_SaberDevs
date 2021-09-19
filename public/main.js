@@ -1,88 +1,102 @@
 'use strict';
 
-// components
-import {switchIsRegistered, signupPage, authCfg} from "./components/authorizationForm.js";
-import profileComponent from "./components/profile.js"
+// pages & components
+import signupPage from "./pages/signupPage.js";
+import profilePage from "./pages/profilePage.js";
 
-// modules
-// import Ajax from "modules/ajax.js"
-
-// TODO: разбить по функциональным элементам, выделить конфиг
-
-/////////////////////////////////////
-//
-//          Globals
-//
-/////////////////////////////////////
 const root = document.getElementById('root');
 
 const menuElements = ['signup', 'login', 'profile'];
 
 const state = {
-  isAuthenticated: true
+  isAuthenticated: false,
+  isRegistered: true,
+  userData: {},
 };
 
 const configuration = {
   main: {
     href: '/',
     name: "Главная",
-    open: [
-      {action: mainPage}
-    ]
+    open: {
+      action: mainPage,
+      props: null
+    }
   },
   signup: {
     href: '/signup',
     name: "Регистрация",
-    open: [
-      {
-        action: () => {
-          console.log("set IsRegistered to false");
-          authCfg.isRegistered = false;
-        },
+    open: {
+      action: (props) => {
+        state.isRegistered = false;
+        signupPage(props)
       },
-      {
-        action: signupPage,
-        props: {onLogin: profilePage}
+      props: {
+        onLogin: (props) => {
+          state.isAuthenticated = true;
+          state.userData = props;
+          profilePage(props);
+        }, 
+        isRegistered: false
       }
-    ]
+    }
   },
   login: {
     href: '/login',
     name: "Авторизация",
-    open: [
-      {
-        action: () => {
-          console.log("set IsRegistered to true");
-          authCfg.isRegistered = true;
+    open: {
+      action: (props) => {
+        state.isRegistered = true;
+        signupPage(props);
+      },
+      props: {
+        onLogin: (props) => {
+          state.isAuthenticated = true;
+          profilePage(props);
         },
-      },
-      {
-        action: signupPage,
-        props: {onLogin: profilePage}
-      },
-    ]
+        isRegistered: true
+      }
+    },
   },
   profile: {
     href: '/profile',
     name: "Профиль",
-    open: [
-      {
-        action: profilePageTEST
+    open: (state.isAuthenticated ? {
+      action:  profilePage,
+      props: state.userData
+    } : {
+      action: (props) => {
+        state.isRegistered = true;
+        signupPage(props);
       },
-    ]
+      props: {
+        onLogin: (props) => {
+          state.isAuthenticated = true;
+          profilePage(props);
+        },
+        isRegistered: true
+      },
+    }),
   },
 
-  // others (no menu)
+  // others navigations (apart menu)
 
   // auth form
   changeRegFormType: {
-    open: [
-      {action: switchIsRegistered},
-      {
-        action: signupPage,
-        props: {onLogin: profilePage}
+    open: {
+      action: (props) => {
+        state.isRegistered = !state.isRegistered;
+        props.isRegistered = state.isRegistered;
+        signupPage(props)
       },
-    ]
+      props: {
+        onLogin: (props) => {
+          state.isAuthenticated = true;
+          state.userData = props;
+          profilePage(props);
+        },
+      }
+    },
   }
 };
 
@@ -102,7 +116,6 @@ function mainPage() {
   // TODO: убрать в хедер и сайд-бар
 
   root.innerHTML = "";
-  // root.title = "SaberProject";
   document.title = "SaberProject";
   menuElements.map( (menu_el) => {
     if (!(menu_el in configuration)) {
@@ -122,24 +135,6 @@ function mainPage() {
   });
 }
 
-function profilePageTEST() {
-  root.innerHTML = "";
-  if (state.isAuthenticated) {
-    setTimeout(() => {root.innerHTML = profileComponent({name: "Developer1000"})}, 1000);
-    root.innerHTML = profileComponent({name: "Developer"});
-  }
-}
-
-function profilePage(props) {
-  console.log("ProfilePage props: ", JSON.stringify(props));
-  root.innerHTML = "";
-  if (state.isAuthenticated) {
-    root.innerHTML = profileComponent(props);
-  } else {
-    signupPage({onLogin: profilePage});
-  }
-}
-
 ////////////////////////////////
 //
 //       Сама страница
@@ -151,17 +146,22 @@ mainPage()
 ////////////////////////////////
 //
 //     Общий глобальный обработчик
+//     действует только на ссылки
 //
 ////////////////////////////////
 
 root.addEventListener('click', e => {
     const {target} = e;  // {target} - деструкторизация объекта. Равносильно target = e.target
-    if (target instanceof HTMLAnchorElement) { // проверям, что клик был по ссылке (anchor)
+    if (target instanceof HTMLAnchorElement) {  // проверям, что клик был по ссылке (anchor)
           e.preventDefault();
 
-          console.log("targeter: ", target.dataset.section)
+          if (routerDebug) console.log("targeter: ", target.dataset.section)
 
-          configuration[target.dataset.section]?.open.map(action => action.action(action.props));
+          const props = configuration[target.dataset.section]?.open?.props;
+          const action = configuration[target.dataset.section]?.open?.action;
+          if (action !== undefined) {
+            action.call(null, props);
+          }
       }
   })
   

@@ -1,40 +1,13 @@
-// import profileComponent from "./profile.js"
 import {createInput, createLabel} from "../utils.js";
 import Ajax from "../modules/ajax.js";
-/////////////////////////////////////
-//
-//          Globals
-//
-/////////////////////////////////////
-
-const authCfg = {
-    isRegistered: false,
-};
-
-/////////////////////////////////////
-//
-//          utils
-//
-/////////////////////////////////////
-
-function switchIsRegistered() {
-    authCfg.isRegistered = !authCfg.isRegistered;
-    console.log("IsRegistered switched to " + authCfg.isRegistered);
-};
 
 ////////////////////////////////
 //
-//         Page Content
+//    Authorization Form
 //
 ////////////////////////////////
 
-function signupPage({onLogin}) {
-    let isRegistered = authCfg.isRegistered;
-  
-    document.title = "SaberProject | " + (!isRegistered? "Sign Up" : "Login");
-    // стираем старые элементы, чтобы нарисовать новые
-    root.innerHTML = "";
-  
+export default function authForm({onLogin, isRegistered}) {  
     const form = document.createElement('form');
   
     // поля формы
@@ -73,34 +46,16 @@ function signupPage({onLogin}) {
     form.appendChild(passwordLabel);
     if (!isRegistered) form.appendChild(passwordRepeatInput);
   
-  
     // интерфейс формы
     const submitBtn = document.createElement('input');
     submitBtn.type = 'submit';
     submitBtn.value = isRegistered ? "Войти" : "Зарегистрироваться";
-  
-    const backBtn = document.createElement('a');
-    backBtn.textContent = "Назад";
-    backBtn.href = '/';
-    backBtn.dataset.section = 'main';
-
-    const changeFormTypeBtn = document.createElement('a');
-    changeFormTypeBtn.textContent = isRegistered ? "Создать аккаунт" : "У меня уже есть аккаунт";
-    changeFormTypeBtn.href = !isRegistered ? "/login" : "/register";
-    changeFormTypeBtn.dataset.section = "changeRegFormType"
-
     form.appendChild(submitBtn);
-    form.appendChild(backBtn);
-  
-    // форма
-    root.appendChild(form);
-    root.appendChild(changeFormTypeBtn);
 
     // submit action
     form.addEventListener('submit', (e) => {
       e.preventDefault();
 
-      // TODO: validation & trimming
       const login = loginInput.value;
       const password = passwordInput.value;
       const email = emailInput?.value;
@@ -122,24 +77,14 @@ function signupPage({onLogin}) {
           callback: (status, msg) => {
             
             if (status === Ajax.STATUS.ok) {
-                console.log("Status: ", status, "msg: ", msg);
-                //profileComponent({name: login});
                 onLogin(JSON.parse(msg).data);
                 return;
-            }
-
-            if (status === Ajax.STATUS.badRequest) {
-                console.log("Status: ", status, "msg: ", msg);
             }
 
             alert('ошибка сети' + status + '\n' + msg);
           }
       });
   });
-} 
-  
-export {
-    switchIsRegistered,
-    signupPage,
-    authCfg
+
+  return form;
 }
