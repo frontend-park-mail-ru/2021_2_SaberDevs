@@ -3,6 +3,7 @@
 // pages & components
 import signupPage from "./pages/signupPage.js";
 import profilePage from "./pages/profilePage.js";
+import indexComponent from './components/index.js';
 
 const root = document.getElementById('root');
 
@@ -133,6 +134,10 @@ function mainPage() {
 
     root.appendChild(menuElement);
   });
+      
+  const div = document.createElement('div');
+  div.innerHTML = indexComponent({});
+  root.appendChild(div);
 }
 
 ////////////////////////////////

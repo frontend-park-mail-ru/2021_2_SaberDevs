@@ -1,0 +1,36 @@
+function pug_rethrow(e,n,r,t){if(!(e instanceof Error))throw e;if(!("undefined"==typeof window&&n||t))throw e.message+=" on line "+r,e;var o,a,i,s;try{t=t||require("fs").readFileSync(n,{encoding:"utf8"}),o=3,a=t.split("\n"),i=Math.max(r-o,0),s=Math.min(a.length,r+o)}catch(t){return e.message+=" - could not read from "+n+" ("+t.message+")",void pug_rethrow(e,null,r)}o=a.slice(i,s).map(function(e,n){var t=n+i+1;return(t==r?"  > ":"    ")+t+"| "+e}).join("\n"),e.path=n;try{e.message=(n||"Pug")+":"+r+"\n"+o+"\n\n"+e.message}catch(e){}throw e}function x(){};
+
+export default function headerComponent(locals) {var pug_html = "", pug_mixins = {}, pug_interp;var pug_debug_filename, pug_debug_line;try {;pug_debug_line = 1;pug_debug_filename = "dev\u002Fcomponents\u002Fheader.pug";
+pug_html = pug_html + "\u003Cheader\u003E";
+;pug_debug_line = 2;pug_debug_filename = "dev\u002Fcomponents\u002Fheader.pug";
+pug_html = pug_html + "\u003Cdiv class=\"container\"\u003E";
+;pug_debug_line = 3;pug_debug_filename = "dev\u002Fcomponents\u002Fheader.pug";
+pug_html = pug_html + "\u003Cdiv class=\"row\"\u003E";
+;pug_debug_line = 4;pug_debug_filename = "dev\u002Fcomponents\u002Fheader.pug";
+pug_html = pug_html + "\u003Cdiv class=\"menu-icon\" id=\"menu-icon\"\u003E\u003C\u002Fdiv\u003E";
+;pug_debug_line = 5;pug_debug_filename = "dev\u002Fcomponents\u002Fheader.pug";
+pug_html = pug_html + "\u003Cimg class=\"company-name\" src=\"..\u002Fstatic\u002Fimg\u002Fcompany-name.png\"\u002F\u003E";
+;pug_debug_line = 6;pug_debug_filename = "dev\u002Fcomponents\u002Fheader.pug";
+pug_html = pug_html + "\u003Cbutton class=\"button-add-record m-10\"\u003E";
+;pug_debug_line = 6;pug_debug_filename = "dev\u002Fcomponents\u002Fheader.pug";
+pug_html = pug_html + "Новая запись\u003C\u002Fbutton\u003E\u003C\u002Fdiv\u003E";
+;pug_debug_line = 7;pug_debug_filename = "dev\u002Fcomponents\u002Fheader.pug";
+pug_html = pug_html + "\u003Cdiv class=\"row\"\u003E";
+;pug_debug_line = 8;pug_debug_filename = "dev\u002Fcomponents\u002Fheader.pug";
+pug_html = pug_html + "\u003Cbutton class=\"button-search row\"\u003E";
+;pug_debug_line = 9;pug_debug_filename = "dev\u002Fcomponents\u002Fheader.pug";
+pug_html = pug_html + "\u003Cimg src=\"..\u002Fstatic\u002Fimg\u002Fsearch-icon.png\"\u002F\u003E";
+;pug_debug_line = 10;pug_debug_filename = "dev\u002Fcomponents\u002Fheader.pug";
+pug_html = pug_html + "\u003Cdiv\u003E";
+;pug_debug_line = 10;pug_debug_filename = "dev\u002Fcomponents\u002Fheader.pug";
+pug_html = pug_html + "Поиск\u003C\u002Fdiv\u003E\u003C\u002Fbutton\u003E";
+;pug_debug_line = 11;pug_debug_filename = "dev\u002Fcomponents\u002Fheader.pug";
+pug_html = pug_html + "\u003Cdiv class=\"user-profile row\"\u003E";
+;pug_debug_line = 12;pug_debug_filename = "dev\u002Fcomponents\u002Fheader.pug";
+pug_html = pug_html + "\u003Cdiv class=\"user-name m-10\"\u003E";
+;pug_debug_line = 12;pug_debug_filename = "dev\u002Fcomponents\u002Fheader.pug";
+pug_html = pug_html + "Григорий\u003C\u002Fdiv\u003E";
+;pug_debug_line = 13;pug_debug_filename = "dev\u002Fcomponents\u002Fheader.pug";
+pug_html = pug_html + "\u003Cdiv class=\"user-img\"\u003E\u003C\u002Fdiv\u003E";
+;pug_debug_line = 14;pug_debug_filename = "dev\u002Fcomponents\u002Fheader.pug";
+pug_html = pug_html + "\u003Cimg src=\"..\u002Fstatic\u002Fimg\u002Farrow-to-down.png\"\u002F\u003E\u003C\u002Fdiv\u003E\u003C\u002Fdiv\u003E\u003C\u002Fdiv\u003E\u003C\u002Fheader\u003E";} catch (err) {pug_rethrow(err, pug_debug_filename, pug_debug_line);};return pug_html;}
