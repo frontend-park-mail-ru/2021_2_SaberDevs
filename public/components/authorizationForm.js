@@ -27,7 +27,7 @@ export default function authForm({onLogin, isRegistered}) {
     loginInput.autofocus = true;
     loginInput.minlength = 5;
     loginInput.maxLength = 20;
-    loginInput.pattern = "^[[:alpha:]][[:word:]]{4,20}$";
+    loginInput.pattern = "^[a-zA-Z][a-zA-Z0-9_]{4,20}$";
 
     passwordInput.minLength = 8;
     passwordInput.maxLength = 256;

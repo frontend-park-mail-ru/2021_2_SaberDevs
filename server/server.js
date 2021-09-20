@@ -16,8 +16,9 @@ const CORS = '*';
 const REQUEST_LEN_LIMIT = 1e6;
 const APIUrls = ["/login", "/signup"];
 
+// type: UserData
 const users = {
-    'DenisTest': {
+    'denistest': {
         login: 'DenisTest',
         name: 'Денис',
         surname: 'Турчин',
@@ -94,7 +95,7 @@ function executeAPICall(req, res) {
             console.log("\t\trequest body: ", req_body);
 
             if (req.url === '/login') {
-                if (users[req_body.login] !== undefined) {
+                if (users[req_body.login.toLowerCase()] !== undefined) {
                     console.log("\t\tUser has been found in db");
 
                     if (users[req_body.login].password === req_body.password) {
@@ -111,7 +112,7 @@ function executeAPICall(req, res) {
             }
             if (req.url === '/signup') {
                 // пользователь уже существует
-                if (users[req_body.login] !== undefined) {
+                if (users[req_body.login.toLowerCase()] !== undefined) {
                     fullfillLoginIsAlreadyTaken(res);
                 } else {
                     // проверяем наличие все полей

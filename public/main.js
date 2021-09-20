@@ -3,11 +3,12 @@
 // pages & components
 import signupPage from "./pages/signupPage.js";
 import profilePage from "./pages/profilePage.js";
-import indexComponent from './components/index.js';
+import mainPage from './pages/mainPage.js';
 
 const root = document.getElementById('root');
 
-const menuElements = ['signup', 'login', 'profile'];
+const headerLinks = ['signup', 'login', 'profile'];
+const sideBarLinks = ['hello'];
 
 const state = {
   isAuthenticated: false,
@@ -15,13 +16,20 @@ const state = {
   userData: {},
 };
 
+
 const configuration = {
   main: {
     href: '/',
     name: "Главная",
     open: {
       action: mainPage,
-      props: null
+      props: {
+        // монтируются сюда позже
+        // headerLinks: createNavLinksArray(headerLinks),
+        // sideBarLinks: createNavLinksArray(sideBarLinks),
+        isAuthenticated: state.isAuthenticated,
+        userData: state.userData,
+      }
     }
   },
   signup: {
@@ -62,6 +70,7 @@ const configuration = {
   profile: {
     href: '/profile',
     name: "Профиль",
+    // TODO: fix
     open: (state.isAuthenticated ? {
       action:  profilePage,
       props: state.userData
@@ -88,7 +97,7 @@ const configuration = {
       action: (props) => {
         state.isRegistered = !state.isRegistered;
         props.isRegistered = state.isRegistered;
-        signupPage(props)
+        signupPage(props);
       },
       props: {
         onLogin: (props) => {
@@ -98,62 +107,66 @@ const configuration = {
         },
       }
     },
+  },
+
+  template: {
+    open : {
+      action: () => {
+
+      },
+      props: null,
+    }
   }
 };
 
 /////////////////////////////////////
 //
-//          utils
+//                utils
 //
 /////////////////////////////////////
 
-////////////////////////////////
-//
-//              Pages
-//
-////////////////////////////////
+function createNavLinksArray(linksConfigNameArray) {
+  const res = [];
 
-function mainPage() {
-  // TODO: убрать в хедер и сайд-бар
-
-  root.innerHTML = "";
-  document.title = "SaberProject";
-  menuElements.map( (menu_el) => {
-    if (!(menu_el in configuration)) {
-      console.log("Error: " + menu_el + "is not described in configuration");
+  linksConfigNameArray.map( (linkElement) => {
+    if (!(linkElement in configuration)) {
+      console.log("Error: " + linkElement + "is not described in configuration");
       return;
     }
-
-    let {href, name} = configuration[menu_el];
-
-    const menuElement = document.createElement('a');
-    menuElement.href = href;
-    menuElement.textContent = name;
-
-    menuElement.dataset.section = menu_el;
-
-    root.appendChild(menuElement);
+  
+    const {href, name} = configuration[linkElement];
+  
+    const headerNavLink = document.createElement('a');
+    headerNavLink.href = href;
+    headerNavLink.textContent = name;
+  
+    headerNavLink.dataset.section = linkElement;
+  
+    res.push(headerNavLink);
   });
-      
-  const div = document.createElement('div');
-  div.innerHTML = indexComponent({});
-  root.appendChild(div);
+
+  return res;
 }
 
-////////////////////////////////
-//
-//       Сама страница
-//
-////////////////////////////////
+// небольшой костыль, чтобы исправить перекрестную ссылку: configuration ссылается на createNavLinkArray, createNavLinkArray использует configuration
+// TODO: найти более элегантное решение
+configuration.main.open.props.headerLinks = createNavLinksArray(headerLinks);
+configuration.main.open.props.sideBarLinks = createNavLinksArray(sideBarLinks);
 
-mainPage()
+/////////////////////////////////////
+//
+//            Сама страница
+//
+/////////////////////////////////////
 
-////////////////////////////////
+mainPage(configuration.main.open.props);
+
+/////////////////////////////////////
 //
 //     Общий глобальный обработчик
 //     действует только на ссылки
 //
-////////////////////////////////
+/////////////////////////////////////
 
 root.addEventListener('click', e => {
     const {target} = e;  // {target} - деструкторизация объекта. Равносильно target = e.target
