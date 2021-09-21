@@ -120,7 +120,7 @@
     border-spacing: 10px;
 }
 
-.card .card-buttons div {
+.card .card-buttons a {
     display: table-cell;
     vertical-align: middle;
     background-size: cover;

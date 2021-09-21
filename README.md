@@ -25,14 +25,14 @@
   ./server/server.js или npm run start для запуска
 
 ## API
-- сервер всегда возвращает структуры:
+- сервер всегда возвращает структуры (описаны в JSDoc):
     response: {
         msg: string,  // текстовые сообщения/пояснения от сервера. Позволяет не нарушать http-rest Content-Type: application/json
         data: obj     // произвольный объект, который пробрасывается в пропсы компонента по окончанию выполнения запроса
     }
-- URL'ы API описаны в server/server.js/APIUrls. Предварительно: const APIUrls = ["/login", "/signup"];
-- Пользователи представлены объектом userData
-    предварительно: userData: {
+- URL'ы API описаны в server/server.js/APIUrls. Предварительно: const APIUrls = ["/login", "/signup", "profile/<username>"];
+- Пользователи представлены объектом UserData (описан в JSDoc). Пароль на клиент не возвращается
+    предварительно: UserData: {
         login: string,
         name: string,
         surname: string,

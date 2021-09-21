@@ -1,21 +1,18 @@
 .card.row
-      .card-photo.row
-        img(src='../static/img/computer.png')
-      .card-content.col
-        .card-tags.row
-          .card-tag IT-NEWS
-          .card-tag Study
-        .card-text.col
-          .card-header 7 Skills of Highly Effective Programmers
-          .card-description
-            | Our team was inspired by the seven skills of highly effective programmers
-            | created by the TechLead. We wanted to provide our own take on the topic.
-            | Here are our seven skills of effective programmers...
-        .card-bottom.row
-          .card-user.row
-            .card-user-photo
-            .card-username Elon Musk
-          .card-buttons.row
-            .comment-icon 112
-            .share-icon
-            .like-icon 92
+  a.card-photo.row(href=commentsUrl)
+    img(src=previewUrl)
+  .card-content.col
+    .card-tags.row
+      each tag in tags.length ? tags : ['no tags']
+        .card-tag #{tag}
+    .card-text.col
+      .card-header #{title}
+      .card-description #{text}
+    .card-bottom.row
+      .card-user.row
+        img.card-user-photo(src=authorAvatar)
+        a.card-username(href=authorUrl) #{authorName}
+      .card-buttons.row
+        a(href=commentsUrl).comment-icon #{comments}
+        a.share-icon
+        a.like-icon #{likes}

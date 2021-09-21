@@ -1,8 +1,8 @@
 'use strict';
 
 // pages & components
-import signupPage from "./pages/signupPage.js";
-import profilePage from "./pages/profilePage.js";
+import signupPage from './pages/signupPage.js';
+import profilePage from './pages/profilePage.js';
 import mainPage from './pages/mainPage.js';
 
 const root = document.getElementById('root');
@@ -20,7 +20,7 @@ const state = {
 const configuration = {
   main: {
     href: '/',
-    name: "Главная",
+    name: 'Главная',
     open: {
       action: mainPage,
       props: {
@@ -29,30 +29,30 @@ const configuration = {
         // sideBarLinks: createNavLinksArray(sideBarLinks),
         isAuthenticated: state.isAuthenticated,
         userData: state.userData,
-      }
-    }
+      },
+    },
   },
   signup: {
     href: '/signup',
-    name: "Регистрация",
+    name: 'Регистрация',
     open: {
       action: (props) => {
         state.isRegistered = false;
-        signupPage(props)
+        signupPage(props);
       },
       props: {
         onLogin: (props) => {
           state.isAuthenticated = true;
           state.userData = props;
           profilePage(props);
-        }, 
-        isRegistered: false
-      }
-    }
+        },
+        isRegistered: false,
+      },
+    },
   },
   login: {
     href: '/login',
-    name: "Авторизация",
+    name: 'Авторизация',
     open: {
       action: (props) => {
         state.isRegistered = true;
@@ -63,17 +63,17 @@ const configuration = {
           state.isAuthenticated = true;
           profilePage(props);
         },
-        isRegistered: true
-      }
+        isRegistered: true,
+      },
     },
   },
   profile: {
     href: '/profile',
-    name: "Профиль",
+    name: 'Профиль',
     // TODO: fix
     open: (state.isAuthenticated ? {
-      action:  profilePage,
-      props: state.userData
+      action: profilePage,
+      props: state.userData,
     } : {
       action: (props) => {
         state.isRegistered = true;
@@ -84,7 +84,7 @@ const configuration = {
           state.isAuthenticated = true;
           profilePage(props);
         },
-        isRegistered: true
+        isRegistered: true,
       },
     }),
   },
@@ -105,81 +105,94 @@ const configuration = {
           state.userData = props;
           profilePage(props);
         },
-      }
+      },
     },
   },
 
   template: {
-    open : {
+    open: {
       action: () => {
 
       },
       props: null,
-    }
-  }
+    },
+  },
 };
 
-/////////////////////////////////////
+// ///////////////////////////////// //
 //
 //                utils
 //
-/////////////////////////////////////
+// ///////////////////////////////// //
 
+/**
+ * Переводит массив строк в массив элементо-тегов-а,
+ * со свойствами согласно configurations
+ * @param {Array.string} linksConfigNameArray
+ * @return {Array.HTMLAnchorElement}
+ */
 function createNavLinksArray(linksConfigNameArray) {
   const res = [];
 
   linksConfigNameArray.map( (linkElement) => {
     if (!(linkElement in configuration)) {
-      console.log("Error: " + linkElement + "is not described in configuration");
+      console.log('Error:' + linkElement + 'is not described in configuration');
       return;
     }
-  
+
     const {href, name} = configuration[linkElement];
-  
+
     const headerNavLink = document.createElement('a');
     headerNavLink.href = href;
     headerNavLink.textContent = name;
-  
+
     headerNavLink.dataset.section = linkElement;
-  
+
     res.push(headerNavLink);
   });
 
   return res;
 }
 
-// небольшой костыль, чтобы исправить перекрестную ссылку: configuration ссылается на createNavLinkArray, createNavLinkArray использует configuration
+// небольшой костыль, чтобы исправить перекрестную ссылку:
+// configuration ссылается на createNavLinkArray, а
+// createNavLinkArray использует configuration
 // TODO: найти более элегантное решение
 configuration.main.open.props.headerLinks = createNavLinksArray(headerLinks);
 configuration.main.open.props.sideBarLinks = createNavLinksArray(sideBarLinks);
 
-/////////////////////////////////////
+// ///////////////////////////////// //
 //
 //            Сама страница
 //
-/////////////////////////////////////
+// ///////////////////////////////// //
 
 mainPage(configuration.main.open.props);
 
-/////////////////////////////////////
+// ///////////////////////////////// //
 //
 //     Общий глобальный обработчик
 //     действует только на ссылки
 //
-/////////////////////////////////////
+// ///////////////////////////////// //
 
-root.addEventListener('click', e => {
-    const {target} = e;  // {target} - деструкторизация объекта. Равносильно target = e.target
-    if (target instanceof HTMLAnchorElement) {  // проверям, что клик был по ссылке (anchor)
-          e.preventDefault();
+root.addEventListener('click', (e) => {
+  const {target} = e;  // Равносильно target = e.target
 
-          if (routerDebug) console.log("targeter: ", target.dataset.section)
+  // проверям, что клик был по ссылке (anchor)
+  if (target instanceof HTMLAnchorElement) {
+    e.preventDefault();
 
-          const props = configuration[target.dataset.section]?.open?.props;
-          const action = configuration[target.dataset.section]?.open?.action;
-          if (action !== undefined) {
-            action.call(null, props);
-          }
-      }
-  })
-  
+    if (routerDebug) console.log('targeter: ', target.dataset.section);
+
+    const props = configuration[target.dataset.section]?.open?.props;
+    const action = configuration[target.dataset.section]?.open?.action;
+    if (action !== undefined) {
+      action.call(null, props);
+    }
+  }
+});
+
+window.addEventListener('scroll', function() {
+  document.getElementById('showScroll').innerHTML = window.pageYOffset + 'px';
+});
