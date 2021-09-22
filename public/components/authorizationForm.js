@@ -115,6 +115,7 @@ export default function authForm({onLogin, isRegistered}) {
           onLogin(JSON.parse(msg).data);
           return;
         }
+        // TODO: raise popup
         alert('ошибка сети' + status + '\n' + msg);
       },
     });

@@ -1,3 +1,5 @@
+// TODO: fetch API
+
 /**
  * Поддерживаемые методы: GET и POST
  * @typedef {Object} AjaxMethod
@@ -76,37 +78,11 @@ function ajax(requestParams) {
   xhr.send();
 }
 
-/**
- * Выполняет ajax-GET-запрос на сервер.
- * При успешном выполнении вызывает callback
- * @param {Object} requestParams
- * @property {Url} [url = '/']
- * @property {?Object} [body = null]
- * @property {requestCallback} [callback = () => {}]
- * @return {void}
- */
-function ajaxGet(requestParams) {
-  return ajax({method: ajaxMethods.get, ...requestParams});
-}
-
-/**
- * Выполняет ajax-POST-запрос на сервер.
- * При успешном выполнении вызывает callback
- * @param {Object} requestParams
- * @property {Url} [url = '/']
- * @property {?Object} [body = null]
- * @property {requestCallback} [callback = () => {}]
- * @return {void}
- */
-function ajaxPost(requestParams) {
-  return ajax({method: ajaxMethods.post, ...requestParams});
-}
-
 const Ajax = {
   AJAX_METHODS: ajaxMethods,
   STATUS: ajaxStatuses,
-  get: ajaxGet,
-  post: ajaxPost,
+  get: (requestParams) => ajax({method: ajaxMethods.get, ...requestParams}),
+  post: (requestParams) => ajax({method: ajaxMethods.post, ...requestParams}),
 };
 
 export default Ajax;

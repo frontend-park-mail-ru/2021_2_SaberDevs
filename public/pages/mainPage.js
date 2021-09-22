@@ -1,60 +1,116 @@
-import headerComponent from '../components/header.js';
-import sideBarComponent from '../components/sidebar.js';
+import headerComponent from '../components/header.pug.js';
+import sideBarComponent from '../components/sidebar.pug.js';
 // import newsBarComponent from '../components/newsbar.js';
-import cardComponent from '../components/card.js';
+import cardComponent from '../components/card.pug.js';
 
-const testData = [
-  {
-    previewUrl: 'static/img/computer.png',
-    tags: ['IT-News', 'Study'],
-    title: '7 Skills of Highly Effective Programmers',
-    text: 'Our team was inspired by the seven skills of highly effective' +
-    'programmers created by the TechLead. We wanted to provide our own'+
-    'take on the topic. Here are our seven skills of effective programmers...',
-    authorUrl: '#',
-    authorName: 'Григорий',
-    authorAvatar: 'static/img/photo-elon-musk.jpg',
-    commentsUrl: '#',
-    comments: 97,
-    likes: 10,
-  },
-  {
-    previewUrl: 'static/img/computer.png',
-    tags: ['IT-News', 'Testing'],
-    title: 'Article 1',
-    text: `hello`,
-    authorUrl: '#',
-    authorName: 'Tester-1',
-    authorAvatar: 'static/img/photo-elon-musk.jpg',
-    commentsUrl: '#',
-    comments: 1,
-    likes: 1002,
-  },
-  {
-    previewUrl: 'static/img/computer.png',
-    tags: ['IT-News', 'Testing'],
-    title: 'Article 2',
-    text: `hello`,
-    authorUrl: '#',
-    authorName: 'Tester-2',
-    authorAvatar: 'static/img/photo-elon-musk.jpg',
-    commentsUrl: '#',
-    comments: 2,
-    likes: 1002,
-  },
-  {
-    previewUrl: 'static/img/computer.png',
-    tags: ['IT-News', 'Testing'],
-    title: 'Article 3',
-    text: `hello`,
-    authorUrl: '#',
-    authorName: 'Tester-3',
-    authorAvatar: 'static/img/photo-elon-musk.jpg',
-    commentsUrl: '#',
-    comments: 3,
-    likes: 1003,
-  },
-];
+import Utils from '../utils.js';
+import Ajax from '../modules/ajax.js';
+
+// ///////////////////////////////// //
+//
+//          Globals
+//
+// ///////////////////////////////// //
+
+/**
+ * Выполняется, если вход успешный
+ * @callback LoadCallback
+ * @param {Object} props
+ */
+
+const endOfFeedMarkerID = 'end';
+
+const loadingCard = {
+  id: 'loading-card',
+  previewUrl: 'static/img/loader-1-HorizontalBalls.gif',
+  tags: [],
+  title: 'Загрузка...',
+  text: `Еще чуть-чуть...`,
+  authorUrl: '',
+  authorName: 'loading',
+  authorAvatar: '',
+  commentsUrl: '',
+};
+
+/**
+ * Обработчик события scroll для главной страницы
+ * @param {Object} state
+ * @property {string} trackedCardId - ID элемента, при появлении
+ * которого в области видимости, будет происходить подгрузка
+ * @property {string} idLastLoaded - ID элемента ленты новостей, который
+ * был загружен последним в пердыдущий раз. Лента будет загружаться
+ * с этой новости
+ * @property {string} login - пользователя, для которого составлена подборка
+ *
+ * @param {LoadCallback} onLoad - обработчик события загрузки.
+ * Принимает данные с сервера в виде объекта согласно API сервера.
+ */
+export function newsFeenEndReachEventAction(state, onLoad) {
+  const trackedCard = document.getElementById(state.trackedCardId);
+
+  if (!state.isLoading &&
+    trackedCard.getBoundingClientRect().y <= Utils.getUserWindowHeight()) {
+    console.log('scroll trigger');
+    state.isLoading = true;
+
+    Ajax.post({
+      url: '/getfeed',
+      body: {
+        idLastLoaded: state.idLastLoaded,
+        login: state.login === '' ? 'all' : state.login,
+      },
+      callback: (status, msg) => {
+        if (status === Ajax.STATUS.ok) {
+          state.isLoading = false;
+          onLoad(JSON.parse(msg).data);
+          return;
+        }
+        // TODO: raise popup
+        alert('ошибка сети' + status + '\n' + msg);
+      },
+    });
+  }
+}
+
+/**
+ * Получить feedChunkSize записей (настрйока для сервера)
+ * @param {Object} state
+ * @property {string} trackedCardId - ID элемента, при появлении
+ * которого в области видимости, будет происходить подгрузка
+ * @property {string} idLastLoaded - ID элемента ленты новостей, который
+ * был загружен последним в пердыдущий раз. Лента будет загружаться
+ * с этой новости
+ * @property {string} login - пользователя, для которого составлена подборка
+ */
+export function uploadNextCards(state) {
+  newsFeenEndReachEventAction(
+      state,
+      (data) => {
+        const cards = data.chunk;
+        state.idLastLoaded = data.to;
+        // TODO: check if card is array!
+        console.log('more news loaded!');
+        const trackedCard = document.getElementById(
+            state.trackedCardId,
+        );
+        cards.forEach((element) => {
+          trackedCard.insertAdjacentHTML(
+              'beforebegin',
+              cardComponent(element),
+          );
+        });
+        if (data.to === endOfFeedMarkerID) {
+          // hide loading component
+          trackedCard.style.display = 'none';
+        }
+      });
+}
+
+// ///////////////////////////////// //
+//
+//              Main Page
+//
+// ///////////////////////////////// //
 
 /**
  * импортирует root-элемент, через замыкание
@@ -69,20 +125,18 @@ const testData = [
  * @property {boolean} isAuthenticated true - в хедере показывается иконка
  * пользователя, доступен переход в профиль false - ссылки логин/регистрация
  * @property {UserData} userData
- * @property {Array.NewsData} news передается в newsbar для отображения
+ * @property {Object} state глобальное состояние ленты новостей
  * @return {void}
  */
 export default function mainPage(props) {
   root.innerHTML = '';
   document.title = 'SaberProject';
 
-  // root.innerHTML = indexComponent();
-
   let headerContent = '';
 
   if (props.isAuthenticated) {
-    headerContent = userPreviewHeader({url: '/profile/' + props.userData
-        .login, name: props.userData.name, img: props.userData.avatar});
+    headerContent = userPreviewHeader({url: `/profile/${props.userData.login}`,
+      name: props.userData.name, img: props.userData.avatar});
   } else {
     // TODO: отдельный шаблон
     const headerNavDIv = document.createElement('div');
@@ -98,12 +152,12 @@ export default function mainPage(props) {
     console.log('headerContent: ', headerContent);
   }
 
+  // TODO: убрать, когда будет использован шаблон хедера
   root.innerHTML += '<p>test</p>';
   root.innerHTML += headerContent;
-  root.innerHTML += '<div id=showScroll></div>';
 
   root.innerHTML += headerComponent({content: headerContent});
-  // TODO: append this components. Решить, нужно ли новости передавать снаружи
+  // TODO: append this components
   // root.innerHTML += newsBarComponent({content: props.news});
 
   const mainContainer = document.createElement('main');
@@ -112,10 +166,15 @@ export default function mainPage(props) {
 
   const contentDiv = document.createElement('div');
   contentDiv.className = 'content col';
-  testData.forEach((element) => {
-    contentDiv.innerHTML += cardComponent(element);
-  });
+  contentDiv.id = 'menu-content-block';
+
+  contentDiv.innerHTML += cardComponent(loadingCard);
 
   mainContainer.appendChild(contentDiv);
   root.appendChild(mainContainer);
+
+  window.addEventListener(
+      'scroll',
+      () => uploadNextCards(props.state),
+  );
 }

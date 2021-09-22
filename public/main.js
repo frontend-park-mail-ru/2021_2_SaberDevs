@@ -3,22 +3,30 @@
 // pages & components
 import signupPage from './pages/signupPage.js';
 import profilePage from './pages/profilePage.js';
+import {newsFeenEndReachEventAction,
+  uploadNextCards} from './pages/mainPage.js';
 import mainPage from './pages/mainPage.js';
 
 const root = document.getElementById('root');
 
-const headerLinks = ['signup', 'login', 'profile'];
+const headerLinks = ['signupPopUp', 'loginPopUp', 'profilePage'];
 const sideBarLinks = ['hello'];
 
 const state = {
-  isAuthenticated: false,
-  isRegistered: true,
-  userData: {},
+  isAuthenticated: false,  // верстка зависит от того, залогинен ли пользователь
+  isRegistered: true,      // верстка формы авторизации: вход или регистрация
+  userData: {},            // данные пользователя с бека, если авторизован
+  mainPageState: {
+    trackedCardId: 'loading-card', // отслеживаемая запись в ленте для подгрузки
+    isLoading: false,              // отправлен ли запрос на сервер
+    idLastLoaded: '',              // запоминаем последнюю загруженную запись
+    login: '',                     // для какого пользователя подборка
+  },
 };
 
 
 const configuration = {
-  main: {
+  mainPage: {
     href: '/',
     name: 'Главная',
     open: {
@@ -29,10 +37,11 @@ const configuration = {
         // sideBarLinks: createNavLinksArray(sideBarLinks),
         isAuthenticated: state.isAuthenticated,
         userData: state.userData,
+        state: state.mainPageState,
       },
     },
   },
-  signup: {
+  signupPopUp: {
     href: '/signup',
     name: 'Регистрация',
     open: {
@@ -50,7 +59,7 @@ const configuration = {
       },
     },
   },
-  login: {
+  loginPopUp: {
     href: '/login',
     name: 'Авторизация',
     open: {
@@ -67,7 +76,7 @@ const configuration = {
       },
     },
   },
-  profile: {
+  profilePage: {
     href: '/profile',
     name: 'Профиль',
     // TODO: fix
@@ -154,12 +163,26 @@ function createNavLinksArray(linksConfigNameArray) {
   return res;
 }
 
+/**
+ * Удаляет глобальные обработчки с window
+ * @param {Array.Object<string, function>} eventFunctionNamesPairArray
+ * @return {void}
+ */
+function deleteGlobalListeners(eventFunctionNamesPairArray) {
+  console.log('delete events: ' + eventFunctionNamesPairArray);
+  eventFunctionNamesPairArray.forEach((element) => {
+    window.removeEventListener(element.event, element.function);
+  });
+}
+
 // небольшой костыль, чтобы исправить перекрестную ссылку:
 // configuration ссылается на createNavLinkArray, а
 // createNavLinkArray использует configuration
 // TODO: найти более элегантное решение
-configuration.main.open.props.headerLinks = createNavLinksArray(headerLinks);
-configuration.main.open.props.sideBarLinks = createNavLinksArray(sideBarLinks);
+configuration.mainPage.open.props.headerLinks =
+  createNavLinksArray(headerLinks);
+configuration.mainPage.open.props.sideBarLinks =
+  createNavLinksArray(sideBarLinks);
 
 // ///////////////////////////////// //
 //
@@ -167,7 +190,9 @@ configuration.main.open.props.sideBarLinks = createNavLinksArray(sideBarLinks);
 //
 // ///////////////////////////////// //
 
-mainPage(configuration.main.open.props);
+mainPage(configuration.mainPage.open.props);
+// подгружаем первые карточки
+uploadNextCards(state.mainPageState);
 
 // ///////////////////////////////// //
 //
@@ -177,22 +202,29 @@ mainPage(configuration.main.open.props);
 // ///////////////////////////////// //
 
 root.addEventListener('click', (e) => {
-  const {target} = e;  // Равносильно target = e.target
+  const {target} = e;
 
   // проверям, что клик был по ссылке (anchor)
   if (target instanceof HTMLAnchorElement) {
     e.preventDefault();
 
-    if (routerDebug) console.log('targeter: ', target.dataset.section);
+    if (routerDebug) {
+      console.log('targeter: ', target.dataset.section);
+    }
 
     const props = configuration[target.dataset.section]?.open?.props;
     const action = configuration[target.dataset.section]?.open?.action;
     if (action !== undefined) {
+      // При переходе на страницу стираем все глобальные обрабочики
+      if (target.dataset.section.indexOf('Page') !== -1) {
+        deleteGlobalListeners([
+          {
+            name: 'scroll',
+            function: newsFeenEndReachEventAction,
+          },
+        ]);
+      }
       action.call(null, props);
     }
   }
-});
-
-window.addEventListener('scroll', function() {
-  document.getElementById('showScroll').innerHTML = window.pageYOffset + 'px';
 });
