@@ -1,0 +1,25 @@
+{
+  "name": "saber_project",
+  "version": "1.0.0",
+  "description": "vs.ru alike web-spa",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "npx eslint . && node ./dev/compile_templates.js && node server/server.js",
+    "start": "npx eslint . && node server/server.js"
+  },
+  "keywords": [],
+  "author": "Denis, Svetlana, Yuriy, Alexey",
+  "license": "ISC",
+  "dependencies": {
+    "mime": "^2.5.2",
+    "pug": "^3.0.2"
+  },
+  "devDependencies": {
+    "eslint": "^7.32.0",
+    "eslint-config-google": "^0.14.0",
+    "eslint-plugin-import": "^2.24.2",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-promise": "^5.1.0"
+  }
+}

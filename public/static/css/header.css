@@ -1,0 +1,68 @@
+header {
+    position: fixed;
+    width: 100%;
+    background-color: #3F51B5;
+    max-height: 80px;
+    font-family: 'Rubik', sans-serif;
+    z-index: 1;
+}
+
+header .company-name {
+    height: 62px;
+}
+
+header .button-add-record {
+    width: 203px;
+    height: 44px;
+    background-color: #5E6FD0;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    color: white;
+    font-size: 28px;
+    line-height: 33px;
+}
+
+header .user-name {
+    font-size: 26px;
+    line-height: 30px;
+    color: #FFFFFF;
+}
+
+header .user-img {
+    width: 63px;
+    height: 62px;
+    background-image: url("../img/goose-grigoriy-1.jpg");
+    background-size: cover;
+    border-radius: 50%;
+    border: 3px solid #212121;
+}
+
+header .button-search {
+    width: 310px;
+    height: 48px;
+    background: #7E8CDA;
+    box-shadow: inset 4px 4px 4px rgba(0, 0, 0, 0.25);
+    font-size: 36px;
+    line-height: 40px;
+    color: #5667C5;  
+}
+
+header .menu-icon {
+    width: 74px;
+    height: 74px;
+    background-image: url("../img/menu-icon.png");
+    background-size: cover;
+}
+
+header .menu-icon:active {
+    background-color:#5667C5;
+}
+
+header .button-login {
+    width: 80px;
+    height: 44px;
+    background-color: #5E6FD0;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    color: white;
+    font-size: 28px;
+    line-height: 33px;
+}
