@@ -253,10 +253,11 @@ function executeAPICall(req, res) {
       case 'POST':
         switch (req.url) {
           case '/login':
-            if (users[reqBody.login.toLowerCase()] !== undefined) {
+            const userData = users[reqBody.login.toLowerCase()];
+            if (userData !== undefined) {
               console.log('\t\tUser has been found in db');
 
-              if (users[reqBody.login].password === reqBody.password) {
+              if (userData.password === reqBody.password) {
                 // TODO: setcookie
                 // 3-й параметр: высылаем данные из БД на клиент
                 // пароль на фронт не отправляем, лол))

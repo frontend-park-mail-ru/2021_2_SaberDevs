@@ -26,6 +26,7 @@ const state = {
 
 
 const configuration = {
+  // TODO: mount loaded news
   mainPage: {
     href: '/',
     name: 'Главная',
@@ -80,22 +81,24 @@ const configuration = {
     href: '/profile',
     name: 'Профиль',
     // TODO: fix
-    open: (state.isAuthenticated ? {
-      action: profilePage,
-      props: state.userData,
-    } : {
-      action: (props) => {
-        state.isRegistered = true;
-        signupPage(props);
-      },
-      props: {
-        onLogin: (props) => {
-          state.isAuthenticated = true;
-          profilePage(props);
+    open: () => {
+      return state.isAuthenticated ? {
+        action: profilePage,
+        props: state.userData,
+      } : {
+        action: (props) => {
+          state.isRegistered = true;
+          signupPage(props);
         },
-        isRegistered: true,
-      },
-    }),
+        props: {
+          onLogin: (props) => {
+            state.isAuthenticated = true;
+            profilePage(props);
+          },
+          isRegistered: true,
+        },
+      };
+    },
   },
 
   // others navigations (apart menu)
@@ -217,6 +220,7 @@ root.addEventListener('click', (e) => {
     if (action !== undefined) {
       // При переходе на страницу стираем все глобальные обрабочики
       if (target.dataset.section.indexOf('Page') !== -1) {
+        // TODO: reset main page state
         deleteGlobalListeners([
           {
             name: 'scroll',
