@@ -3,8 +3,7 @@
 // pages & components
 import signupPage from './pages/signupPage.js';
 import profilePage from './pages/profilePage.js';
-import {newsFeenEndReachEventAction,
-  uploadNextCards} from './pages/mainPage.js';
+import {newsFeedEndReachEventAction} from './pages/mainPage.js';
 import mainPage from './pages/mainPage.js';
 
 const root = document.getElementById('root');
@@ -20,13 +19,15 @@ const state = {
     trackedCardId: 'loading-card', // отслеживаемая запись в ленте для подгрузки
     isLoading: false,              // отправлен ли запрос на сервер
     idLastLoaded: '',              // запоминаем последнюю загруженную запись
+    lastScrollPos: 0,              // скрол для возврата к той же записи
     login: '',                     // для какого пользователя подборка
+    cards: [],                     // массив загруженных новостей
+    doNotUpload: false,
   },
 };
 
 
 const configuration = {
-  // TODO: mount loaded news
   mainPage: {
     href: '/',
     name: 'Главная',
@@ -80,24 +81,22 @@ const configuration = {
   profilePage: {
     href: '/profile',
     name: 'Профиль',
-    // TODO: fix
-    open: () => {
-      return state.isAuthenticated ? {
-        action: profilePage,
-        props: state.userData,
-      } : {
-        action: (props) => {
+    open: {
+      action: () => {
+        if (state.isAuthenticated) {
+          profilePage(state.userData)
+        } else {
           state.isRegistered = true;
-          signupPage(props);
-        },
-        props: {
-          onLogin: (props) => {
-            state.isAuthenticated = true;
-            profilePage(props);
-          },
-          isRegistered: true,
-        },
-      };
+          signupPage({
+            onLogin: (props) => {
+              state.isAuthenticated = true;
+              profilePage(props);
+            },
+            isRegistered: true,
+          });
+        }
+      },
+      props: null,
     },
   },
 
@@ -172,9 +171,10 @@ function createNavLinksArray(linksConfigNameArray) {
  * @return {void}
  */
 function deleteGlobalListeners(eventFunctionNamesPairArray) {
-  console.log('delete events: ' + eventFunctionNamesPairArray);
+  console.log('delete events: ' + JSON.stringify(eventFunctionNamesPairArray));
+  console.log(eventFunctionNamesPairArray[0].function);
   eventFunctionNamesPairArray.forEach((element) => {
-    window.removeEventListener(element.event, element.function);
+    window.removeEventListener(element.event, element.function, false);
   });
 }
 
@@ -194,8 +194,6 @@ configuration.mainPage.open.props.sideBarLinks =
 // ///////////////////////////////// //
 
 mainPage(configuration.mainPage.open.props);
-// подгружаем первые карточки
-uploadNextCards(state.mainPageState);
 
 // ///////////////////////////////// //
 //
@@ -219,12 +217,13 @@ root.addEventListener('click', (e) => {
     const action = configuration[target.dataset.section]?.open?.action;
     if (action !== undefined) {
       // При переходе на страницу стираем все глобальные обрабочики
+      // т.к. у каждой страницы свои обработчики
       if (target.dataset.section.indexOf('Page') !== -1) {
         // TODO: reset main page state
         deleteGlobalListeners([
           {
             name: 'scroll',
-            function: newsFeenEndReachEventAction,
+            function: newsFeedEndReachEventAction,
           },
         ]);
       }

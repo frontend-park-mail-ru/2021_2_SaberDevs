@@ -12,13 +12,8 @@ import Ajax from '../modules/ajax.js';
 //
 // ///////////////////////////////// //
 
-/**
- * Выполняется, если вход успешный
- * @callback LoadCallback
- * @param {Object} props
- */
-
 const endOfFeedMarkerID = 'end';
+const resetDoNotUploadTime = 60000;  // anti- ajax spam
 
 const loadingCard = {
   id: 'loading-card',
@@ -42,38 +37,13 @@ const loadingCard = {
  * с этой новости
  * @property {string} login - пользователя, для которого составлена подборка
  *
- * @param {LoadCallback} onLoad - обработчик события загрузки.
+ * @param {HTMLDivElement} trackedElement - отслеживаемый элемент.
  * Принимает данные с сервера в виде объекта согласно API сервера.
  */
-export function newsFeenEndReachEventAction(state, onLoad) {
-  const trackedCard = document.getElementById(state.trackedCardId);
-
-  if (!state.isLoading &&
-    trackedCard.getBoundingClientRect().y <= Utils.getUserWindowHeight()) {
-    console.log('scroll trigger');
-    state.isLoading = true;
-
-    Ajax.post({
-      url: '/getfeed',
-      body: {
-        idLastLoaded: state.idLastLoaded,
-        login: state.login === '' ? 'all' : state.login,
-      },
-      callback: (status, msg) => {
-        if (status === Ajax.STATUS.ok) {
-          state.isLoading = false;
-          onLoad(JSON.parse(msg).data);
-          return;
-        }
-        // TODO: raise popup
-        alert('ошибка сети' + status + '\n' + msg);
-      },
-    });
-  }
-}
+let newsFeedEndReachEventAction = () => {};
 
 /**
- * Получить feedChunkSize записей (настрйока для сервера)
+ * Получить feedChunkSize записей (настройка на стороне сервера)
  * @param {Object} state
  * @property {string} trackedCardId - ID элемента, при появлении
  * которого в области видимости, будет происходить подгрузка
@@ -83,27 +53,72 @@ export function newsFeenEndReachEventAction(state, onLoad) {
  * @property {string} login - пользователя, для которого составлена подборка
  */
 export function uploadNextCards(state) {
-  newsFeenEndReachEventAction(
-      state,
-      (data) => {
-        const cards = data.chunk;
-        state.idLastLoaded = data.to;
-        // TODO: check if card is array!
-        console.log('more news loaded!');
-        const trackedCard = document.getElementById(
-            state.trackedCardId,
+  if (state.doNotUpload) {
+    if (ajaxDebug) {
+      console.log('can\'t load news as doNotUpload state flag is true');
+    }
+    return;
+  }
+
+  // создаем обработчик для ответа с сервера (для краткости)
+  const onLoad = (data) => {
+    if (ajaxDebug) {
+      console.log('more news loaded!');
+    }
+
+    state.idLastLoaded = data.to;
+
+    const trackedCard = document.getElementById(state.trackedCardId);
+    const cards = data.chunk;
+
+    if (cards instanceof Array) {
+      cards.forEach((element) => {
+        // сохраняем карточку
+        state.cards.push(element);
+        // рисуем
+        trackedCard.insertAdjacentHTML(
+            'beforebegin',
+            cardComponent(element),
         );
-        cards.forEach((element) => {
-          trackedCard.insertAdjacentHTML(
-              'beforebegin',
-              cardComponent(element),
-          );
-        });
-        if (data.to === endOfFeedMarkerID) {
-          // hide loading component
-          trackedCard.style.display = 'none';
-        }
       });
+    } else {
+      console.log('API ERROR! Server must return NewsRecordChunk');
+    }
+
+    if (data.to === endOfFeedMarkerID) {
+      // hide loading component
+      trackedCard.style.visibility = 'hidden';
+      if (ajaxDebug) {
+        console.log('\'end\' found. doNotUpload flag is set to true');
+      }
+      state.doNotUpload = true;
+      setTimeout(() => {
+        if (ajaxDebug) {
+          console.log('doNotUpload flag is reset to false');
+        }
+        state.doNotUpload = false;
+      }, resetDoNotUploadTime);
+    }
+  };
+
+  state.isLoading = true;
+
+  Ajax.post({
+    url: '/getfeed',
+    body: {
+      idLastLoaded: state.idLastLoaded,
+      login: state.login === '' ? 'all' : state.login,
+    },
+    callback: (status, msg) => {
+      if (status === Ajax.STATUS.ok) {
+        state.isLoading = false;
+        onLoad(JSON.parse(msg).data);
+        return;
+      }
+      // TODO: raise popup
+      alert('ошибка сети' + status + '\n' + msg);
+    },
+  });
 }
 
 // ///////////////////////////////// //
@@ -111,6 +126,27 @@ export function uploadNextCards(state) {
 //              Main Page
 //
 // ///////////////////////////////// //
+
+/**
+ * Объект состояния на главной странице
+ * @typedef {Object} MainCardState
+ * @property {string} trackedCardId - ID карточки, которая при попадании
+ *                                    в область видимости пользователя
+ *                                    вызовет подгрузку новостей
+ * @property {string} idLastLoaded  - ID последней загруженной карточки
+ * @property {string} login         - пользователь, для которого запрашивается
+ *                                    подборка новостей
+ * @property {boolean} isLoading    - Идет ли загрузка сейчас. true запрещает
+ *                                    отправку запросов на обновлении ленты,
+ *                                    чтобы не спамить сервер
+ * @property {number} lastScrollPos - Позиция скролла при покидании mainPage
+ * @property {boolean} doNotUpload  - Запрещает загрузку при обнаружении конца
+ *                                    ленты, чтобы не спамить сервер.
+ *                                    Сбразывется через resetDoNotUploadTime мс
+ * @property {Array.NewsCard} cards - Массив загруженных карточек для
+ *                                    восстановления состояния при возвращении
+ *                                    на MainPage
+ */
 
 /**
  * импортирует root-элемент, через замыкание
@@ -125,7 +161,7 @@ export function uploadNextCards(state) {
  * @property {boolean} isAuthenticated true - в хедере показывается иконка
  * пользователя, доступен переход в профиль false - ссылки логин/регистрация
  * @property {UserData} userData
- * @property {Object} state глобальное состояние ленты новостей
+ * @property {MainCardState} state глобальное состояние ленты новостей
  * @return {void}
  */
 export default function mainPage(props) {
@@ -156,13 +192,12 @@ export default function mainPage(props) {
   root.innerHTML += '<p>test</p>';
   root.innerHTML += headerContent;
 
-  root.innerHTML += headerComponent({content: headerContent});
-  // TODO: append this components
+  // root.innerHTML += headerComponent({content: headerContent});
   // root.innerHTML += newsBarComponent({content: props.news});
 
   const mainContainer = document.createElement('main');
   mainContainer.className = 'container';
-  mainContainer.innerHTML += sideBarComponent({content: props.sideBarLinks});
+  // mainContainer.innerHTML += sideBarComponent({content: props.sideBarLinks});
 
   const contentDiv = document.createElement('div');
   contentDiv.className = 'content col';
@@ -173,8 +208,37 @@ export default function mainPage(props) {
   mainContainer.appendChild(contentDiv);
   root.appendChild(mainContainer);
 
+  const trackedCard = document.getElementById(props.state.trackedCardId);
+
+  if (JSON.stringify(props.state.cards) === '[]') {
+    // подгружаем первые карточки при первом рендере
+    uploadNextCards(props.state);
+  } else {
+    props.state.cards.forEach((element) => {
+      trackedCard.insertAdjacentHTML(
+          'beforebegin',
+          cardComponent(element),
+      );
+    });
+  }
+
+  // создаем такой коллбек, который можно будет удалить в меине
+  // это обертка функции в (event) => undefined
+  newsFeedEndReachEventAction = (event) => {
+    // работаем, только если отслеживаемый элемент
+    // находися в области видимости пользователя
+    if (props.state.isLoading ||
+      trackedCard.getBoundingClientRect().y > Utils.getUserWindowHeight()) {
+      return;
+    }
+    console.log('scroll trigger');
+    uploadNextCards(props.state);
+  };
+
   window.addEventListener(
       'scroll',
-      () => uploadNextCards(props.state),
+      newsFeedEndReachEventAction,
+      false,
   );
 }
+

@@ -15,6 +15,19 @@ const APIUrls = ['/login', '/signup', '/getfeed'];
 const feedChunkSize = 2;  // размер подгружаемой части ленты
 const endOfFeedMarkerID = 'end';
 
+// ///////////////////////////////// //
+//
+//           API messages
+//
+// ///////////////////////////////// //
+/**
+ * Ответ на API-call /getfeed
+ * @typedef {Object} NewsRecordChunk
+ * @property {string} from            - ID первой записи в блоке новостей
+ * @property {string} to              - ID последней записи в блоке новостей
+ * @property {Array.NewsRecord} chunk - feedChunkSize записей
+ */
+
 /**
  * Структура данных для представления пользователя
  * @typedef {Object} UserData
@@ -35,6 +48,22 @@ const users = {
     score: 3,
   },
 };
+
+/**
+ * Представление записи
+ * @typedef {Object} NewsRecord
+ * @property {string} id           - ID записи
+ * @property {string} previewUrl   - ссылка не главную картинку
+ * @property {string} title        - заголовок
+ * @property {string} text         - содержание записи
+ * @property {string} authorUrl    - ссылка на страницу автора
+ * @property {string} authorName   - имя автора
+ * @property {string} authorAvatar - ссылка на аватар автора
+ * @property {string} commentsUrl  - ссылка на комменарии к записи
+ * @property {number} comments     - число комментариев к записи
+ * @property {number} likes        - рейтинг записи
+ * @property {Array.string} tags   - отмеченные автором темы сообщений
+ */
 
 const testData = [
   {
