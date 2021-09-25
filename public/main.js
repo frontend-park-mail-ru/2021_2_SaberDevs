@@ -3,8 +3,10 @@
 // pages & components
 import signupPage from './pages/signupPage.js';
 import profilePage from './pages/profilePage.js';
-import {newsFeedEndReachEventAction} from './pages/mainPage.js';
+import {uploadNextCards} from './pages/mainPage.js';
 import mainPage from './pages/mainPage.js';
+
+import Utils from './utils.js';
 
 const root = document.getElementById('root');
 
@@ -12,6 +14,7 @@ const headerLinks = ['signupPopUp', 'loginPopUp', 'profilePage'];
 const sideBarLinks = ['hello'];
 
 const state = {
+  currentPage: 'main',     //
   isAuthenticated: false,  // верстка зависит от того, залогинен ли пользователь
   isRegistered: true,      // верстка формы авторизации: вход или регистрация
   userData: {},            // данные пользователя с бека, если авторизован
@@ -32,7 +35,10 @@ const configuration = {
     href: '/',
     name: 'Главная',
     open: {
-      action: mainPage,
+      action: (props) => {
+        state.currentPage = 'mainPage';
+        mainPage(props);
+      },
       props: {
         // монтируются сюда позже
         // headerLinks: createNavLinksArray(headerLinks),
@@ -40,6 +46,21 @@ const configuration = {
         isAuthenticated: state.isAuthenticated,
         userData: state.userData,
         state: state.mainPageState,
+        // создаем такой обработчик, который можно будет удалить
+        // это обертка функции в (event) => undefined
+        newsFeedEndReachEventAction(event) {
+          const trackedCard = document.getElementById(
+              state.mainPageState.trackedCardId,
+          );
+          // работаем, только если отслеживаемый элемент
+          // находися в области видимости пользователя
+          if (state.mainPageState.isLoading ||
+            trackedCard.getBoundingClientRect().y>Utils.getUserWindowHeight()) {
+            return;
+          }
+          console.log('scroll trigger');
+          uploadNextCards(state.mainPageState);
+        },
       },
     },
   },
@@ -55,6 +76,8 @@ const configuration = {
         onLogin: (props) => {
           state.isAuthenticated = true;
           state.userData = props;
+          // TODO: remove it V
+          state.currentPage = 'profilePage';
           profilePage(props);
         },
         isRegistered: false,
@@ -72,6 +95,9 @@ const configuration = {
       props: {
         onLogin: (props) => {
           state.isAuthenticated = true;
+          state.userData = props;
+          // TODO: remove it V
+          state.currentPage = 'profilePage';
           profilePage(props);
         },
         isRegistered: true,
@@ -84,12 +110,15 @@ const configuration = {
     open: {
       action: () => {
         if (state.isAuthenticated) {
-          profilePage(state.userData)
+          state.currentPage = 'profilePage';
+          profilePage(state.userData);
         } else {
+          // TODO: popup
           state.isRegistered = true;
           signupPage({
             onLogin: (props) => {
               state.isAuthenticated = true;
+              state.userData = props;
               profilePage(props);
             },
             isRegistered: true,
@@ -165,19 +194,6 @@ function createNavLinksArray(linksConfigNameArray) {
   return res;
 }
 
-/**
- * Удаляет глобальные обработчки с window
- * @param {Array.Object<string, function>} eventFunctionNamesPairArray
- * @return {void}
- */
-function deleteGlobalListeners(eventFunctionNamesPairArray) {
-  console.log('delete events: ' + JSON.stringify(eventFunctionNamesPairArray));
-  console.log(eventFunctionNamesPairArray[0].function);
-  eventFunctionNamesPairArray.forEach((element) => {
-    window.removeEventListener(element.event, element.function, false);
-  });
-}
-
 // небольшой костыль, чтобы исправить перекрестную ссылку:
 // configuration ссылается на createNavLinkArray, а
 // createNavLinkArray использует configuration
@@ -216,16 +232,20 @@ root.addEventListener('click', (e) => {
     const props = configuration[target.dataset.section]?.open?.props;
     const action = configuration[target.dataset.section]?.open?.action;
     if (action !== undefined) {
-      // При переходе на страницу стираем все глобальные обрабочики
-      // т.к. у каждой страницы свои обработчики
       if (target.dataset.section.indexOf('Page') !== -1) {
-        // TODO: reset main page state
-        deleteGlobalListeners([
-          {
-            name: 'scroll',
-            function: newsFeedEndReachEventAction,
-          },
-        ]);
+        // дополнительные действия при переходе на другие страницы
+        switch (state.currentPage) {
+          case 'mainPage':
+            window.removeEventListener(
+                'scroll',
+                configuration.mainPage.open.props.newsFeedEndReachEventAction,
+                false,
+            );
+            break;
+          case 'profilePage':
+            console.log('u r leaving profilePage');
+            break;
+        }
       }
       action.call(null, props);
     }

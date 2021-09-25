@@ -1,9 +1,8 @@
-import headerComponent from '../components/header.pug.js';
-import sideBarComponent from '../components/sidebar.pug.js';
+// import headerComponent from '../components/header.pug.js';
+// import sideBarComponent from '../components/sidebar.pug.js';
 // import newsBarComponent from '../components/newsbar.js';
 import cardComponent from '../components/card.pug.js';
 
-import Utils from '../utils.js';
 import Ajax from '../modules/ajax.js';
 
 // ///////////////////////////////// //
@@ -40,7 +39,7 @@ const loadingCard = {
  * @param {HTMLDivElement} trackedElement - отслеживаемый элемент.
  * Принимает данные с сервера в виде объекта согласно API сервера.
  */
-let newsFeedEndReachEventAction = () => {};
+// TODO: remove ^
 
 /**
  * Получить feedChunkSize записей (настройка на стороне сервера)
@@ -224,20 +223,20 @@ export default function mainPage(props) {
 
   // создаем такой коллбек, который можно будет удалить в меине
   // это обертка функции в (event) => undefined
-  newsFeedEndReachEventAction = (event) => {
-    // работаем, только если отслеживаемый элемент
-    // находися в области видимости пользователя
-    if (props.state.isLoading ||
-      trackedCard.getBoundingClientRect().y > Utils.getUserWindowHeight()) {
-      return;
-    }
-    console.log('scroll trigger');
-    uploadNextCards(props.state);
-  };
+  // newsFeedEndReachEventAction = (event) => {
+  //   // работаем, только если отслеживаемый элемент
+  //   // находися в области видимости пользователя
+  //   if (props.state.isLoading ||
+  //     trackedCard.getBoundingClientRect().y > Utils.getUserWindowHeight()) {
+  //     return;
+  //   }
+  //   console.log('scroll trigger');
+  //   uploadNextCards(props.state);
+  // };
 
   window.addEventListener(
       'scroll',
-      newsFeedEndReachEventAction,
+      props.newsFeedEndReachEventAction,
       false,
   );
 }

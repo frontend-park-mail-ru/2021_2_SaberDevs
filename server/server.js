@@ -293,7 +293,7 @@ function executeAPICall(req, res) {
                 fullfillOKResponse(
                     res,
                     'Welcome back, ' + reqBody.login,
-                    sendUserdata(reqBody.login),
+                    sendUserdata(reqBody.login.toLowerCase()),
                 );
               } else {
                 fullfillIncorrectLogin(res);
@@ -315,7 +315,7 @@ function executeAPICall(req, res) {
                 fullfillError(res, 'Не достаточно данных');
               } else {
                 // пишем в базу
-                users[reqBody.login] = {
+                users[reqBody.login.toLowerCase()] = {
                   password: reqBody.password,
                   email: reqBody.email,
                   score: 0,
@@ -327,7 +327,7 @@ function executeAPICall(req, res) {
                 fullfillOKResponse(
                     res,
                     'Success! Welcome, ' + reqBody.login,
-                    sendUserdata(reqBody.login),
+                    sendUserdata(reqBody.login.toLowerCase()),
                 );
               }
             }
