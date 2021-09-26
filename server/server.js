@@ -14,6 +14,7 @@ const requestLenLimit = 1e6;
 const APIUrls = ['/login', '/signup', '/getfeed'];
 const feedChunkSize = 2;  // размер подгружаемой части ленты
 const endOfFeedMarkerID = 'end';
+const cookieTime = 30000; // in ms
 
 // ///////////////////////////////// //
 //
@@ -136,6 +137,8 @@ const endOfFeed = {
   likes: 0,
 };
 
+const validCookies = [];
+
 // ///////////////////////////////// //
 //
 //          utils
@@ -245,6 +248,35 @@ function getFeedChunk(login, idLastLoaded) {
 }
 
 /**
+ * Создает сессионный токен
+ * @param {string} login
+ * @return {string}
+ */
+function createCookieFor(login) {
+  const cookie = login + Date.now().toString();
+  validCookies.push({cookie, login: login.toLowerCase()});
+
+  console.log(`\t\tcookie ${cookie} was set to ${login}`);
+
+  setTimeout(() => {
+    console.log(`\t\tcookie ${cookie} for ${login} expired`);
+    let idx = -1;
+    for (let i = 0; i < validCookies.length && idx === -1; ++i) {
+      if (validCookies[i].cookie === cookie) {
+        idx = i;
+      }
+    }
+    if (idx !== -1) {
+      validCookies.splice(idx);
+    } else {
+      console.log(`\t\terror. cannot find ${cookie} in valid cookie array`);
+    }
+  }, cookieTime);
+
+  return cookie;
+}
+
+/**
  * Обрабатывает API
  * @param {http.Clientreq} req
  * @param {http.ServerResponse} res
@@ -274,22 +306,63 @@ function executeAPICall(req, res) {
     res.setHeader('Content-Type', 'application/JSON');
     res.setHeader('Access-Control-Allow-Origin', CORS);
 
-    console.log('\t\texecAPI. body: ' + body);
-    const reqBody = JSON.parse(body);
-    console.log('\t\treq body: ', reqBody);
+    let reqBody = {};
+    try {
+      reqBody = JSON.parse(body);
+      console.log('\t\treq body: ', reqBody);
+    } catch (e) {
+      fullfillError(res, 'Not a JSON recieved');
+    }
+
+    const cookies = parseCookies(req);
+    if (!isEmptyObject(cookies)) {
+      console.log('\t\tcookie found: ', JSON.stringify(cookies));
+    }
 
     switch (req.method) {
       case 'POST':
         switch (req.url) {
           case '/login':
-            const userData = users[reqBody.login.toLowerCase()];
+            let loginByCookie = '';
+            console.log('\t\tvalidCookies list: ', validCookies);
+            // действительно перебираем все свойства объекта
+            // eslint-disable-next-line guard-for-in
+            for (const cookie in cookies) {
+              for (let i = 0; i < validCookies.length &&
+                  loginByCookie === ''; ++i) {
+                const el = validCookies[i];
+                if (cookies[cookie] === el.cookie) {
+                  loginByCookie = el.login;
+                }
+              }
+            }
+
+            const userData = loginByCookie === '' ?
+              users[reqBody?.login?.toLowerCase()] :
+              users[loginByCookie];
+
             if (userData !== undefined) {
               console.log('\t\tUser has been found in db');
 
+              // cookie authentification
+              if (loginByCookie !== '') {
+                console.log(`\t\tUser ${loginByCookie}` +
+                ` has been validated with cookie`);
+                fullfillOKResponse(
+                    res,
+                    'Welcome back, ' + loginByCookie,
+                    sendUserdata(loginByCookie),
+                );
+                break;
+              }
+
+              // login-password authentification
               if (userData.password === reqBody.password) {
-                // TODO: setcookie
-                // 3-й параметр: высылаем данные из БД на клиент
-                // пароль на фронт не отправляем, лол))
+                const cookie = createCookieFor(reqBody.login);
+                res.setHeader(
+                    'Set-Cookie',
+                    `yammi_cookie=${cookie}; HttpOnly; Expires: ${cookieTime}`,
+                );
                 fullfillOKResponse(
                     res,
                     'Welcome back, ' + reqBody.login,
@@ -321,9 +394,11 @@ function executeAPICall(req, res) {
                   score: 0,
                 };
                 // отвечаем, что регистрация успешна
-                // TODO: server-side validation
-                // TODO: setcookie
-                // пароль на фронт не отправляем, лол))
+                const cookie = createCookieFor(reqBody.login);
+                res.setHeader(
+                    'Set-Cookie',
+                    `yammi_cookie=${cookie}; HttpOnly; Expires: ${cookieTime}`,
+                );
                 fullfillOKResponse(
                     res,
                     'Success! Welcome, ' + reqBody.login,
@@ -385,10 +460,8 @@ function isEmptyObject(obj) {
 /**
  * Обрабатывает куки
  * @param {http.Clientreq} req
- * @return {array} массив полученных кук
+ * @return {Array.Object<string, string>} объект кука-значение
  */
-// Функция пока не используется. Еслинт такого не прощает
-/* eslint-disable-next-line */
 function parseCookies(req) {
   const list = {};
   rc = req.headers.cookie;
@@ -398,10 +471,6 @@ function parseCookies(req) {
       const parts = cookie.split('=');
       list[parts.shift().trim()] = decodeURI(parts.join('='));
     });
-
-  if (!isEmptyObject(list)) {
-    console.log('\t\tcookie found: ', JSON.stringify(list));
-  }
 
   return list;
 }
@@ -417,7 +486,6 @@ const server = http.createServer((req, res) => {
 
   // забираем урл загружаемого документа из GET запроса
   const path = req.url === '/' ? 'index.html' : req.url;
-  // const cookies = parseCookies(req);
 
   // обработка апи. Если урл есть в массиве APIUrls, то это апи
   if (APIUrls.indexOf(req.url) != -1) {

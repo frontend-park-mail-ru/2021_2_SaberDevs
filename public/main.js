@@ -7,6 +7,7 @@ import {uploadNextCards} from './pages/mainPage.js';
 import mainPage from './pages/mainPage.js';
 
 import Utils from './utils.js';
+import Ajax from './modules/ajax.js';
 
 const root = document.getElementById('root');
 
@@ -166,6 +167,28 @@ const configuration = {
 // ///////////////////////////////// //
 
 /**
+ * Попытка аутентификации пользователя
+ * через куки при загрузке приложения
+ * @param {callback} onDone - метод, выполняюшийся
+ * после получения ответа
+ */
+function launchLogin(onDone) {
+  Ajax.post({
+    url: '/login',
+    body: {},
+    callback: (status, msg) => {
+      if (status === Ajax.STATUS.ok) {
+        state.isAuthenticated = true;
+        state.userData = JSON.parse(msg).data;
+      } else {
+        console.log('launchLogin failed');
+      }
+      onDone();
+    },
+  });
+}
+
+/**
  * Переводит массив строк в массив элементо-тегов-а,
  * со свойствами согласно configurations
  * @param {Array.string} linksConfigNameArray
@@ -209,7 +232,8 @@ configuration.mainPage.open.props.sideBarLinks =
 //
 // ///////////////////////////////// //
 
-mainPage(configuration.mainPage.open.props);
+// TODO: экран загрузки
+launchLogin(() => mainPage(configuration.mainPage.open.props));
 
 // ///////////////////////////////// //
 //
