@@ -9,9 +9,11 @@ import mainPage from './pages/mainPage.js';
 import Utils from './utils.js';
 import Ajax from './modules/ajax.js';
 
+import raisePopup from './pages/popup.js';
+
 const root = document.getElementById('root');
 
-const headerLinks = ['signupPopUp', 'loginPopUp', 'profilePage'];
+const headerLinks = ['test', 'signupPopUp', 'loginPopUp', 'profilePage'];
 const sideBarLinks = ['hello'];
 
 const state = {
@@ -62,6 +64,19 @@ const configuration = {
           console.log('scroll trigger');
           uploadNextCards(state.mainPageState);
         },
+      },
+    },
+  },
+  test: {
+    href: '/test',
+    name: 'test',
+    open: {
+      action: (props) => {
+        root.appendChild(raisePopup(props))
+      },
+      props: {
+        title: 'Hello!',
+        content: 'it is a test',
       },
     },
   },
