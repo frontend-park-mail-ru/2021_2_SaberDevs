@@ -1,8 +1,4 @@
 /**
- * импортирует root-элемент через замыкание
- *
- * Страница содержит главный компонент - форму регистрации
- * для нее обязательны следующие поля
  * @param {object} props
  * @property {string} title
  * @property {Object} content
@@ -68,6 +64,7 @@ export default function raisePopup(props) {
 }
 
 // static popup usage
+// https://dbmast.ru/modalnye-vsplyvayushhie-okna-s-pomoshhyu-css3-bez-javascript
 
 // <a href="#popup-root" class="button button-green">Открыть окно</a>
 

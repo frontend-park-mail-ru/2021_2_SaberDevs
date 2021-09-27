@@ -8,16 +8,18 @@ import mainPage from './pages/mainPage.js';
 
 import Utils from './utils.js';
 import Ajax from './modules/ajax.js';
-
-import raisePopup from './pages/popup.js';
+import modalComponent from './components/modal.js'
 
 const root = document.getElementById('root');
+// const modal = modalComponent;
 
 const headerLinks = ['test', 'signupPopUp', 'loginPopUp', 'profilePage'];
 const sideBarLinks = ['hello'];
 
+// глобальное состояние приложения
+// все важнейшие данные, получаемые с API-сервера, флаги
 const state = {
-  currentPage: 'main',     //
+  currentPage: 'main',     // текщуая отображаемая страница
   isAuthenticated: false,  // верстка зависит от того, залогинен ли пользователь
   isRegistered: true,      // верстка формы авторизации: вход или регистрация
   userData: {},            // данные пользователя с бека, если авторизован
@@ -72,7 +74,8 @@ const configuration = {
     name: 'test',
     open: {
       action: (props) => {
-        root.appendChild(raisePopup(props));
+        console.log(modalComponent);
+        modalComponent.open();
       },
       props: {
         title: 'Hello!',

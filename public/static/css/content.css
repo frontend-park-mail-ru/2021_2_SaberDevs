@@ -1,10 +1,8 @@
 .content {
     height: 100%;
     width: calc(1440px - 250px);
-    /* margin-top: 148px; */
     margin-left: 250px;
     color: white;
-    /* background-color: white; */
 }
 
 .content .preview-block {

@@ -42,7 +42,8 @@ export default function authForm({onLogin, isRegistered}) {
   const passwordInput = createInput('password', 'Пароль', 'password', true);
   const passwordLabel = createLabel(
       'password',
-      '8-256 символов, минимум 4 заглавных и строчных латинских буквы',
+      '8-256 символов, минимум 4 заглавных и строчных латинских буквы, цифры, '+
+      'первый символ - буква',
   );
   if (!isRegistered) {
     emailInput = createInput('email', 'e-mail', 'email', true);
