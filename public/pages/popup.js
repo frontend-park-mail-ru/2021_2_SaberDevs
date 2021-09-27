@@ -6,9 +6,9 @@
  * @param {object} props
  * @property {string} title
  * @property {Object} content
- * @return {HTMLDivElement}
  */
 export default function raisePopup(props) {
+  // * @return {HTMLDivElement}
   if (propsDebug) {
     console.log('Popup: ', props.title, '\n', props.content);
   }

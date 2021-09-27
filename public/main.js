@@ -72,7 +72,7 @@ const configuration = {
     name: 'test',
     open: {
       action: (props) => {
-        root.appendChild(raisePopup(props))
+        root.appendChild(raisePopup(props));
       },
       props: {
         title: 'Hello!',

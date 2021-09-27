@@ -8,6 +8,11 @@ const mime = require('mime/lite');
 //
 // ///////////////////////////////// //
 
+
+const port = 8000;
+// const ip = '87.228.2.178';
+const ip = 'localhost';
+
 const page404 = fs.readFileSync('./public/404.html');
 const CORS = '*';
 const requestLenLimit = 1e6;
@@ -337,9 +342,17 @@ function executeAPICall(req, res) {
               }
             }
 
-            const userData = loginByCookie === '' ?
-              users[reqBody?.login?.toLowerCase()] :
-              users[loginByCookie];
+            let userData = undefined;
+            if (loginByCookie === '') {
+              if (reqBody.login !== undefined) {
+                if ( Object.prototype.toString.call(reqBody.login) ==
+                  '[object String]' ) {
+                  userData = users[reqBody.login.toLowerCase()];
+                }
+              }
+            } else {
+              userData = users[loginByCookie];
+            }
 
             if (userData !== undefined) {
               console.log('\t\tUser has been found in db');
@@ -358,7 +371,7 @@ function executeAPICall(req, res) {
 
               // login-password authentification
               if (userData.password === reqBody.password) {
-                const cookie = createCookieFor(reqBody.login);
+                const cookie = createCookieFor(userData.login);
                 res.setHeader(
                     'Set-Cookie',
                     `yammi_cookie=${cookie}; HttpOnly; Expires: ${cookieTime}`,
@@ -520,6 +533,5 @@ const server = http.createServer((req, res) => {
   }
 });
 
-const port = 8000;
-console.log('listening on http://127.0.0.1:' + port);
-server.listen(port);
+console.log(`listening on http://${ip}:${port}`);
+server.listen(port, ip);
