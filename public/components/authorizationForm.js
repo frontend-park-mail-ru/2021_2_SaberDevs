@@ -109,7 +109,14 @@ export default function authForm({onLogin, isRegistered}) {
     Ajax.post({
       url: isRegistered ? '/login' : '/signup',
       // TODO: encryption
-      body: {login, email, password},
+      body: {
+        login,
+        email,
+        password,
+        // TODO:
+        // !isRegistered ? name,
+        // !isRegistered ? surname,
+      },
       callback: (status, msg) => {
         if (status === Ajax.STATUS.ok) {
           onLogin(JSON.parse(msg).data);

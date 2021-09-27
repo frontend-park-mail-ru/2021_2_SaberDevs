@@ -67,13 +67,15 @@ export default function raisePopup(props) {
   popupOuterArea.appendChild(popupRoot);
 }
 
+// static popup usage
+
 // <a href="#popup-root" class="button button-green">Открыть окно</a>
 
 /*
-<a href="#x" class="overlay" id="popup-root"></a>
-<div class="popup">
+<a href="#x" class="overlay-static-popup" id="popup-root"></a>
+<div class="static-popup">
   <h2>Заголовок</h2>
   Здесь вы можете разместить любое содержание, текст с картинками или видео!
-  <a class="close" title="Закрыть" href="#close"></a>
+  <a class="close-static-popup" title="Закрыть" href="#close"></a>
 </div>
 */

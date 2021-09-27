@@ -1,4 +1,6 @@
 // TODO: fetch API
+// const APIurl = 'http://87.228.2.178:8081';
+const APIurl = 'http://localhost:8080';
 
 /**
  * Поддерживаемые методы: GET и POST
@@ -49,12 +51,15 @@ function ajax(requestParams) {
     callback = () => {},
   } = requestParams;
 
+  const absUrl = APIurl + url;
+  requestParams.url = absUrl;
+
   if (ajaxDebug) {
     console.log('ajax request: ' + JSON.stringify(requestParams));
   }
 
   const xhr = new XMLHttpRequest();
-  xhr.open(method, url, true); // true means async
+  xhr.open(method, absUrl, true); // true means async
   xhr.withCredentials = true; // true means CORS
 
   xhr.addEventListener('readystatechange', () => {
@@ -78,6 +83,7 @@ function ajax(requestParams) {
   xhr.send();
 }
 
+// Плагин для общения с API
 const Ajax = {
   AJAX_METHODS: ajaxMethods,
   STATUS: ajaxStatuses,

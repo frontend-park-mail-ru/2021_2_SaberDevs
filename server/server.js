@@ -9,14 +9,14 @@ const mime = require('mime/lite');
 // ///////////////////////////////// //
 
 
-const port = 8000;
-// const ip = '87.228.2.178';
+const port = 8080;
+// const ip = '192.198.0.4';
 const ip = 'localhost';
 
 const page404 = fs.readFileSync('./public/404.html');
 const CORS = '*';
 const requestLenLimit = 1e6;
-const APIUrls = ['/login', '/signup', '/getfeed'];
+const APIUrls = ['/login', '/signup', '/feed'];
 const feedChunkSize = 2;  // размер подгружаемой части ленты
 const endOfFeedMarkerID = 'end';
 const cookieTime = 30000; // in ms
@@ -316,7 +316,9 @@ function executeAPICall(req, res) {
       reqBody = JSON.parse(body);
       console.log('\t\treq body: ', reqBody);
     } catch (e) {
-      fullfillError(res, 'Not a JSON recieved');
+      if (req.method !== 'GET') {
+        fullfillError(res, 'Not a JSON recieved');
+      }
     }
 
     const cookies = parseCookies(req);
@@ -419,37 +421,53 @@ function executeAPICall(req, res) {
                 );
               }
             }
-          case '/getfeed':
-            if (!('idLastLoaded' in reqBody && 'login' in reqBody)) {
-              fullfillError(res, 'Не достаточно данных');
-              break;
-            }
-            await getFeedChunk(reqBody.login, reqBody.idLastLoaded)
-                .then((nextChunk) => {
-                  fullfillOKResponse(
-                      res,
-                      `feed uploaded to ${nextChunk.length > 0 ?
-                        nextChunk[nextChunk.length-1].id : endOfFeedMarkerID}`,
-                      {
-                        from: nextChunk[0] === undefined ?
-                          endOfFeedMarkerID : nextChunk[0].id,
-
-                        to: nextChunk[nextChunk.length-1] === undefined ?
-                        endOfFeedMarkerID : nextChunk[nextChunk.length-1].id,
-
-                        chunk: nextChunk,
-                      },
-                  );
-                })
-                .catch(
-                    () => {
-                      fullfillError(res, 'База данных недоступна');
-                    });
-            break;
         }
         break;
+
       case 'GET':
+        if (req.url.slice(0, 5) === '/feed') {
+          if (req.url.indexOf('idLastLoaded=') === -1 ||
+              req.url.indexOf('login=') === -1) {
+            fullfillError(res, 'Не достаточно данных');
+            break;
+          }
+          // /feed?idLastLoaded=<id>&login=<login>
+          const login = req.url.substr(req.url.indexOf('login=') + 6);
+          const idLastLoaded = req.url.substr(
+              req.url.indexOf('idLastLoaded=') + 13,
+              req.url.substr(req.url.indexOf('&login=')),
+          );
+          console.log(
+              '\t\tfeed API:\n\t\t\tlogin: ', login,
+              'idLastLoaded: ', idLastLoaded,
+          );
+
+          await getFeedChunk(login, idLastLoaded)
+              .then((nextChunk) => {
+                fullfillOKResponse(
+                    res,
+                    `feed uploaded to ${nextChunk.length > 0 ?
+                      nextChunk[nextChunk.length-1].id : endOfFeedMarkerID}`,
+                    {
+                      from: nextChunk[0] === undefined ?
+                        endOfFeedMarkerID : nextChunk[0].id,
+
+                      to: nextChunk[nextChunk.length-1] === undefined ?
+                      endOfFeedMarkerID : nextChunk[nextChunk.length-1].id,
+
+                      chunk: nextChunk,
+                    },
+                );
+              })
+              .catch(
+                  () => {
+                    fullfillError(res, 'База данных недоступна');
+                  });
+        }
+
         switch (req.url) {
+          case '':
+            break;
         }
         break;
     }
@@ -505,6 +523,11 @@ const server = http.createServer((req, res) => {
     console.log('\t\tAPI call: ', path, ' | method: ', req.method);
     executeAPICall(req, res);
   } else {
+    if (req.url.indexOf('/feed') !== -1) {
+      console.log('\t\tAPI call: ', path, ' | method: ', req.method);
+      executeAPICall(req, res);
+      return;
+    }
     fs.readFile(`./public/${path}`, (err, data) => {
       if (err) {
         // вот тут отдать страничку 404

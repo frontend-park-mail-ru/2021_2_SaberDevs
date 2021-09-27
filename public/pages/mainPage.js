@@ -102,12 +102,10 @@ export function uploadNextCards(state) {
 
   state.isLoading = true;
 
-  Ajax.post({
-    url: '/getfeed',
-    body: {
-      idLastLoaded: state.idLastLoaded,
-      login: state.login === '' ? 'all' : state.login,
-    },
+  Ajax.get({
+    url: `/feed?idLastLoaded=${state.idLastLoaded ? state.idLastLoaded : 0}` +
+      '&login=' +
+      (state.login === '' ? 'all' : state.login),
     callback: (status, msg) => {
       if (status === Ajax.STATUS.ok) {
         state.isLoading = false;
