@@ -66,14 +66,13 @@ export function uploadNextCards(state) {
       console.log('more news loaded!');
     }
 
-    state.idLastLoaded = data.to;
-
     const trackedCard = document.getElementById(state.trackedCardId);
-    const cards = data.chunk;
+    const cards = data;
 
     if (cards instanceof Array) {
       cards.forEach((element) => {
         // сохраняем карточку
+        state.idLastLoaded = element.id;
         state.cards.push(element);
         // рисуем
         trackedCard.insertAdjacentHTML(
@@ -82,7 +81,7 @@ export function uploadNextCards(state) {
         );
       });
     } else {
-      console.log('API ERROR! Server must return NewsRecordChunk');
+      console.warn('API ERROR! Server must return NewsRecordChunk');
     }
 
     if (data.to === endOfFeedMarkerID) {
@@ -108,15 +107,21 @@ export function uploadNextCards(state) {
       '&login=' +
       (state.login === '' ? 'all' : state.login),
     callback: (status, msg) => {
-      if (status === Ajax.STATUS.ok) {
-        state.isLoading = false;
-        onLoad(JSON.parse(msg).data);
-        return;
-      }
+      let response = {};
+      try {
+        response = JSON.parse(msg);
+        if (status === Ajax.STATUS.ok) {
+          state.isLoading = false;
+          onLoad(response.data);
+          return;
+        }
 
-      modalComponent.setTitle(`Ошибка сети ${status}`);
-      modalComponent.setContent(msg);
-      modalComponent.open(false);
+        modalComponent.setTitle(`Ошибка сети ${status}`);
+        modalComponent.setContent(response.msg);
+        modalComponent.open(false);
+      } catch (e) {
+        console.warn('Error. response is not JSON');
+      }
     },
   });
 }
