@@ -1,4 +1,4 @@
-import authForm from '../components/authorizationForm.js';
+import signupForm from '../components/signupForm.js';
 import createToMenuBtn from '../components/buttonToMenu.js';
 
 // ///////////////////////////////// //
@@ -38,7 +38,7 @@ export default function signupPage(props) {
   root.innerHTML = '';
 
   // форма
-  const form = authForm(props);
+  const form = signupForm(props);
 
   // Элементы навигации
   const backBtn = createToMenuBtn();

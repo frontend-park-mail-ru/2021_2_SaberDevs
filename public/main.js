@@ -2,91 +2,139 @@
 
 // pages & components
 import signupPage from './pages/signupPage.js';
+import signupModal from './components/signupModal.js';
 import profilePage from './pages/profilePage.js';
+import {uploadNextCards} from './pages/mainPage.js';
 import mainPage from './pages/mainPage.js';
+
+import Utils from './utils.js';
+import Ajax from './modules/ajax.js';
 
 const root = document.getElementById('root');
 
-const headerLinks = ['signup', 'login', 'profile'];
+// const headerLinks = ['signupPopUp', 'loginPopUp', 'profilePage'];
+const headerLinks = [
+  {name: 'Зарегистрироваться', section: 'signupPopUp', href: '/signup'},
+  {name: 'Войти', section: 'loginPopUp', href: '/login'},
+  {name: 'Профиль', section: 'profilePage', href: '/profile'},
+];
 const sideBarLinks = ['hello'];
 
+// глобальное состояние приложения
+// все важнейшие данные, получаемые с API-сервера, флаги
 const state = {
-  isAuthenticated: false,
-  isRegistered: true,
-  userData: {},
+  currentPage: 'main',     // текщуая отображаемая страница
+  isAuthenticated: false,  // верстка зависит от того, залогинен ли пользователь
+  isRegistered: true,      // верстка формы авторизации: вход или регистрация
+  userData: {},            // данные пользователя с бека, если авторизован
+  mainPageState: {
+    trackedCardId: 'loading-card', // отслеживаемая запись в ленте для подгрузки
+    isLoading: false,              // отправлен ли запрос на сервер
+    idLastLoaded: '',              // запоминаем последнюю загруженную запись
+    lastScrollPos: 0,              // скрол для возврата к той же записи
+    login: '',                     // для какого пользователя подборка
+    cards: [],                     // массив загруженных новостей
+    doNotUpload: false,
+  },
 };
 
 
 const configuration = {
-  main: {
+  mainPage: {
     href: '/',
     name: 'Главная',
     open: {
-      action: mainPage,
+      action: (props) => {
+        state.currentPage = 'mainPage';
+        mainPage(props);
+      },
       props: {
-        // монтируются сюда позже
-        // headerLinks: createNavLinksArray(headerLinks),
-        // sideBarLinks: createNavLinksArray(sideBarLinks),
+        headerLinks,
+        sideBarLinks,
         isAuthenticated: state.isAuthenticated,
         userData: state.userData,
+        state: state.mainPageState,
+        // создаем такой обработчик, который можно будет удалить
+        // это обертка функции в (event) => undefined
+        newsFeedEndReachEventAction(event) {
+          const trackedCard = document.getElementById(
+              state.mainPageState.trackedCardId,
+          );
+          // работаем, только если отслеживаемый элемент
+          // находися в области видимости пользователя
+          if (state.mainPageState.isLoading ||
+            trackedCard.getBoundingClientRect().y>Utils.getUserWindowHeight()) {
+            return;
+          }
+          console.log('scroll trigger');
+          uploadNextCards(state.mainPageState);
+        },
       },
     },
   },
-  signup: {
+  signupPopUp: {
     href: '/signup',
     name: 'Регистрация',
     open: {
       action: (props) => {
         state.isRegistered = false;
-        signupPage(props);
+        signupModal(props);
       },
       props: {
         onLogin: (props) => {
           state.isAuthenticated = true;
           state.userData = props;
+          // TODO: remove it V
+          state.currentPage = 'profilePage';
           profilePage(props);
         },
         isRegistered: false,
       },
     },
   },
-  login: {
+  loginPopUp: {
     href: '/login',
     name: 'Авторизация',
     open: {
       action: (props) => {
         state.isRegistered = true;
-        signupPage(props);
+        signupModal(props);
       },
       props: {
         onLogin: (props) => {
           state.isAuthenticated = true;
+          state.userData = props;
+          // TODO: remove it V
+          state.currentPage = 'profilePage';
           profilePage(props);
         },
         isRegistered: true,
       },
     },
   },
-  profile: {
+  profilePage: {
     href: '/profile',
     name: 'Профиль',
-    // TODO: fix
-    open: (state.isAuthenticated ? {
-      action: profilePage,
-      props: state.userData,
-    } : {
-      action: (props) => {
-        state.isRegistered = true;
-        signupPage(props);
+    open: {
+      action: () => {
+        if (state.isAuthenticated) {
+          state.currentPage = 'profilePage';
+          profilePage(state.userData);
+        } else {
+          // TODO: popup
+          state.isRegistered = true;
+          signupPage({
+            onLogin: (props) => {
+              state.isAuthenticated = true;
+              state.userData = props;
+              profilePage(props);
+            },
+            isRegistered: true,
+          });
+        }
       },
-      props: {
-        onLogin: (props) => {
-          state.isAuthenticated = true;
-          profilePage(props);
-        },
-        isRegistered: true,
-      },
-    }),
+      props: null,
+    },
   },
 
   // others navigations (apart menu)
@@ -126,40 +174,26 @@ const configuration = {
 // ///////////////////////////////// //
 
 /**
- * Переводит массив строк в массив элементо-тегов-а,
- * со свойствами согласно configurations
- * @param {Array.string} linksConfigNameArray
- * @return {Array.HTMLAnchorElement}
+ * Попытка аутентификации пользователя
+ * через куки при загрузке приложения
+ * @param {callback} onDone - метод, выполняюшийся
+ * после получения ответа
  */
-function createNavLinksArray(linksConfigNameArray) {
-  const res = [];
-
-  linksConfigNameArray.map( (linkElement) => {
-    if (!(linkElement in configuration)) {
-      console.log('Error:' + linkElement + 'is not described in configuration');
-      return;
-    }
-
-    const {href, name} = configuration[linkElement];
-
-    const headerNavLink = document.createElement('a');
-    headerNavLink.href = href;
-    headerNavLink.textContent = name;
-
-    headerNavLink.dataset.section = linkElement;
-
-    res.push(headerNavLink);
+function launchLogin(onDone) {
+  Ajax.post({
+    url: '/login',
+    body: {},
+    callback: (status, msg) => {
+      if (status === Ajax.STATUS.ok) {
+        state.isAuthenticated = true;
+        state.userData = JSON.parse(msg).data;
+      } else {
+        console.log('launchLogin failed');
+      }
+      onDone();
+    },
   });
-
-  return res;
 }
-
-// небольшой костыль, чтобы исправить перекрестную ссылку:
-// configuration ссылается на createNavLinkArray, а
-// createNavLinkArray использует configuration
-// TODO: найти более элегантное решение
-configuration.main.open.props.headerLinks = createNavLinksArray(headerLinks);
-configuration.main.open.props.sideBarLinks = createNavLinksArray(sideBarLinks);
 
 // ///////////////////////////////// //
 //
@@ -167,7 +201,8 @@ configuration.main.open.props.sideBarLinks = createNavLinksArray(sideBarLinks);
 //
 // ///////////////////////////////// //
 
-mainPage(configuration.main.open.props);
+// TODO: экран загрузки
+launchLogin(() => mainPage(configuration.mainPage.open.props));
 
 // ///////////////////////////////// //
 //
@@ -177,22 +212,35 @@ mainPage(configuration.main.open.props);
 // ///////////////////////////////// //
 
 root.addEventListener('click', (e) => {
-  const {target} = e;  // Равносильно target = e.target
+  const {target} = e;
 
   // проверям, что клик был по ссылке (anchor)
   if (target instanceof HTMLAnchorElement) {
     e.preventDefault();
 
-    if (routerDebug) console.log('targeter: ', target.dataset.section);
+    if (routerDebug) {
+      console.log('targeter: ', target.dataset.section);
+    }
 
     const props = configuration[target.dataset.section]?.open?.props;
     const action = configuration[target.dataset.section]?.open?.action;
     if (action !== undefined) {
+      if (target.dataset.section.indexOf('Page') !== -1) {
+        // дополнительные действия при переходе на другие страницы
+        switch (state.currentPage) {
+          case 'mainPage':
+            window.removeEventListener(
+                'scroll',
+                configuration.mainPage.open.props.newsFeedEndReachEventAction,
+                false,
+            );
+            break;
+          case 'profilePage':
+            console.log('u r leaving profilePage');
+            break;
+        }
+      }
       action.call(null, props);
     }
   }
-});
-
-window.addEventListener('scroll', function() {
-  document.getElementById('showScroll').innerHTML = window.pageYOffset + 'px';
 });

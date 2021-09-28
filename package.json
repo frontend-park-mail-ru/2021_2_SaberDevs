@@ -4,9 +4,9 @@
   "description": "vs.ru alike web-spa",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "npx eslint .",
     "build": "npx eslint . && node ./dev/compile_templates.js && node server/server.js",
-    "start": "npx eslint . && node server/server.js"
+    "start": "node server/server.js"
   },
   "keywords": [],
   "author": "Denis, Svetlana, Yuriy, Alexey",

@@ -1,4 +1,4 @@
-import profileComponent from '../components/profile.js';
+import profileComponent from '../components/profile.pug.js';
 import createToMenuBtn from '../components/buttonToMenu.js';
 
 /**
@@ -11,7 +11,9 @@ import createToMenuBtn from '../components/buttonToMenu.js';
  * @return {void}
  */
 export default function profilePage(props) {
-  if (propsDebug) console.log('ProfilePage props: ', JSON.stringify(props));
+  if (propsDebug) {
+    console.log('ProfilePage props: ', JSON.stringify(props));
+  }
 
   document.title = 'SaberProject | Profile: ' + props.login;
   root.innerHTML = '';

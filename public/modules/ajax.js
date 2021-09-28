@@ -1,3 +1,7 @@
+// TODO: fetch API
+// const APIurl = 'http://87.228.2.178:8081';
+const APIurl = 'http://localhost:8080';
+
 /**
  * Поддерживаемые методы: GET и POST
  * @typedef {Object} AjaxMethod
@@ -47,12 +51,15 @@ function ajax(requestParams) {
     callback = () => {},
   } = requestParams;
 
+  const absUrl = APIurl + url;
+  requestParams.url = absUrl;
+
   if (ajaxDebug) {
     console.log('ajax request: ' + JSON.stringify(requestParams));
   }
 
   const xhr = new XMLHttpRequest();
-  xhr.open(method, url, true); // true means async
+  xhr.open(method, absUrl, true); // true means async
   xhr.withCredentials = true; // true means CORS
 
   xhr.addEventListener('readystatechange', () => {
@@ -76,37 +83,12 @@ function ajax(requestParams) {
   xhr.send();
 }
 
-/**
- * Выполняет ajax-GET-запрос на сервер.
- * При успешном выполнении вызывает callback
- * @param {Object} requestParams
- * @property {Url} [url = '/']
- * @property {?Object} [body = null]
- * @property {requestCallback} [callback = () => {}]
- * @return {void}
- */
-function ajaxGet(requestParams) {
-  return ajax({method: ajaxMethods.get, ...requestParams});
-}
-
-/**
- * Выполняет ajax-POST-запрос на сервер.
- * При успешном выполнении вызывает callback
- * @param {Object} requestParams
- * @property {Url} [url = '/']
- * @property {?Object} [body = null]
- * @property {requestCallback} [callback = () => {}]
- * @return {void}
- */
-function ajaxPost(requestParams) {
-  return ajax({method: ajaxMethods.post, ...requestParams});
-}
-
+// Плагин для общения с API
 const Ajax = {
   AJAX_METHODS: ajaxMethods,
   STATUS: ajaxStatuses,
-  get: ajaxGet,
-  post: ajaxPost,
+  get: (requestParams) => ajax({method: ajaxMethods.get, ...requestParams}),
+  post: (requestParams) => ajax({method: ajaxMethods.post, ...requestParams}),
 };
 
 export default Ajax;
