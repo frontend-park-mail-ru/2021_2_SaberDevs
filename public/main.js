@@ -49,9 +49,6 @@ const configuration = {
         mainPage(props);
       },
       props: {
-        // монтируются сюда позже
-        // headerLinks: createNavLinksArray(headerLinks),
-        // sideBarLinks: createNavLinksArray(sideBarLinks),
         headerLinks,
         sideBarLinks,
         isAuthenticated: state.isAuthenticated,
@@ -197,17 +194,6 @@ function launchLogin(onDone) {
     },
   });
 }
-
-
-
-// небольшой костыль, чтобы исправить перекрестную ссылку:
-// configuration ссылается на createNavLinkArray, а
-// createNavLinkArray использует configuration
-// TODO: найти более элегантное решение
-// configuration.mainPage.open.props.headerLinks =
-//   createNavLinksArray(headerLinks);
-// configuration.mainPage.open.props.sideBarLinks =
-//   createNavLinksArray(sideBarLinks);
 
 // ///////////////////////////////// //
 //

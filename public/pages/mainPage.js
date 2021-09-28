@@ -122,7 +122,7 @@ export function uploadNextCards(state) {
 }
 
 /**
- * собирает все ссылочные элементы хедера в единый блок 
+ * собирает все ссылочные элементы хедера в единый блок
  * @param {Array.HTMLAnchorElement} linksArray
  * @return {HTMLDivElement}
  */
