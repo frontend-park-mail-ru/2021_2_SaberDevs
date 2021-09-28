@@ -1,7 +1,8 @@
-// import headerComponent from '../components/header.pug.js';
-// import sideBarComponent from '../components/sidebar.pug.js';
+import headerComponent from '../components/header.pug.js';
+import sideBarComponent from '../components/sidebar.pug.js';
 // import newsBarComponent from '../components/newsbar.js';
 import cardComponent from '../components/card.pug.js';
+import modalComponent from '../components/modal.js';
 
 import Ajax from '../modules/ajax.js';
 
@@ -103,7 +104,7 @@ export function uploadNextCards(state) {
   state.isLoading = true;
 
   Ajax.get({
-    url: `/feed?idLastLoaded=${state.idLastLoaded ? state.idLastLoaded : 0}` +
+    url: `/feed?idLastLoaded=${state.idLastLoaded || ''}` +
       '&login=' +
       (state.login === '' ? 'all' : state.login),
     callback: (status, msg) => {
@@ -112,10 +113,39 @@ export function uploadNextCards(state) {
         onLoad(JSON.parse(msg).data);
         return;
       }
-      // TODO: raise popup
-      alert('ошибка сети' + status + '\n' + msg);
+
+      modalComponent.setTitle(`Ошибка сети ${status}`);
+      modalComponent.setContent(msg);
+      modalComponent.open(false);
     },
   });
+}
+
+/**
+ * собирает все ссылочные элементы хедера в единый блок 
+ * @param {Array.HTMLAnchorElement} linksArray
+ * @return {HTMLDivElement}
+ */
+function headerNavLinkBar(linksArray) {
+  const headerNavDiv = document.createElement('div');
+
+  linksArray.map( (linkElement) => {
+    const {href, name, section} = linkElement;
+
+    const button = document.createElement('button');
+    button.id = name;
+    button.className = 'header-nav-link';
+
+    const headerNavLink = document.createElement('a');
+    headerNavLink.href = href;
+    headerNavLink.dataset.section = section;
+    headerNavLink.textContent = name;
+
+    button.appendChild(headerNavLink);
+
+    headerNavDiv.appendChild(button);
+  });
+  return headerNavDiv;
 }
 
 // ///////////////////////////////// //
@@ -171,30 +201,19 @@ export default function mainPage(props) {
     headerContent = userPreviewHeader({url: `/profile/${props.userData.login}`,
       name: props.userData.name, img: props.userData.avatar});
   } else {
-    // TODO: отдельный шаблон
-    const headerNavDIv = document.createElement('div');
-
-    props.headerLinks.map((link) => {
-      headerNavDIv.appendChild(link);
-    });
-
-    headerContent = headerNavDIv.outerHTML;
+    headerContent = headerNavLinkBar(props.headerLinks).outerHTML;
   }
 
   if (headerDebug) {
     console.log('headerContent: ', headerContent);
   }
 
-  // TODO: убрать, когда будет использован шаблон хедера
-  root.innerHTML += '<p>test</p>';
-  root.innerHTML += headerContent;
-
-  // root.innerHTML += headerComponent({content: headerContent});
+  root.innerHTML += headerComponent({content: headerContent});
   // root.innerHTML += newsBarComponent({content: props.news});
 
   const mainContainer = document.createElement('main');
   mainContainer.className = 'container';
-  // mainContainer.innerHTML += sideBarComponent({content: props.sideBarLinks});
+  mainContainer.innerHTML += sideBarComponent({content: props.sideBarLinks});
 
   const contentDiv = document.createElement('div');
   contentDiv.className = 'content col';
@@ -218,19 +237,6 @@ export default function mainPage(props) {
       );
     });
   }
-
-  // создаем такой коллбек, который можно будет удалить в меине
-  // это обертка функции в (event) => undefined
-  // newsFeedEndReachEventAction = (event) => {
-  //   // работаем, только если отслеживаемый элемент
-  //   // находися в области видимости пользователя
-  //   if (props.state.isLoading ||
-  //     trackedCard.getBoundingClientRect().y > Utils.getUserWindowHeight()) {
-  //     return;
-  //   }
-  //   console.log('scroll trigger');
-  //   uploadNextCards(props.state);
-  // };
 
   window.addEventListener(
       'scroll',

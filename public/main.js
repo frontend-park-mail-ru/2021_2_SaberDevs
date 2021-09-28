@@ -2,18 +2,22 @@
 
 // pages & components
 import signupPage from './pages/signupPage.js';
+import signupModal from './components/signupModal.js';
 import profilePage from './pages/profilePage.js';
 import {uploadNextCards} from './pages/mainPage.js';
 import mainPage from './pages/mainPage.js';
 
 import Utils from './utils.js';
 import Ajax from './modules/ajax.js';
-import modalComponent from './components/modal.js'
 
 const root = document.getElementById('root');
-// const modal = modalComponent;
 
-const headerLinks = ['test', 'signupPopUp', 'loginPopUp', 'profilePage'];
+// const headerLinks = ['signupPopUp', 'loginPopUp', 'profilePage'];
+const headerLinks = [
+  {name: 'Зарегистрироваться', section: 'signupPopUp', href: '/signup'},
+  {name: 'Войти', section: 'loginPopUp', href: '/login'},
+  {name: 'Профиль', section: 'profilePage', href: '/profile'},
+];
 const sideBarLinks = ['hello'];
 
 // глобальное состояние приложения
@@ -48,6 +52,8 @@ const configuration = {
         // монтируются сюда позже
         // headerLinks: createNavLinksArray(headerLinks),
         // sideBarLinks: createNavLinksArray(sideBarLinks),
+        headerLinks,
+        sideBarLinks,
         isAuthenticated: state.isAuthenticated,
         userData: state.userData,
         state: state.mainPageState,
@@ -69,27 +75,13 @@ const configuration = {
       },
     },
   },
-  test: {
-    href: '/test',
-    name: 'test',
-    open: {
-      action: (props) => {
-        console.log(modalComponent);
-        modalComponent.open();
-      },
-      props: {
-        title: 'Hello!',
-        content: 'it is a test',
-      },
-    },
-  },
   signupPopUp: {
     href: '/signup',
     name: 'Регистрация',
     open: {
       action: (props) => {
         state.isRegistered = false;
-        signupPage(props);
+        signupModal(props);
       },
       props: {
         onLogin: (props) => {
@@ -109,7 +101,7 @@ const configuration = {
     open: {
       action: (props) => {
         state.isRegistered = true;
-        signupPage(props);
+        signupModal(props);
       },
       props: {
         onLogin: (props) => {
@@ -206,43 +198,16 @@ function launchLogin(onDone) {
   });
 }
 
-/**
- * Переводит массив строк в массив элементо-тегов-а,
- * со свойствами согласно configurations
- * @param {Array.string} linksConfigNameArray
- * @return {Array.HTMLAnchorElement}
- */
-function createNavLinksArray(linksConfigNameArray) {
-  const res = [];
 
-  linksConfigNameArray.map( (linkElement) => {
-    if (!(linkElement in configuration)) {
-      console.log('Error:' + linkElement + 'is not described in configuration');
-      return;
-    }
-
-    const {href, name} = configuration[linkElement];
-
-    const headerNavLink = document.createElement('a');
-    headerNavLink.href = href;
-    headerNavLink.textContent = name;
-
-    headerNavLink.dataset.section = linkElement;
-
-    res.push(headerNavLink);
-  });
-
-  return res;
-}
 
 // небольшой костыль, чтобы исправить перекрестную ссылку:
 // configuration ссылается на createNavLinkArray, а
 // createNavLinkArray использует configuration
 // TODO: найти более элегантное решение
-configuration.mainPage.open.props.headerLinks =
-  createNavLinksArray(headerLinks);
-configuration.mainPage.open.props.sideBarLinks =
-  createNavLinksArray(sideBarLinks);
+// configuration.mainPage.open.props.headerLinks =
+//   createNavLinksArray(headerLinks);
+// configuration.mainPage.open.props.sideBarLinks =
+//   createNavLinksArray(sideBarLinks);
 
 // ///////////////////////////////// //
 //

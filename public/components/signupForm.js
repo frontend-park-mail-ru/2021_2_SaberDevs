@@ -1,5 +1,6 @@
 import {createInput, createLabel} from '../utils.js';
 import Ajax from '../modules/ajax.js';
+import modalComponent from './modal.js';
 
 // ///////////////////////////////// //
 //
@@ -28,7 +29,7 @@ import Ajax from '../modules/ajax.js';
  * успешного входа/регистрации
  * @return {HTMLFormElement}
  */
-export default function authForm({onLogin, isRegistered}) {
+export default function signupForm({onLogin, isRegistered}) {
   const form = document.createElement('form');
 
   // поля формы
@@ -119,12 +120,25 @@ export default function authForm({onLogin, isRegistered}) {
         // !isRegistered ? surname,
       },
       callback: (status, msg) => {
-        if (status === Ajax.STATUS.ok) {
-          onLogin(JSON.parse(msg).data);
-          return;
+        let response = {};
+        try {
+          response = JSON.parse(msg);
+
+          if (status === Ajax.STATUS.ok) {
+            onLogin(response.data);
+            modalComponent.close();
+            return;
+          }
+
+          const formWarning = document.getElementById('auth-form-waring') ||
+            document.createElement('div');
+          formWarning.className = 'auth-form-waring';
+          formWarning.id = 'auth-form-waring';
+          formWarning.textContent = response.msg;
+          form.appendChild(formWarning);
+        } catch (e) {
+          console.warn('Error. Server response in not JSON');
         }
-        // TODO: raise popup
-        alert('ошибка сети' + status + '\n' + msg);
       },
     });
   });

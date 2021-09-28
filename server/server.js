@@ -17,7 +17,7 @@ const page404 = fs.readFileSync('./public/404.html');
 const CORS = '*';
 const requestLenLimit = 1e6;
 const APIUrls = ['/login', '/signup', '/feed'];
-const feedChunkSize = 2;  // размер подгружаемой части ленты
+const feedChunkSize = 3;  // размер подгружаемой части ленты
 const endOfFeedMarkerID = 'end';
 const cookieTime = 30000; // in ms
 
@@ -230,7 +230,7 @@ function getFeedChunk(login, idLastLoaded) {
   }
   if (idLastLoaded === '') {
     return new Promise((r) => setTimeout(
-        () => r(dataSource.slice(0, 2)), 2000),
+        () => r(dataSource.slice(0, feedChunkSize)), 2000),
     );
   }
 
@@ -407,6 +407,9 @@ function executeAPICall(req, res) {
                   password: reqBody.password,
                   email: reqBody.email,
                   score: 0,
+                  login: reqBody.login,
+                  name: 'Тестировщик',
+                  surname: 'Дебагович',
                 };
                 // отвечаем, что регистрация успешна
                 const cookie = createCookieFor(reqBody.login);
@@ -426,20 +429,21 @@ function executeAPICall(req, res) {
 
       case 'GET':
         if (req.url.slice(0, 5) === '/feed') {
-          if (req.url.indexOf('idLastLoaded=') === -1 ||
-              req.url.indexOf('login=') === -1) {
+          const idLastLoadedPos = req.url.indexOf('idLastLoaded=');
+          const loginPos = req.url.indexOf('login=');
+          if (idLastLoadedPos === -1 || loginPos === -1) {
             fullfillError(res, 'Не достаточно данных');
             break;
           }
           // /feed?idLastLoaded=<id>&login=<login>
-          const login = req.url.substr(req.url.indexOf('login=') + 6);
+          const login = req.url.substr(loginPos + 6);
           const idLastLoaded = req.url.substr(
-              req.url.indexOf('idLastLoaded=') + 13,
-              req.url.substr(req.url.indexOf('&login=')),
+              idLastLoadedPos + 13,
+              loginPos - idLastLoadedPos - 14,
           );
           console.log(
-              '\t\tfeed API:\n\t\t\tlogin: ', login,
-              'idLastLoaded: ', idLastLoaded,
+              '\t\tfeed API:\n\t\t\tlogin:', login,
+              'idLastLoaded:', idLastLoaded,
           );
 
           await getFeedChunk(login, idLastLoaded)

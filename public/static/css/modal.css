@@ -12,7 +12,7 @@
   --modal-bg-animation-start: rgba(45, 13, 54, 0);
   --modal-box-shadow: black;
 
-  --animation-start-pos: -400px;
+  --animation-start-pos: -1000px;
 }
 
 #modalroot.modal-open .modal-overlay,
@@ -22,7 +22,7 @@
 }
 
 #modalroot.modal-open .modal-window {
-  transform: translateY(0px);
+  transform: translateY(300px);
 }
 
 #modalroot.modal-open .modal-overlay {
@@ -80,7 +80,7 @@
   border-radius: 5px;
   background: var(--modal-bg);
 
-  margin: 300px auto;
+  margin: 0 auto;
   padding: 2rem;
 
   transform: translateY(var(--animation-start-pos));
@@ -133,6 +133,7 @@
   margin-top: 0.5rem;
 
   background-color: var(--modal-main-color);
+  cursor: pointer;
 
   color: var(--modal-second-text-color);
   font-size: 1.5rem;
