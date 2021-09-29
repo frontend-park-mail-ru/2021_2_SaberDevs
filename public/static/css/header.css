@@ -24,6 +24,7 @@ header .button-add-record {
     color: white;
     font-size: 28px;
     line-height: 33px;
+    cursor: pointer;
 }
 
 header .user-name {
@@ -49,6 +50,7 @@ header .button-search {
     font-size: 36px;
     line-height: 40px;
     color: #5667C5;  
+    cursor: text;
 }
 
 header .menu-icon {
@@ -56,6 +58,7 @@ header .menu-icon {
     height: 74px;
     background-image: url("../img/menu-icon.png");
     background-size: cover;
+    cursor: pointer;
 }
 
 header .menu-icon:active {
@@ -84,12 +87,25 @@ header .button-login {
   cursor: pointer;
 
   color: var(--modal-second-text-color);
-  /* font-size: 1rem; */
   font-size: 28px;
   line-height: 33px;
+
+  color: white;
 }
 
 .header-nav-link a {
   color: white;
   text-decoration: none;
+}
+
+.header-nav-link:hover,
+.button-add-record:hover {
+  background-color: #c2cbfa3b;
+  box-shadow: 0px 0px 6px 2px rgba(0, 0, 0, 0.25);
+  border-radius: 10px;
+}
+
+.button-search:hover {
+  box-shadow: inset 5px 5px 5px rgba(0, 0, 0, 0.25);
+  border-radius: 10px;
 }

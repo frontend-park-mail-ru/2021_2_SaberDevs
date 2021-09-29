@@ -45,10 +45,8 @@ const ajaxStatuses = {
  */
 function ajax(requestParams) {
   requestParams.body = JSON.stringify(requestParams.body);
-  const url = '/';
 
-  const absUrl = APIurl + url;
-  requestParams.url = absUrl;
+  requestParams.url = APIurl + (requestParams.url ? requestParams.url : '/');
   requestParams.mode = 'cors';
 
   if (ajaxDebug) {
