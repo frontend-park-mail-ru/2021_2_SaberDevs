@@ -28,21 +28,6 @@ const loadingCard = {
 };
 
 /**
- * Обработчик события scroll для главной страницы
- * @param {Object} state
- * @property {string} trackedCardId - ID элемента, при появлении
- * которого в области видимости, будет происходить подгрузка
- * @property {string} idLastLoaded - ID элемента ленты новостей, который
- * был загружен последним в пердыдущий раз. Лента будет загружаться
- * с этой новости
- * @property {string} login - пользователя, для которого составлена подборка
- *
- * @param {HTMLDivElement} trackedElement - отслеживаемый элемент.
- * Принимает данные с сервера в виде объекта согласно API сервера.
- */
-// TODO: remove ^
-
-/**
  * Получить feedChunkSize записей (настройка на стороне сервера)
  * @param {Object} state
  * @property {string} trackedCardId - ID элемента, при появлении
@@ -123,7 +108,7 @@ export function uploadNextCards(state) {
 
 /**
  * собирает все ссылочные элементы хедера в единый блок
- * @param {Array.HTMLAnchorElement} linksArray
+ * @param {Array.Object<string, string, string>} linksArray
  * @return {HTMLDivElement}
  */
 function headerNavLinkBar(linksArray) {
@@ -192,6 +177,9 @@ function headerNavLinkBar(linksArray) {
  * @return {void}
  */
 export default function mainPage(props) {
+  if (propsDebug) {
+    console.log('mainPage: ', JSON.stringify(props));
+  }
   root.innerHTML = '';
   document.title = 'SaberProject';
 
@@ -245,3 +233,21 @@ export default function mainPage(props) {
   );
 }
 
+/**
+ * Заполняет правый row произвольным контентом
+ * @param {string} content
+ */
+export function setHeaderContent(content) {
+  console.log('setHeaderContent: ' + content);
+  const headerContent = document.getElementById('header-content');
+  headerContent.innerHTML = content;
+}
+
+/**
+ * Заполняет правый row ссылками
+ * @param {Array.Object<string, string, string>} linksArray
+ */
+export function setHeaderLinks(linksArray) {
+  const content = headerNavLinkBar(linksArray).outerHTML;
+  setHeaderContent(content);
+}

@@ -4,19 +4,22 @@
 import signupPage from './pages/signupPage.js';
 import signupModal from './components/signupModal.js';
 import profilePage from './pages/profilePage.js';
-import {uploadNextCards} from './pages/mainPage.js';
+import {uploadNextCards, setHeaderLinks} from './pages/mainPage.js';
 import mainPage from './pages/mainPage.js';
+import logoutRequest from './modules/logout.js';
 
 import Utils from './utils.js';
 import Ajax from './modules/ajax.js';
 
 const root = document.getElementById('root');
 
-// const headerLinks = ['signupPopUp', 'loginPopUp', 'profilePage'];
-const headerLinks = [
+const headerLinksOnLogin = [
+  {name: 'Профиль', section: 'profilePage', href: '/profile'},
+  {href: '/logout', section: 'logout', name: 'Выход'},
+];
+const headerLinksOnLogout = [
   {name: 'Зарегистрироваться', section: 'signupPopUp', href: '/signup'},
   {name: 'Войти', section: 'loginPopUp', href: '/login'},
-  {name: 'Профиль', section: 'profilePage', href: '/profile'},
 ];
 const sideBarLinks = ['hello'];
 
@@ -27,6 +30,7 @@ const state = {
   isAuthenticated: false,  // верстка зависит от того, залогинен ли пользователь
   isRegistered: true,      // верстка формы авторизации: вход или регистрация
   userData: {},            // данные пользователя с бека, если авторизован
+  headerLinks: headerLinksOnLogout,
   mainPageState: {
     trackedCardId: 'loading-card', // отслеживаемая запись в ленте для подгрузки
     isLoading: false,              // отправлен ли запрос на сервер
@@ -38,7 +42,6 @@ const state = {
   },
 };
 
-
 const configuration = {
   mainPage: {
     href: '/',
@@ -46,11 +49,12 @@ const configuration = {
     open: {
       action: (props) => {
         state.currentPage = 'mainPage';
+        props.headerLinks = state.headerLinks;
         mainPage(props);
       },
       props: {
-        headerLinks,
         sideBarLinks,
+        headerLinks: state.headerLinks,
         isAuthenticated: state.isAuthenticated,
         userData: state.userData,
         state: state.mainPageState,
@@ -84,9 +88,11 @@ const configuration = {
         onLogin: (props) => {
           state.isAuthenticated = true;
           state.userData = props;
+          state.headerLinks = headerLinksOnLogin;
+          setHeaderLinks(state.headerLinks);
           // TODO: remove it V
-          state.currentPage = 'profilePage';
-          profilePage(props);
+          // state.currentPage = 'profilePage';
+          // profilePage(props);
         },
         isRegistered: false,
       },
@@ -104,9 +110,11 @@ const configuration = {
         onLogin: (props) => {
           state.isAuthenticated = true;
           state.userData = props;
+          state.headerLinks = headerLinksOnLogin;
+          setHeaderLinks(state.headerLinks);
           // TODO: remove it V
-          state.currentPage = 'profilePage';
-          profilePage(props);
+          // state.currentPage = 'profilePage';
+          // profilePage(props);
         },
         isRegistered: true,
       },
@@ -126,10 +134,31 @@ const configuration = {
           signupPage({
             onLogin: (props) => {
               state.isAuthenticated = true;
+              state.headerLinks = headerLinksOnLogin;
               state.userData = props;
+              // setHeaderLinks(state.headerLinks);
               profilePage(props);
             },
             isRegistered: true,
+          });
+        }
+      },
+      props: null,
+    },
+  },
+  logout: {
+    href: '/logout',
+    name: 'Выход',
+    open: {
+      action: () => {
+        if (state.isAuthenticated) {
+          logoutRequest((status) => {
+            if (status === Ajax.STATUS.ok) {
+              state.isAuthenticated = false;
+              state.headerLinks = headerLinksOnLogout;
+              setHeaderLinks(state.headerLinks);
+              console.log('logout successful');
+            }
           });
         }
       },
