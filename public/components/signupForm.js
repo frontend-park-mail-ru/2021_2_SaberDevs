@@ -1,4 +1,4 @@
-import {createInput, createLabel} from '../utils.js';
+import {createInput} from '../utils.js';
 import Ajax from '../modules/ajax.js';
 import modalComponent from './modal.js';
 
@@ -35,17 +35,12 @@ export default function signupForm({onLogin, isRegistered}) {
   // поля формы
   let emailInput = null;
   let passwordRepeatInput = null;
-  const loginInput = createInput('login', 'Логин', 'login', true);
-  const loginLabel = createLabel(
-      'login',
-      '4-20 символов, первый символ - буква',
-  );
-  const passwordInput = createInput('password', 'Пароль', 'password', true);
-  const passwordLabel = createLabel(
-      'password',
-      '8-256 символов, минимум 4 заглавных и строчных латинских буквы, цифры, '+
-      'первый символ - буква',
-  );
+  const loginInput = createInput('login', 'Логин', 'login',
+      '4-20 символов, первый символ - буква', true);
+  const passwordInput = createInput('password', 'Пароль', 'password',
+      '8-256 символов минимум 4, заглавных и строчных латинских буквы, цифры,' +
+       + ' первый символ - буква', true);
+
   if (!isRegistered) {
     emailInput = createInput('email', 'e-mail', 'email', true);
     passwordRepeatInput = createInput(
@@ -75,15 +70,14 @@ export default function signupForm({onLogin, isRegistered}) {
   }
 
   form.appendChild(loginInput);
-  form.appendChild(loginLabel);
   if (!isRegistered) form.appendChild(emailInput);
   form.appendChild(passwordInput);
-  form.appendChild(passwordLabel);
   if (!isRegistered) form.appendChild(passwordRepeatInput);
 
   // интерфейс формы
   const submitBtn = document.createElement('input');
   submitBtn.type = 'submit';
+  submitBtn.className = 'cursor-pointer';
   submitBtn.value = isRegistered ? 'Войти' : 'Зарегистрироваться';
   form.appendChild(submitBtn);
 

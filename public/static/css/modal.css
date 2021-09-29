@@ -170,3 +170,7 @@ input.modal-btn-submit {
   font-size: 30px;
   color: white;
 }
+
+.cursor-pointer {
+  cursor: pointer;
+}
