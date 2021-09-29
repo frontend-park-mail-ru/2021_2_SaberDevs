@@ -1,5 +1,11 @@
 :root {
-  --modal-bg: #ccc;
+  --color-primary: #CCD1FF;
+  --color-secondary: #3f51b5;
+  --color-backround: #E3E6FF;
+  --color-elements: #5E6FD0;
+  --size-header: 80px;
+
+  --modal-bg: #CCD1FF;
   --modal-border-color: rgba(131, 55, 139, 0.226);
   
   --modal-main-color: rgb(115, 53, 151);
@@ -10,7 +16,7 @@
 
   --modal-bg-overlay: rgba(45, 13, 54, 0.616);
   --modal-bg-animation-start: rgba(45, 13, 54, 0);
-  --modal-box-shadow: black;
+  --modal-box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
 
   --animation-start-pos: -1000px;
 }
@@ -68,7 +74,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
 
   min-width: 300px;
   min-height: 150px;
@@ -77,7 +83,7 @@
   box-sizing: border-box;
   box-shadow: var(--modal-box-shadow);
   border: 4px solid var(--modal-border-color);
-  border-radius: 5px;
+  border-radius: 10px;
   background: var(--modal-bg);
 
   margin: 0 auto;
@@ -93,6 +99,7 @@
 
   display: flex;
   justify-content: space-between;
+  text-align: center;
 
   border-bottom: 1px solid var(--modal-main-color);
 
@@ -105,6 +112,21 @@
   width: 100%;
   padding: 1 rem;
   font-size: 1.5rem;
+}
+
+.modal-content form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-content input {
+  border: 2px solid black;
+  padding: 10px 10px;
+  border-radius: 10px;
+  font-size: 26px;
+  margin-top: 10px;
 }
 
 .modal-footer {
@@ -137,4 +159,14 @@
 
   color: var(--modal-second-text-color);
   font-size: 1.5rem;
+}
+
+input.modal-btn-submit {
+  width: 335px;
+  height: 80px;
+  margin-top: 3%;
+  background: var(--color-secondary);
+  border-radius: 10px;
+  font-size: 30px;
+  color: white;
 }
