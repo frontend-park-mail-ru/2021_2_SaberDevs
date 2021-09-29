@@ -36,16 +36,16 @@ export default function signupForm({onLogin, isRegistered}) {
   let emailInput = null;
   let passwordRepeatInput = null;
   const loginInput = createInput('login', 'Логин', 'login', true);
-  // const loginLabel = createLabel(
-  //     'login',
-  //     '4-20 символов, первый символ - буква',
-  // );
+  const loginLabel = createLabel(
+      'login',
+      '4-20 символов, первый символ - буква',
+  );
   const passwordInput = createInput('password', 'Пароль', 'password', true);
-  // const passwordLabel = createLabel(
-  //     'password',
-  //     '8-256 символов, минимум 4 заглавных и строчных' +
-  //     'латинских буквы, цифры, первый символ - буква',
-  // );
+  const passwordLabel = createLabel(
+      'password',
+      '8-256 символов, минимум 4 заглавных и строчных латинских буквы, цифры, '+
+      'первый символ - буква',
+  );
   if (!isRegistered) {
     emailInput = createInput('email', 'e-mail', 'email', true);
     passwordRepeatInput = createInput(
@@ -74,18 +74,17 @@ export default function signupForm({onLogin, isRegistered}) {
     passwordRepeatInput.maxLength = 256;
   }
 
-  // form.appendChild(loginLabel);
   form.appendChild(loginInput);
+  form.appendChild(loginLabel);
   if (!isRegistered) form.appendChild(emailInput);
-  // form.appendChild(passwordLabel);
   form.appendChild(passwordInput);
+  form.appendChild(passwordLabel);
   if (!isRegistered) form.appendChild(passwordRepeatInput);
 
   // интерфейс формы
   const submitBtn = document.createElement('input');
   submitBtn.type = 'submit';
   submitBtn.value = isRegistered ? 'Войти' : 'Зарегистрироваться';
-  submitBtn.setAttribute('class', 'modal-btn-submit');
   form.appendChild(submitBtn);
 
   // submit action
