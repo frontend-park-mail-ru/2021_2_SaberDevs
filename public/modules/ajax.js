@@ -48,6 +48,7 @@ function ajax(requestParams) {
   const fetchParams = {
     body: JSON.stringify(requestParams.body),
     mode: 'cors',
+    credentials: 'include',
     method: requestParams.method,
   };
 

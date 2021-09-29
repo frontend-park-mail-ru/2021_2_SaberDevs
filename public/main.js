@@ -209,6 +209,8 @@ function launchLogin(onDone) {
       if (status === Ajax.STATUS.ok) {
         state.isAuthenticated = true;
         state.userData = JSON.parse(msg).data;
+        state.headerLinks = headerLinksOnLogin;
+        setHeaderLinks(state.headerLinks);
       } else {
         console.log('launchLogin failed');
       }
