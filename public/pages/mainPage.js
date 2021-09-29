@@ -92,15 +92,21 @@ export function uploadNextCards(state) {
       '&login=' +
       (state.login === '' ? 'all' : state.login),
     callback: (status, msg) => {
-      if (status === Ajax.STATUS.ok) {
-        state.isLoading = false;
-        onLoad(JSON.parse(msg).data);
-        return;
-      }
+      let response = {};
+      try {
+        response = JSON.parse(msg);
+        if (status === Ajax.STATUS.ok) {
+          state.isLoading = false;
+          onLoad(response.data);
+          return;
+        }
 
-      modalComponent.setTitle(`Ошибка сети ${status}`);
-      modalComponent.setContent(msg);
-      modalComponent.open(false);
+        modalComponent.setTitle(`Ошибка сети ${status}`);
+        modalComponent.setContent(response.msg);
+        modalComponent.open(false);
+      } catch (e) {
+        console.warn('Error. response is not JSON');
+      }
     },
   });
 }
@@ -118,7 +124,7 @@ function headerNavLinkBar(linksArray) {
 
     const button = document.createElement('button');
     button.id = name;
-    button.className = 'header-nav-link';
+    button.className = 'header-nav-link m-10';
 
     const headerNavLink = document.createElement('a');
     headerNavLink.href = href;

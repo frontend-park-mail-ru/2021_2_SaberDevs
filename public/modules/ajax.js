@@ -62,7 +62,7 @@ function ajax(requestParams) {
         return response.text();
       })
       .then((response) => {
-        // console.log('ajax resolved ' + status +': ' + JSON.stringify(response));
+        // console.log('ajax resolved ' + status+': '+JSON.stringify(response));
         console.log('ajax resolved ' + status +': ' + response);
         requestParams.callback(status, response);
       })

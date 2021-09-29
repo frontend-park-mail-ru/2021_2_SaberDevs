@@ -90,9 +90,6 @@ const configuration = {
           state.userData = props;
           state.headerLinks = headerLinksOnLogin;
           setHeaderLinks(state.headerLinks);
-          // TODO: remove it V
-          // state.currentPage = 'profilePage';
-          // profilePage(props);
         },
         isRegistered: false,
       },
@@ -112,9 +109,6 @@ const configuration = {
           state.userData = props;
           state.headerLinks = headerLinksOnLogin;
           setHeaderLinks(state.headerLinks);
-          // TODO: remove it V
-          // state.currentPage = 'profilePage';
-          // profilePage(props);
         },
         isRegistered: true,
       },
@@ -136,7 +130,6 @@ const configuration = {
               state.isAuthenticated = true;
               state.headerLinks = headerLinksOnLogin;
               state.userData = props;
-              // setHeaderLinks(state.headerLinks);
               profilePage(props);
             },
             isRegistered: true,

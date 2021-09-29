@@ -10,7 +10,7 @@ const mime = require('mime/lite');
 
 
 const port = 8080;
-// const ip = '192.198.0.4';
+// const ip = '192.168.0.104';
 const ip = 'localhost';
 
 const page404 = fs.readFileSync('./public/404.html');
@@ -452,15 +452,7 @@ function executeAPICall(req, res) {
                     res,
                     `feed uploaded to ${nextChunk.length > 0 ?
                       nextChunk[nextChunk.length-1].id : endOfFeedMarkerID}`,
-                    {
-                      from: nextChunk[0] === undefined ?
-                        endOfFeedMarkerID : nextChunk[0].id,
-
-                      to: nextChunk[nextChunk.length-1] === undefined ?
-                      endOfFeedMarkerID : nextChunk[nextChunk.length-1].id,
-
-                      chunk: nextChunk,
-                    },
+                    nextChunk,
                 );
               })
               .catch(
