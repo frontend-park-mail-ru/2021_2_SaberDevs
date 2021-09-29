@@ -6,3 +6,69 @@
   padding: 0.5rem 1rem;
   margin: 0.5rem;
 }
+
+.form-btn {
+  padding: 0.5rem;
+  margin-left: 0.5rem;
+  margin-top: 0.5rem;
+
+  background-color: var(--modal-main-color);
+  cursor: pointer;
+
+  color: var(--modal-second-text-color);
+  font-size: 1.5rem;
+}
+
+.form-row {
+  width: 75%;
+  margin-top: 10px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+.form-row input {
+  border: 2px solid black;
+  padding: 10px 10px;
+  border-radius: 10px;
+  font-size: 2rem;
+  width: 75%;
+}
+
+.tooltip {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  margin-left: 0.5rem;
+  width: 3rem;
+  height: 3rem;
+  border-radius: 1.5rem;
+  background-color: var(--tooltip-color);
+  color: white;
+}
+
+.tooltip-sign {
+  margin: auto;
+}
+
+.submit-btn-row {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: bottom;
+}
+
+.form-submit-btn#submitBtn {
+  margin-right: 1rem;
+
+  width: 50%;
+  padding: 0.5rem;
+
+  background-color: var(--modal-main-color);
+  cursor: pointer;
+
+  color: var(--modal-second-text-color);
+  font-size: 1.5rem;
+}

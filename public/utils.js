@@ -7,15 +7,41 @@
  * @param {boolean} [required = false]
  * @return {HTMLInputElement}
  */
-export function createInput(type, placeholder, name, title, required = false) {
+export function createInput(type,
+    placeholder,
+    name,
+    title = null,
+    required = false,
+) {
+  const div = document.createElement('div');
+  div.className = 'form-row';
+
   const input = document.createElement('input');
   input.type = type;
   input.name = name;
+  input.id = name;
   input.placeholder = placeholder;
   input.required = required;
   input.title = title;
 
-  return input;
+  const tooltip = document.createElement('div');
+  tooltip.className = 'tooltip';
+  tooltip.title = title;
+  const tooltipSign = document.createElement('div');
+  tooltipSign.className = 'tooltip-sign';
+  tooltipSign.textContent = '?';
+
+  // TODO:
+  if (!title) {
+    console.log('Please provide a title');
+    tooltip.style.visibility = 'hidden';
+  }
+
+  div.appendChild(input);
+  tooltip.appendChild(tooltipSign);
+  div.appendChild(tooltip);
+
+  return div;
 }
 
 /**

@@ -210,7 +210,6 @@ function launchLogin(onDone) {
         state.isAuthenticated = true;
         state.userData = JSON.parse(msg).data;
         state.headerLinks = headerLinksOnLogin;
-        setHeaderLinks(state.headerLinks);
       } else {
         console.log('launchLogin failed');
       }
@@ -226,7 +225,12 @@ function launchLogin(onDone) {
 // ///////////////////////////////// //
 
 // TODO: экран загрузки
-launchLogin(() => mainPage(configuration.mainPage.open.props));
+launchLogin(() => {
+  if (state.isAuthenticated) {
+    configuration.mainPage.open.props.headerLinks = headerLinksOnLogin;
+  }
+  mainPage(configuration.mainPage.open.props);
+});
 
 // ///////////////////////////////// //
 //

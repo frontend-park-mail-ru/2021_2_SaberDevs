@@ -42,11 +42,12 @@ export default function signupForm({onLogin, isRegistered}) {
        + ' первый символ - буква', true);
 
   if (!isRegistered) {
-    emailInput = createInput('email', 'e-mail', 'email', true);
+    emailInput = createInput('email', 'e-mail', 'email', null, true);
     passwordRepeatInput = createInput(
         'password',
         'Повторите пароль',
         'passwordRepeat',
+        null,
         true,
     );
   }
@@ -75,10 +76,15 @@ export default function signupForm({onLogin, isRegistered}) {
   if (!isRegistered) form.appendChild(passwordRepeatInput);
 
   // интерфейс формы
-  const submitBtn = document.createElement('input');
-  submitBtn.type = 'submit';
-  submitBtn.className = 'cursor-pointer';
-  submitBtn.value = isRegistered ? 'Войти' : 'Зарегистрироваться';
+  const submitBtn = createInput(
+      'submit',
+      isRegistered ? 'Войти' : 'Зарегистрироваться',
+      'submitBtn',
+      null,
+      false,
+  );
+  submitBtn.classList.add('submit-btn-row');
+  submitBtn.querySelector('#submitBtn').className = 'form-submit-btn';
   form.appendChild(submitBtn);
 
   // submit action

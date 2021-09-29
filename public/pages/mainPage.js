@@ -13,7 +13,7 @@ import Ajax from '../modules/ajax.js';
 // ///////////////////////////////// //
 
 const endOfFeedMarkerID = 'end';
-const resetDoNotUploadTime = 60000;  // anti- ajax spam
+const resetDoNotUploadTime = 60000;  // anti- brutforce
 
 const loadingCard = {
   id: 'loading-card',

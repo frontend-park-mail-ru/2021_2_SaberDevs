@@ -1,4 +1,3 @@
-// TODO: fetch API
 // const APIurl = 'http://87.228.2.178:8081';
 const APIurl = 'http://localhost:8080';
 
@@ -56,7 +55,7 @@ function ajax(requestParams) {
     console.log('ajax request: ' + JSON.stringify(fetchParams));
   }
 
-  let status = '';
+  let status = 0;
   fetch(url, fetchParams)
       .then((response) => {
         status = response.status;
@@ -69,7 +68,7 @@ function ajax(requestParams) {
       })
       .catch((error) => {
         console.warn(error);
-        requestParams.callback(status, response);
+        requestParams.callback(status, error);
         return;
       });
 }
