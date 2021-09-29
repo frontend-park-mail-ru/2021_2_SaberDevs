@@ -44,43 +44,31 @@ const ajaxStatuses = {
  * @return {void}
  */
 function ajax(requestParams) {
-  const {
-    method = ajaxMethods.get,
-    url = '/',
-    body = null,
-    callback = () => {},
-  } = requestParams;
+  requestParams.body = JSON.stringify(requestParams.body);
+  const url = '/';
 
   const absUrl = APIurl + url;
   requestParams.url = absUrl;
+  requestParams.mode = 'cors';
 
   if (ajaxDebug) {
     console.log('ajax request: ' + JSON.stringify(requestParams));
   }
 
-  const xhr = new XMLHttpRequest();
-  xhr.open(method, absUrl, true); // true means async
-  xhr.withCredentials = true; // true means CORS
-
-  xhr.addEventListener('readystatechange', () => {
-    if (xhr.readyState !== XMLHttpRequest.DONE) {
-      return;
-    }
-
-    if (ajaxDebug) {
-      console.log('ajax resolved: ' + xhr.status, ': ' + xhr.responseText);
-    }
-
-    callback(xhr.status, xhr.responseText);
-  });
-
-  if (body) {
-    xhr.setRequestHeader('Content-Type', 'application/json; charset=utf-8');
-    xhr.send(JSON.stringify(body));
-    return;
-  }
-
-  xhr.send();
+  let status = '';
+  fetch(requestParams.url, requestParams)
+      .then((response) => {
+        status = response.status;
+        return Promise.resolve(response.text());
+      })
+      .then((response) => {
+        console.log('ajax resolved: ' + status, ': ' + response);
+        requestParams.callback(status, response);
+      })
+      .catch((error) => {
+        console.log(error);
+        return;
+      });
 }
 
 // Плагин для общения с API
