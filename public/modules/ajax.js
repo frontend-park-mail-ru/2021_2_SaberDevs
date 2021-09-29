@@ -60,8 +60,9 @@ function ajax(requestParams) {
         return Promise.resolve(response.text());
       })
       .then((response) => {
-        console.log('ajax resolved: ' + status, ': ' + response);
-        requestParams.callback(status, response);
+        const data = JSON.stringify(response);
+        console.log('ajax resolved: ' + status, ': ' + response + ' resonse body ' + data);
+        requestParams.callback(status, data);
       })
       .catch((error) => {
         console.log(error);

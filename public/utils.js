@@ -3,15 +3,17 @@
  * @param {string} type
  * @param {string} placeholder
  * @param {string} name
+ * @param {string} title
  * @param {boolean} [required = false]
  * @return {HTMLInputElement}
  */
-export function createInput(type, placeholder, name, required = false) {
+export function createInput(type, placeholder, name, title, required = false) {
   const input = document.createElement('input');
   input.type = type;
   input.name = name;
   input.placeholder = placeholder;
   input.required = required;
+  input.title = title;
 
   return input;
 }
