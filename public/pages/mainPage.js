@@ -51,14 +51,13 @@ export function uploadNextCards(state) {
       console.log('more news loaded!');
     }
 
-    state.idLastLoaded = data.to;
-
     const trackedCard = document.getElementById(state.trackedCardId);
-    const cards = data.chunk;
+    const cards = data;
 
     if (cards instanceof Array) {
       cards.forEach((element) => {
         // сохраняем карточку
+        state.idLastLoaded = element.id;
         state.cards.push(element);
         // рисуем
         trackedCard.insertAdjacentHTML(
@@ -67,7 +66,7 @@ export function uploadNextCards(state) {
         );
       });
     } else {
-      console.log('API ERROR! Server must return NewsRecordChunk');
+      console.warn('API ERROR! Server must return NewsRecordChunk');
     }
 
     if (data.to === endOfFeedMarkerID) {

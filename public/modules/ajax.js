@@ -31,7 +31,7 @@ const ajaxStatuses = {
  * Выполняется, если запрос прошел успешно
  * @callback requestCallback
  * @param {number} responseCode
- * @param {string} responseMessage
+ * @param {Object} responseMessage
  */
 
 /**
@@ -44,27 +44,31 @@ const ajaxStatuses = {
  * @return {void}
  */
 function ajax(requestParams) {
-  requestParams.body = JSON.stringify(requestParams.body);
-
-  requestParams.url = APIurl + (requestParams.url ? requestParams.url : '/');
-  requestParams.mode = 'cors';
+  const url = APIurl + (requestParams.url || '/');
+  const fetchParams = {
+    body: JSON.stringify(requestParams.body),
+    mode: 'cors',
+    method: requestParams.method,
+  };
 
   if (ajaxDebug) {
-    console.log('ajax request: ' + JSON.stringify(requestParams));
+    console.log('ajax request: ' + JSON.stringify(fetchParams));
   }
 
   let status = '';
-  fetch(requestParams.url, requestParams)
+  fetch(url, fetchParams)
       .then((response) => {
         status = response.status;
-        return Promise.resolve(response.text());
+        return response.text();
       })
       .then((response) => {
-        console.log('ajax resolved: ' + status, ': ' + response);
+        // console.log('ajax resolved ' + status +': ' + JSON.stringify(response));
+        console.log('ajax resolved ' + status +': ' + response);
         requestParams.callback(status, response);
       })
       .catch((error) => {
-        console.log(error);
+        console.warn(error);
+        requestParams.callback(status, response);
         return;
       });
 }
