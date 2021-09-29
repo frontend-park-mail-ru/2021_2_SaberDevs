@@ -1,0 +1,18 @@
+.card(id=id).row
+  a.card-photo.row(href=commentsUrl)
+    img(src=previewUrl)
+  .card-content.col
+    .card-tags.row
+      each tag in tags.length ? tags : ['no tags']
+        .card-tag #{tag}
+    .card-text.col
+      .card-header #{title}
+      .card-description #{text}
+    .card-bottom.row
+      .card-user.row
+        img.card-user-photo(src=authorAvatar)
+        a.card-username(href=authorUrl) #{authorName}
+      .card-buttons.row
+        a(href=commentsUrl).comment-icon #{comments}
+        a.share-icon
+        a.like-icon #{likes}

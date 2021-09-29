@@ -1,0 +1,32 @@
+{
+    "env": {
+        "browser": true,
+        "es2021": true,
+        "node": true
+    },
+    "extends": [
+        "google"
+    ],
+    "parserOptions": {
+        "ecmaVersion": 12,
+        "sourceType": "module"
+    },
+    "ignorePatterns": ["public/components/*.pug.js", "globals.js"],
+    "rules": {
+    },
+    "overrides": [
+        {
+          "files": [
+            "dev/*.js",
+            "public/*.js",
+            "public/modules/*.js",
+            "public/components/*.js",
+            "public/pages/*.js",
+            "server/*.js"],
+          "rules": {
+            "linebreak-style": "off",
+            "no-multi-spaces": "off"
+          }
+        }
+    ]
+}

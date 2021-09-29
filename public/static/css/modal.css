@@ -1,0 +1,176 @@
+:root {
+  --color-primary: #CCD1FF;
+  --color-secondary: #3f51b5;
+  --color-backround: #E3E6FF;
+  --color-elements: #5E6FD0;
+  --size-header: 80px;
+
+  --modal-bg: #CCD1FF;
+  --modal-border-color: rgba(131, 55, 139, 0.226);
+  
+  --modal-main-color: rgb(115, 53, 151);
+  --modal-second-color: rgb(213, 122, 223);
+
+  --modal-main-text-color: #121212;
+  --modal-second-text-color: #ccc;
+
+  --modal-bg-overlay: rgba(45, 13, 54, 0.616);
+  --modal-bg-animation-start: rgba(45, 13, 54, 0);
+  --modal-box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+
+  --animation-start-pos: -1000px;
+}
+
+#modalroot.modal-open .modal-overlay,
+#modalroot.modal-open .modal-window {
+  opacity: 1;
+  z-index: 20;
+}
+
+#modalroot.modal-open .modal-window {
+  transform: translateY(300px);
+}
+
+#modalroot.modal-open .modal-overlay {
+  background: var(--modal-bg-overlay);
+}
+
+/* анимация затухания окна */
+#modalroot.modal-fading-animation .modal-overlay,
+#modalroot.modal-fading-animation .modal-window {
+  opacity: 1;
+  z-index: 20;
+}
+
+#modalroot.modal-fading-animation .modal-window {
+  /* обратно, на стартовую позицию */
+  transform: translateY(var(--animation-start-pos));
+}
+
+#modalroot.modal-fading-animation .modal-overlay {
+  /* обратно, к начальному (прозрачному) значению */
+  background: var(--modal-bg-animation-start);
+}
+
+/* основные стили окна */
+.modal-overlay, .modal-window {
+  opacity: 0;
+  z-index: -1;
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  
+  background: var(--modal-bg-animation-start);
+
+  transition: background .2s ease-in;
+}
+
+.modal-window {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  min-width: 300px;
+  min-height: 150px;
+  width: 650px;
+  
+  box-sizing: border-box;
+  box-shadow: var(--modal-box-shadow);
+  border: 4px solid var(--modal-border-color);
+  border-radius: 10px;
+  background: var(--modal-bg);
+
+  margin: 0 auto;
+  padding: 2rem;
+
+  transform: translateY(var(--animation-start-pos));
+  transition: transform .2s ease-in;
+}
+
+.modal-header {
+  width: 100%;
+  padding: 1rem, 2rem;
+
+  display: flex;
+  justify-content: space-between;
+  text-align: center;
+
+  border-bottom: 1px solid var(--modal-main-color);
+
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: var(--modal-main-color);
+}
+
+.modal-content {
+  width: 100%;
+  padding: 1 rem;
+  font-size: 1.5rem;
+}
+
+.modal-content form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-content input {
+  border: 2px solid black;
+  padding: 10px 10px;
+  border-radius: 10px;
+  font-size: 26px;
+  margin-top: 10px;
+}
+
+.modal-footer {
+  width: 100%;
+  border-top: 1px solid var(--modal-main-color);
+  padding: 1rem, 1.5rem;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+}
+
+.modal-title {
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+}
+
+.modal-close-btn {
+  margin-top: -1rem;
+  font-size: 3rem;
+  cursor: pointer;
+}
+
+.modal-btn {
+  padding: 0.5rem;
+  margin-left: 0.5rem;
+  margin-top: 0.5rem;
+
+  background-color: var(--modal-main-color);
+  cursor: pointer;
+
+  color: var(--modal-second-text-color);
+  font-size: 1.5rem;
+}
+
+input.modal-btn-submit {
+  width: 335px;
+  height: 80px;
+  margin-top: 3%;
+  background: var(--color-secondary);
+  border-radius: 10px;
+  font-size: 30px;
+  color: white;
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}
