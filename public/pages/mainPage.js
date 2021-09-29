@@ -139,7 +139,7 @@ function headerNavLinkBar(linksArray) {
 
     const button = document.createElement('button');
     button.id = name;
-    button.className = 'header-nav-link';
+    button.className = 'header-nav-link m-10';
 
     const headerNavLink = document.createElement('a');
     headerNavLink.href = href;
