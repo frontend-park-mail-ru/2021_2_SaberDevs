@@ -1,4 +1,4 @@
-import {createInput, createLabel} from '../utils.js';
+import {createInput} from '../utils.js';
 import Ajax from '../modules/ajax.js';
 import modalComponent from './modal.js';
 

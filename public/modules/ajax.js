@@ -61,7 +61,8 @@ function ajax(requestParams) {
       })
       .then((response) => {
         const data = JSON.stringify(response);
-        console.log('ajax resolved: ' + status, ': ' + response + ' resonse body ' + data);
+        console.log('ajax resolved: ' + status, ': ' + response +
+         ' resonse body ' + data);
         requestParams.callback(status, data);
       })
       .catch((error) => {
