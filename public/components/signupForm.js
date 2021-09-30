@@ -38,8 +38,10 @@ export default function signupForm({onLogin, isRegistered}) {
   const loginInput = createInput('login', 'Логин', 'login',
       '4-20 символов, первый символ - буква', true);
   const passwordInput = createInput('password', 'Пароль', 'password',
-      '8-256 символов минимум 4, заглавных и строчных латинских буквы, цифры,' +
-       + ' первый символ - буква', true);
+      'Больше 8 символов. '+
+      'Используйте строчные и заглавные буквы, цифры',
+      true,
+  );
 
   if (!isRegistered) {
     emailInput = createInput('email', 'e-mail', 'email', null, true);
@@ -55,12 +57,8 @@ export default function signupForm({onLogin, isRegistered}) {
   // html5-свойства полей
   // https://habr.com/ru/post/545150/  - про регулярки
   loginInput.autofocus = true;
-  loginInput.minlength = 5;
-  loginInput.maxLength = 20;
   loginInput.pattern = '^[a-zA-Z][a-zA-Z0-9_]{4,20}$';
 
-  passwordInput.minLength = 8;
-  passwordInput.maxLength = 256;
   passwordInput.pattern =
     '^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=(.*[a-zA-Z]){4}).{8,256}$';
 

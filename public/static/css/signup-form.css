@@ -47,9 +47,11 @@
   border-radius: 1.5rem;
   background-color: var(--tooltip-color);
   color: white;
+  cursor: pointer;
 }
 
 .tooltip-sign {
+  cursor: pointer;
   margin: auto;
 }
 
