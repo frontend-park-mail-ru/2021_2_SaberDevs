@@ -48,6 +48,9 @@ function ajax(requestParams) {
     body: JSON.stringify(requestParams.body),
     mode: 'cors',
     credentials: 'include',
+    headers: {
+      'Content-Type': 'application/json',
+    },
     method: requestParams.method,
   };
 
