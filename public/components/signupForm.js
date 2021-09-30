@@ -1,4 +1,4 @@
-import {createInput} from '../utils.js';
+import Utils, {createInput} from '../utils.js';
 import Ajax from '../modules/ajax.js';
 import modalComponent from './modal.js';
 
@@ -30,6 +30,8 @@ import modalComponent from './modal.js';
  * @return {HTMLFormElement}
  */
 export default function signupForm({onLogin, isRegistered}) {
+  const createInputRow = Utils.createInputRow;
+
   const form = document.createElement('form');
 
   // поля формы
@@ -68,18 +70,20 @@ export default function signupForm({onLogin, isRegistered}) {
     passwordRepeatInput.maxLength = 256;
   }
 
-  form.appendChild(loginInput);
-  if (!isRegistered) form.appendChild(emailInput);
-  form.appendChild(passwordInput);
-  if (!isRegistered) form.appendChild(passwordRepeatInput);
+  form.appendChild(createInputRow(loginInput));
+  if (!isRegistered) form.appendChild(createInputRow(emailInput));
+  form.appendChild(createInputRow(passwordInput));
+  if (!isRegistered) form.appendChild(createInputRow(passwordRepeatInput));
 
   // интерфейс формы
-  const submitBtn = createInput(
-      'submit',
-      isRegistered ? 'Войти' : 'Зарегистрироваться',
-      'submitBtn',
-      null,
-      false,
+  const submitBtn = createInputRow(
+      createInput(
+          'submit',
+          isRegistered ? 'Войти' : 'Зарегистрироваться',
+          'submitBtn',
+          null,
+          false,
+      ),
   );
   submitBtn.classList.add('submit-btn-row');
   submitBtn.querySelector('#submitBtn').className = 'form-submit-btn';

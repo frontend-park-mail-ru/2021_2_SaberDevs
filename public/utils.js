@@ -13,9 +13,6 @@ export function createInput(type,
     title = null,
     required = false,
 ) {
-  const div = document.createElement('div');
-  div.className = 'form-row';
-
   const input = document.createElement('input');
   input.type = type;
   input.name = name;
@@ -24,16 +21,26 @@ export function createInput(type,
   input.required = required;
   input.title = title;
 
+  return input;
+}
+
+/**
+ * Создает красивую строку с импутом для формы
+ * @param {HTMLInputElement} input
+ * @return {HTMLDivElement}
+ */
+export function createInputRow(input) {
+  const div = document.createElement('div');
+  div.className = 'form-row';
+
   const tooltip = document.createElement('div');
   tooltip.className = 'tooltip';
-  tooltip.title = title;
+  tooltip.title = input.title;
   const tooltipSign = document.createElement('div');
   tooltipSign.className = 'tooltip-sign';
   tooltipSign.textContent = '?';
 
-  // TODO:
-  if (!title) {
-    console.log('Please provide a title');
+  if (input.title === 'null') {
     tooltip.style.visibility = 'hidden';
   }
 
@@ -96,6 +103,7 @@ export function getCurrentPageYPos() {
 const Utils = {
   createInput: createInput,
   createLabel: createLabel,
+  createInputRow: createInputRow,
   getPageHeight: getPageHeight,
   getUserWindowWidth: getUserWindowWidth,
   getUserWindowHeight: getUserWindowHeight,
