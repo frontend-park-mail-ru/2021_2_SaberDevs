@@ -4,8 +4,9 @@
 //
 // ///////////////////////////////// //
 
-const ajaxDebug = true;
+const ajaxDebug = false;
 const propsDebug = true;
 const routerDebug = true;
-const headerDebug = true;
-const modalsDebug = true;
+const headerDebug = false;
+const modalsDebug = false;
+const fluxDebug = true;

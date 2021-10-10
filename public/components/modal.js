@@ -153,7 +153,7 @@ const modalComponent = {
   },
 
   setContent(content) {
-    if (propsDebug) {
+    if (modalsDebug) {
       console.log('Modal: setContent to ', content);
     }
     const contentDiv = document.getElementById('modal-content');
@@ -161,7 +161,7 @@ const modalComponent = {
   },
 
   setTitle(title) {
-    if (propsDebug) {
+    if (modalsDebug) {
       console.log('Modal: setTitle to ', title);
     }
     const titleDiv = document.getElementById('modal-title');

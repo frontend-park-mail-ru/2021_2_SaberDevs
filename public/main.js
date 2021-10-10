@@ -11,7 +11,13 @@ import logoutRequest from './modules/logout.js';
 import Utils from './utils.js';
 import Ajax from './modules/ajax.js';
 
+import createStore from './flux/store.js';
+import {authorizeReducer} from './flux/reducers.js';
+import {login} from './flux/actions.js';
+
 const root = document.getElementById('root');
+const store = createStore(authorizeReducer);
+
 
 const headerLinksOnLogin = [
   {name: 'Профиль', section: 'profilePage', href: '/profile'},
@@ -108,6 +114,7 @@ const configuration = {
           state.isAuthenticated = true;
           state.userData = props;
           state.headerLinks = headerLinksOnLogin;
+          store.dispatch(login(props))
           setHeaderLinks(state.headerLinks);
         },
         isRegistered: true,
