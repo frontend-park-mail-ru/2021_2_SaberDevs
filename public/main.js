@@ -12,11 +12,15 @@ import Utils from './utils.js';
 import Ajax from './modules/ajax.js';
 
 import createStore from './flux/store.js';
-import {authorizeReducer} from './flux/reducers.js';
-import {login} from './flux/actions.js';
+import {authorizeReducer, changePageReducer, mainPageReducer, combineReducers} from './flux/reducers.js';
+import {authorizationActions, changePageActions, mainPageActions} from './flux/actions.js';
 
 const root = document.getElementById('root');
-const store = createStore(authorizeReducer);
+const store = createStore(combineReducers({
+  authorization: authorizeReducer,
+  page: changePageReducer,
+  mainPage: mainPageReducer,
+}));
 
 
 const headerLinksOnLogin = [
@@ -56,6 +60,7 @@ const configuration = {
       action: (props) => {
         state.currentPage = 'mainPage';
         props.headerLinks = state.headerLinks;
+        store.dispatch(changePageActions.changePage('main'))
         mainPage(props);
       },
       props: {
@@ -63,12 +68,14 @@ const configuration = {
         headerLinks: state.headerLinks,
         isAuthenticated: state.isAuthenticated,
         userData: state.userData,
-        state: state.mainPageState,
+        // state: state.mainPageState,
+        store,
         // создаем такой обработчик, который можно будет удалить
         // это обертка функции в (event) => undefined
         newsFeedEndReachEventAction(event) {
           const trackedCard = document.getElementById(
-              state.mainPageState.trackedCardId,
+              // state.mainPageState.trackedCardId,
+              store.getState().mainPage.trackedCardId,
           );
           // работаем, только если отслеживаемый элемент
           // находися в области видимости пользователя
@@ -77,7 +84,8 @@ const configuration = {
             return;
           }
           console.log('scroll trigger');
-          uploadNextCards(state.mainPageState);
+          // uploadNextCards(state.mainPageState);
+          uploadNextCards(store);
         },
       },
     },
@@ -95,6 +103,7 @@ const configuration = {
           state.isAuthenticated = true;
           state.userData = props;
           state.headerLinks = headerLinksOnLogin;
+          store.dispatch(authorizationActions.login(props))
           setHeaderLinks(state.headerLinks);
         },
         isRegistered: false,
@@ -114,7 +123,7 @@ const configuration = {
           state.isAuthenticated = true;
           state.userData = props;
           state.headerLinks = headerLinksOnLogin;
-          store.dispatch(login(props))
+          store.dispatch(authorizationActions.login(props))
           setHeaderLinks(state.headerLinks);
         },
         isRegistered: true,
@@ -128,6 +137,7 @@ const configuration = {
       action: () => {
         if (state.isAuthenticated) {
           state.currentPage = 'profilePage';
+          store.dispatch(changePageActions.changePage('profile'))
           profilePage(state.userData);
         } else {
           // TODO: popup
@@ -137,6 +147,8 @@ const configuration = {
               state.isAuthenticated = true;
               state.headerLinks = headerLinksOnLogin;
               state.userData = props;
+              store.dispatch(authorizationActions.login(props))
+              store.dispatch(changePageActions.changePage('profile'))
               profilePage(props);
             },
             isRegistered: true,
@@ -158,6 +170,7 @@ const configuration = {
               state.headerLinks = headerLinksOnLogout;
               setHeaderLinks(state.headerLinks);
               console.log('logout successful');
+              store.dispatch(authorizationActions.logout())
             }
           });
         }
@@ -180,6 +193,8 @@ const configuration = {
         onLogin: (props) => {
           state.isAuthenticated = true;
           state.userData = props;
+          store.dispatch(authorizationActions.login(props))
+          store.dispatch(changePageActions.changePage('profile'))
           profilePage(props);
         },
       },
@@ -217,6 +232,7 @@ function launchLogin(onDone) {
         state.isAuthenticated = true;
         state.userData = JSON.parse(msg).data;
         state.headerLinks = headerLinksOnLogin;
+        store.dispatch(authorizationActions.login(JSON.parse(msg).data))
       } else {
         console.log('launchLogin failed');
       }

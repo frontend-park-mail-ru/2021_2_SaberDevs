@@ -14,6 +14,9 @@ export default function createStore(rootReducer, initialState) {
     dispatch(action) {
       state = rootReducer(state, action)
       subscribers.forEach(subscriber => subscriber())
+      if (fluxDebug) {
+        console.log(`state after dispatch: ${JSON.stringify(state)}`)
+      }
     },
     subscribe(callback) {
       subscribers.push(callback)

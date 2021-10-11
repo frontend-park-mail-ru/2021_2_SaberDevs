@@ -4,6 +4,8 @@ import sideBarComponent from '../components/sidebar.pug.js';
 import cardComponent from '../components/card.pug.js';
 import modalComponent from '../components/modal.js';
 
+import {mainPageActions} from '../flux/actions.js';
+
 import Ajax from '../modules/ajax.js';
 
 // ///////////////////////////////// //
@@ -37,8 +39,10 @@ const loadingCard = {
  * с этой новости
  * @property {string} login - пользователя, для которого составлена подборка
  */
-export function uploadNextCards(state) {
-  if (state.doNotUpload) {
+export function uploadNextCards(store) {
+  const state = store.getState().mainPage;
+
+  if (state.doNotUpload || state.isLoading) {
     if (ajaxDebug) {
       console.log('can\'t load news as doNotUpload state flag is true');
     }
@@ -57,35 +61,41 @@ export function uploadNextCards(state) {
     if (cards instanceof Array) {
       cards.forEach((element) => {
         // сохраняем карточку
-        state.idLastLoaded = element.id;
-        state.cards.push(element);
+        // state.idLastLoaded = element.id;
+        // state.cards.push(element);
         // рисуем
         trackedCard.insertAdjacentHTML(
             'beforebegin',
             cardComponent(element),
         );
       });
+      if (cards.length > 0) {
+        store.dispatch(mainPageActions.saveNewCards(cards[cards.length - 1].id, cards));
+      }
     } else {
       console.warn('API ERROR! Server must return NewsRecordChunk');
     }
 
-    if (data.to === endOfFeedMarkerID) {
+    if (cards[cards.length - 1]?.id === endOfFeedMarkerID) {
       // hide loading component
       trackedCard.style.visibility = 'hidden';
       if (ajaxDebug) {
         console.log('\'end\' found. doNotUpload flag is set to true');
       }
-      state.doNotUpload = true;
+      // state.doNotUpload = true;
+      store.dispatch(mainPageActions.forbidCardsLoading());
       setTimeout(() => {
         if (ajaxDebug) {
           console.log('doNotUpload flag is reset to false');
         }
-        state.doNotUpload = false;
+        // state.doNotUpload = false;
+        store.dispatch(mainPageActions.allowCardsLoading());
       }, resetDoNotUploadTime);
     }
   };
 
-  state.isLoading = true;
+  // state.isLoading = true;
+  store.dispatch(mainPageActions.setLoadingFlag());
 
   Ajax.get({
     url: `/feed?idLastLoaded=${state.idLastLoaded || ''}` +
@@ -96,7 +106,7 @@ export function uploadNextCards(state) {
       try {
         response = JSON.parse(msg);
         if (status === Ajax.STATUS.ok) {
-          state.isLoading = false;
+          // state.isLoading = false;
           onLoad(response.data);
           return;
         }
@@ -105,7 +115,7 @@ export function uploadNextCards(state) {
         modalComponent.setContent(response.msg);
         modalComponent.open(false);
       } catch (e) {
-        console.warn('Error. response is not JSON');
+        console.warn('Error. response is not JSON or ' + e);
       }
     },
   });
@@ -182,6 +192,7 @@ function headerNavLinkBar(linksArray) {
  * @return {void}
  */
 export default function mainPage(props) {
+  const state = props.store.getState().mainPage;
   if (propsDebug) {
     console.log('mainPage: ', JSON.stringify(props));
   }
@@ -217,11 +228,11 @@ export default function mainPage(props) {
   mainContainer.appendChild(contentDiv);
   root.appendChild(mainContainer);
 
-  const trackedCard = document.getElementById(props.state.trackedCardId);
+  const trackedCard = document.getElementById(state.trackedCardId);
 
-  if (JSON.stringify(props.state.cards) === '[]') {
+  if (JSON.stringify(state.cards) === '[]') {
     // подгружаем первые карточки при первом рендере
-    uploadNextCards(props.state);
+    uploadNextCards(props.store);
   } else {
     props.state.cards.forEach((element) => {
       trackedCard.insertAdjacentHTML(
