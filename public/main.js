@@ -11,17 +11,11 @@ import logoutRequest from './modules/logout.js';
 import Utils from './utils.js';
 import Ajax from './modules/ajax.js';
 
-import createStore from './flux/store.js';
-import {authorizeReducer, changePageReducer, mainPageReducer, combineReducers} from './flux/reducers.js';
+import store from './flux/store.js';
 import {authorizationActions, changePageActions, mainPageActions} from './flux/actions.js';
 
+console.log(store)
 const root = document.getElementById('root');
-const store = createStore(combineReducers({
-  authorization: authorizeReducer,
-  page: changePageReducer,
-  mainPage: mainPageReducer,
-}));
-
 
 const headerLinksOnLogin = [
   {name: 'Профиль', section: 'profilePage', href: '/profile'},
