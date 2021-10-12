@@ -1,6 +1,9 @@
 import profileComponent from '../components/profile.pug.js';
 import createToMenuBtn from '../components/buttonToMenu.js';
 
+import store from '../flux/store.js';
+import {changePageActions} from '../flux/actions.js';
+
 /**
  * импортирует root-элемент через замыкание
  *
@@ -10,16 +13,19 @@ import createToMenuBtn from '../components/buttonToMenu.js';
  * @param {UserData} props
  * @return {void}
  */
-export default function profilePage(props) {
+export default function profilePage() {
+  store.dispatch(changePageActions.changePage('profile'));
+  const state = store.getState().authorization;
+
   if (propsDebug) {
-    console.log('ProfilePage props: ', JSON.stringify(props));
+    console.log('ProfilePage props: ');
   }
 
-  document.title = 'SaberProject | Profile: ' + props.login;
+  document.title = 'SaberProject | Profile: ' + state.login;
   root.innerHTML = '';
 
   const profile = document.createElement('div');
-  profile.innerHTML = profileComponent(props);
+  profile.innerHTML = profileComponent(state);
 
   const backBtn = createToMenuBtn();
 

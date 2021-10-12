@@ -1,5 +1,8 @@
 import modalComponent from './modal.js';
 import signupForm from './signupForm.js';
+import store from '../flux/store.js';
+import {signupFormActions} from '../flux/actions.js';
+
 
 // ///////////////////////////////// //
 //
@@ -31,24 +34,30 @@ import signupForm from './signupForm.js';
  * успешного входа/регистрации
  */
 export default function signupModal(props) {
+  const state = store.getState().signupForm;
   if (propsDebug) {
     console.log('signupPage props: ', JSON.stringify(props));
   }
+  //TODO: ?
   const documentTitleInitial = props.docTitle || document.title;
-  document.title = 'SaberProject | ' + (!props.isRegistered? 'Sign Up':'Login');
+  document.title = 'SaberProject | ' + (state.showRegister ? 'Sign Up':'Login');
 
   // форма
+  props.isRegistered = !state.showRegister;
   const form = signupForm(props);
+  
   // Элементы навигации
-
   const changeFormTypeBtn = document.createElement('a');
   changeFormTypeBtn.textContent =
-    props.isRegistered ? 'Создать аккаунт' : 'У меня уже есть аккаунт';
-  changeFormTypeBtn.href = !props.isRegistered ? '/login' : '/register';
+    state.showRegister ? 'У меня уже есть аккаунт' : 'Создать аккаунт';
+  changeFormTypeBtn.href = state.showRegister ? '/login' : '/register';
   changeFormTypeBtn.addEventListener('click', (e) => {
     e.preventDefault();
 
-    props.isRegistered = !props.isRegistered;
+    store.dispatch(state.showRegister ?
+      signupFormActions.toggleToSigninForm() :
+      signupFormActions.toggleToSignupForm()
+    )
     props.docTitle = documentTitleInitial;
     modalComponent.close();
     setTimeout(() => {
@@ -56,7 +65,7 @@ export default function signupModal(props) {
     }, modalComponent.animationTime);
   });
 
-  modalComponent.setTitle(props.isRegistered ? 'Вход' : 'Регистрация');
+  modalComponent.setTitle(state.showRegister ? 'Регистрация' : 'Вход');
   const okBtn = document.getElementById('modal-btn-ok');
   okBtn.textContent = 'Закрыть';
   okBtn.onclick = () => {

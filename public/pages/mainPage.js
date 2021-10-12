@@ -2,11 +2,15 @@ import headerComponent from '../components/header.pug.js';
 import sideBarComponent from '../components/sidebar.pug.js';
 // import newsBarComponent from '../components/newsbar.js';
 import cardComponent from '../components/card.pug.js';
+import userPreviewComponent from '../components/userPreview.pug.js'
 import modalComponent from '../components/modal.js';
 
-import {mainPageActions} from '../flux/actions.js';
+import store from '../flux/store.js';
+import {mainPageActions, changePageActions} from '../flux/actions.js';
+import { authorizationTypes, changePageTypes } from '../flux/types.js';
 
 import Ajax from '../modules/ajax.js';
+import Utils from '../utils.js';
 
 // ///////////////////////////////// //
 //
@@ -39,7 +43,7 @@ const loadingCard = {
  * с этой новости
  * @property {string} login - пользователя, для которого составлена подборка
  */
-export function uploadNextCards(store) {
+export function uploadNextCards() {
   const state = store.getState().mainPage;
 
   if (state.doNotUpload || state.isLoading) {
@@ -60,10 +64,6 @@ export function uploadNextCards(store) {
 
     if (cards instanceof Array) {
       cards.forEach((element) => {
-        // сохраняем карточку
-        // state.idLastLoaded = element.id;
-        // state.cards.push(element);
-        // рисуем
         trackedCard.insertAdjacentHTML(
             'beforebegin',
             cardComponent(element),
@@ -82,19 +82,16 @@ export function uploadNextCards(store) {
       if (ajaxDebug) {
         console.log('\'end\' found. doNotUpload flag is set to true');
       }
-      // state.doNotUpload = true;
       store.dispatch(mainPageActions.forbidCardsLoading());
       setTimeout(() => {
         if (ajaxDebug) {
           console.log('doNotUpload flag is reset to false');
         }
-        // state.doNotUpload = false;
         store.dispatch(mainPageActions.allowCardsLoading());
       }, resetDoNotUploadTime);
     }
   };
 
-  // state.isLoading = true;
   store.dispatch(mainPageActions.setLoadingFlag());
 
   Ajax.get({
@@ -106,7 +103,6 @@ export function uploadNextCards(store) {
       try {
         response = JSON.parse(msg);
         if (status === Ajax.STATUS.ok) {
-          // state.isLoading = false;
           onLoad(response.data);
           return;
         }
@@ -146,6 +142,23 @@ function headerNavLinkBar(linksArray) {
     headerNavDiv.appendChild(button);
   });
   return headerNavDiv;
+}
+
+// создаем такой обработчик, который можно будет удалить
+// это обертка функции в (event) => undefined
+function newsFeedEndReachEventAction(event) {
+  const state = store.getState().mainPage
+  const trackedCard = document.getElementById(
+      state.trackedCardId,
+  );
+  // работаем, только если отслеживаемый элемент
+  // находися в области видимости пользователя
+  if (state.isLoading ||
+    trackedCard.getBoundingClientRect().y>Utils.getUserWindowHeight()) {
+    return;
+  }
+  console.log('scroll trigger');
+  uploadNextCards();
 }
 
 // ///////////////////////////////// //
@@ -191,22 +204,48 @@ function headerNavLinkBar(linksArray) {
  * @property {MainCardState} state глобальное состояние ленты новостей
  * @return {void}
  */
-export default function mainPage(props) {
-  const state = props.store.getState().mainPage;
-  if (propsDebug) {
-    console.log('mainPage: ', JSON.stringify(props));
-  }
+export default function mainPage() {
+  store.dispatch(changePageActions.changePage('main'));
+  const state = store.getState().mainPage;
+  const authorizationState = store.getState().authorization;
+
+  store.subscribe(authorizationTypes.LOGIN, () => {
+  store.dispatch(mainPageActions.toggle_login(true, store.getState().authorization.login));
+    setHeaderLinks(store.getState().mainPage.headerLinks);
+  });
+
+  store.subscribe(authorizationTypes.LOGOUT, () => {
+    store.dispatch(mainPageActions.toggle_login(false, ''));
+    setHeaderLinks(store.getState().mainPage.headerLinks);
+  });
+
+  store.subscribe(changePageTypes.CHANGE_PAGE, () => {
+    window.removeEventListener(
+      'scroll',
+      newsFeedEndReachEventAction,
+      false,
+    );
+  });
+
+  window.addEventListener(
+    'scroll',
+    newsFeedEndReachEventAction,
+    false,
+  );
+
   root.innerHTML = '';
   document.title = 'SaberProject';
 
   let headerContent = '';
 
-  if (props.isAuthenticated) {
-    headerContent = userPreviewHeader({url: `/profile/${props.userData.login}`,
-      name: props.userData.name, img: props.userData.avatar});
-  } else {
-    headerContent = headerNavLinkBar(props.headerLinks).outerHTML;
-  }
+  // TODO:
+  // if (state.isAuthenticated) {
+  //   headerContent = userPreviewComponent({url: `/profile/${authorizationState.login}`,
+  //     name: authorizationState.name, img: authorizationState.avatar});
+  // } else {
+  //   headerContent = headerNavLinkBar(state.headerLinks).outerHTML;
+  // }
+  headerContent = headerNavLinkBar(state.headerLinks).outerHTML;
 
   if (headerDebug) {
     console.log('headerContent: ', headerContent);
@@ -217,7 +256,7 @@ export default function mainPage(props) {
 
   const mainContainer = document.createElement('main');
   mainContainer.className = 'container';
-  mainContainer.innerHTML += sideBarComponent({content: props.sideBarLinks});
+  mainContainer.innerHTML += sideBarComponent({content: state.sideBarLinks});
 
   const contentDiv = document.createElement('div');
   contentDiv.className = 'content col';
@@ -232,21 +271,15 @@ export default function mainPage(props) {
 
   if (JSON.stringify(state.cards) === '[]') {
     // подгружаем первые карточки при первом рендере
-    uploadNextCards(props.store);
+    uploadNextCards();
   } else {
-    props.state.cards.forEach((element) => {
+    state.cards.forEach((element) => {
       trackedCard.insertAdjacentHTML(
           'beforebegin',
           cardComponent(element),
       );
     });
   }
-
-  window.addEventListener(
-      'scroll',
-      props.newsFeedEndReachEventAction,
-      false,
-  );
 }
 
 /**

@@ -139,7 +139,7 @@ export default function signupForm({onLogin, isRegistered}) {
           formWarning.textContent = response.msg;
           form.appendChild(formWarning);
         } catch (e) {
-          console.warn('Error. Server response in not JSON');
+          console.warn('Error. Server response in not JSON or ', e);
         }
       },
     });

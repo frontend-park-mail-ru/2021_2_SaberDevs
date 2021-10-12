@@ -1,4 +1,4 @@
-import {authorizationTypes, changePageTypes, mainPageTypes} from './types.js'
+import {authorizationTypes, changePageTypes, mainPageTypes, signupFormTypes} from './types.js'
 
 // ////////////////
 // authorizationActions
@@ -35,7 +35,31 @@ function changePage(page) {
 }
 
 export const changePageActions = {
-  changePage
+  changePage,
+}
+
+
+// ////////////////
+// signupFormActions
+// ////////////////
+
+function toggleToSignupForm() {
+  return {
+    type: signupFormTypes.SWITCH_FORM_TYPE,
+    payload: true,
+  }
+}
+
+function toggleToSigninForm() {
+  return {
+    type: signupFormTypes.SWITCH_FORM_TYPE,
+    payload: false,
+  }
+}
+
+export const signupFormActions = {
+  toggleToSignupForm,
+  toggleToSigninForm,
 }
 
 
@@ -68,11 +92,22 @@ function allowCardsLoading() {
   }
 }
 
+function toggle_login(isAuthenticated, login) {
+  return {
+    type: mainPageTypes.TOGGLE_AUTH,
+    payload: {
+      isAuthenticated,
+      login
+    }
+  }
+}
+
 export const mainPageActions = {
   saveNewCards,
   setLoadingFlag,
   forbidCardsLoading,
-  allowCardsLoading
+  allowCardsLoading,
+  toggle_login,
 }
 
 // ////////////////

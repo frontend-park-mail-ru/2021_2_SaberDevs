@@ -4,47 +4,15 @@
 import signupPage from './pages/signupPage.js';
 import signupModal from './components/signupModal.js';
 import profilePage from './pages/profilePage.js';
-import {uploadNextCards, setHeaderLinks} from './pages/mainPage.js';
 import mainPage from './pages/mainPage.js';
 import logoutRequest from './modules/logout.js';
 
-import Utils from './utils.js';
 import Ajax from './modules/ajax.js';
 
 import store from './flux/store.js';
-import {authorizationActions, changePageActions, mainPageActions} from './flux/actions.js';
+import {authorizationActions, signupFormActions} from './flux/actions.js';
 
-console.log(store)
 const root = document.getElementById('root');
-
-const headerLinksOnLogin = [
-  {name: 'Профиль', section: 'profilePage', href: '/profile'},
-  {href: '/logout', section: 'logout', name: 'Выход'},
-];
-const headerLinksOnLogout = [
-  {name: 'Зарегистрироваться', section: 'signupPopUp', href: '/signup'},
-  {name: 'Войти', section: 'loginPopUp', href: '/login'},
-];
-const sideBarLinks = ['hello'];
-
-// глобальное состояние приложения
-// все важнейшие данные, получаемые с API-сервера, флаги
-const state = {
-  currentPage: 'main',     // текщуая отображаемая страница
-  isAuthenticated: false,  // верстка зависит от того, залогинен ли пользователь
-  isRegistered: true,      // верстка формы авторизации: вход или регистрация
-  userData: {},            // данные пользователя с бека, если авторизован
-  headerLinks: headerLinksOnLogout,
-  mainPageState: {
-    trackedCardId: 'loading-card', // отслеживаемая запись в ленте для подгрузки
-    isLoading: false,              // отправлен ли запрос на сервер
-    idLastLoaded: '',              // запоминаем последнюю загруженную запись
-    lastScrollPos: 0,              // скрол для возврата к той же записи
-    login: '',                     // для какого пользователя подборка
-    cards: [],                     // массив загруженных новостей
-    doNotUpload: false,
-  },
-};
 
 const configuration = {
   mainPage: {
@@ -52,36 +20,9 @@ const configuration = {
     name: 'Главная',
     open: {
       action: (props) => {
-        state.currentPage = 'mainPage';
-        props.headerLinks = state.headerLinks;
-        store.dispatch(changePageActions.changePage('main'))
         mainPage(props);
       },
-      props: {
-        sideBarLinks,
-        headerLinks: state.headerLinks,
-        isAuthenticated: state.isAuthenticated,
-        userData: state.userData,
-        // state: state.mainPageState,
-        store,
-        // создаем такой обработчик, который можно будет удалить
-        // это обертка функции в (event) => undefined
-        newsFeedEndReachEventAction(event) {
-          const trackedCard = document.getElementById(
-              // state.mainPageState.trackedCardId,
-              store.getState().mainPage.trackedCardId,
-          );
-          // работаем, только если отслеживаемый элемент
-          // находися в области видимости пользователя
-          if (state.mainPageState.isLoading ||
-            trackedCard.getBoundingClientRect().y>Utils.getUserWindowHeight()) {
-            return;
-          }
-          console.log('scroll trigger');
-          // uploadNextCards(state.mainPageState);
-          uploadNextCards(store);
-        },
-      },
+      props: null,
     },
   },
   signupPopUp: {
@@ -89,18 +30,13 @@ const configuration = {
     name: 'Регистрация',
     open: {
       action: (props) => {
-        state.isRegistered = false;
+        store.dispatch(signupFormActions.toggleToSignupForm())
         signupModal(props);
       },
       props: {
         onLogin: (props) => {
-          state.isAuthenticated = true;
-          state.userData = props;
-          state.headerLinks = headerLinksOnLogin;
           store.dispatch(authorizationActions.login(props))
-          setHeaderLinks(state.headerLinks);
         },
-        isRegistered: false,
       },
     },
   },
@@ -109,18 +45,13 @@ const configuration = {
     name: 'Авторизация',
     open: {
       action: (props) => {
-        state.isRegistered = true;
+        store.dispatch(signupFormActions.toggleToSigninForm())
         signupModal(props);
       },
       props: {
         onLogin: (props) => {
-          state.isAuthenticated = true;
-          state.userData = props;
-          state.headerLinks = headerLinksOnLogin;
-          store.dispatch(authorizationActions.login(props))
-          setHeaderLinks(state.headerLinks);
+          store.dispatch(authorizationActions.login(props));
         },
-        isRegistered: true,
       },
     },
   },
@@ -129,24 +60,22 @@ const configuration = {
     name: 'Профиль',
     open: {
       action: () => {
-        if (state.isAuthenticated) {
-          state.currentPage = 'profilePage';
-          store.dispatch(changePageActions.changePage('profile'))
-          profilePage(state.userData);
+        if (store.getState().mainPage.isAuthenticated) {
+          profilePage();
         } else {
           // TODO: popup
-          state.isRegistered = true;
-          signupPage({
-            onLogin: (props) => {
-              state.isAuthenticated = true;
-              state.headerLinks = headerLinksOnLogin;
-              state.userData = props;
-              store.dispatch(authorizationActions.login(props))
-              store.dispatch(changePageActions.changePage('profile'))
-              profilePage(props);
-            },
-            isRegistered: true,
-          });
+          // state.isRegistered = true;
+          // signupPage({
+          //   onLogin: (props) => {
+          //     state.isAuthenticated = true;
+          //     state.headerLinks = headerLinksOnLogin;
+          //     state.userData = props;
+          //     store.dispatch(authorizationActions.login(props))
+          //     store.dispatch(changePageActions.changePage('profile'))
+          //     profilePage(props);
+          //   },
+          //   isRegistered: true,
+          // });
         }
       },
       props: null,
@@ -157,41 +86,16 @@ const configuration = {
     name: 'Выход',
     open: {
       action: () => {
-        if (state.isAuthenticated) {
+        if (store.getState().mainPage.isAuthenticated) {
           logoutRequest((status) => {
             if (status === Ajax.STATUS.ok) {
-              state.isAuthenticated = false;
-              state.headerLinks = headerLinksOnLogout;
-              setHeaderLinks(state.headerLinks);
+              store.dispatch(authorizationActions.logout());
               console.log('logout successful');
-              store.dispatch(authorizationActions.logout())
             }
           });
         }
       },
       props: null,
-    },
-  },
-
-  // others navigations (apart menu)
-
-  // auth form
-  changeRegFormType: {
-    open: {
-      action: (props) => {
-        state.isRegistered = !state.isRegistered;
-        props.isRegistered = state.isRegistered;
-        signupPage(props);
-      },
-      props: {
-        onLogin: (props) => {
-          state.isAuthenticated = true;
-          state.userData = props;
-          store.dispatch(authorizationActions.login(props))
-          store.dispatch(changePageActions.changePage('profile'))
-          profilePage(props);
-        },
-      },
     },
   },
 
@@ -217,20 +121,16 @@ const configuration = {
  * @param {callback} onDone - метод, выполняюшийся
  * после получения ответа
  */
-function launchLogin(onDone) {
+function launchLogin() {
   Ajax.post({
     url: '/login',
     body: {},
     callback: (status, msg) => {
       if (status === Ajax.STATUS.ok) {
-        state.isAuthenticated = true;
-        state.userData = JSON.parse(msg).data;
-        state.headerLinks = headerLinksOnLogin;
         store.dispatch(authorizationActions.login(JSON.parse(msg).data))
       } else {
         console.log('launchLogin failed');
       }
-      onDone();
     },
   });
 }
@@ -242,12 +142,8 @@ function launchLogin(onDone) {
 // ///////////////////////////////// //
 
 // TODO: экран загрузки
-launchLogin(() => {
-  if (state.isAuthenticated) {
-    configuration.mainPage.open.props.headerLinks = headerLinksOnLogin;
-  }
-  mainPage(configuration.mainPage.open.props);
-});
+launchLogin()
+mainPage();
 
 // ///////////////////////////////// //
 //
@@ -269,22 +165,7 @@ root.addEventListener('click', (e) => {
 
     const props = configuration[target.dataset.section]?.open?.props;
     const action = configuration[target.dataset.section]?.open?.action;
-    if (action !== undefined) {
-      if (target.dataset.section.indexOf('Page') !== -1) {
-        // дополнительные действия при переходе на другие страницы
-        switch (state.currentPage) {
-          case 'mainPage':
-            window.removeEventListener(
-                'scroll',
-                configuration.mainPage.open.props.newsFeedEndReachEventAction,
-                false,
-            );
-            break;
-          case 'profilePage':
-            console.log('u r leaving profilePage');
-            break;
-        }
-      }
+    if (typeof action === 'function') {
       action.call(null, props);
     }
   }

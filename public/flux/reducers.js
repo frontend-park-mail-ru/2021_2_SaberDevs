@@ -1,4 +1,15 @@
-import {authorizationTypes, changePageTypes, mainPageTypes} from './types.js'
+import {authorizationTypes, changePageTypes, mainPageTypes, signupFormTypes} from './types.js'
+
+// TODO: куда-нибудь перенести
+const headerLinksOnLogin = [
+  {name: 'Профиль', section: 'profilePage', href: '/profile'},
+  {href: '/logout', section: 'logout', name: 'Выход'},
+];
+const headerLinksOnLogout = [
+  {name: 'Зарегистрироваться', section: 'signupPopUp', href: '/signup'},
+  {name: 'Войти', section: 'loginPopUp', href: '/login'},
+];
+const sideBarLinks = ['hello'];
 
 //function themeReducer(state = initialThemeState)
 
@@ -24,8 +35,8 @@ export function authorizeReducer(state = InitialUserState, action) {
   return state;
 }
 
-
-const InitialPage = 'main';
+// TODO: docTitle
+const InitialPage = {page: 'main'};
 
 export function changePageReducer(state = InitialPage, action) {
   if (fluxDebug) {
@@ -33,13 +44,34 @@ export function changePageReducer(state = InitialPage, action) {
   }
   switch (action.type) {
     case changePageTypes.CHANGE_PAGE:
-      return action.payload;
+      return {
+        ...state,
+        page: action.payload,
+      };
+  }
+  return state;
+}
+
+
+const InitialSignupFormState = {showRegister: true};
+
+export function signupFormReducer(state = InitialSignupFormState, action) {
+  if (fluxDebug) {
+    console.log('signupFormReducer | prev state: ', state, 'action: ', action)
+  }
+  switch (action.type) {
+    case signupFormTypes.SWITCH_FORM_TYPE:
+      return {
+        ...state,
+        showRegister: action.payload,
+      };
   }
   return state;
 }
 
 
 const InitialMainPageState = {
+  isAuthenticated: false,
   trackedCardId: 'loading-card', // отслеживаемая запись в ленте для подгрузки
   isLoading: false,              // отправлен ли запрос на сервер
   idLastLoaded: '',              // запоминаем последнюю загруженную запись
@@ -47,6 +79,8 @@ const InitialMainPageState = {
   login: '',                     // для какого пользователя подборка
   cards: [],                     // массив загруженных новостей
   doNotUpload: false,
+  headerLinks: headerLinksOnLogout,
+  sideBarLinks,
 };
 
 export function mainPageReducer(state = InitialMainPageState, action) {
@@ -76,6 +110,15 @@ export function mainPageReducer(state = InitialMainPageState, action) {
         idLastLoaded: action.payload.idLastLoaded,
         cards: state.cards.concat(action.payload.cards)
       };
+    case mainPageTypes.TOGGLE_AUTH:
+      return {
+        ...state,
+        isAuthenticated: action.payload.isAuthenticated,
+        login: action.payload.login,
+        headerLinks: action.payload.isAuthenticated ?
+          headerLinksOnLogin : headerLinksOnLogout,
+      }
+    
   }
   return state;
 }
