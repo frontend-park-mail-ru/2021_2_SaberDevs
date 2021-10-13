@@ -1,3 +1,6 @@
+import {modalActions} from '../flux/actions.js';
+import store from '../flux/store.js';
+
 const animationTime = 200;
 const informationWindowOpenTime = 2000;
 
@@ -10,12 +13,12 @@ let cancelBtnDispay = true;
  * @param {object} props
  * @property {string} title
  * @property {string} content
- * @property {string?} btnOkSign надпись на кнопке подтверждения
- * @property {string?} btnCancelSign надпись на кнопке отмены
- * @property {bolean} isEnteractive true - кнопки на футере отображаются
- * @property {bolean} isCancelable true - кнопка отмены на футере отображается
- * @property {callback} onConfirm - обработчик кнопки ОК
- * @property {callback} onDecline - обработчик кнопки CANCEL
+ * @property {string?} btnOkSign      - надпись на кнопке подтверждения
+ * @property {string?} btnCancelSign  - надпись на кнопке отмены
+ * @property {bolean} isEnteractive   - true - кнопки на футере отображаются
+ * @property {bolean} isCancelable    - true - кнопка отмены на футере отображается
+ * @property {callback} onConfirm     - обработчик кнопки ОК
+ * @property {callback} onDecline     - обработчик кнопки CANCEL
  * @return {string}
  */
 function fillDefaultModal(props) {
@@ -69,12 +72,12 @@ function fillDefaultModal(props) {
  * @param {object} props
  * @property {string} title
  * @property {string} content
- * @property {string?} btnOkSign надпись на кнопке подтверждения
- * @property {string?} btnCancelSign надпись на кнопке отмены
- * @property {bolean} isEnteractive true - кнопки на футере отображаются
- * @property {bolean} isCancelable true - кнопка отмены на футере отображается
- * @property {callback} onConfirm - обработчик кнопки ОК
- * @property {callback} onDecline - обработчик кнопки CANCEL
+ * @property {string?} btnOkSign      - надпись на кнопке подтверждения
+ * @property {string?} btnCancelSign  - надпись на кнопке отмены
+ * @property {bolean} isEnteractive   - true - кнопки на футере отображаются
+ * @property {bolean} isCancelable    - true - кнопка отмены на футере отображается
+ * @property {callback} onConfirm     - обработчик кнопки ОК
+ * @property {callback} onDecline     - обработчик кнопки CANCEL
  * @return {HTMLDivElement}
  */
 function _createModal(props) {
@@ -99,6 +102,8 @@ const modalComponent = {
       return;
     }
 
+    store.dispatch(modalActions.modalClose());
+    // TODO: вынести в редьюсер
     // Разрешаем прокрутку фоновой страницы
     document.body.style.overflow = 'scroll';
 
@@ -120,6 +125,8 @@ const modalComponent = {
       }
       return;
     }
+
+    store.dispatch(modalActions.modalOpen());
     // во время анимации закрытия не сетим анимацию закрытия
     if (inClosing) {
       console.warn('modal is in closing process');
@@ -214,7 +221,6 @@ const modalComponent = {
  */
 function modalCloseListener(e) {
   const target = e.target;
-  console.log(target.dataset);
   if (target.dataset['modalClose']) {
     modalComponent.close();
   }
@@ -225,9 +231,7 @@ modalDiv.addEventListener('click', modalCloseListener);
 Object.assign(modalComponent, {
   // removes event listeners
   destroy() {
-    // Разрешаем прокрутку фоновой страницы
-    document.body.style.overflow = 'scroll';
-
+    this.close();
     modalDiv.removeEventListener('click', modalCloseListener);
     modalDiv.innerHTML = '';
     isDestroyed = true;

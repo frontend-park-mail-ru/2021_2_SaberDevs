@@ -1,4 +1,4 @@
-import {authorizationTypes, changePageTypes, mainPageTypes, signupFormTypes} from './types.js'
+import {authorizationTypes, changePageTypes, mainPageTypes, signupFormTypes, modalTypes} from './types.js'
 
 // TODO: куда-нибудь перенести
 const headerLinksOnLogin = [
@@ -35,18 +35,29 @@ export function authorizeReducer(state = InitialUserState, action) {
   return state;
 }
 
-// TODO: docTitle
-const InitialPage = {page: 'main'};
 
-export function changePageReducer(state = InitialPage, action) {
+const InitialPageState = {
+  page: 'main',
+  docTitle: 'SaberProject',
+};
+
+export function changePageReducer(state = InitialPageState, action) {
   if (fluxDebug) {
     console.log('changePageReducer | prev state: ', state, 'action: ', action)
   }
   switch (action.type) {
     case changePageTypes.CHANGE_PAGE:
+      document.title = action.payload.docTitle;
       return {
         ...state,
-        page: action.payload,
+        page: action.payload.page,
+        docTitle: action.payload.docTitle,
+      };
+    case changePageTypes.CHANGE_DOC_TITLE:
+      document.title = action.payload.docTitle;
+      return {
+        ...state,
+        docTitle: action.payload.docTitle,
       };
   }
   return state;
@@ -119,6 +130,26 @@ export function mainPageReducer(state = InitialMainPageState, action) {
           headerLinksOnLogin : headerLinksOnLogout,
       }
     
+  }
+  return state;
+}
+
+
+const InitialModalState = {};
+
+export function modalReducer(state = InitialModalState, action) {
+  if (fluxDebug) {
+    console.log('modalReducer | prev state: ', state, 'action: ', action)
+  }
+  switch (action.type) {
+    case modalTypes.MODAL_OPEN:
+      return {
+        ...state,
+      };
+    case modalTypes.MODAL_CLOSE:
+      return {
+        ...state,
+      };
   }
   return state;
 }

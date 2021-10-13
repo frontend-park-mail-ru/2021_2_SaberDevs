@@ -1,7 +1,8 @@
 import modalComponent from './modal.js';
 import signupForm from './signupForm.js';
 import store from '../flux/store.js';
-import {signupFormActions} from '../flux/actions.js';
+import {signupFormActions, changePageActions} from '../flux/actions.js';
+import {modalTypes} from '../flux/types.js';
 
 
 // ///////////////////////////////// //
@@ -15,6 +16,14 @@ import {signupFormActions} from '../flux/actions.js';
  * @callback loginCallback
  * @param {Object} props
  */
+
+store.subscribe(modalTypes.MODAL_CLOSE, () => {
+  document.title = store.getState().page.docTitle;
+});
+
+store.subscribe(modalTypes.MODAL_OPEN, () => {
+  document.title = 'SaberProject | ' + (store.getState().signupForm.showRegister ? 'Sign Up':'Login');
+});
 
 // ///////////////////////////////// //
 //
@@ -38,13 +47,9 @@ export default function signupModal(props) {
   if (propsDebug) {
     console.log('signupPage props: ', JSON.stringify(props));
   }
-  //TODO: ?
-  const documentTitleInitial = props.docTitle || document.title;
-  document.title = 'SaberProject | ' + (state.showRegister ? 'Sign Up':'Login');
 
   // форма
-  props.isRegistered = !state.showRegister;
-  const form = signupForm(props);
+  const form = signupForm(state.showRegister);
   
   // Элементы навигации
   const changeFormTypeBtn = document.createElement('a');
@@ -58,7 +63,7 @@ export default function signupModal(props) {
       signupFormActions.toggleToSigninForm() :
       signupFormActions.toggleToSignupForm()
     )
-    props.docTitle = documentTitleInitial;
+
     modalComponent.close();
     setTimeout(() => {
       signupModal(props);
@@ -68,9 +73,6 @@ export default function signupModal(props) {
   modalComponent.setTitle(state.showRegister ? 'Регистрация' : 'Вход');
   const okBtn = document.getElementById('modal-btn-ok');
   okBtn.textContent = 'Закрыть';
-  okBtn.onclick = () => {
-    document.title = documentTitleInitial;
-  };
   const cancelBtn = document.getElementById('modal-btn-cancel');
   cancelBtn.style.display = 'none';
   const contentDiv = document.getElementById('modal-content');

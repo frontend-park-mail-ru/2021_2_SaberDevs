@@ -98,21 +98,15 @@ export function uploadNextCards() {
     url: `/feed?idLastLoaded=${state.idLastLoaded || ''}` +
       '&login=' +
       (state.login === '' ? 'all' : state.login),
-    callback: (status, msg) => {
-      let response = {};
-      try {
-        response = JSON.parse(msg);
-        if (status === Ajax.STATUS.ok) {
-          onLoad(response.data);
-          return;
-        }
-
-        modalComponent.setTitle(`Ошибка сети ${status}`);
-        modalComponent.setContent(response.msg);
-        modalComponent.open(false);
-      } catch (e) {
-        console.warn('Error. response is not JSON or ' + e);
+    callback: (status, response) => {
+      if (status === Ajax.STATUS.ok) {
+        onLoad(response.data);
+        return;
       }
+
+      modalComponent.setTitle(`Ошибка сети ${status}`);
+      modalComponent.setContent(response.msg);
+      modalComponent.open(false);
     },
   });
 }
@@ -205,7 +199,7 @@ function newsFeedEndReachEventAction(event) {
  * @return {void}
  */
 export default function mainPage() {
-  store.dispatch(changePageActions.changePage('main'));
+  store.dispatch(changePageActions.changePage('main', 'SaberProject'));
   const state = store.getState().mainPage;
   const authorizationState = store.getState().authorization;
 
@@ -234,7 +228,6 @@ export default function mainPage() {
   );
 
   root.innerHTML = '';
-  document.title = 'SaberProject';
 
   let headerContent = '';
 

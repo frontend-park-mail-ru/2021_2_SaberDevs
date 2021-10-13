@@ -16,7 +16,7 @@ const ip = 'localhost';
 const page404 = fs.readFileSync('./public/404.html');
 const CORS = '*';
 const requestLenLimit = 1e6;
-const APIUrls = ['/login', '/signup', '/feed'];
+const APIUrls = ['/login', '/signup', '/feed', '/logout'];
 const feedChunkSize = 3;  // размер подгружаемой части ленты
 const endOfFeedMarkerID = 'end';
 const cookieTime = 30000; // in ms
@@ -167,9 +167,9 @@ function sendUserdata(login) {
  * @param {string} msg
  * @return {void}
  */
-function fullfillError(res, msg) {
-  console.log('\t\tresponse: 400 - ' + msg);
-  res.writeHead(400);
+function fullfillError(res, status, msg) {
+  console.log('\t\tresponse: ' + status + ' - ' + msg);
+  res.writeHead(status);
   const resObj = {
     msg,
     data: null,
@@ -184,7 +184,7 @@ function fullfillError(res, msg) {
  * @return {void}
  */
 function fullfillIncorrectLogin(res) {
-  fullfillError(res, 'Логин или пароль неверные');
+  fullfillError(res, 400, 'Логин или пароль неверные');
 }
 
 /**
@@ -193,7 +193,7 @@ function fullfillIncorrectLogin(res) {
  * @return {void}
  */
 function fullfillLoginIsAlreadyTaken(res) {
-  fullfillError(res, 'Этот логин уже занят');
+  fullfillError(res, 400, 'Этот логин уже занят');
 }
 
 /**
@@ -274,7 +274,7 @@ function createCookieFor(login) {
     if (idx !== -1) {
       validCookies.splice(idx);
     } else {
-      console.log(`\t\terror. cannot find ${cookie} in valid cookie array`);
+      console.log(`\t\tcannot find ${cookie} in valid cookie array`);
     }
   }, cookieTime);
 
@@ -291,7 +291,7 @@ function executeAPICall(req, res) {
   let body = '';
 
   if (req.method !== 'GET' && req.method !== 'POST') {
-    fullfillError(res, `${req.method}-API пока не поддерживается :3`);
+    fullfillError(res, 501, `${req.method}-API пока не поддерживается :3`);
     return;
   }
 
@@ -317,7 +317,7 @@ function executeAPICall(req, res) {
       console.log('\t\treq body: ', reqBody);
     } catch (e) {
       if (req.method !== 'GET') {
-        fullfillError(res, 'Not a JSON recieved');
+        fullfillError(res, 400, 'Not a JSON recieved');
       }
     }
 
@@ -400,7 +400,7 @@ function executeAPICall(req, res) {
               if (!('login' in reqBody &&
                   'password' in reqBody &&
                   'email' in reqBody)) {
-                fullfillError(res, 'Не достаточно данных');
+                fullfillError(res, 400, 'Не достаточно данных');
               } else {
                 // пишем в базу
                 users[reqBody.login.toLowerCase()] = {
@@ -424,6 +424,29 @@ function executeAPICall(req, res) {
                 );
               }
             }
+
+          case '/logout':
+            console.log('\t\tLogout. Delete user cookies: ', JSON.stringify(cookies));
+            let cnt = 0;
+            for (let cookie in cookies) {
+              let idx = -1;
+              for (let i = 0; i < validCookies.length && idx === -1; ++i) {
+                if (validCookies[i].cookie === cookies[cookie]) {
+                  idx = i;
+                }
+              }
+              if (idx !== -1) {
+                validCookies.splice(idx);
+                cnt++;
+                console.log(`\t\t\tDelete user cookie: ${cookies[cookie]}`);
+              }
+            }
+            if (cnt > 0) {
+              fullfillOKResponse(res, 'Logout successful', null);
+            } else {
+              fullfillError(res, 401, 'Не авторизован');
+            }
+            break;
         }
         break;
 
@@ -432,7 +455,7 @@ function executeAPICall(req, res) {
           const idLastLoadedPos = req.url.indexOf('idLastLoaded=');
           const loginPos = req.url.indexOf('login=');
           if (idLastLoadedPos === -1 || loginPos === -1) {
-            fullfillError(res, 'Не достаточно данных');
+            fullfillError(res, 400, 'Не достаточно данных');
             break;
           }
           // /feed?idLastLoaded=<id>&login=<login>
@@ -457,7 +480,7 @@ function executeAPICall(req, res) {
               })
               .catch(
                   () => {
-                    fullfillError(res, 'База данных недоступна');
+                    fullfillError(res, 504, 'База данных недоступна');
                   });
         }
 

@@ -1,4 +1,4 @@
-import {authorizationTypes, changePageTypes, mainPageTypes, signupFormTypes} from './types.js'
+import {authorizationTypes, changePageTypes, mainPageTypes, signupFormTypes, modalTypes} from './types.js'
 
 // ////////////////
 // authorizationActions
@@ -8,35 +8,48 @@ function login(userData) {
   return {
     type: authorizationTypes.LOGIN,
     payload: userData,
-  }
+  };
 }
 
 function logout() {
   return {
     type: authorizationTypes.LOGOUT,
-  }
+  };
 }
 
 export const authorizationActions = {
   login,
   logout,
-}
+};
 
 
 // ////////////////
 // changePageActions
 // ////////////////
 
-function changePage(page) {
+function changePage(page, docTitle) {
   return {
     type: changePageTypes.CHANGE_PAGE,
-    payload: page,
-  }
+    payload: {
+      page,
+      docTitle,
+    },
+  };
+}
+
+function changeDocTitle(docTitle) {
+  return {
+    type: changePageTypes.CHANGE_DOC_TITLE,
+    payload: {
+      docTitle,
+    },
+  };
 }
 
 export const changePageActions = {
   changePage,
-}
+  changeDocTitle,
+};
 
 
 // ////////////////
@@ -47,20 +60,42 @@ function toggleToSignupForm() {
   return {
     type: signupFormTypes.SWITCH_FORM_TYPE,
     payload: true,
-  }
+  };
 }
 
 function toggleToSigninForm() {
   return {
     type: signupFormTypes.SWITCH_FORM_TYPE,
     payload: false,
-  }
+  };
 }
 
 export const signupFormActions = {
   toggleToSignupForm,
   toggleToSigninForm,
+};
+
+
+// ////////////////
+// modalctions
+// ////////////////
+
+function modalClose() {
+  return {
+    type: modalTypes.MODAL_CLOSE,
+  };
 }
+
+function modalOpen() {
+  return {
+    type: modalTypes.MODAL_OPEN,
+  };
+}
+
+export const modalActions = {
+  modalOpen,
+  modalClose,
+};
 
 
 // ////////////////
@@ -71,25 +106,25 @@ function saveNewCards(idLastLoaded, cards) {
   return {
     type: mainPageTypes.SAVE_NEW_CARDS,
     payload: {idLastLoaded, cards},
-  }
+  };
 }
 
 function setLoadingFlag() {
   return {
     type: mainPageTypes.SET_LOADING_FLAG,
-  }
+  };
 }
 
 function forbidCardsLoading() {
   return {
     type: mainPageTypes.FORBID_CARDS_UPLOADING,
-  }
+  };
 }
 
 function allowCardsLoading() {
   return {
     type: mainPageTypes.ALLOW_CARDS_UPLOADING,
-  }
+  };
 }
 
 function toggle_login(isAuthenticated, login) {
@@ -98,8 +133,8 @@ function toggle_login(isAuthenticated, login) {
     payload: {
       isAuthenticated,
       login
-    }
-  }
+    },
+  };
 }
 
 export const mainPageActions = {
@@ -108,7 +143,7 @@ export const mainPageActions = {
   forbidCardsLoading,
   allowCardsLoading,
   toggle_login,
-}
+};
 
 // ////////////////
 // else
@@ -121,5 +156,5 @@ export function asyncIncrement() {
       dispatch(increment())
       dispatch(enableButtons())
     }, 1500)
-  }
-}
+  };
+};

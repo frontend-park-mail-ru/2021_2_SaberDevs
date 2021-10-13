@@ -65,14 +65,11 @@ function ajax(requestParams) {
         return response.text();
       })
       .then((response) => {
-        // console.log('ajax resolved ' + status+': '+JSON.stringify(response));
         console.log('ajax resolved ' + status +': ' + response);
-        requestParams.callback(status, response);
+        requestParams.callback(status, JSON.parse(response));
       })
       .catch((error) => {
         console.warn(error);
-        requestParams.callback(status, error);
-        return;
       });
 }
 

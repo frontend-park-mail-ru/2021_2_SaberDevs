@@ -7,9 +7,15 @@ export const authorizationTypes = {
   LOGOUT,
 };
 
-const CHANGE_PAGE = 'CHANGE_PAGE';
 export const changePageTypes = {
-  CHANGE_PAGE,
+  CHANGE_PAGE: 'CHANGE_PAGE',
+  CHANGE_DOC_TITLE: 'CHANGE_DOC_TITLE',
+};
+
+
+export const modalTypes = {
+  MODAL_OPEN: 'MODAL_OPEN',
+  MODAL_CLOSE: 'MODAL_CLOSE',
 };
 
 

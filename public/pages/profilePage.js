@@ -6,22 +6,12 @@ import {changePageActions} from '../flux/actions.js';
 
 /**
  * импортирует root-элемент через замыкание
- *
- *  Страница содержит главный компонент - карточку пользователя
- * для нее обязательны следующие поля
- *
- * @param {UserData} props
- * @return {void}
+ * Страница содержит главный компонент - карточку пользователя
  */
 export default function profilePage() {
-  store.dispatch(changePageActions.changePage('profile'));
   const state = store.getState().authorization;
+  store.dispatch(changePageActions.changePage('profile', `SaberProject | ${state.login}`));
 
-  if (propsDebug) {
-    console.log('ProfilePage props: ');
-  }
-
-  document.title = 'SaberProject | Profile: ' + state.login;
   root.innerHTML = '';
 
   const profile = document.createElement('div');
