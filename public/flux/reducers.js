@@ -6,8 +6,8 @@ const headerLinksOnLogin = [
   {section: 'logout', name: 'Выход'},
 ];
 const headerLinksOnLogout = [
-  {name: 'Зарегистрироваться', section: 'signupPopUp'},
-  {name: 'Войти', section: 'loginPopUp'},
+  {name: 'Зарегистрироваться', section: 'signupModal'},
+  {name: 'Войти', section: 'loginModal'},
 ];
 const sideBarLinks = ['hello'];
 
@@ -23,9 +23,6 @@ const InitialUserState = {
 };
 
 export function authorizeReducer(state = InitialUserState, action) {
-  if (fluxDebug) {
-    console.log('authorizeReducer | prev state: ', state, 'action: ', action)
-  }
   switch (action.type) {
     case authorizationTypes.LOGIN:
       return action.payload;
@@ -42,9 +39,6 @@ const InitialPageState = {
 };
 
 export function changePageReducer(state = InitialPageState, action) {
-  if (fluxDebug) {
-    console.log('changePageReducer | prev state: ', state, 'action: ', action)
-  }
   switch (action.type) {
     case changePageTypes.CHANGE_PAGE:
       document.title = action.payload.docTitle;
@@ -67,9 +61,6 @@ export function changePageReducer(state = InitialPageState, action) {
 const InitialSignupFormState = {showRegister: true};
 
 export function signupFormReducer(state = InitialSignupFormState, action) {
-  if (fluxDebug) {
-    console.log('signupFormReducer | prev state: ', state, 'action: ', action)
-  }
   switch (action.type) {
     case signupFormTypes.SWITCH_FORM_TYPE:
       return {
@@ -95,9 +86,6 @@ const InitialMainPageState = {
 };
 
 export function mainPageReducer(state = InitialMainPageState, action) {
-  if (fluxDebug) {
-    console.log('mainPageReducer | prev state: ', state, 'action: ', action)
-  }
   switch (action.type) {
     case mainPageTypes.SET_LOADING_FLAG:
       return {
@@ -138,9 +126,6 @@ export function mainPageReducer(state = InitialMainPageState, action) {
 const InitialModalState = {};
 
 export function modalReducer(state = InitialModalState, action) {
-  if (fluxDebug) {
-    console.log('modalReducer | prev state: ', state, 'action: ', action)
-  }
   switch (action.type) {
     case modalTypes.MODAL_OPEN:
       return {
@@ -169,6 +154,26 @@ export function combineReducers(reducers) {
     for (let reducer in reducers) {
       const newState = reducers[reducer](state[reducer], action);
       if (newState !== state[reducer]) {
+        let printState = state[reducer];
+        let printNewState = newState;
+        if (fluxDebug) {
+          if (reducer === 'mainPage') {
+            printState = {};
+            Object.assign(printState, state[reducer]);
+            delete printState.cards;
+            delete printState.headerLinks;
+            delete printState.sideBarLinks;
+            printNewState = {};
+            Object.assign(printNewState, state[reducer]);
+            delete printNewState.cards;
+            delete printNewState.headerLinks;
+            delete printNewState.sideBarLinks;
+          }
+          console.log(`${reducer} | action: , ${action.type}
+          \t| prev state:\n${JSON.stringify(printState)}
+          \t| new state:\n${JSON.stringify(printNewState)}
+          `);
+        }
         state[reducer] = newState;
       }
     }

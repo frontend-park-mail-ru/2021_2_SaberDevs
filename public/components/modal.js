@@ -22,7 +22,7 @@ let cancelBtnDispay = true;
  * @return {string}
  */
 function fillDefaultModal(props) {
-  if (propsDebug) {
+  if (modalsDebug) {
     console.log('modal filling: ' + JSON.stringify(props));
   }
   const okBtn = document.createElement('button');

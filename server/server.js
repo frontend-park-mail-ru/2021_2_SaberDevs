@@ -19,7 +19,7 @@ const requestLenLimit = 1e6;
 const APIUrls = ['/login', '/signup', '/feed', '/logout'];
 const feedChunkSize = 3;  // размер подгружаемой части ленты
 const endOfFeedMarkerID = 'end';
-const cookieTime = 30000; // in ms
+const cookieTime = 360000; // in ms
 
 // ///////////////////////////////// //
 //

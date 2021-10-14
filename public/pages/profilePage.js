@@ -7,10 +7,13 @@ import store from '../flux/store.js';
 import {changePageActions} from '../flux/actions.js';
 
 /**
- * импортирует root-элемент через замыкание
  * Страница содержит главный компонент - карточку пользователя
  */
 function render() {
+  if (routerDebug) {
+    console.log("ProfilePage render");
+  }
+  const root = this.el;
   const state = store.getState().authorization;
   store.dispatch(changePageActions.changePage('profile', `SaberProject | ${state.login}`));
 
@@ -26,8 +29,32 @@ function render() {
 }
 
 export default class ProfilePage extends BaseView {
-  constructor (el) {
+  constructor(el) {
 		super(el);
     this.render = render;
 	}
+
+  show() {
+    super.show();
+    if (routerDebug) {
+      console.log("ProfilePage show");
+    }
+  }
+
+  hide() {
+    super.hide();
+    if (routerDebug) {
+      console.log("ProfilePage hide");
+    }
+  }
+
+  redirect(currentPath) {
+    if (store.getState().authorization.login !== '') {
+      return '';
+    }
+    if (routerDebug) {
+      console.log("ProfilePage redirect to /login");
+    }
+    return '/login';
+  }
 };

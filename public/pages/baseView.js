@@ -5,7 +5,6 @@
  export default class BaseView {
 	constructor (el) {
 		this.el = el;
-
 		this.el.dataset.view = this.constructor.name;
 		this.el.hidden = true;
 	}
@@ -25,5 +24,9 @@
 
 	render() {
 
+	}
+
+	redirect(currentPath) {
+		return '';
 	}
 }

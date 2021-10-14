@@ -141,7 +141,6 @@ function headerNavLinkBar(linksArray) {
  * @param {string} content
  */
  function setHeaderContent(content) {
-  console.log('setHeaderContent: ' + content);
   const headerContent = document.getElementById('header-content');
   headerContent.innerHTML = content;
 }
@@ -207,27 +206,22 @@ function newsFeedEndReachEventAction(event) {
  * для нее обязательны следующие поля
  */
 function render() {
+  if (routerDebug) {
+    console.log("MainPage render");
+  }
   const root = this.el;
   store.dispatch(changePageActions.changePage('main', 'SaberProject'));
   const state = store.getState().mainPage;
   const authorizationState = store.getState().authorization;
 
-  store.subscribe(authorizationTypes.LOGIN, () => {
-  store.dispatch(mainPageActions.toggle_login(true, store.getState().authorization.login));
+  this.loginUnsubscribe = store.subscribe(authorizationTypes.LOGIN, () => {
+    store.dispatch(mainPageActions.toggle_login(true, store.getState().authorization.login));
     setHeaderLinks(store.getState().mainPage.headerLinks);
   });
 
-  store.subscribe(authorizationTypes.LOGOUT, () => {
+  this.logoutUnsubscribe = store.subscribe(authorizationTypes.LOGOUT, () => {
     store.dispatch(mainPageActions.toggle_login(false, ''));
     setHeaderLinks(store.getState().mainPage.headerLinks);
-  });
-
-  store.subscribe(changePageTypes.CHANGE_PAGE, () => {
-    window.removeEventListener(
-      'scroll',
-      newsFeedEndReachEventAction,
-      false,
-    );
   });
 
   window.addEventListener(
@@ -240,7 +234,7 @@ function render() {
 
   let headerContent = '';
 
-  // TODO:
+  // TODO: когда версточка будет готова
   // if (state.isAuthenticated) {
   //   headerContent = userPreviewComponent({url: `/profile/${authorizationState.login}`,
   //     name: authorizationState.name, img: authorizationState.avatar});
@@ -264,55 +258,54 @@ function render() {
   contentDiv.className = 'content col';
   contentDiv.id = 'menu-content-block';
 
+  if (JSON.stringify(state.cards) === '[]') {
+    uploadNextCards();
+  }
+  state.cards.forEach((element) => {
+    contentDiv.innerHTML += cardComponent(element);
+  });
+
   contentDiv.innerHTML += cardComponent(loadingCard);
 
   mainContainer.appendChild(contentDiv);
   root.appendChild(mainContainer);
-
-  const trackedCard = document.getElementById(state.trackedCardId);
-
-  if (JSON.stringify(state.cards) === '[]') {
-    // подгружаем первые карточки при первом рендере
-    uploadNextCards();
-  } else {
-    state.cards.forEach((element) => {
-      trackedCard.insertAdjacentHTML(
-          'beforebegin',
-          cardComponent(element),
-      );
-    });
-  }
 }
 
 export default class MainPage extends BaseView {
-	constructor (el) {
+	constructor(el) {
 		super(el);
     this.render = render;
-    // TODO: 
-		// this.users = null;
-		// bus.on('users-loaded', this.setUsers.bind(this));
+    this.loginUnsubscribe = null;
+    this.logoutUnsubscribe = null;
+
+    store.subscribe(changePageTypes.CHANGE_PAGE, () => {
+      window.removeEventListener(
+        'scroll',
+        newsFeedEndReachEventAction,
+        false,
+      );
+    });
 	}
 
-	show () {
+	show() {
 		super.show();
-
-		// this.fetchUsers();
+    if (routerDebug) {
+      console.log("MainPage show");
+    }
 	}
 
-	// fetchUsers () {
-	// 	bus.emit('fetch-users');
-	// }
-
-	// setUsers (users) {
-	// 	this.users = users;
-	// 	this.render();
-	// }
-
-	
-
-	// renderLoading () {
-	// 	const loading = document.createElement('strong');
-	// 	loading.textContent = 'Loading';
-	// 	this.el.appendChild(loading);
-	// }
+  hide() {
+    super.hide();
+    if (routerDebug) {
+      console.log("MainPage hide");
+    }
+    if (this.loginUnsubscribe) {
+      this.loginUnsubscribe();
+      this.loginUnsubscribe = null;
+    }
+    if (this.logoutUnsubscribe) {
+      this.logoutUnsubscribe();
+      this.logoutUnsubscribe = null;
+    }
+  }
 }

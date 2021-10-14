@@ -1,13 +1,3 @@
-// components (no pages there)
-import signupModal from './signupModal.js';
-
-// network
-import {logoutRequest} from '../modules/ajax_requests.js';
-
-// flux store
-import store from '../flux/store.js';
-import {signupFormActions} from '../flux/actions.js';
-
 // ///////////////////////////////// //
 //
 //     Определяет взаимодействие
@@ -15,39 +5,14 @@ import {signupFormActions} from '../flux/actions.js';
 //     переходами по страницам
 //
 // ///////////////////////////////// //
-const configuration = {
-  signupPopUp: {
-    action: () => {
-      store.dispatch(signupFormActions.toggleToSignupForm())
-      signupModal();
-    },
-    props: null,
-  },
+const configuration = {};
+//   template: {
+//     action: () => {
 
-  loginPopUp: {
-    action: () => {
-      store.dispatch(signupFormActions.toggleToSigninForm())
-      signupModal();
-    },
-    props: null,
-  },
-
-  logout: {
-    action: () => {
-      if (store.getState().mainPage.isAuthenticated) {
-        logoutRequest();
-      }
-    },
-    props: null,
-  },
-
-  template: {
-    action: () => {
-
-    },
-    props: null,
-  },
-};
+//     },
+//     props: null,
+//   },
+// };
 
 // ///////////////////////////////// //
 //
@@ -63,8 +28,8 @@ function linksControllerClickHandler(e) {
   if (target instanceof HTMLAnchorElement) {
     e.preventDefault();
 
-    if (routerDebug) {
-      console.log('targeter: ', target.dataset.section);
+    if (linkControllerDebug) {
+      console.log({targeter: target.dataset.section});
     }
 
     const props = configuration[target.dataset.section]?.props;
@@ -81,7 +46,14 @@ export default class LinksController {
     this.enabled = false;
   }
 
-  //TODO: register
+  register (section, action = () => {}, props = null) {
+		configuration[section] = {
+			action,
+			props
+		};
+
+		return this;
+	}
 
   enable() {
     if (!this.enabled) {

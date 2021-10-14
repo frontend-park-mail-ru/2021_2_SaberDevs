@@ -8,7 +8,7 @@ export default class Router {
 	 * @param {string} path
 	 * @param {BaseView} View
 	 */
-	register (path, View) {
+	register(path, View) {
 		this.routes[ path ] = {
 			View: View,
 			view: null,
@@ -21,20 +21,13 @@ export default class Router {
 	/**
 	 * @param {string} path
 	 */
-	open (path) {
-		const route = this.routes[ path ];
+	open(path) {
+		const route = this.routes[path];
 
+		//TODO: check it with linkController
 		if (!route) {
 			this.open('/');
 			return;
-		}
-
-		if (window.location.pathname !== path) {
-			window.history.pushState(
-				null,
-				'',
-				path
-			);
 		}
 
 		let {View, view, el} = route;
@@ -48,6 +41,22 @@ export default class Router {
 			view = new View(el);
 		}
 
+		// TODO: check how it works
+		const redirectRoute = view.redirect(window.location.pathname); 
+		if (redirectRoute !== '') {
+			this.open(redirectRoute);
+			// this.routes[path] = {View, view, el};
+			return;
+		}
+		
+		if (window.location.pathname !== path) {
+			window.history.pushState(
+				null,
+				'',
+				path
+			);
+		}
+
 		if (!view.active) {
 			Object.values(this.routes).forEach(({view}) => {
 				if (view && view.active) {
@@ -58,10 +67,10 @@ export default class Router {
 			view.show();
 		}
 
-		this.routes[ path ] = {View, view, el};
+		this.routes[path] = {View, view, el};
 	}
 
-	start () {
+	start() {
 		this.root.addEventListener('click', function (event) {
 			if (!(event.target instanceof HTMLAnchorElement)) {
 				return;
@@ -70,9 +79,10 @@ export default class Router {
 			event.preventDefault();
 			const link = event.target;
 
-			console.log({
-				pathname: link.pathname
-			});
+			if (routerDebug) {
+				console.log({pathname: link.pathname});
+			}
+			
 
 			this.open(link.pathname);
 		}.bind(this));

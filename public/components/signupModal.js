@@ -1,7 +1,7 @@
 import modalComponent from './modal.js';
 import signupForm from './signupForm.js';
 import store from '../flux/store.js';
-import {signupFormActions, changePageActions} from '../flux/actions.js';
+import {signupFormActions} from '../flux/actions.js';
 import {modalTypes} from '../flux/types.js';
 
 
@@ -22,7 +22,7 @@ store.subscribe(modalTypes.MODAL_CLOSE, () => {
 });
 
 store.subscribe(modalTypes.MODAL_OPEN, () => {
-  document.title = 'SaberProject | ' + (store.getState().signupForm.showRegister ? 'Sign Up':'Login');
+  document.title = `SaberProject | ${store.getState().signupForm.showRegister ? 'Sign Up':'Login'}`;
 });
 
 // ///////////////////////////////// //
@@ -42,32 +42,25 @@ store.subscribe(modalTypes.MODAL_OPEN, () => {
  * @property {loginCallback} onLogin действие, которое будет выполнено после
  * успешного входа/регистрации
  */
-export default function signupModal() {
-  const state = store.getState().signupForm;
-
+export default function signupModal(showRegister) {
   // форма
-  const form = signupForm(state.showRegister);
+  const form = signupForm(showRegister);
   
   // Элементы навигации
   const changeFormTypeBtn = document.createElement('a');
   changeFormTypeBtn.textContent =
-    state.showRegister ? 'У меня уже есть аккаунт' : 'Создать аккаунт';
-  changeFormTypeBtn.href = state.showRegister ? '/login' : '/register';
+    showRegister ? 'У меня уже есть аккаунт' : 'Создать аккаунт';
+  changeFormTypeBtn.href = showRegister ? '/login' : '/register';
   changeFormTypeBtn.addEventListener('click', (e) => {
     e.preventDefault();
 
-    store.dispatch(state.showRegister ?
-      signupFormActions.toggleToSigninForm() :
-      signupFormActions.toggleToSignupForm()
-    )
-
     modalComponent.close();
     setTimeout(() => {
-      signupModal();
+      signupModal(!showRegister);
     }, modalComponent.animationTime);
   });
 
-  modalComponent.setTitle(state.showRegister ? 'Регистрация' : 'Вход');
+  modalComponent.setTitle(showRegister ? 'Регистрация' : 'Вход');
   const okBtn = document.getElementById('modal-btn-ok');
   okBtn.textContent = 'Закрыть';
   const cancelBtn = document.getElementById('modal-btn-cancel');
