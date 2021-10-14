@@ -1,14 +1,19 @@
-import {SYSTYPES} from './types.js'
+import {SYSTYPES} from './types.js';
 
+/**
+ * @param {function(StateObject, Action)} rootReducer
+ * @param {StateObject} initialState
+ * @return {Object} store
+ */
 export default function createStore(rootReducer, initialState) {
   let state = rootReducer(initialState, {type: SYSTYPES.INIT});
   const subscribers = {};
 
   return {
     dispatch(action) {
-      state = rootReducer(state, action)
-      subscribers[action.type] = subscribers[action.type] || []; 
-      subscribers[action.type].forEach(subscriber => {
+      state = rootReducer(state, action);
+      subscribers[action.type] = subscribers[action.type] || [];
+      subscribers[action.type].forEach((subscriber) => {
         if (fluxDebug) {
           console.log('subscribe trigger on', action.type);
         }
@@ -23,11 +28,12 @@ export default function createStore(rootReducer, initialState) {
       subscribers[actionType] = subscribers[actionType] || [];
       subscribers[actionType].push(callback);
       return function() {
-        subscribers[actionType].splice(subscribers[actionType].indexOf(callback));
-      }
+        subscribers[actionType]
+            .splice(subscribers[actionType].indexOf(callback));
+      };
     },
     getState() {
       return state;
-    }
-  }
+    },
+  };
 }

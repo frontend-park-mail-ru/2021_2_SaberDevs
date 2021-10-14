@@ -2,31 +2,53 @@
  * @class BaseView
  * @module BaseView
  */
- export default class BaseView {
-	constructor (el) {
-		this.el = el;
-		this.el.dataset.view = this.constructor.name;
-		this.el.hidden = true;
-	}
+export default class BaseView {
+  /**
+   * @param {HTMLElement} rootElement
+   */
+  constructor(rootElement) {
+    this.rootElement = rootElement;
+    this.rootElement.dataset.view = this.constructor.name;
+    this.rootElement.hidden = true;
+  }
 
-	get active() {
-		return !this.el.hidden;
-	}
+  /**
+   * true - эдемент активен, его нежелательно перетирать
+   * @return {boolean}
+   */
+  isActive() {
+    return !this.rootElement.hidden;
+  }
 
-	hide () {
-		this.el.hidden = true;
-	}
+  /**
+   * Скрыть элемент
+   */
+  hide() {
+    this.rootElement.hidden = true;
+  }
 
-	show () {
-		this.el.hidden = false;
-		this.render();
-	}
+  /**
+   * Показать элемент. Вызывает render() для обновления.
+   */
+  show() {
+    this.rootElement.hidden = false;
+    this.render();
+  }
 
-	render() {
+  /**
+   * Перерисовать элемент.
+   */
+  render() {
 
-	}
+  }
 
-	redirect(currentPath) {
-		return '';
-	}
+  /**
+   * Вызывается в роутере. Если return не '', нужно выполнить переход
+   * по пути, возвращенному из функции
+   * @param {string} currentPath
+   * @return {string}
+   */
+  redirect(currentPath) {
+    return '';
+  }
 }

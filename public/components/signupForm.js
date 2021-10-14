@@ -126,21 +126,22 @@ export default function signupForm(showRegister) {
         // showRegister ? name,
         // showRegister ? surname,
       },
-      callback: (status, response) => {
-        if (status === Ajax.STATUS.ok) {
-          store.dispatch(authorizationActions.login(response.data))
-          modalComponent.close();
-          return;
-        }
+    })
+        .then(
+            ({status, response}) => {
+              if (status === Ajax.STATUS.ok) {
+                store.dispatch(authorizationActions.login(response.data));
+                modalComponent.close();
+                return;
+              }
 
-        const formWarning = document.getElementById('auth-form-waring') ||
-          document.createElement('div');
-        formWarning.className = 'auth-form-waring';
-        formWarning.id = 'auth-form-waring';
-        formWarning.textContent = response.msg;
-        form.appendChild(formWarning);
-      },
-    });
+              const formWarning = document.getElementById('auth-form-waring') ||
+                document.createElement('div');
+              formWarning.className = 'auth-form-waring';
+              formWarning.id = 'auth-form-waring';
+              formWarning.textContent = response.msg;
+              form.appendChild(formWarning);
+            });
   });
 
   return form;

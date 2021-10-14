@@ -27,20 +27,12 @@ const ajaxStatuses = {
 };
 
 /**
- * Выполняется, если запрос прошел успешно
- * @callback requestCallback
- * @param {number} responseCode
- * @param {Object} responseMessage
- */
-
-/**
  * Выполняет ajax-запрос на сервер. При успешном выполнении вызывает callback
  * @param {Object} requestParams
  * @property {AjaxMethod} [method = "GET"]
  * @property {Url} [url = '/']
- * @property {?Object} [body = null]
- * @property {requestCallback} [callback = () => {}]
- * @return {void}
+ * @property {any} body
+ * @return {Promise}
  */
 function ajax(requestParams) {
   const url = APIurl + (requestParams.url || '/');
@@ -59,7 +51,7 @@ function ajax(requestParams) {
   }
 
   let status = 0;
-  fetch(url, fetchParams)
+  return fetch(url, fetchParams)
       .then((response) => {
         status = response.status;
         return response.text();
@@ -68,7 +60,10 @@ function ajax(requestParams) {
         if (ajaxDebug) {
           console.log('ajax resolved ' + status +': ' + response);
         }
-        requestParams.callback(status, JSON.parse(response));
+        return {
+          status,
+          response: JSON.parse(response),
+        };
       })
       .catch((error) => {
         console.warn(error);

@@ -2,14 +2,14 @@ import BaseView from './baseView.js';
 
 import headerComponent from '../components/header.pug.js';
 import sideBarComponent from '../components/sidebar.pug.js';
-// import newsBarComponent from '../components/newsbar.js';
 import cardComponent from '../components/card.pug.js';
-import userPreviewComponent from '../components/userPreview.pug.js'
+// import newsBarComponent from '../components/newsbar.js';
+// import userPreviewComponent from '../components/userPreview.pug.js'
 import modalComponent from '../components/modal.js';
 
 import store from '../flux/store.js';
 import {mainPageActions, changePageActions} from '../flux/actions.js';
-import { authorizationTypes, changePageTypes } from '../flux/types.js';
+import {authorizationTypes, changePageTypes} from '../flux/types.js';
 
 import Ajax from '../modules/ajax.js';
 import Utils from '../utils.js';
@@ -49,15 +49,20 @@ function uploadNextCards() {
     return;
   }
 
-  // создаем обработчик для ответа с сервера (для краткости)
-  const onLoad = (data) => {
+  /**
+   * Обработчик для ответа с сервера
+   * @param {Object} data
+   */
+  function onLoad(data) {
     if (ajaxDebug) {
       console.log('more news loaded!');
+      console.log({data});
     }
 
     const trackedCard = document.getElementById(state.trackedCardId);
     const cards = data;
 
+    console.log(trackedCard);
     if (cards instanceof Array) {
       cards.forEach((element) => {
         trackedCard.insertAdjacentHTML(
@@ -66,7 +71,9 @@ function uploadNextCards() {
         );
       });
       if (cards.length > 0) {
-        store.dispatch(mainPageActions.saveNewCards(cards[cards.length - 1].id, cards));
+        store.dispatch(
+            mainPageActions.saveNewCards(cards[cards.length - 1].id, cards),
+        );
       }
     } else {
       console.warn('API ERROR! Server must return NewsRecordChunk');
@@ -94,17 +101,17 @@ function uploadNextCards() {
     url: `/feed?idLastLoaded=${state.idLastLoaded || ''}` +
       '&login=' +
       (state.login === '' ? 'all' : state.login),
-    callback: (status, response) => {
-      if (status === Ajax.STATUS.ok) {
-        onLoad(response.data);
-        return;
-      }
+  })
+      .then(({status, response}) => {
+        if (status === Ajax.STATUS.ok) {
+          onLoad(response.data);
+          return;
+        }
 
-      modalComponent.setTitle(`Ошибка сети ${status}`);
-      modalComponent.setContent(response.msg);
-      modalComponent.open(false);
-    },
-  });
+        modalComponent.setTitle(`Ошибка сети ${status}`);
+        modalComponent.setContent(response.msg);
+        modalComponent.open(false);
+      });
 }
 
 /**
@@ -140,7 +147,7 @@ function headerNavLinkBar(linksArray) {
  * Заполняет правый row произвольным контентом
  * @param {string} content
  */
- function setHeaderContent(content) {
+function setHeaderContent(content) {
   const headerContent = document.getElementById('header-content');
   headerContent.innerHTML = content;
 }
@@ -154,10 +161,13 @@ function setHeaderLinks(linksArray) {
   setHeaderContent(content);
 }
 
-// создаем такой обработчик, который можно будет удалить
-// это обертка функции в (event) => undefined
+/**
+ * Обработчик scroll, который можно будет удалить
+ * Проверяет, достигнут ли конец ленты
+ * @param {event} event
+ */
 function newsFeedEndReachEventAction(event) {
-  const state = store.getState().mainPage
+  const state = store.getState().mainPage;
   const trackedCard = document.getElementById(
       state.trackedCardId,
   );
@@ -199,105 +209,45 @@ function newsFeedEndReachEventAction(event) {
  */
 
 /**
- * импортирует root-элемент, через замыкание
- *
- * Страница содержит главный компонент - ленту новостей, хедер, сайдбар.
- * Элементы хедера определяются текущим состоянием.
- * для нее обязательны следующие поля
+ * @class MainPage
+ * @module MainPage
  */
-function render() {
-  if (routerDebug) {
-    console.log("MainPage render");
-  }
-  const root = this.el;
-  store.dispatch(changePageActions.changePage('main', 'SaberProject'));
-  const state = store.getState().mainPage;
-  const authorizationState = store.getState().authorization;
-
-  this.loginUnsubscribe = store.subscribe(authorizationTypes.LOGIN, () => {
-    store.dispatch(mainPageActions.toggle_login(true, store.getState().authorization.login));
-    setHeaderLinks(store.getState().mainPage.headerLinks);
-  });
-
-  this.logoutUnsubscribe = store.subscribe(authorizationTypes.LOGOUT, () => {
-    store.dispatch(mainPageActions.toggle_login(false, ''));
-    setHeaderLinks(store.getState().mainPage.headerLinks);
-  });
-
-  window.addEventListener(
-    'scroll',
-    newsFeedEndReachEventAction,
-    false,
-  );
-
-  root.innerHTML = '';
-
-  let headerContent = '';
-
-  // TODO: когда версточка будет готова
-  // if (state.isAuthenticated) {
-  //   headerContent = userPreviewComponent({url: `/profile/${authorizationState.login}`,
-  //     name: authorizationState.name, img: authorizationState.avatar});
-  // } else {
-  //   headerContent = headerNavLinkBar(state.headerLinks).outerHTML;
-  // }
-  headerContent = headerNavLinkBar(state.headerLinks).outerHTML;
-
-  if (headerDebug) {
-    console.log('headerContent: ', headerContent);
-  }
-
-  root.innerHTML += headerComponent({content: headerContent});
-  // root.innerHTML += newsBarComponent({content: props.news});
-
-  const mainContainer = document.createElement('main');
-  mainContainer.className = 'container';
-  mainContainer.innerHTML += sideBarComponent({content: state.sideBarLinks});
-
-  const contentDiv = document.createElement('div');
-  contentDiv.className = 'content col';
-  contentDiv.id = 'menu-content-block';
-
-  if (JSON.stringify(state.cards) === '[]') {
-    uploadNextCards();
-  }
-  state.cards.forEach((element) => {
-    contentDiv.innerHTML += cardComponent(element);
-  });
-
-  contentDiv.innerHTML += cardComponent(loadingCard);
-
-  mainContainer.appendChild(contentDiv);
-  root.appendChild(mainContainer);
-}
-
 export default class MainPage extends BaseView {
-	constructor(el) {
-		super(el);
+  /**
+   * @param {HTMLElement} rootElement
+   */
+  constructor(rootElement) {
+    super(rootElement);
     this.render = render;
     this.loginUnsubscribe = null;
     this.logoutUnsubscribe = null;
 
     store.subscribe(changePageTypes.CHANGE_PAGE, () => {
       window.removeEventListener(
-        'scroll',
-        newsFeedEndReachEventAction,
-        false,
+          'scroll',
+          newsFeedEndReachEventAction,
+          false,
       );
     });
-	}
+  }
 
-	show() {
-		super.show();
+  /**
+   * Показать элемент. Вызывает render() для обновления.
+   */
+  show() {
+    super.show();
     if (routerDebug) {
-      console.log("MainPage show");
+      console.log('MainPage show');
     }
-	}
+  }
 
+  /**
+   * Скрыть элемент
+   */
   hide() {
     super.hide();
     if (routerDebug) {
-      console.log("MainPage hide");
+      console.log('MainPage hide');
     }
     if (this.loginUnsubscribe) {
       this.loginUnsubscribe();
@@ -307,5 +257,80 @@ export default class MainPage extends BaseView {
       this.logoutUnsubscribe();
       this.logoutUnsubscribe = null;
     }
+  }
+
+  /**
+ * Страница содержит главный компонент - ленту новостей, хедер, сайдбар.
+ */
+  render() {
+    if (routerDebug) {
+      console.log('MainPage render');
+    }
+    const root = this.rootElement;
+    store.dispatch(changePageActions.changePage('main', 'SaberProject'));
+    const state = store.getState().mainPage;
+    // const authorizationState = store.getState().authorization;
+
+    this.loginUnsubscribe = store.subscribe(authorizationTypes.LOGIN, () => {
+      store.dispatch(
+          mainPageActions.toggleLogin(
+              true,
+              store.getState().authorization.login,
+          ),
+      );
+      setHeaderLinks(store.getState().mainPage.headerLinks);
+    });
+
+    this.logoutUnsubscribe = store.subscribe(authorizationTypes.LOGOUT, () => {
+      store.dispatch(mainPageActions.toggleLogin(false, ''));
+      setHeaderLinks(store.getState().mainPage.headerLinks);
+    });
+
+    window.addEventListener(
+        'scroll',
+        newsFeedEndReachEventAction,
+        false,
+    );
+
+    root.innerHTML = '';
+
+    let headerContent = '';
+
+    // TODO: когда версточка будет готова
+    // if (state.isAuthenticated) {
+    //   headerContent = userPreviewComponent(
+    // {url: `/profile/${authorizationState.login}`,
+    //     name: authorizationState.name, img: authorizationState.avatar});
+    // } else {
+    //   headerContent = headerNavLinkBar(state.headerLinks).outerHTML;
+    // }
+    headerContent = headerNavLinkBar(state.headerLinks).outerHTML;
+
+    if (headerDebug) {
+      console.log('headerContent: ', headerContent);
+    }
+
+    root.innerHTML += headerComponent({content: headerContent});
+    // root.innerHTML += newsBarComponent({content: props.news});
+
+    const mainContainer = document.createElement('main');
+    mainContainer.className = 'container';
+    mainContainer.innerHTML += sideBarComponent({content: state.sideBarLinks});
+
+    const contentDiv = document.createElement('div');
+    contentDiv.className = 'content col';
+    contentDiv.id = 'menu-content-block';
+
+    if (JSON.stringify(state.cards) === '[]') {
+      uploadNextCards();
+    }
+    state.cards.forEach((element) => {
+      contentDiv.innerHTML += cardComponent(element);
+    });
+
+    contentDiv.innerHTML += cardComponent(loadingCard);
+
+    mainContainer.appendChild(contentDiv);
+    root.appendChild(mainContainer);
   }
 }

@@ -1,5 +1,11 @@
-import createStore from "./create_store.js";
-import {authorizeReducer, changePageReducer, mainPageReducer, signupFormReducer, combineReducers} from './reducers.js';
+import createStore from './create_store.js';
+import {
+  authorizeReducer,
+  changePageReducer,
+  mainPageReducer,
+  signupFormReducer,
+  combineReducers,
+} from './reducers.js';
 
 const store = createStore(combineReducers({
   authorization: authorizeReducer,

@@ -3,7 +3,7 @@
 // pages
 import MainPage from './pages/mainPage.js';
 import ProfilePage from './pages/profilePage.js';
-import SignupPage from './pages/signupPage.js';
+// import SignupPage from './pages/signupPage.js';
 
 // Controllers
 import LinksController from './components/linksController.js';
@@ -29,28 +29,28 @@ const linksController = new LinksController(root);
 //
 // ///////////////////////////////// //
 router
-  .register('/', MainPage)
-  .register('/profile', ProfilePage)
-//   .register('/login', LoginPage);
-  // TODO:
-	// .register('/signup', SignupPage);
+    .register('/', MainPage)
+    .register('/profile', ProfilePage);
+// .register('/login', LoginPage);
+// TODO:
+// .register('/signup', SignupPage);
 
 linksController
-  .register(
-    'signupModal',
-    signupModal,
-    true)
-  .register(
-	  'loginModal',
-    signupModal,
-    false)
-	.register(
-		'logout',
-		() => {
-			if (store.getState().mainPage.isAuthenticated) {
-			  logoutRequest();
-			}
-		})
+    .register(
+        'signupModal',
+        signupModal,
+        true)
+    .register(
+        'loginModal',
+        signupModal,
+        false)
+    .register(
+        'logout',
+        () => {
+          if (store.getState().mainPage.isAuthenticated) {
+            logoutRequest();
+          }
+        });
 
 // TODO: экран загрузки
 cookieLogin();

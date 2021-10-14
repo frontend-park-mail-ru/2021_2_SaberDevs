@@ -16,7 +16,8 @@ let cancelBtnDispay = true;
  * @property {string?} btnOkSign      - надпись на кнопке подтверждения
  * @property {string?} btnCancelSign  - надпись на кнопке отмены
  * @property {bolean} isEnteractive   - true - кнопки на футере отображаются
- * @property {bolean} isCancelable    - true - кнопка отмены на футере отображается
+ * @property {bolean} isCancelable    - true - кнопка отмены
+ *                                      на футере отображается
  * @property {callback} onConfirm     - обработчик кнопки ОК
  * @property {callback} onDecline     - обработчик кнопки CANCEL
  * @return {string}
@@ -75,7 +76,8 @@ function fillDefaultModal(props) {
  * @property {string?} btnOkSign      - надпись на кнопке подтверждения
  * @property {string?} btnCancelSign  - надпись на кнопке отмены
  * @property {bolean} isEnteractive   - true - кнопки на футере отображаются
- * @property {bolean} isCancelable    - true - кнопка отмены на футере отображается
+ * @property {bolean} isCancelable    - true - кнопка отмены
+ *                                      на футере отображается
  * @property {callback} onConfirm     - обработчик кнопки ОК
  * @property {callback} onDecline     - обработчик кнопки CANCEL
  * @return {HTMLDivElement}
@@ -103,7 +105,7 @@ const modalComponent = {
     }
 
     store.dispatch(modalActions.modalClose());
-    // TODO: вынести в редьюсер
+
     // Разрешаем прокрутку фоновой страницы
     document.body.style.overflow = 'scroll';
 

@@ -1,7 +1,5 @@
 import modalComponent from './modal.js';
 import signupForm from './signupForm.js';
-import store from '../flux/store.js';
-import {signupFormActions} from '../flux/actions.js';
 import {modalTypes} from '../flux/types.js';
 
 
@@ -22,7 +20,8 @@ store.subscribe(modalTypes.MODAL_CLOSE, () => {
 });
 
 store.subscribe(modalTypes.MODAL_OPEN, () => {
-  document.title = `SaberProject | ${store.getState().signupForm.showRegister ? 'Sign Up':'Login'}`;
+  document.title = `SaberProject |
+  ${store.getState().signupForm.showRegister ? 'Sign Up':'Login'}`;
 });
 
 // ///////////////////////////////// //
@@ -32,20 +31,15 @@ store.subscribe(modalTypes.MODAL_OPEN, () => {
 // ///////////////////////////////// //
 
 /**
- * импортирует root-элемент через замыкание
- *
  * Страница содержит главный компонент - форму регистрации
- * для нее обязательны следующие поля
- * @param {Object} props
- * @property {boolean} isRegistered - true, если нужно отобразить форму
+ * @param {boolean} showRegister
+ * true, если нужно отобразить форму
  * для входа, false - для регистрации
- * @property {loginCallback} onLogin действие, которое будет выполнено после
- * успешного входа/регистрации
  */
 export default function signupModal(showRegister) {
   // форма
   const form = signupForm(showRegister);
-  
+
   // Элементы навигации
   const changeFormTypeBtn = document.createElement('a');
   changeFormTypeBtn.textContent =

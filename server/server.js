@@ -162,8 +162,9 @@ function sendUserdata(login) {
 }
 
 /**
- * Заполняет res сообщением об ошибке с кодом 400
+ * Заполняет res сообщением об ошибке с кодом status
  * @param {http.ServerResponse} res
+ * @param {number} status
  * @param {string} msg
  * @return {void}
  */
@@ -210,7 +211,9 @@ function fullfillOKResponse(res, msg, data) {
     msg,
     data,
   };
-  res.write(JSON.stringify(resObj));
+  const response = JSON.stringify(resObj);
+  console.log('\t' + response);
+  res.write(response);
   res.end();
 }
 
@@ -333,7 +336,6 @@ function executeAPICall(req, res) {
             let loginByCookie = '';
             console.log('\t\tvalidCookies list: ', validCookies);
             // действительно перебираем все свойства объекта
-            // eslint-disable-next-line guard-for-in
             for (const cookie in cookies) {
               for (let i = 0; i < validCookies.length &&
                   loginByCookie === ''; ++i) {
@@ -426,9 +428,11 @@ function executeAPICall(req, res) {
             }
 
           case '/logout':
-            console.log('\t\tLogout. Delete user cookies: ', JSON.stringify(cookies));
+            console.log(
+                '\t\tLogout. Delete user cookies: ', JSON.stringify(cookies),
+            );
             let cnt = 0;
-            for (let cookie in cookies) {
+            for (const cookie in cookies) {
               let idx = -1;
               for (let i = 0; i < validCookies.length && idx === -1; ++i) {
                 if (validCookies[i].cookie === cookies[cookie]) {

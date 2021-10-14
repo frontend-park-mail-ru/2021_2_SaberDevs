@@ -11,8 +11,8 @@ export function logoutRequest() {
   Ajax.post({
     url: '/logout',
     body: {},
-    callback: () => store.dispatch(authorizationActions.logout()),
-  });
+  })
+      .then(() => store.dispatch(authorizationActions.logout()));
 }
 
 /**
@@ -21,18 +21,19 @@ export function logoutRequest() {
  * При успешном выполнении вызывает
  * событие authorizationTypes.LOGIN
  */
- export function cookieLogin() {
+export function cookieLogin() {
   Ajax.post({
     url: '/login',
     body: {},
-    callback: (status, response) => {
-      if (status === Ajax.STATUS.ok) {
-        store.dispatch(authorizationActions.login(response.data));
-      } else {
-        console.log('Cookie-Login failed');
-      }
-    },
-  });
+  })
+      .then(
+          ({status, response}) => {
+            if (status === Ajax.STATUS.ok) {
+              store.dispatch(authorizationActions.login(response.data));
+            } else {
+              console.log('Cookie-Login failed');
+            }
+          });
 }
 
 const ajaxRequests = {

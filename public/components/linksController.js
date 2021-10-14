@@ -11,8 +11,7 @@ const configuration = {};
 
 //     },
 //     props: null,
-//   },
-// };
+//   }
 
 // ///////////////////////////////// //
 //
@@ -21,8 +20,13 @@ const configuration = {};
 //
 // ///////////////////////////////// //
 
-function linksControllerClickHandler(e) {
-  const {target} = e;
+/**
+ * Общий глобальный обработчик. Действует только на ссылки.
+ * Здесь можно задать любое поведение при клике на HTMLAnchorElement
+ * @param {event} event
+ */
+function linksControllerClickHandler(event) {
+  const {target} = event;
 
   // проверям, что клик был по ссылке (anchor)
   if (target instanceof HTMLAnchorElement) {
@@ -40,21 +44,43 @@ function linksControllerClickHandler(e) {
   }
 }
 
+/**
+ * Отвечает за поведение при клике на ссылку,
+ * которое не ведет к переходу на другую страницу.
+ * HTMLAnchot должен содержать атрибут data-section,
+ * который указывается при регистрации
+ * @class LinksController
+ */
 export default class LinksController {
+  /**
+   * @param {HTMLElement} root
+   */
   constructor(root) {
     this.root = root;
     this.enabled = false;
   }
 
-  register (section, action = () => {}, props = null) {
-		configuration[section] = {
-			action,
-			props
-		};
+  /**
+   * Регистрация элемента в контроллере.
+   * section - значение data-section соответствующего атрибута.
+   * action - действие, выполняемое при клике.
+   * props - параметры, передаваемые в action.
+   * @param {string} section
+   * @param {function} action
+   * @param {any} props
+   * @return {LinksController}
+   */
+  register(section, action = () => {}, props = null) {
+    configuration[section] = {
+      action,
+      props,
+    };
+    return this;
+  }
 
-		return this;
-	}
-
+  /**
+   * Активирует обработчик кликов на элементе root
+   */
   enable() {
     if (!this.enabled) {
       this.enabled = true;
@@ -62,6 +88,9 @@ export default class LinksController {
     }
   }
 
+  /**
+   * Дизактивирует обработчик кликов на элементе root
+   */
   disable() {
     if (this.enabled) {
       this.enabled = false;

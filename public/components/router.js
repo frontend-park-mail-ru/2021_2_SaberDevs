@@ -1,100 +1,110 @@
+/**
+ * @class Router
+ * @module Router
+ */
 export default class Router {
-	constructor (root) {
-		this.routes = {};
-		this.root = root;
-	}
+  /**
+   * @param {HTMLElement} root
+   */
+  constructor(root) {
+    this.routes = {};
+    this.root = root;
+  }
 
-	/**
-	 * @param {string} path
-	 * @param {BaseView} View
-	 */
-	register(path, View) {
-		this.routes[ path ] = {
-			View: View,
-			view: null,
-			el: null
-		};
+  /**
+   * @param {string} path
+   * @param {BaseView} ViewClass
+   * @return {Router}
+   */
+  register(path, ViewClass) {
+    this.routes[path] = {
+      ViewClass,
+      viewInstance: null,
+      rootElement: null,
+    };
 
-		return this;
-	}
+    return this;
+  }
 
-	/**
-	 * @param {string} path
-	 */
-	open(path) {
-		const route = this.routes[path];
+  /**
+   * @param {string} path
+   */
+  open(path) {
+    const route = this.routes[path];
 
-		//TODO: check it with linkController
-		if (!route) {
-			this.open('/');
-			return;
-		}
+    // TODO: check it with linkController
+    if (!route) {
+      this.open('/');
+      return;
+    }
 
-		let {View, view, el} = route;
+    let {ViewClass, viewinstance, rootElement} = route;
 
-		if (!el) {
-			el = document.createElement('section');
-			this.root.appendChild(el);
-		}
+    if (!rootElement) {
+      rootElement = document.createElement('section');
+      this.root.appendChild(rootElement);
+    }
 
-		if (!view) {
-			view = new View(el);
-		}
+    if (!viewinstance) {
+      viewinstance = new ViewClass(rootElement);
+    }
 
-		// TODO: check how it works
-		const redirectRoute = view.redirect(window.location.pathname); 
-		if (redirectRoute !== '') {
-			this.open(redirectRoute);
-			// this.routes[path] = {View, view, el};
-			return;
-		}
-		
-		if (window.location.pathname !== path) {
-			window.history.pushState(
-				null,
-				'',
-				path
-			);
-		}
+    // TODO: check how it works
+    const redirectRoute = viewinstance.redirect(window.location.pathname);
+    if (redirectRoute !== '') {
+      this.open(redirectRoute);
+      // this.routes[path] = {ViewClass, viewinstance, rootElement};
+      return;
+    }
 
-		if (!view.active) {
-			Object.values(this.routes).forEach(({view}) => {
-				if (view && view.active) {
-					view.hide();
-				}
-			});
+    if (window.location.pathname !== path) {
+      window.history.pushState(
+          null,
+          '',
+          path,
+      );
+    }
 
-			view.show();
-		}
+    if (!viewinstance.isActive()) {
+      Object.values(this.routes).forEach(({viewinstance}) => {
+        if (viewinstance && viewinstance.isActive()) {
+          viewinstance.hide();
+        }
+      });
 
-		this.routes[path] = {View, view, el};
-	}
+      viewinstance.show();
+    }
 
-	start() {
-		this.root.addEventListener('click', function (event) {
-			if (!(event.target instanceof HTMLAnchorElement)) {
-				return;
-			}
+    this.routes[path] = {ViewClass, viewinstance, rootElement};
+  }
 
-			event.preventDefault();
-			const link = event.target;
+  /**
+   * Запуск ротуера. Отображение первого элемента, указанного в register()
+   */
+  start() {
+    this.root.addEventListener('click', (event) => {
+      if (!(event.target instanceof HTMLAnchorElement)) {
+        return;
+      }
 
-			if (routerDebug) {
-				console.log({pathname: link.pathname});
-			}
-			
+      event.preventDefault();
+      const link = event.target.pathname;
 
-			this.open(link.pathname);
-		}.bind(this));
+      if (routerDebug) {
+        console.log({pathname: link});
+      }
 
-		window.addEventListener('popstate', function () {
-			const currentPath = window.location.pathname;
+      this.open(link);
+    });
 
-			this.open(currentPath);
-		}.bind(this));
+    window.addEventListener('popstate', () => {
+      const currentPath = window.location.pathname;
 
-		const currentPath = window.location.pathname;
+      this.open(currentPath);
+    });
 
-		this.open(currentPath);
-	}
+    const currentPath = window.location.pathname;
+
+    this.open(currentPath);
+  }
 }

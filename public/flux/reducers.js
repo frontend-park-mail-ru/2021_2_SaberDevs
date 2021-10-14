@@ -1,4 +1,9 @@
-import {authorizationTypes, changePageTypes, mainPageTypes, signupFormTypes, modalTypes} from './types.js'
+import {authorizationTypes,
+  changePageTypes,
+  mainPageTypes,
+  signupFormTypes,
+  modalTypes,
+} from './types.js';
 
 // TODO: куда-нибудь перенести
 const headerLinksOnLogin = [
@@ -11,7 +16,7 @@ const headerLinksOnLogout = [
 ];
 const sideBarLinks = ['hello'];
 
-//function themeReducer(state = initialThemeState)
+// TODO: function themeReducer(state = initialThemeState)
 
 
 const InitialUserState = {
@@ -22,6 +27,11 @@ const InitialUserState = {
   score: 0,
 };
 
+/**
+ * @param {Object} state
+ * @param {Action} action
+ * @return {Object}
+ */
 export function authorizeReducer(state = InitialUserState, action) {
   switch (action.type) {
     case authorizationTypes.LOGIN:
@@ -38,6 +48,11 @@ const InitialPageState = {
   docTitle: 'SaberProject',
 };
 
+/**
+ * @param {Object} state
+ * @param {Action} action
+ * @return {Object}
+ */
 export function changePageReducer(state = InitialPageState, action) {
   switch (action.type) {
     case changePageTypes.CHANGE_PAGE:
@@ -60,6 +75,11 @@ export function changePageReducer(state = InitialPageState, action) {
 
 const InitialSignupFormState = {showRegister: true};
 
+/**
+ * @param {Object} state
+ * @param {Action} action
+ * @return {Object}
+ */
 export function signupFormReducer(state = InitialSignupFormState, action) {
   switch (action.type) {
     case signupFormTypes.SWITCH_FORM_TYPE:
@@ -85,6 +105,11 @@ const InitialMainPageState = {
   sideBarLinks,
 };
 
+/**
+ * @param {Object} state
+ * @param {Action} action
+ * @return {Object}
+ */
 export function mainPageReducer(state = InitialMainPageState, action) {
   switch (action.type) {
     case mainPageTypes.SET_LOADING_FLAG:
@@ -107,7 +132,7 @@ export function mainPageReducer(state = InitialMainPageState, action) {
         ...state,
         isLoading: false,
         idLastLoaded: action.payload.idLastLoaded,
-        cards: state.cards.concat(action.payload.cards)
+        cards: state.cards.concat(action.payload.cards),
       };
     case mainPageTypes.TOGGLE_AUTH:
       return {
@@ -116,8 +141,7 @@ export function mainPageReducer(state = InitialMainPageState, action) {
         login: action.payload.login,
         headerLinks: action.payload.isAuthenticated ?
           headerLinksOnLogin : headerLinksOnLogout,
-      }
-    
+      };
   }
   return state;
 }
@@ -125,33 +149,41 @@ export function mainPageReducer(state = InitialMainPageState, action) {
 
 const InitialModalState = {};
 
+/**
+ * @param {Object} state
+ * @param {Action} action
+ * @return {Object}
+ */
 export function modalReducer(state = InitialModalState, action) {
   switch (action.type) {
     case modalTypes.MODAL_OPEN:
-      return {
-        ...state,
-      };
+      return state;
     case modalTypes.MODAL_CLOSE:
-      return {
-        ...state,
-      };
+      return state;
   }
   return state;
 }
 
-
+/**
+ * @param {function(StateObject, Action)} reducers
+ * @return {function(StateObject, Action)}
+ */
 export function combineReducers(reducers) {
-  for (let reducer in reducers) {
-      if (typeof(reducers[reducer]) !== 'function') {
-        console.warn(`Reducers Combiner: ${reducer} is not a function. It will not be called. It is a ${typeof(reducers[reducer])}.`);
-        delete reducers[reducer.name];
-      }
-  } 
+  for (const reducer in reducers) {
+    if (typeof(reducers[reducer]) !== 'function') {
+      console.warn(
+          `Reducers Combiner: ${reducer} is not a function.
+          It will not be called. It is a ${typeof(reducers[reducer])}.`,
+      );
+      delete reducers[reducer.name];
+    }
+  }
   return function(state, action) {
     if (!state) {
       state = {};
     }
-    for (let reducer in reducers) {
+
+    for (const reducer in reducers) {
       const newState = reducers[reducer](state[reducer], action);
       if (newState !== state[reducer]) {
         let printState = state[reducer];
@@ -164,7 +196,7 @@ export function combineReducers(reducers) {
             delete printState.headerLinks;
             delete printState.sideBarLinks;
             printNewState = {};
-            Object.assign(printNewState, state[reducer]);
+            Object.assign(printNewState, newState);
             delete printNewState.cards;
             delete printNewState.headerLinks;
             delete printNewState.sideBarLinks;
@@ -178,5 +210,5 @@ export function combineReducers(reducers) {
       }
     }
     return state;
-  }
+  };
 }

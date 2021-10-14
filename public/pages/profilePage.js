@@ -7,54 +7,78 @@ import store from '../flux/store.js';
 import {changePageActions} from '../flux/actions.js';
 
 /**
- * Страница содержит главный компонент - карточку пользователя
+ * @class ProfilePage
+ * @module ProfilePage
  */
-function render() {
-  if (routerDebug) {
-    console.log("ProfilePage render");
-  }
-  const root = this.el;
-  const state = store.getState().authorization;
-  store.dispatch(changePageActions.changePage('profile', `SaberProject | ${state.login}`));
-
-  root.innerHTML = '';
-
-  const profile = document.createElement('div');
-  profile.innerHTML = profileComponent(state);
-
-  const backBtn = createToMenuBtn();
-
-  root.appendChild(profile);
-  root.appendChild(backBtn);
-}
-
 export default class ProfilePage extends BaseView {
-  constructor(el) {
-		super(el);
+  /**
+   * @param {HTMLElement} rootElement
+   */
+  constructor(rootElement) {
+    super(rootElement);
     this.render = render;
-	}
+  }
 
+  /**
+   * Показать элемент. Вызывает render() для обновления.
+   */
   show() {
     super.show();
     if (routerDebug) {
-      console.log("ProfilePage show");
+      console.log('ProfilePage show');
     }
   }
-
+  /**
+   * Скрыть элемент
+   */
   hide() {
     super.hide();
     if (routerDebug) {
-      console.log("ProfilePage hide");
+      console.log('ProfilePage hide');
     }
   }
 
+  /**
+   * Вызывается в роутере. Если return не '', нужно выполнить переход
+   * по пути, возвращенному из функции
+   * Возможны редиректы на: /login
+   * @param {string} currentPath
+   * @return {string}
+   */
   redirect(currentPath) {
     if (store.getState().authorization.login !== '') {
       return '';
     }
     if (routerDebug) {
-      console.log("ProfilePage redirect to /login");
+      console.log('ProfilePage redirect to /login');
     }
     return '/login';
   }
-};
+
+  /**
+ * Страница содержит главный компонент - карточку пользователя
+ */
+  render() {
+    if (routerDebug) {
+      console.log('ProfilePage render');
+    }
+    const root = this.rootElement;
+    const state = store.getState().authorization;
+    store.dispatch(
+        changePageActions.changePage(
+            'profile',
+            `SaberProject | ${state.login}`,
+        ),
+    );
+
+    root.innerHTML = '';
+
+    const profile = document.createElement('div');
+    profile.innerHTML = profileComponent(state);
+
+    const backBtn = createToMenuBtn();
+
+    root.appendChild(profile);
+    root.appendChild(backBtn);
+  }
+}
