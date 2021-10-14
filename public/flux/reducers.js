@@ -3,11 +3,11 @@ import {authorizationTypes, changePageTypes, mainPageTypes, signupFormTypes, mod
 // TODO: куда-нибудь перенести
 const headerLinksOnLogin = [
   {name: 'Профиль', section: 'profilePage', href: '/profile'},
-  {href: '/logout', section: 'logout', name: 'Выход'},
+  {section: 'logout', name: 'Выход'},
 ];
 const headerLinksOnLogout = [
-  {name: 'Зарегистрироваться', section: 'signupPopUp', href: '/signup'},
-  {name: 'Войти', section: 'loginPopUp', href: '/login'},
+  {name: 'Зарегистрироваться', section: 'signupPopUp'},
+  {name: 'Войти', section: 'loginPopUp'},
 ];
 const sideBarLinks = ['hello'];
 

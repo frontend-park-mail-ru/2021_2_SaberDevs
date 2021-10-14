@@ -1,3 +1,5 @@
+import BaseView from './baseView.js';
+
 import headerComponent from '../components/header.pug.js';
 import sideBarComponent from '../components/sidebar.pug.js';
 // import newsBarComponent from '../components/newsbar.js';
@@ -35,15 +37,9 @@ const loadingCard = {
 
 /**
  * Получить feedChunkSize записей (настройка на стороне сервера)
- * @param {Object} state
- * @property {string} trackedCardId - ID элемента, при появлении
- * которого в области видимости, будет происходить подгрузка
- * @property {string} idLastLoaded - ID элемента ленты новостей, который
- * был загружен последним в пердыдущий раз. Лента будет загружаться
- * с этой новости
- * @property {string} login - пользователя, для которого составлена подборка
+ * и отрисовать их перед loadingCard
  */
-export function uploadNextCards() {
+function uploadNextCards() {
   const state = store.getState().mainPage;
 
   if (state.doNotUpload || state.isLoading) {
@@ -127,7 +123,9 @@ function headerNavLinkBar(linksArray) {
     button.className = 'header-nav-link m-10';
 
     const headerNavLink = document.createElement('a');
-    headerNavLink.href = href;
+    if (href) {
+      headerNavLink.href = href;
+    }
     headerNavLink.dataset.section = section;
     headerNavLink.textContent = name;
 
@@ -136,6 +134,25 @@ function headerNavLinkBar(linksArray) {
     headerNavDiv.appendChild(button);
   });
   return headerNavDiv;
+}
+
+/**
+ * Заполняет правый row произвольным контентом
+ * @param {string} content
+ */
+ function setHeaderContent(content) {
+  console.log('setHeaderContent: ' + content);
+  const headerContent = document.getElementById('header-content');
+  headerContent.innerHTML = content;
+}
+
+/**
+ * Заполняет правый row ссылками
+ * @param {Array.Object<string, string, string>} linksArray
+ */
+function setHeaderLinks(linksArray) {
+  const content = headerNavLinkBar(linksArray).outerHTML;
+  setHeaderContent(content);
 }
 
 // создаем такой обработчик, который можно будет удалить
@@ -188,17 +205,9 @@ function newsFeedEndReachEventAction(event) {
  * Страница содержит главный компонент - ленту новостей, хедер, сайдбар.
  * Элементы хедера определяются текущим состоянием.
  * для нее обязательны следующие поля
- *
- * @param {Object} props
- * @property {Array.HTMLAnchorElement} headerLinks
- * @property {Array.HTMLAnchorElement} sideBarLinks
- * @property {boolean} isAuthenticated true - в хедере показывается иконка
- * пользователя, доступен переход в профиль false - ссылки логин/регистрация
- * @property {UserData} userData
- * @property {MainCardState} state глобальное состояние ленты новостей
- * @return {void}
  */
-export default function mainPage() {
+function render() {
+  const root = this.el;
   store.dispatch(changePageActions.changePage('main', 'SaberProject'));
   const state = store.getState().mainPage;
   const authorizationState = store.getState().authorization;
@@ -275,21 +284,35 @@ export default function mainPage() {
   }
 }
 
-/**
- * Заполняет правый row произвольным контентом
- * @param {string} content
- */
-export function setHeaderContent(content) {
-  console.log('setHeaderContent: ' + content);
-  const headerContent = document.getElementById('header-content');
-  headerContent.innerHTML = content;
-}
+export default class MainPage extends BaseView {
+	constructor (el) {
+		super(el);
+    this.render = render;
+    // TODO: 
+		// this.users = null;
+		// bus.on('users-loaded', this.setUsers.bind(this));
+	}
 
-/**
- * Заполняет правый row ссылками
- * @param {Array.Object<string, string, string>} linksArray
- */
-export function setHeaderLinks(linksArray) {
-  const content = headerNavLinkBar(linksArray).outerHTML;
-  setHeaderContent(content);
+	show () {
+		super.show();
+
+		// this.fetchUsers();
+	}
+
+	// fetchUsers () {
+	// 	bus.emit('fetch-users');
+	// }
+
+	// setUsers (users) {
+	// 	this.users = users;
+	// 	this.render();
+	// }
+
+	
+
+	// renderLoading () {
+	// 	const loading = document.createElement('strong');
+	// 	loading.textContent = 'Loading';
+	// 	this.el.appendChild(loading);
+	// }
 }

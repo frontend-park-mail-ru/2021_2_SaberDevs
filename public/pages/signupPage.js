@@ -1,9 +1,12 @@
-import modalComponent from './modal.js';
-import signupForm from './signupForm.js';
-import store from '../flux/store.js';
-import {signupFormActions, changePageActions} from '../flux/actions.js';
-import {modalTypes} from '../flux/types.js';
+import BaseView from './baseView.js';
 
+import signupForm from '../components/signupForm.js';
+import createToMenuBtn from '../components/buttonToMenu.js';
+
+import store from '../flux/store.js';
+// TODO:
+// import {changePageActions} from '../flux/actions.js';
+import {signupFormActions} from '../flux/actions.js';
 
 // ///////////////////////////////// //
 //
@@ -16,14 +19,6 @@ import {modalTypes} from '../flux/types.js';
  * @callback loginCallback
  * @param {Object} props
  */
-
-store.subscribe(modalTypes.MODAL_CLOSE, () => {
-  document.title = store.getState().page.docTitle;
-});
-
-store.subscribe(modalTypes.MODAL_OPEN, () => {
-  document.title = 'SaberProject | ' + (store.getState().signupForm.showRegister ? 'Sign Up':'Login');
-});
 
 // ///////////////////////////////// //
 //
@@ -42,39 +37,49 @@ store.subscribe(modalTypes.MODAL_OPEN, () => {
  * @property {loginCallback} onLogin действие, которое будет выполнено после
  * успешного входа/регистрации
  */
-export default function signupModal() {
+function render() {
   const state = store.getState().signupForm;
-
+  
+  // стираем старые элементы, чтобы нарисовать новые
+  const root = this.el;
+  root.innerHTML = '';
+  
   // форма
   const form = signupForm(state.showRegister);
-  
+
+  const header = document.createElement('h2');
+  header.innerHTML = state.showRegister ? 'Регистрация' : 'Вход';
+
   // Элементы навигации
   const changeFormTypeBtn = document.createElement('a');
   changeFormTypeBtn.textContent =
     state.showRegister ? 'У меня уже есть аккаунт' : 'Создать аккаунт';
   changeFormTypeBtn.href = state.showRegister ? '/login' : '/register';
-  changeFormTypeBtn.addEventListener('click', (e) => {
-    e.preventDefault();
+  // changeFormTypeBtn.addEventListener('click', (e) => {
+  //   e.preventDefault();
 
-    store.dispatch(state.showRegister ?
-      signupFormActions.toggleToSigninForm() :
-      signupFormActions.toggleToSignupForm()
-    )
+  //   store.dispatch(state.showRegister ?
+  //     signupFormActions.toggleToSigninForm() :
+  //     signupFormActions.toggleToSignupForm()
+  //   )
 
-    modalComponent.close();
-    setTimeout(() => {
-      signupModal();
-    }, modalComponent.animationTime);
-  });
+  //   modalComponent.close();
+  //   setTimeout(() => {
+  //     signupModal();
+  //   }, modalComponent.animationTime);
+  // });
 
-  modalComponent.setTitle(state.showRegister ? 'Регистрация' : 'Вход');
-  const okBtn = document.getElementById('modal-btn-ok');
-  okBtn.textContent = 'Закрыть';
-  const cancelBtn = document.getElementById('modal-btn-cancel');
-  cancelBtn.style.display = 'none';
-  const contentDiv = document.getElementById('modal-content');
-  contentDiv.innerHTML = '';
-  contentDiv.appendChild(form);
-  contentDiv.appendChild(changeFormTypeBtn);
-  modalComponent.open();
+  const backBtn = createToMenuBtn();
+
+  root.appendChild(header)
+  root.appendChild(form);
+  root.appendChild(changeFormTypeBtn);
+  root.appendChild(backBtn);
 }
+
+export default class SignupPage extends BaseView {
+  constructor (el) {
+		super(el);
+    this.render = render;
+	}
+};

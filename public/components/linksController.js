@@ -1,7 +1,5 @@
-// pages & components
+// components (no pages there)
 import signupModal from './signupModal.js';
-import profilePage from '../pages/profilePage.js';
-import mainPage from '../pages/mainPage.js';
 
 // network
 import {logoutRequest} from '../modules/ajax_requests.js';
@@ -10,84 +8,44 @@ import {logoutRequest} from '../modules/ajax_requests.js';
 import store from '../flux/store.js';
 import {signupFormActions} from '../flux/actions.js';
 
-
-const root = document.getElementById('root');
-let enabled = false;
-
 // ///////////////////////////////// //
 //
 //     Определяет взаимодействие
-//     со ссылками
+//     со ссылками, но не с
+//     переходами по страницам
 //
 // ///////////////////////////////// //
 const configuration = {
-  mainPage: {
-    href: '/',
-    name: 'Главная',
-    open: {
-      action: () => {
-        mainPage();
-      },
-      props: null,
-    },
-  },
   signupPopUp: {
-    href: '/signup',
-    name: 'Регистрация',
-    open: {
-      action: () => {
-        store.dispatch(signupFormActions.toggleToSignupForm())
-        signupModal();
-      },
-      props: null,
+    action: () => {
+      store.dispatch(signupFormActions.toggleToSignupForm())
+      signupModal();
     },
+    props: null,
   },
+
   loginPopUp: {
-    href: '/login',
-    name: 'Авторизация',
-    open: {
-      action: () => {
-        store.dispatch(signupFormActions.toggleToSigninForm())
-        signupModal();
-      },
-      props: null,
+    action: () => {
+      store.dispatch(signupFormActions.toggleToSigninForm())
+      signupModal();
     },
+    props: null,
   },
-  profilePage: {
-    href: '/profile',
-    name: 'Профиль',
-    open: {
-      action: () => {
-        if (store.getState().mainPage.isAuthenticated) {
-          profilePage();
-        } else {
-          store.dispatch(signupFormActions.toggleToSigninForm())
-          signupModal();
-        }
-      },
-      props: null,
-    },
-  },
+
   logout: {
-    href: '/logout',
-    name: 'Выход',
-    open: {
-      action: () => {
-        if (store.getState().mainPage.isAuthenticated) {
-          logoutRequest();
-        }
-      },
-      props: null,
+    action: () => {
+      if (store.getState().mainPage.isAuthenticated) {
+        logoutRequest();
+      }
     },
+    props: null,
   },
 
   template: {
-    open: {
-      action: () => {
+    action: () => {
 
-      },
-      props: null,
     },
+    props: null,
   },
 };
 
@@ -109,27 +67,33 @@ function linksControllerClickHandler(e) {
       console.log('targeter: ', target.dataset.section);
     }
 
-    const props = configuration[target.dataset.section]?.open?.props;
-    const action = configuration[target.dataset.section]?.open?.action;
+    const props = configuration[target.dataset.section]?.props;
+    const action = configuration[target.dataset.section]?.action;
     if (typeof action === 'function') {
       action.call(null, props);
     }
   }
 }
 
-const linksController = {
-  enable: () => {
-    if (!enabled) {
-      enabled = true;
-      root.addEventListener('click', linksControllerClickHandler);
-    }
-  },
-  disable: () => {
-    if (enabled) {
-      enabled = false;
-      root.removeEventListener('click', linksControllerClickHandler);
-    }
-  },
-};
+export default class LinksController {
+  constructor(root) {
+    this.root = root;
+    this.enabled = false;
+  }
 
-export default linksController;
+  //TODO: register
+
+  enable() {
+    if (!this.enabled) {
+      this.enabled = true;
+      this.root.addEventListener('click', linksControllerClickHandler);
+    }
+  }
+
+  disable() {
+    if (this.enabled) {
+      this.enabled = false;
+      this.root.removeEventListener('click', linksControllerClickHandler);
+    }
+  }
+}
