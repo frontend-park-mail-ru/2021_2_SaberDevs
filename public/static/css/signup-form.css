@@ -62,7 +62,7 @@
   align-items: bottom;
 }
 
-.form-submit-btn#submitBtn {
+.form-submit-btn#input-submitBtn {
   margin-right: 1rem;
 
   width: 50%;
@@ -73,4 +73,36 @@
 
   color: var(--modal-second-text-color);
   font-size: 1.5rem;
+}
+
+.password {
+  width: 300px;
+	margin: 15px auto;
+	position: relative;
+}
+
+#input-password {
+  width: 100%;
+	padding: 5px 0;
+	height: 30px;
+	line-height: 40px;
+	text-indent: 10px;
+	margin: 0 0 15px 0;
+	border-radius: 5px;
+	border: 1px solid #999;
+	font-size: 18px;
+}
+
+.password-control-btn {
+  position: absolute;
+	top: 11px;
+	right: 6px;
+	display: inline-block;
+	width: 20px;
+	height: 20px;
+	background: url(https://snipp.ru/demo/495/view.svg) 0 0 no-repeat;
+}
+
+.password-control-btn.password-show {
+  background: url(https://snipp.ru/demo/495/no-view.svg) 0 0 no-repeat;
 }

@@ -30,7 +30,7 @@ function linksControllerClickHandler(event) {
 
   // проверям, что клик был по ссылке (anchor)
   if (target instanceof HTMLAnchorElement) {
-    e.preventDefault();
+    event.preventDefault();
 
     if (linkControllerDebug) {
       console.log({targeter: target.dataset.section});

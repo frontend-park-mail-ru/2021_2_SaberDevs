@@ -23,7 +23,9 @@
             "public/modules/*.js",
             "public/components/*.js",
             "public/pages/*.js",
-            "server/*.js"],
+            "public/models/*.js",
+            "server/*.js"
+          ],
           "rules": {
             "linebreak-style": "off",
             "no-multi-spaces": "off",

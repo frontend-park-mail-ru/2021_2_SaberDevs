@@ -4,7 +4,7 @@
 //
 // ///////////////////////////////// //
 
-const ajaxDebug = false;
+const ajaxDebug = true;
 const headerDebug = false;
 const modalsDebug = false;
 const fluxDebug = true;

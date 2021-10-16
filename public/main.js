@@ -53,6 +53,8 @@ linksController
         });
 
 // TODO: экран загрузки
-cookieLogin();
-linksController.enable();
-router.start();
+cookieLogin()
+    .then(() => {
+      linksController.enable();
+      router.start();
+    });

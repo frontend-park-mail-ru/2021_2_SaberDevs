@@ -32,31 +32,30 @@ export default class Router {
   open(path) {
     const route = this.routes[path];
 
-    // TODO: check it with linkController
     if (!route) {
       this.open('/');
       return;
     }
 
-    let {ViewClass, viewinstance, rootElement} = route;
+    let {ViewClass, viewInstance, rootElement} = route;
 
     if (!rootElement) {
       rootElement = document.createElement('section');
       this.root.appendChild(rootElement);
     }
 
-    if (!viewinstance) {
-      viewinstance = new ViewClass(rootElement);
+    if (!viewInstance) {
+      viewInstance = new ViewClass(rootElement);
     }
 
-    // TODO: check how it works
-    const redirectRoute = viewinstance.redirect(window.location.pathname);
+    const redirectRoute = viewInstance.redirect(window.location.pathname);
+    console.warn(viewInstance.constructor.name + ' | redirectRoute: '+
+      redirectRoute);
     if (redirectRoute !== '') {
       this.open(redirectRoute);
-      // this.routes[path] = {ViewClass, viewinstance, rootElement};
+      this.routes[path] = {ViewClass, viewInstance, rootElement};
       return;
     }
-
     if (window.location.pathname !== path) {
       window.history.pushState(
           null,
@@ -65,17 +64,17 @@ export default class Router {
       );
     }
 
-    if (!viewinstance.isActive()) {
-      Object.values(this.routes).forEach(({viewinstance}) => {
-        if (viewinstance && viewinstance.isActive()) {
-          viewinstance.hide();
+    if (!viewInstance.isActive()) {
+      Object.values(this.routes).forEach(({viewInstance}) => {
+        if (viewInstance && viewInstance.isActive()) {
+          viewInstance.hide();
         }
       });
 
-      viewinstance.show();
+      viewInstance.show();
     }
 
-    this.routes[path] = {ViewClass, viewinstance, rootElement};
+    this.routes[path] = {ViewClass, viewInstance, rootElement};
   }
 
   /**
@@ -104,7 +103,7 @@ export default class Router {
     });
 
     const currentPath = window.location.pathname;
-
+    console.warn(currentPath);
     this.open(currentPath);
   }
 }

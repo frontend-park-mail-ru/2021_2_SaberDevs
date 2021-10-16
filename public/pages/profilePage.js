@@ -16,7 +16,6 @@ export default class ProfilePage extends BaseView {
    */
   constructor(rootElement) {
     super(rootElement);
-    this.render = render;
   }
 
   /**
@@ -48,9 +47,6 @@ export default class ProfilePage extends BaseView {
   redirect(currentPath) {
     if (store.getState().authorization.login !== '') {
       return '';
-    }
-    if (routerDebug) {
-      console.log('ProfilePage redirect to /login');
     }
     return '/login';
   }

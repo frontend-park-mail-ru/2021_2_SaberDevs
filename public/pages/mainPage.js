@@ -62,7 +62,6 @@ function uploadNextCards() {
     const trackedCard = document.getElementById(state.trackedCardId);
     const cards = data;
 
-    console.log(trackedCard);
     if (cards instanceof Array) {
       cards.forEach((element) => {
         trackedCard.insertAdjacentHTML(
@@ -70,11 +69,12 @@ function uploadNextCards() {
             cardComponent(element),
         );
       });
-      if (cards.length > 0) {
-        store.dispatch(
-            mainPageActions.saveNewCards(cards[cards.length - 1].id, cards),
-        );
-      }
+      store.dispatch(
+          mainPageActions.saveNewCards(
+              cards.length ? cards[cards.length - 1].id : state.idLastLoaded,
+              cards,
+          ),
+      );
     } else {
       console.warn('API ERROR! Server must return NewsRecordChunk');
     }
@@ -98,7 +98,7 @@ function uploadNextCards() {
   store.dispatch(mainPageActions.setLoadingFlag());
 
   Ajax.get({
-    url: `/feed?idLastLoaded=${state.idLastLoaded || ''}` +
+    url: `/articles/feed?idLastLoaded=${state.idLastLoaded || ''}` +
       '&login=' +
       (state.login === '' ? 'all' : state.login),
   })
@@ -218,7 +218,6 @@ export default class MainPage extends BaseView {
    */
   constructor(rootElement) {
     super(rootElement);
-    this.render = render;
     this.loginUnsubscribe = null;
     this.logoutUnsubscribe = null;
 
@@ -268,8 +267,7 @@ export default class MainPage extends BaseView {
     }
     const root = this.rootElement;
     store.dispatch(changePageActions.changePage('main', 'SaberProject'));
-    const state = store.getState().mainPage;
-    // const authorizationState = store.getState().authorization;
+    const authorizationState = store.getState().authorization;
 
     this.loginUnsubscribe = store.subscribe(authorizationTypes.LOGIN, () => {
       store.dispatch(
@@ -280,6 +278,18 @@ export default class MainPage extends BaseView {
       );
       setHeaderLinks(store.getState().mainPage.headerLinks);
     });
+
+    // Если логин уже был на другой странице.
+    // Такое возможно, например, при редиректе.
+    if (authorizationState.login !== '') {
+      store.dispatch(
+          mainPageActions.toggleLogin(
+              true,
+              store.getState().authorization.login,
+          ),
+      );
+      // не забыть обновить состояние
+    }
 
     this.logoutUnsubscribe = store.subscribe(authorizationTypes.LOGOUT, () => {
       store.dispatch(mainPageActions.toggleLogin(false, ''));
@@ -292,10 +302,10 @@ export default class MainPage extends BaseView {
         false,
     );
 
+    const state = store.getState().mainPage;
     root.innerHTML = '';
 
     let headerContent = '';
-
     // TODO: когда версточка будет готова
     // if (state.isAuthenticated) {
     //   headerContent = userPreviewComponent(

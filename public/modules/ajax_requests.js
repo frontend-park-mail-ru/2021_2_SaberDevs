@@ -9,7 +9,7 @@ import {authorizationActions} from '../flux/actions.js';
  */
 export function logoutRequest() {
   Ajax.post({
-    url: '/logout',
+    url: '/user/logout',
     body: {},
   })
       .then(() => store.dispatch(authorizationActions.logout()));
@@ -20,10 +20,11 @@ export function logoutRequest() {
  * через куки, например, при загрузке приложения
  * При успешном выполнении вызывает
  * событие authorizationTypes.LOGIN
+ * @return {Promise}
  */
 export function cookieLogin() {
-  Ajax.post({
-    url: '/login',
+  return Ajax.post({
+    url: '/user/login',
     body: {},
   })
       .then(
