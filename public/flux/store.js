@@ -1,4 +1,4 @@
-import createStore from './create_store.js';
+import createStore from './createStore.js';
 import {
   authorizeReducer,
   changePageReducer,

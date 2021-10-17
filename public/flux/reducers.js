@@ -9,7 +9,7 @@ import {
   InitialMainPageState,
   headerLinksOnLogout,
   headerLinksOnLogin,
-} from '../models/mainPage.js';
+} from '../models/mainPageConfig.js';
 
 import {InitialUserState} from '../models/authorization.js';
 import {InitialPageState} from '../models/page.js';

@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "lint": "npx eslint .",
-    "build": "npx eslint . && node ./dev/compile_templates.js && npm run start",
+    "build": "npx eslint . && node ./dev/compileTemplates.js && node ./dev/createCachedList && npm run start",
     "start": "concurrently --kill-others \"npm run start-static\" \"npm run start-api\"",
     "start-static": "node server/server.js",
     "start-api": "node server/server-api.js"
@@ -15,7 +15,8 @@
   "license": "ISC",
   "dependencies": {
     "mime": "^2.5.2",
-    "pug": "^3.0.2"
+    "pug": "^3.0.2",
+    "walk": "^2.3.15"
   },
   "devDependencies": {
     "concurrently": "^6.3.0",

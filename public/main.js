@@ -13,15 +13,32 @@ import Router from './components/router.js';
 import signupModal from './components/signupModal.js';
 
 // network
-import {logoutRequest} from './modules/ajax_requests.js';
-import {cookieLogin} from './modules/ajax_requests.js';
+import {logoutRequest} from './modules/ajaxRequests.js';
+import {cookieLogin} from './modules/ajaxRequests.js';
 
 // flux store
 import store from './flux/store.js';
 
+// ServiceWorker
+const SWJSFile = 'serviceWorker.js';
+
 const root = document.getElementById('root');
 const router = new Router(root);
 const linksController = new LinksController(root);
+
+(function() {
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register(SWJSFile, {scope: '/'})
+        .then((registration) => {
+          console.warn('sw registration on scope:', registration.scope);
+        })
+        .catch((err) => {
+          console.error(err);
+        });
+  } else {
+    console.warn('ServiceWorker is unable in navigator');
+  }
+})();
 
 // ///////////////////////////////// //
 //

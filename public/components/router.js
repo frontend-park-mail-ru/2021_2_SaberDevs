@@ -49,9 +49,9 @@ export default class Router {
     }
 
     const redirectRoute = viewInstance.redirect(window.location.pathname);
-    console.warn(viewInstance.constructor.name + ' | redirectRoute: '+
-      redirectRoute);
     if (redirectRoute !== '') {
+      console.warn(viewInstance.constructor.name + ' | redirectRoute: ' +
+      redirectRoute);
       this.open(redirectRoute);
       this.routes[path] = {ViewClass, viewInstance, rootElement};
       return;
