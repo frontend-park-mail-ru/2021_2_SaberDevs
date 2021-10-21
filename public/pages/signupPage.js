@@ -1,6 +1,6 @@
-import BaseView from './baseView.js';
+import BasePageMV from './basePageMV.js';
 
-import signupForm from '../components/signupForm.js';
+import SignupForm from '../components/signupForm.js';
 import createToMenuBtn from '../components/buttonToMenu.js';
 
 import store from '../flux/store.js';
@@ -11,7 +11,7 @@ import store from '../flux/store.js';
 /**
  * @class SignupPage
  */
-export default class SignupPage extends BaseView {
+export default class SignupPage extends BasePageMV {
   /**
    * @param {*} rootElement
    */
@@ -31,7 +31,9 @@ export default class SignupPage extends BaseView {
     root.innerHTML = '';
 
     // форма
-    const form = signupForm(state.showRegister);
+    // const form = signupForm(state.showRegister);
+    const signupForm = new SignupForm(showRegister);
+    const form = signupForm.render();
 
     const header = document.createElement('h2');
     header.innerHTML = state.showRegister ? 'Регистрация' : 'Вход';

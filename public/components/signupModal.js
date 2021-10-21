@@ -1,5 +1,5 @@
 import modalComponent from './modal.js';
-import signupForm from './signupForm.js';
+import SignupForm from './signupForm.js';
 import {modalTypes} from '../flux/types.js';
 import store from '../flux/store.js';
 
@@ -38,7 +38,8 @@ store.subscribe(modalTypes.MODAL_OPEN, () => {
  */
 export default function signupModal(showRegister) {
   // форма
-  const form = signupForm(showRegister);
+  const signupForm = new SignupForm(showRegister);
+  const form = signupForm.render();
 
   // Элементы навигации
   const changeFormTypeBtn = document.createElement('a');

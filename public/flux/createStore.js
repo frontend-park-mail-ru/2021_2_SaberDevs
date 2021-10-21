@@ -1,13 +1,22 @@
 import {SYSTYPES} from './types.js';
+import applyMiddleware from './applyMiddleware.js';
 
 /**
  * @param {function(StateObject, Action)} rootReducer
  * @param {StateObject} initialState
+ * @param {Array.Function} middlewares
  * @return {Object} store
  */
-export default function createStore(rootReducer, initialState) {
+export default function createStore(rootReducer, initialState, ...middlewares) {
+  console.warn('createStore: ', middlewares);
   let state = rootReducer(initialState, {type: SYSTYPES.INIT});
   const subscribers = {};
+
+  if (middlewares.length !== 0) {
+    return applyMiddleware(...middlewares)(createStore)(
+        rootReducer, initialState,
+    );
+  }
 
   return {
     dispatch(action) {
@@ -20,13 +29,14 @@ export default function createStore(rootReducer, initialState) {
         subscriber();
       });
     },
-    // return unsubscribe function
+
     subscribe(actionType, callback) {
       if (fluxDebug) {
         console.log('create subscription to', actionType);
       }
       subscribers[actionType] = subscribers[actionType] || [];
       subscribers[actionType].push(callback);
+      // return unsubscribe function
       return function() {
         subscribers[actionType]
             .splice(subscribers[actionType].indexOf(callback));

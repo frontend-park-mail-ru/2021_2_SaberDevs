@@ -1,4 +1,4 @@
-import BaseView from './baseView.js';
+import BasePageMV from './basePageMV.js';
 
 import profileComponent from '../components/profile.pug.js';
 import createToMenuBtn from '../components/buttonToMenu.js';
@@ -10,7 +10,7 @@ import {changePageActions} from '../flux/actions.js';
  * @class ProfilePage
  * @module ProfilePage
  */
-export default class ProfilePage extends BaseView {
+export default class ProfilePage extends BasePageMV {
   /**
    * @param {HTMLElement} rootElement
    */

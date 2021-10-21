@@ -9,10 +9,10 @@ import {
   InitialMainPageState,
   headerLinksOnLogout,
   headerLinksOnLogin,
-} from '../models/mainPageConfig.js';
+} from './dataModels/mainPageDM.js';
 
-import {InitialUserState} from '../models/authorization.js';
-import {InitialPageState} from '../models/page.js';
+import {InitialUserState} from './dataModels/authorizationDM.js';
+import {InitialPageState} from './dataModels/pageDM.js';
 
 
 // TODO: function themeReducer(state = initialThemeState)

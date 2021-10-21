@@ -38,7 +38,7 @@ const cacheUrls = [
   './static/css/sidebar.css',
   './static/css/signup-form.css',
   './static/css/static-popup.css',
-  './pages/baseView.js',
+  './pages/BasePageMV.js',
   './pages/mainPage.js',
   './pages/profilePage.js',
   './pages/signupPage.js',

@@ -189,7 +189,17 @@ function toggleLogin(isAuthenticated, login) {
   };
 }
 
+/**
+ * @return {Action}
+ */
+function askNewCards() {
+  return {
+    type: mainPageTypes.ASK_NEW_CARDS,
+  };
+}
+
 export const mainPageActions = {
+  askNewCards,
   saveNewCards,
   setLoadingFlag,
   forbidCardsLoading,

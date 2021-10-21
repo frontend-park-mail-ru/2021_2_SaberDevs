@@ -13,7 +13,7 @@ export default class Router {
 
   /**
    * @param {string} path
-   * @param {BaseView} ViewClass
+   * @param {BasePageMV} ViewClass
    * @return {Router}
    */
   register(path, ViewClass) {

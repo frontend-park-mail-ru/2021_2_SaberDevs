@@ -22,23 +22,21 @@ import store from './flux/store.js';
 // ServiceWorker
 const SWJSFile = 'serviceWorker.js';
 
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register(SWJSFile, {scope: '/'})
+      .then((registration) => {
+        console.warn('sw registration on scope:', registration.scope);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+} else {
+  console.warn('ServiceWorker is unable in navigator');
+}
+
 const root = document.getElementById('root');
 const router = new Router(root);
 const linksController = new LinksController(root);
-
-(function() {
-  if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register(SWJSFile, {scope: '/'})
-        .then((registration) => {
-          console.warn('sw registration on scope:', registration.scope);
-        })
-        .catch((err) => {
-          console.error(err);
-        });
-  } else {
-    console.warn('ServiceWorker is unable in navigator');
-  }
-})();
 
 // ///////////////////////////////// //
 //

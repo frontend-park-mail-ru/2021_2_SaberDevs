@@ -46,7 +46,7 @@ const server = http.createServer((req, res) => {
     }
 
     console.log(
-        'reqested: ',
+        'requested: ',
         path,
         '| ext: ',
         path.slice(path.lastIndexOf('.') + 1),
