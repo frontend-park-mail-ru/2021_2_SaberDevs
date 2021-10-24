@@ -1,6 +1,5 @@
-import BaseComponentView from './baseComponentView.js';
+import BaseComponentView from '../_basic/baseComponentView.js';
 import cardComponent from './card.pug.js';
-
 
 const loadingCard = {
   id: 'loading-card',
@@ -32,9 +31,18 @@ const loadingCard = {
  */
 
 /**
- * @class CardView
+ * @class FeedView
  */
-export default class CardView extends BaseComponentView {
+export default class FeedView extends BaseComponentView {
+  /**
+   * Хранит состояние - текущие загруженные карточки
+   * @param {Array.Card} cards массив карточек (может быть пустым)
+   */
+  constructor(cards) {
+    super();
+    this.root = this.render(cards);
+  }
+
   /**
     * @param {Array.Card} cards
     * @return {HTMLElement}
@@ -49,6 +57,23 @@ export default class CardView extends BaseComponentView {
     });
 
     contentDiv.innerHTML += cardComponent(loadingCard);
+    this.root = contentDiv;
     return contentDiv;
+  }
+
+  /**
+    * @param {HTMLElement} trackedCard
+    * @param {Array.Card} cards
+    */
+  addCards(trackedCard, cards) {
+    if (!trackedCard) {
+      return;
+    }
+    cards.forEach((element) => {
+      trackedCard.insertAdjacentHTML(
+          'beforebegin',
+          cardComponent(element),
+      );
+    });
   }
 }

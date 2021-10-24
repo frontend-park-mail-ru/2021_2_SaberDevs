@@ -1,4 +1,4 @@
-import BaseComponentView from './baseComponentView.js';
+import BaseComponentView from '../_basic/baseComponentView.js';
 import headerComponent from './header.pug.js';
 
 /**

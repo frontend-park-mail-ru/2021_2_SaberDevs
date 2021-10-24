@@ -1,5 +1,5 @@
 import modalComponent from './modal.js';
-import SignupForm from './signupForm.js';
+import SignupForm from './signupForm/signupForm.js';
 import {modalTypes} from '../flux/types.js';
 import store from '../flux/store.js';
 

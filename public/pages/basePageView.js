@@ -38,11 +38,11 @@ export default class BasePageView {
 
   /**
    * Перерисовать подконтрольную страницу
-   * @param {Object} pageComponents
    */
-  render(pageComponents) {
+  render() {
     if (pageDebug) {
       console.log(`[PAGE ${this.constructor.name}]\trender`);
     }
+    this.root.innerHTML = 'Нужно сделать верстку страницы';
   }
 }

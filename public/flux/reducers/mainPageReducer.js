@@ -1,20 +1,16 @@
-// ///////////////////////////////// //
-//
-//         App Configuration
-//
-// ///////////////////////////////// //
+import {mainPageTypes} from '../types.js';
 
-export const headerLinksOnLogin = [
+const headerLinksOnLogin = [
   {name: 'Профиль', section: 'profilePage', href: '/profile'},
   {section: 'logout', name: 'Выход'},
 ];
 
-export const headerLinksOnLogout = [
+const headerLinksOnLogout = [
   {name: 'Зарегистрироваться', section: 'signupModal'},
   {name: 'Войти', section: 'loginModal'},
 ];
 
-export const sideBarLinks = ['hello'];
+const sideBarLinks = ['hello'];
 
 
 /**
@@ -37,7 +33,7 @@ export const sideBarLinks = ['hello'];
  *                                    восстановления состояния при возвращении
  *                                    на MainPage
  */
-export const InitialMainPageState = {
+const InitialMainPageState = {
   isAuthenticated: false,
   trackedCardId: 'loading-card', // отслеживаемая запись в ленте для подгрузки
   isLoading: false,              // отправлен ли запрос на сервер
@@ -49,3 +45,44 @@ export const InitialMainPageState = {
   headerLinks: headerLinksOnLogout,
   sideBarLinks,
 };
+
+/**
+ * @param {Object} state
+ * @param {Action} action
+ * @return {Object}
+ */
+export default function mainPageReducer(state = InitialMainPageState, action) {
+  switch (action.type) {
+    case mainPageTypes.SET_LOADING_FLAG:
+      return {
+        ...state,
+        isLoading: true,
+      };
+    case mainPageTypes.FORBID_CARDS_UPLOADING:
+      return {
+        ...state,
+        doNotUpload: true,
+      };
+    case mainPageTypes.ALLOW_CARDS_UPLOADING:
+      return {
+        ...state,
+        doNotUpload: false,
+      };
+    case mainPageTypes.SAVE_NEW_CARDS:
+      return {
+        ...state,
+        isLoading: false,
+        idLastLoaded: action.payload.idLastLoaded,
+        cards: state.cards.concat(action.payload.cards),
+      };
+    case mainPageTypes.TOGGLE_AUTH:
+      return {
+        ...state,
+        isAuthenticated: action.payload.isAuthenticated,
+        login: action.payload.login,
+        headerLinks: action.payload.isAuthenticated ?
+          headerLinksOnLogin : headerLinksOnLogout,
+      };
+  }
+  return state;
+}

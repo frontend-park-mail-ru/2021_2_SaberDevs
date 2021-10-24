@@ -8,7 +8,7 @@ import applyMiddleware from './applyMiddleware.js';
  * @return {Object} store
  */
 export default function createStore(rootReducer, initialState, ...middlewares) {
-  console.warn('createStore: ', middlewares);
+  console.warn('createStore: ', middlewares.map((el) => el.name));
   let state = rootReducer(initialState, {type: SYSTYPES.INIT});
   const subscribers = {};
 
@@ -26,10 +26,16 @@ export default function createStore(rootReducer, initialState, ...middlewares) {
         if (fluxDebug) {
           console.log('subscribe trigger on', action.type);
         }
-        subscriber();
+        subscriber(action.payload);
       });
     },
 
+    /**
+     * оформить подписку на событие стора
+     * @param {Action} actionType событие
+     * @param {Function.Payload?} callback реакция на событие
+     * @return {Function} метод function() для отмены подписки
+     */
     subscribe(actionType, callback) {
       if (fluxDebug) {
         console.log('create subscription to', actionType);

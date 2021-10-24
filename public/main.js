@@ -22,7 +22,7 @@ import store from './flux/store.js';
 // ServiceWorker
 const SWJSFile = 'serviceWorker.js';
 
-if ('serviceWorker' in navigator) {
+if ('serviceWorker' in navigator && !disableSW) {
   navigator.serviceWorker.register(SWJSFile, {scope: '/'})
       .then((registration) => {
         console.warn('sw registration on scope:', registration.scope);

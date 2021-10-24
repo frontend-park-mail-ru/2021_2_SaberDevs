@@ -13,14 +13,14 @@ export default class Router {
 
   /**
    * @param {string} path
-   * @param {BasePageMV} ViewClass
+   * @param {BasePageMV} PageClass
    * @return {Router}
    */
-  register(path, ViewClass) {
+  register(path, PageClass) {
     this.routes[path] = {
-      ViewClass,
-      viewInstance: null,
-      rootElement: null,
+      PageClass,
+      page: null,
+      root: null,
     };
 
     return this;
@@ -37,23 +37,23 @@ export default class Router {
       return;
     }
 
-    let {ViewClass, viewInstance, rootElement} = route;
+    let {PageClass, page, root} = route;
 
-    if (!rootElement) {
-      rootElement = document.createElement('section');
-      this.root.appendChild(rootElement);
+    if (!root) {
+      root = document.createElement('section');
+      this.root.appendChild(root);
     }
 
-    if (!viewInstance) {
-      viewInstance = new ViewClass(rootElement);
+    if (!page) {
+      page = new PageClass(root);
     }
 
-    const redirectRoute = viewInstance.redirect(window.location.pathname);
+    const redirectRoute = page.redirect(window.location.pathname);
     if (redirectRoute !== '') {
-      console.warn(viewInstance.constructor.name + ' | redirectRoute: ' +
+      console.warn(page.constructor.name + ' | redirectRoute: ' +
       redirectRoute);
       this.open(redirectRoute);
-      this.routes[path] = {ViewClass, viewInstance, rootElement};
+      this.routes[path] = {PageClass, page, root};
       return;
     }
     if (window.location.pathname !== path) {
@@ -64,17 +64,17 @@ export default class Router {
       );
     }
 
-    if (!viewInstance.isActive()) {
-      Object.values(this.routes).forEach(({viewInstance}) => {
-        if (viewInstance && viewInstance.isActive()) {
-          viewInstance.hide();
+    if (!page.isActive()) {
+      Object.values(this.routes).forEach(({page}) => {
+        if (page && page.isActive()) {
+          page.hide();
         }
       });
 
-      viewInstance.show();
+      page.show();
     }
 
-    this.routes[path] = {ViewClass, viewInstance, rootElement};
+    this.routes[path] = {PageClass, page, root};
   }
 
   /**

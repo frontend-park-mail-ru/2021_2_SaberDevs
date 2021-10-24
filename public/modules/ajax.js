@@ -54,15 +54,16 @@ function ajax(requestParams) {
   return fetch(url, fetchParams)
       .then((response) => {
         status = response.status;
-        return response.text();
+        return response.json();
       })
       .then((response) => {
         if (ajaxDebug) {
-          console.log('ajax resolved ' + status +': ' + response);
+          console.log('ajax resolved ' + status +': ');
+          console.log(response);
         }
         return {
           status,
-          response: JSON.parse(response),
+          response,
         };
       })
       .catch((error) => {

@@ -1,7 +1,7 @@
-import BaseComponentView from './baseComponentView.js';
+import BaseComponentView from '../_basic/baseComponentView.js';
 // import ... from './.pug.js';
 
-import {createInput, createInputRow} from '../utils.js';
+import {createInput, createInputRow} from '../../utils.js';
 
 /**
  * @class SignupViewView

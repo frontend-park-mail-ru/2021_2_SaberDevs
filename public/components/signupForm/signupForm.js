@@ -1,12 +1,12 @@
-import BaseComponent from './baseComponent.js';
+import BaseComponent from '../_basic/baseComponent.js';
 import SignupFormView from './signupFormView.js';
 
-import modalComponent from './modal.js';
+import modalComponent from '../modal.js';
 
-import Ajax from '../modules/ajax.js';
+import Ajax from '../../modules/ajax.js';
 
-import store from '../flux/store.js';
-import {authorizationActions} from '../flux/actions.js';
+import store from '../../flux/store.js';
+import {authorizationActions} from '../../flux/actions.js';
 
 /**
  * Возвращает метод отправки звпроса на вход или регистрацию

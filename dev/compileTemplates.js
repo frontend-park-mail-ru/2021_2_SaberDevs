@@ -2,6 +2,19 @@ const fs = require('fs');
 const path = require('path');
 const pug = require('pug');
 
+// ///////////////////////////////// //
+//
+//   Сохранить <pugFileName>.pug
+//   в components/<somewhere>/<pugFileName>.pug.js
+//
+//   Синтаксис: <pugFileName>: <somewhere>
+//   default: <pugFileName>: <pugFileName>
+//
+// ///////////////////////////////// //
+const saveTo = {
+  card: 'feed',
+};
+
 const correctLaunchDir = '2021_2_SaberDevs';
 const devRoot = 'dev/';
 const templatesDir = 'components/';
@@ -43,7 +56,7 @@ fs.readdir(devRoot + templatesDir, (err, files) => {
     const functionName = filename.slice(filename.lastIndexOf('/') + 1,
         filename.lastIndexOf('.'));
 
-    // Compile a function
+    // Compile function
     const compiledTemplate = pug.compileFileClient(
         devRoot + templatesDir + filename,
         {
@@ -52,8 +65,18 @@ fs.readdir(devRoot + templatesDir, (err, files) => {
         },
     );
 
-    const JSFilename = outDir + filename + '.js';
+    let componentDir = functionName;
+    if (functionName in saveTo) {
+      componentDir = saveTo[functionName];
+    }
+    const JSFilename = outDir + componentDir + '/' + filename + '.js';
 
+    // Создаем директорию компонента
+    if (!fs.existsSync(outDir + componentDir)) {
+      fs.mkdirSync(outDir + componentDir);
+    }
+
+    // Записываем преобразованный паг
     fs.writeFileSync(
         JSFilename,
         compiledTemplate,

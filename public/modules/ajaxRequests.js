@@ -31,8 +31,6 @@ export function cookieLogin() {
           ({status, response}) => {
             if (status === Ajax.STATUS.ok) {
               store.dispatch(authorizationActions.login(response.data));
-            } else {
-              console.log('Cookie-Login failed');
             }
           });
 }

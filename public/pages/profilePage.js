@@ -1,10 +1,14 @@
 import BasePageMV from './basePageMV.js';
-
-import profileComponent from '../components/profile.pug.js';
-import createToMenuBtn from '../components/buttonToMenu.js';
+import ProfilePageView from './profilePageView.js';
 
 import store from '../flux/store.js';
 import {changePageActions} from '../flux/actions.js';
+
+// ///////////////////////////////// //
+//
+//              Profile Page
+//
+// ///////////////////////////////// //
 
 /**
  * @class ProfilePage
@@ -12,34 +16,44 @@ import {changePageActions} from '../flux/actions.js';
  */
 export default class ProfilePage extends BasePageMV {
   /**
-   * @param {HTMLElement} rootElement
+   * @param {HTMLElement} root
    */
-  constructor(rootElement) {
-    super(rootElement);
+  constructor(root) {
+    super(root);
+    this.view = new ProfilePageView(root);
   }
 
   /**
-   * Показать элемент. Вызывает render() для обновления.
+   *  Страница содержит главный компонент - карточку пользователя
+   */
+  render() {
+    super.render();
+    console.warn(store.getState())
+    this.view.render(store.getState().authorization);
+  }
+
+  /**
+   * Отобразить подконтрольную страницу.
    */
   show() {
-    super.show();
-    if (routerDebug) {
-      console.log('ProfilePage show');
+    if (pageDebug) {
+      console.log(`[PAGE ${this.constructor.name}]\tshow`);
     }
-  }
-  /**
-   * Скрыть элемент
-   */
-  hide() {
-    super.hide();
-    if (routerDebug) {
-      console.log('ProfilePage hide');
-    }
+
+    const state = store.getState().authorization;
+    this.view.show(state);
+    store.dispatch(
+        changePageActions.changePage(
+            'profile',
+            `SaberProject | ${state.login}`,
+        ),
+    );
   }
 
   /**
    * Вызывается в роутере. Если return не '', нужно выполнить переход
    * по пути, возвращенному из функции
+   *
    * Возможны редиректы на: /login
    * @param {string} currentPath
    * @return {string}
@@ -49,32 +63,5 @@ export default class ProfilePage extends BasePageMV {
       return '';
     }
     return '/login';
-  }
-
-  /**
- * Страница содержит главный компонент - карточку пользователя
- */
-  render() {
-    if (routerDebug) {
-      console.log('ProfilePage render');
-    }
-    const root = this.rootElement;
-    const state = store.getState().authorization;
-    store.dispatch(
-        changePageActions.changePage(
-            'profile',
-            `SaberProject | ${state.login}`,
-        ),
-    );
-
-    root.innerHTML = '';
-
-    const profile = document.createElement('div');
-    profile.innerHTML = profileComponent(state);
-
-    const backBtn = createToMenuBtn();
-
-    root.appendChild(profile);
-    root.appendChild(backBtn);
   }
 }

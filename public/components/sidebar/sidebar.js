@@ -1,32 +1,33 @@
-import BaseComponent from './baseComponent.js';
-import ...View from './View.js';
+import BaseComponent from '../_basic/baseComponent.js';
+import SidebarView from './sidebarView.js';
 
-import store from '../flux/store.js';
-import {} from '../flux/actions.js';
-import {} from '../flux/types.js';
+import store from '../../flux/store.js';
+import {} from '../../flux/actions.js';
+import {} from '../../flux/types.js';
 
 /**
  * ViewModel-компонент соответсвующего View
- * @class Template
+ * @class Sidebar
  */
-export default class Template extends BaseComponent {
+export default class Sidebar extends BaseComponent {
   /**
    * Универсальный компонент заголовка
    */
   constructor() {
     super();
-    this.view = new ...View();
+    this.view = new SidebarView();
 
     // /////////////////////////////////
     //
     //        Communication
     //
     // /////////////////////////////////
-    this.unsubscribes.push(store.subscribe(..., () => {
-      store.dispatch(
 
-      );
-    }));
+    // TODO: sidebar actions
+    // this.unsubscribes.push(store.subscribe(..., () => {
+    //   store.dispatch(
+    //   );
+    // }));
   }
 
   /**
@@ -35,8 +36,9 @@ export default class Template extends BaseComponent {
    */
   render() {
     super.render();
-    
-    this.root = this.view.render();
+
+    const state = store.getState().mainPage;
+    this.root = this.view.render(state.sideBarLinks);
     return this.root;
   }
 

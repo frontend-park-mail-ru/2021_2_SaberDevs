@@ -1,10 +1,7 @@
 import BasePageView from './basePageView.js';
-import Header from '../components/header.js';
-import Sidebar from '../components/sidebar.js';
-// import cardComponent from '../components/card.pug.js';
-// import newsBarComponent from '../components/newsbar.js';
-// import userPreviewComponent from '../components/userPreview.pug.js'
-// import modalComponent from '../components/modal.js';
+import Header from '../components/header/header.js';
+import Sidebar from '../components/sidebar/sidebar.js';
+import Feed from '../components/feed/feed.js';
 
 // ///////////////////////////////// //
 //
@@ -26,11 +23,12 @@ export default class MainPageView extends BasePageView {
     this.pageComponents = {
       header: new Header(),
       sidebar: new Sidebar(),
+      feed: new Feed(),
     };
   }
 
   /**
-    * @param {Object} pageComponents
+    * Перерисовать главную страницу
     */
   render() {
     super.render();
@@ -45,21 +43,8 @@ export default class MainPageView extends BasePageView {
     const mainContainer = document.createElement('main');
     mainContainer.className = 'container';
     mainContainer.appendChild(this.pageComponents.sidebar.render());
+    mainContainer.appendChild(this.pageComponents.feed.render());
 
-    // const contentDiv = document.createElement('div');
-    // contentDiv.className = 'content col';
-    // contentDiv.id = 'menu-content-block';
-
-    // if (JSON.stringify(state.cards) === '[]') {
-    //   uploadNextCards();
-    // }
-    // state.cards.forEach((element) => {
-    //   contentDiv.innerHTML += cardComponent(element);
-    // });
-
-    // contentDiv.innerHTML += cardComponent(loadingCard);
-
-    // mainContainer.appendChild(contentDiv);
     root.appendChild(mainContainer);
   }
 }

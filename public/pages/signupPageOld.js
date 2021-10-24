@@ -1,6 +1,7 @@
+// TODO: проработать с новой версткой
 import BasePageMV from './basePageMV.js';
 
-import SignupForm from '../components/signupForm.js';
+import SignupForm from '../components/signupForm/signupForm.js';
 import createToMenuBtn from '../components/buttonToMenu.js';
 
 import store from '../flux/store.js';

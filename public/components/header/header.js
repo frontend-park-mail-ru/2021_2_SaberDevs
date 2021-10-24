@@ -1,9 +1,9 @@
-import BaseComponent from './baseComponent.js';
+import BaseComponent from '../_basic/baseComponent.js';
 import HeaderView from './headerView.js';
 
-import store from '../flux/store.js';
-import {mainPageActions} from '../flux/actions.js';
-import {authorizationTypes} from '../flux/types.js';
+import store from '../../flux/store.js';
+import {mainPageActions} from '../../flux/actions.js';
+import {authorizationTypes} from '../../flux/types.js';
 /**
  * собирает все ссылочные элементы хедера в единый блок
  * @param {Array.Object<string, string, string>} linksArray
@@ -62,6 +62,18 @@ export default class Header extends BaseComponent {
     //        Communication
     //
     // /////////////////////////////////
+
+    // Обновление вида хедера до создания подписки
+    // на случай, если вход был совершен до инициализации
+    if (store.getState().authorization.login !== '') {
+      store.dispatch(
+          mainPageActions.toggleLogin(
+              true,
+              store.getState().authorization.login,
+          ),
+      );
+    }
+
     this.unsubscribes.push(store.subscribe(authorizationTypes.LOGIN, () => {
       store.dispatch(
           mainPageActions.toggleLogin(

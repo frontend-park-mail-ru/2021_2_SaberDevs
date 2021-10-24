@@ -23,9 +23,7 @@ function compose(...funcs) {
  * @return {any}
  */
 export default function applyMiddleware(...middlewares) {
-  console.warn('applyMiddleware: ' + middlewares);
   return function(createStore) {
-    // второй - необяхательный
     return function(reducer, preloadedState) {
       const store = createStore(reducer, preloadedState);
       let dispatch = () => {

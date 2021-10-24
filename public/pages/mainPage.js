@@ -1,11 +1,8 @@
 import BasePageMV from './basePageMV.js';
 import MainPageView from './mainPageView.js';
 
-// import sideBarComponent from '../components/sidebar.pug.js';
-// import cardComponent from '../components/card.pug.js';
-// import newsBarComponent from '../components/newsbar.js';
-// import userPreviewComponent from '../components/userPreview.pug.js'
-// import modalComponent from '../components/modal.js';
+import store from '../flux/store.js';
+import {changePageActions} from '../flux/actions.js';
 
 // ///////////////////////////////// //
 //
@@ -13,8 +10,6 @@ import MainPageView from './mainPageView.js';
 //
 // ///////////////////////////////// //
 
-// const endOfFeedMarkerID = 'end';
-// const resetDoNotUploadTime = 60000;  // anti- brutforce
 
 /**
  * @class MainPage
@@ -30,9 +25,15 @@ export default class MainPage extends BasePageMV {
   }
 
   /**
-   * Страница содержит главный компонент - ленту новостей, хедер, сайдбар.
+   * Отобразить подконтрольную страницу.
    */
-  render() {
-    this.view.render();
+  show() {
+    super.show();
+    store.dispatch(
+        changePageActions.changePage(
+            'main',
+            `SaberProject`,
+        ),
+    );
   }
 }
