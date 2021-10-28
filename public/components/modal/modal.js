@@ -1,6 +1,6 @@
 import {modalActions} from '../../flux/actions.js';
 import store from '../../flux/store.js';
-import modalDefaultComponent from './modal.pug.js';
+import modalComponent from './modal.pug.js';
 
 const animationTime = 200;
 const informationWindowOpenTime = 2000;
@@ -54,7 +54,7 @@ function fillDefaultModal(props) {
     )
   ) : '';
 
-  const modal = modalDefaultComponent({
+  const modal = modalComponent({
     content: props.content || '',
     footer_butttons: footerButtons,
   });
@@ -86,7 +86,7 @@ const modalDiv = _createModal({
   isCancelable: true,
 });
 
-const modalComponent = {
+const Modal = {
   animationTime,
 
   close() {
@@ -170,16 +170,32 @@ const modalComponent = {
     if (modalsDebug) {
       console.log('Modal: setContent to ', content);
     }
-    const contentDiv = document.getElementByClass('modal__content')[0];
-    contentDiv.innerHTML = content;
+    let contentDiv = modalDiv.querySelector('.modal__content');
+    if (typeof content === 'string') {
+      contentDiv.innerHTML = content;
+    }
+    if (content instanceof HTMLElement) {
+      const newContentDiv = document.createElement('div');
+      contentDiv.className = 'modal__content';
+      newContentDiv.appendChild(content);
+      contentDiv = newContentDiv;
+    }
   },
 
   setTitle(title) {
     if (modalsDebug) {
       console.log('Modal: setTitle to ', title);
     }
-    const titleDiv = document.getElementById('modal__title');
-    titleDiv.innerHTML = title;
+    let titleDiv = modalDiv.querySelector('.modal__header');
+    if (typeof title === 'string') {
+      titleDiv.innerHTML = title;
+    }
+    if (title instanceof HTMLElement) {
+      const newTitleDiv = document.createElement('div');
+      titleDiv.className = 'modal__header';
+      newTitleDiv.appendChild(title);
+      titleDiv = newTitleDiv;
+    }
   },
 
   // при работе с этой функцией сбиваются анимации !
@@ -229,13 +245,13 @@ const modalComponent = {
 function modalCloseListener(e) {
   const target = e.target;
   if (target.dataset['modalClose']) {
-    modalComponent.close();
+    Modal.close();
   }
 }
 
 modalDiv.addEventListener('click', modalCloseListener);
 
-Object.assign(modalComponent, {
+Object.assign(Modal, {
   // removes event listeners
   destroy() {
     this.close();
@@ -245,4 +261,4 @@ Object.assign(modalComponent, {
   },
 });
 
-export default modalComponent;
+export default Modal;

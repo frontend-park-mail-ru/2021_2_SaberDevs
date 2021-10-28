@@ -1,7 +1,7 @@
 import BaseComponent from '../_basic/baseComponent.js';
 import SignupFormView from './signupFormView.js';
 
-import modalComponent from '../modal/modal.js';
+import Modal from '../modal/modal.js';
 
 import Ajax from '../../modules/ajax.js';
 
@@ -29,7 +29,7 @@ function wrapSubmitHandler(renderError) {
             ({status, response}) => {
               if (status === Ajax.STATUS.ok) {
                 store.dispatch(authorizationActions.login(response.data));
-                modalComponent.close();
+                Modal.close();
                 return;
               }
 
@@ -59,11 +59,15 @@ export default class SignupForm extends BaseComponent {
    */
   render() {
     super.render();
-    this.root = this.view.render(
+    return this.view.render(
         this.showRegister,
         wrapSubmitHandler(this.view.appendWarning),
     );
-    return this.root;
+    // this.root = this.view.render(
+    //     this.showRegister,
+    //     wrapSubmitHandler(this.view.appendWarning),
+    // );
+    // return this.root;
   }
 
   /**

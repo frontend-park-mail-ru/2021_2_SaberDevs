@@ -4,7 +4,7 @@ import MainPageView from './mainPageView.js';
 import store from '../flux/store.js';
 import {changePageActions, mainPageActions} from '../flux/actions.js';
 
-import modalComponent from '../components/modal/modal.js';
+import Modal from '../components/modal/modal.js';
 
 import Ajax from '../modules/ajax.js';
 import Utils from '../utils.js';
@@ -78,13 +78,13 @@ function uploadNextCards() {
         }
 
         if (status / 500 === 1) {
-          modalComponent.setTitle(`Сервис временно не доступен: ${status}`);
+          Modal.setTitle(`Сервис временно не доступен: ${status}`);
         }
         if (status / 400 === 1) {
-          modalComponent.setTitle(/* пользовательская */`Ошибка ${status}`);
+          Modal.setTitle(/* пользовательская */`Ошибка ${status}`);
         }
-        modalComponent.setContent(response.msg);
-        modalComponent.open(false);
+        Modal.setContent(response.msg);
+        Modal.open(false);
       });
 }
 
