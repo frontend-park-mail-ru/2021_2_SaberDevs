@@ -1,0 +1,29 @@
+button {
+  border-style: none;
+  border-radius: 10px;
+}
+
+a,
+a:active,
+a:hover {
+  text-decoration: none;
+  color: $color-elements;
+}
+
+input,
+input:active,
+input:hover,
+input:focus {
+  outline: none;
+  border: $border;
+  box-shadow: none;
+}
+
+textarea,
+textarea:active,
+textarea:hover,
+textarea:focus {
+  outline: none;
+  border-color: $color-primary;
+  box-shadow: none;
+}

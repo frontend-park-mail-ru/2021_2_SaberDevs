@@ -1,108 +1,103 @@
 .auth-form-waring {
+  margin: 0.5rem;
+  border: 1px solid rgb(128, 128, 128);
+  border-radius: 2px;
+  padding: 0.5rem 1rem;
   box-sizing: border-box;
   background-color: rgb(241, 221, 127);
-  border-radius: 2px;
-  border: 1px solid gray;
-  padding: 0.5rem 1rem;
-  margin: 0.5rem;
 }
 
 .form-btn {
-  padding: 0.5rem;
-  margin-left: 0.5rem;
   margin-top: 0.5rem;
-
+  margin-left: 0.5rem;
+  padding: 0.5rem;
+  font-size: 1.5rem;
+  color: var(--modal-second-text-color);
   background-color: var(--modal-main-color);
   cursor: pointer;
-
-  color: var(--modal-second-text-color);
-  font-size: 1.5rem;
 }
 
 .form-row {
-  width: 75%;
-  margin-top: 10px;
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: center;
+  margin-top: 10px;
+  width: 75%;
 }
 
 .form-row input {
-  border: 2px solid black;
-  padding: 10px 10px;
+  border: 2px solid #000;
   border-radius: 10px;
-  font-size: 2rem;
+  padding: 10px;
   width: 75%;
+  font-size: 2rem;
 }
 
 .tooltip {
   display: flex;
-  justify-content: center;
   align-items: center;
-  text-align: center;
+  justify-content: center;
   margin-left: 0.5rem;
+  border-radius: 1.5rem;
   width: 3rem;
   height: 3rem;
-  border-radius: 1.5rem;
+  text-align: center;
+  color: #fff;
   background-color: var(--tooltip-color);
-  color: white;
   cursor: pointer;
 }
 
 .tooltip-sign {
-  cursor: pointer;
   margin: auto;
+  cursor: pointer;
 }
 
 .submit-btn-row {
   display: flex;
   flex-direction: row;
-  justify-content: flex-end;
   align-items: bottom;
+  justify-content: flex-end;
 }
 
 .form-submit-btn#input-submitBtn {
   margin-right: 1rem;
-
-  width: 50%;
   padding: 0.5rem;
-
+  width: 50%;
+  font-size: 1.5rem;
+  color: var(--modal-second-text-color);
   background-color: var(--modal-main-color);
   cursor: pointer;
-
-  color: var(--modal-second-text-color);
-  font-size: 1.5rem;
 }
 
 .password {
+  position: relative;
+  margin: 15px auto;
   width: 300px;
-	margin: 15px auto;
-	position: relative;
 }
 
 #input-password {
+  margin: 0 0 15px;
+  border: 1px solid #999;
+  border-radius: 5px;
+  padding: 5px 0;
   width: 100%;
-	padding: 5px 0;
-	height: 30px;
-	line-height: 40px;
-	text-indent: 10px;
-	margin: 0 0 15px 0;
-	border-radius: 5px;
-	border: 1px solid #999;
-	font-size: 18px;
+  height: 30px;
+  font-size: 18px;
+  line-height: 40px;
+  text-indent: 10px;
 }
 
 .password-control-btn {
   position: absolute;
-	top: 11px;
-	right: 6px;
-	display: inline-block;
-	width: 20px;
-	height: 20px;
-	background: url(https://snipp.ru/demo/495/view.svg) 0 0 no-repeat;
+  right: 6px;
+  top: 11px;
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  background: url("https://snipp.ru/demo/495/view.svg") 0 0 no-repeat;
 }
 
 .password-control-btn.password-show {
-  background: url(https://snipp.ru/demo/495/no-view.svg) 0 0 no-repeat;
+  background: url("https://snipp.ru/demo/495/no-view.svg") 0 0 no-repeat;
 }

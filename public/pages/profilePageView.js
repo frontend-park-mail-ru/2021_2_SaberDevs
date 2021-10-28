@@ -22,7 +22,6 @@ export default class ProfilePageView extends BasePageView {
    * Страница содержит главный компонент - карточку пользователя
    */
   render(pageState) {
-    console.warn(pageState)
     super.render();
 
     const root = this.root;

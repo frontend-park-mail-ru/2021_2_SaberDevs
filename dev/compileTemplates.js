@@ -13,6 +13,13 @@ const pug = require('pug');
 // ///////////////////////////////// //
 const saveTo = {
   card: 'feed',
+  preview: 'feed',
+  formRow: 'signupForm',
+  formSettingsRow: 'settings',
+  formSettingsTextarea: 'settings',
+  buttonNav: 'sidebar',
+  userPreview: 'sidebar',
+
 };
 
 const correctLaunchDir = '2021_2_SaberDevs';

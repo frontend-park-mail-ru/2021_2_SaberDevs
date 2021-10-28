@@ -1,7 +1,7 @@
 import BaseComponent from '../_basic/baseComponent.js';
 import SignupFormView from './signupFormView.js';
 
-import modalComponent from '../modal.js';
+import modalComponent from '../modal/modal.js';
 
 import Ajax from '../../modules/ajax.js';
 

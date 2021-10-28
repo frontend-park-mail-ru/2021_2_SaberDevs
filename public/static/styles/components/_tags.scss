@@ -1,0 +1,16 @@
+$tags-margin-bottom: 10px;
+$tag-margin-left: 5px;
+
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  margin-bottom: $tags-margin-bottom;
+
+  &__tag {
+    margin-left: $tag-margin-left;
+    border-radius: $border-radius;
+    padding: $tag-padding;
+    background: $color-sidebar;
+  }
+}

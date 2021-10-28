@@ -27,7 +27,7 @@ export default function applyMiddleware(...middlewares) {
     return function(reducer, preloadedState) {
       const store = createStore(reducer, preloadedState);
       let dispatch = () => {
-        console.warn(
+        console.error(
             'Dispatching while constructing your middleware is not allowed. ' +
             'Other middleware would not be applied to this dispatch.',
         );

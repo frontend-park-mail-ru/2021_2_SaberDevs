@@ -37,12 +37,12 @@ export default class BasePageView {
   }
 
   /**
-   * Перерисовать подконтрольную страницу
+   * Стереть подконтрольную страницу
    */
   render() {
     if (pageDebug) {
       console.log(`[PAGE ${this.constructor.name}]\trender`);
     }
-    this.root.innerHTML = 'Нужно сделать верстку страницы';
+    this.root.innerHTML = '';
   }
 }

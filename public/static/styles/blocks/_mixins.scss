@@ -1,0 +1,12 @@
+@mixin nav-item() {
+  padding: calc((#{$header-size} - #{$links-font-size}) / 2) $padding-nav-item;
+  font-size: $links-font-size;
+  text-align: center;
+}
+
+@mixin background-img($img-href) {
+  background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), $img-href;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-attachment: scroll;
+}

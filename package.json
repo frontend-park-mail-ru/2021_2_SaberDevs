@@ -1,10 +1,11 @@
 {
   "name": "saber_project",
   "version": "1.0.0",
-  "description": "vs.ru alike web-spa",
+  "description": "vc.ru alike web-spa",
   "main": "index.js",
   "scripts": {
-    "lint": "npx eslint .",
+    "lint": "npx eslint . && npx stylelint **/*.scss",
+    "buildTODO": "npm run lint && node ./dev/compileTemplates.js && node ./dev/createCachedList && npm run start",
     "build": "npx eslint . && node ./dev/compileTemplates.js && node ./dev/createCachedList && npm run start",
     "start": "concurrently --kill-others \"npm run start-static\" \"npm run start-api\"",
     "start-static": "node server/server.js",
@@ -24,6 +25,11 @@
     "eslint-config-google": "^0.14.0",
     "eslint-plugin-import": "^2.24.2",
     "eslint-plugin-node": "^11.1.0",
-    "eslint-plugin-promise": "^5.1.0"
+    "eslint-plugin-promise": "^5.1.0",
+    "stylelint": "^13.13.1",
+    "stylelint-config-standard": "^22.0.0",
+    "stylelint-declaration-block-no-ignored-properties": "^2.4.0",
+    "stylelint-order": "^4.1.0",
+    "stylelint-scss": "^3.21.0"
   }
 }

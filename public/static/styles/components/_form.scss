@@ -1,0 +1,52 @@
+$submit-btn-font-size: 36px;
+$label-font-size: 30px;
+$input-font-size: 24px;
+$warning-font-size: 30px;
+$submit-btn-padding: 10px 40px;
+$input-padding: 10px;
+$form-row-margin: 15px;
+
+.form {
+  &__rows {
+    @include col;
+
+    align-items: flex-end;
+  }
+
+  &__row {
+    @include col;
+
+    justify-content: flex-start;
+    margin: $form-row-margin;
+  }
+
+  &__input {
+    border: $border;
+    border-radius: $border-radius;
+    padding: $input-padding;
+    width: 100%;
+    font-size: $input-font-size;
+    color: $color-primary;
+    background-color: $color-elements;
+  }
+
+  &__submit-btn {
+    border-radius: $border-radius;
+    padding: $submit-btn-padding;
+    box-shadow: $box-shadow;
+    font-size: $submit-btn-font-size;
+    color: $color-primary;
+    background-color: $color-elements;
+  }
+
+  &__warning {
+    display: none;
+    font-size: $warning-font-size;
+    color: $color-secondary;
+  }
+
+  &__label {
+    margin-right: $label-margin;
+    font-size: $label-font-size;
+  }
+}

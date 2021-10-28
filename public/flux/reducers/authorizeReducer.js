@@ -2,6 +2,7 @@ import {authorizationTypes} from '../types.js';
 
 const InitialUserState = {
   login: '',
+  avatar: `static/img/users/user.jpg`,
   name: 'UNAUTHORIZED',
   surname: 'UNAUTHORIZED',
   email: 'UNAUTHORIZED',

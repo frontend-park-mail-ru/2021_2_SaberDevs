@@ -1,0 +1,43 @@
+@import "variables";
+@import "mixins";
+
+.header {
+  display: flex;
+  align-items: flex-start;
+  width: 100%;
+  height: $header-size;
+  font-family: $font-secondary;
+  background-color: $color-primary;
+
+  &__nav-items {
+    @include row;
+
+    position: relative;
+    z-index: 1;
+    transition: all 1s;
+  }
+
+  &__nav-item {
+    @include nav-item;
+
+    &:hover {
+      background-color: $color-secondary;
+    }
+
+    &:active {
+      border-bottom: 2px solid $color-secondary;
+    }
+  }
+
+  &__title {
+    margin: $title-margin;
+    font-size: $title-font-size;
+  }
+
+  &__content {
+    position: relative;
+    display: flex;
+    align-items: flex-end;
+    width: 100%;
+  }
+}

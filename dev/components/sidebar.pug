@@ -1,22 +1,25 @@
-#sidebar.sidebar.col
-  .sidebar-menu
-    mixin sidebar-item(title, img_href)
-      .sidebar-item.row
-        img(src='static/img/sidebar-icons/' + img_href)
-        div=title
-
-    +sidebar-item("Популярное", "star.png")
-    +sidebar-item("Новое", "clock.png")
-    +sidebar-item("Подписки", "subscribes.png")
-    +sidebar-item("Мероприятия", "calendar.png")
-    +sidebar-item("Группы", "group.png")
-    +sidebar-item("Трансляции", "camera.png")
-    
-    .sidebar-line
-
-    +sidebar-item("IT-Новости", "question.png")
-    +sidebar-item("UX-Дизайн", "question.png")
-    +sidebar-item("Финансы", "question.png")
-    +sidebar-item("Техника", "question.png")
-    +sidebar-item("Медиа", "question.png")
-    +sidebar-item("Торговля", "question.png")
+.sidebar
+  .sidebar__nav-links
+      a(href="#").sidebar__nav-item
+          | Добавить  
+          br
+          | запись
+      .sidebar__nav-buttons#sidebarTopBlockContent !{topBlockContent}
+  .sidebar__content
+      .sidebar__categories
+          .sidebar__categories-title.sidebar__item Категории
+          .sidebar__categories-item.sidebar__item IT-Новости
+          .sidebar__categories-item.sidebar__item UX-Дизайн
+          .sidebar__categories-item.sidebar__item Разработка
+          .sidebar__categories-item.sidebar__item Менеджмент
+          .sidebar__categories-item.sidebar__item Наука
+          .sidebar__categories-item.sidebar__item Маркетинг
+          .sidebar__categories-item.sidebar__item Администрирование
+      .sidebar-bottom_right
+          .contacts
+              .contacts__title Contacts
+              a.contacts__developer Denactive
+              a.contacts__developer MollenAR
+              a.contacts__developer Yurij-lyubskij
+              a.contacts__developer Svetlanlka
+              

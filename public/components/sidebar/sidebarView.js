@@ -6,12 +6,12 @@ import sidebarComponent from './sidebar.pug.js';
  */
 export default class SidebarView extends BaseComponentView {
   /**
-    * @param {string} content - вид правого блока
+    * @param {string} topBlockContent - вид верхнего блока
     * @return {HTMLElement}
     */
-  render(content) {
+  render(topBlockContent) {
     const wrapper = document.createElement('div');
-    wrapper.innerHTML = sidebarComponent({content});
+    wrapper.innerHTML = sidebarComponent({topBlockContent});
     return wrapper.firstChild;
   }
 }

@@ -1,0 +1,87 @@
+@import "mixins";
+
+.sidebar {
+  @include col;
+
+  z-index: 1;
+  font-family: $font-secondary;
+  background-color: $color-sidebar;
+
+  &__nav-links {
+    @include row;
+
+    height: $header-size;
+    font-family: $font-primary;
+    font-size: $links-font-size;
+    background-color: $color-secondary;
+  }
+
+  &__item {
+    padding-top: $sidebar-item-padding-top;
+    padding-left: $sidebar-item-padding-side;
+  }
+
+  &__categories {
+    @include col;
+
+    align-items: flex-start;
+  }
+
+  &__categories-title {
+    font-size: $title-font-size;
+  }
+
+  &__categories-item {
+    font-size: $sidebar-items-font-size;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
+  &__nav-item {
+    @include nav-item;
+  }
+
+  &__nav-buttons {
+    display: flex;
+    align-items: center;
+    height: 100%;
+  }
+
+  &__bottom {
+    position: relative;
+    bottom: 100px;
+    display: flex;
+    align-items: flex-end;
+  }
+
+  &__content {
+    @include col;
+
+    justify-content: space-between;
+    height: 100%;
+  }
+}
+
+.sidebar-bottom {
+  &_right {
+    @include right;
+
+    margin-bottom: $sidebar-margin-bottom;
+  }
+}
+
+.contacts {
+  @include col;
+
+  align-items: flex-end;
+
+  &__title {
+    font-size: $title-font-size;
+  }
+
+  &__developer {
+    font-size: $links-font-size;
+  }
+}

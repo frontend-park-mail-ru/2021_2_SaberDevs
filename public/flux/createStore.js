@@ -8,7 +8,7 @@ import applyMiddleware from './applyMiddleware.js';
  * @return {Object} store
  */
 export default function createStore(rootReducer, initialState, ...middlewares) {
-  console.warn('createStore: ', middlewares.map((el) => el.name));
+  console.log('[STORE] createStore: ', middlewares.map((el) => el.name));
   let state = rootReducer(initialState, {type: SYSTYPES.INIT});
   const subscribers = {};
 

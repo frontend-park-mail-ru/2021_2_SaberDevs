@@ -20,7 +20,7 @@ const APIUrls = [
   '/articles/feed',
   '/user/logout',
 ];
-const feedChunkSize = 3;  // размер подгружаемой части ленты
+const feedChunkSize = 5;  // размер подгружаемой части ленты
 const endOfFeedMarkerID = 'end';
 const cookieTime = 600000; // in ms
 
@@ -128,6 +128,57 @@ const testData = [
     commentsUrl: '#',
     comments: 3,
     likes: 1003,
+  },
+  {
+    id: '5',
+    previewUrl: 'static/img/computer.png',
+    tags: ['IT-News', 'Testing'],
+    title: 'Article 5',
+    text: `\tЧуть меньше текста\tЧуть Чуть
+    \tЧуть меньше текста`,
+    authorUrl: '#',
+    authorName: 'Tester-5',
+    authorAvatar: 'static/img/photo-elon-musk.jpg',
+    commentsUrl: '#',
+    comments: 5,
+    likes: 1005,
+  },
+  {
+    id: '6',
+    previewUrl: 'static/img/computer.png',
+    tags: ['IT-News', 'Testing'],
+    title: 'Article 6',
+    text: `\tЧуть меньше текста\tЧуть меньше текста\tЧуть
+    \tЧуть меньше текста`,
+    authorUrl: '#',
+    authorName: 'Tester-6',
+    authorAvatar: 'static/img/photo-elon-musk.jpg',
+    commentsUrl: '#',
+    comments: 6,
+    likes: 1006,
+  },
+  {
+    id: '7',
+    previewUrl: 'static/img/computer.png',
+    tags: ['IT-News', 'Testing'],
+    title: 'Article 7',
+    text: `\tОчень много текста\tОчень много текста\tОчень много текста
+      \tОчень много текста\tОчень много текста\tОчень много текста
+      \tОчень много текста\tОчень много текста\tОчень много текста
+      \tОчень много текста\tОчень много текста\tОчень много текста
+      \tОчень много текста\tОчень много текста\tОчень много текста
+      \tОчень много текста\tОчень много текста\tОчень много текста
+      \tОчень много текста\tОчень много текста\tОчень много текста
+      \tОчень много текста\tОчень много текста\tОчень много текста
+      \tОчень много текста\tОчень много текста\tОчень много текста
+      \tОчень много текста\tОчень много текста\tОчень много текста
+      \tОчень много текста\tОчень много текста\tОчень много текста`,
+    authorUrl: '#',
+    authorName: 'Tester-7',
+    authorAvatar: 'static/img/photo-elon-musk.jpg',
+    commentsUrl: '#',
+    comments: 7,
+    likes: 1007,
   },
 ];
 

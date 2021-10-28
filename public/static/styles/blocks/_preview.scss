@@ -1,0 +1,45 @@
+$preview-min-height: 400px;
+$preview-padding: 30px 60px;
+$preview-title-font-size: 48px;
+$preview-tags-font-size: 14px;
+
+.preview {
+  @include col;
+  @include background-img($img-preview);
+
+  align-items: flex-start;
+  justify-content: space-between;
+  padding: $preview-padding;
+  min-height: $preview-min-height;
+  font-weight: $font-thin;
+
+  &__top {
+    @include right;
+  }
+
+  &__title {
+    margin-bottom: $card-title-margin-bottom;
+    font-weight: $font-thick;
+    font-size: $preview-title-font-size;
+  }
+
+  &__content {
+    width: 100%;
+  }
+
+  &__description {
+    font-size: $text-font-size;
+  }
+
+  &__tag {
+    font-size: $preview-tags-font-size;
+  }
+}
+
+.action-btns {
+  @include row;
+
+  &__first {
+    margin-right: $action-btns-margin-right;
+  }
+}

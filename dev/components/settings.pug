@@ -1,0 +1,10 @@
+.settings
+    .settings__title Настройки пользователя
+    .settings__links
+        a.settings__other-page(href = `${other_page_href}`) #{other_page_name}
+    form.settings__form
+        .settings__rows !{form_rows}
+        .settings__warning Поля заполнены неверно
+        .settings__footer
+            input.settings__btn(type='submit' name='btn-submit' value='Сохранить')
+            a.settings__btn Назад

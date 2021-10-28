@@ -1,0 +1,33 @@
+$icon-size: 40px;
+$user-img: 60px;
+
+.icon {
+  @include row;
+
+  &__img {
+    width: $icon-size;
+    height: $icon-size;
+  }
+
+  &__text {
+    font-size: $items-font-size;
+  }
+}
+
+.user-img {
+  border: $border;
+  border-radius: $border-radius;
+  width: $user-img;
+  height: $user-img;
+  pointer-events: all;
+}
+
+.password-control {
+  position: absolute;
+  right: 6px;
+  top: 11px;
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  background: $img-icon-eye-open 0 0 no-repeat;
+}

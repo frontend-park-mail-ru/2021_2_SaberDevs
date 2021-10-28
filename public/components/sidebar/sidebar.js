@@ -1,9 +1,45 @@
 import BaseComponent from '../_basic/baseComponent.js';
 import SidebarView from './sidebarView.js';
 
+// TODO: перенести во вью. Сделать ручки
+import userPreviewComponent from './userPreview.pug.js';
+import buttonNavComponent from './buttonNav.pug.js';
+
 import store from '../../flux/store.js';
-import {} from '../../flux/actions.js';
-import {} from '../../flux/types.js';
+import {mainPageActions} from '../../flux/actions.js';
+import {authorizationTypes} from '../../flux/types.js';
+
+/**
+ * TODO:
+ */
+function setSidebarUserPreview() {
+  // TODO: вынести во вью
+  const topBlockContentDiv = document.getElementById('sidebarTopBlockContent');
+  const state = store.getState().authorization;
+  topBlockContentDiv.innerHTML = userPreviewComponent({
+    name: state.name,
+    // вроде как не заполняем
+    url: ``,
+    img: state.avatar,
+  });
+}
+
+/**
+ * TODO:
+ */
+function setSidebarSignupButtons() {
+  const topBlockContentDiv = document.getElementById('sidebarTopBlockContent');
+  topBlockContentDiv.innerHTML = buttonNavComponent({
+    href: '',
+    data_section: 'loginModal',
+    name: 'Логин',
+  });
+  topBlockContentDiv.innerHTML += buttonNavComponent({
+    href: '',
+    data_section: 'signupModal',
+    name: 'Регистрация',
+  });
+}
 
 /**
  * ViewModel-компонент соответсвующего View
@@ -23,11 +59,41 @@ export default class Sidebar extends BaseComponent {
     //
     // /////////////////////////////////
 
-    // TODO: sidebar actions
-    // this.unsubscribes.push(store.subscribe(..., () => {
-    //   store.dispatch(
-    //   );
-    // }));
+    // Обновление вида хедера до создания подписки
+    // на случай, если вход был совершен до инициализации
+    if (store.getState().authorization.login !== '') {
+      store.dispatch(
+          // TODO: проверить как работает
+          // mainPageActions.toggleLogin(
+          //     true,
+          //     store.getState().authorization.login,
+          // ),
+          (dispatch, getState) => mainPageActions.toggleLogin(
+              true,
+              getState().authorization.login,
+          ),
+      );
+    }
+
+    this.unsubscribes.push(store.subscribe(authorizationTypes.LOGIN, () => {
+      store.dispatch(
+          // TODO: проверить как работает
+          // mainPageActions.toggleLogin(
+          //     true,
+          //     store.getState().authorization.login,
+          // ),
+          (dispatch, getState) => mainPageActions.toggleLogin(
+              true,
+              getState().authorization.login,
+          ),
+      );
+      setSidebarUserPreview();
+    }));
+
+    this.unsubscribes.push(store.subscribe(authorizationTypes.LOGOUT, () => {
+      store.dispatch(mainPageActions.toggleLogin(false, ''));
+      setSidebarSignupButtons();
+    }));
   }
 
   /**
@@ -36,9 +102,29 @@ export default class Sidebar extends BaseComponent {
    */
   render() {
     super.render();
-
     const state = store.getState().mainPage;
-    this.root = this.view.render(state.sideBarLinks);
+
+    let topBlockContent = '';
+    if (!state.isAuthenticated) {
+      topBlockContent += buttonNavComponent({
+        href: '',
+        data_section: 'loginModal',
+        name: 'Логин',
+      });
+      topBlockContent += buttonNavComponent({
+        href: '',
+        data_section: 'signupModal',
+        name: 'Регистрация',
+      });
+    } else {
+      // TODO: заполнить
+      topBlockContent = userPreviewComponent({
+        name: 'Григорий',
+        url: `#`,
+        img: `static/img/users/user.jpg`,
+      });
+    }
+    this.root = this.view.render(topBlockContent);
     return this.root;
   }
 

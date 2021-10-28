@@ -28,7 +28,6 @@ export default class ProfilePage extends BasePageMV {
    */
   render() {
     super.render();
-    console.warn(store.getState())
     this.view.render(store.getState().authorization);
   }
 

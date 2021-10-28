@@ -1,11 +1,13 @@
-header
-  .container
-    .row
-      #menu-icon.menu-icon
-      img.company-name(src='../static/img/company-name.png')
-      button.button-add-record.m-10 Новая запись
-    .row
-      button.button-search.row
-        img(src='../static/img/search-icon.png')
-        div Поиск
-    .row#header-content !{content}
+.header
+  .header__title SaberNews
+  .header__content
+    .header__nav-items
+      a(href="#").header__nav-item Популярное
+      a(href="#").header__nav-item Новое
+      a(href="#").header__nav-item Подписки
+      a(href="#").header__nav-item Мероприятия
+      a(href="#").header__nav-item Группы
+      a(href="#").header__nav-item Трансляции
+    .search
+      input(type='text' placeholder='Search...').search__input.search__input_close
+      a(data-section='search__button').search__button.search__button_search-icon

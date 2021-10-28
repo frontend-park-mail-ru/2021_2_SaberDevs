@@ -1,0 +1,55 @@
+$profile-menu-item-padding: 10px;
+$profile-menu-box-shadow: -10px 10px 10px rgba(0, 0, 0, 0.25);
+$profile-menu-padding: 5px;
+$profile-menu-bg-hover: rgba(0, 0, 0, 0.2);
+$profile-menu-user-img-margin: 5px;
+
+.user-preview {
+  @include col;
+
+  position: relative;
+  height: 100%;
+
+  &__links {
+    @include row;
+
+    height: 100%;
+  }
+
+  &__user-img {
+    margin: $profile-menu-user-img-margin;
+  }
+
+  &:hover {
+    background-color: $profile-menu-bg-hover;
+
+    .profile-menu {
+      display: flex;
+    }
+  }
+}
+
+.profile-menu {
+  position: absolute;
+  width: 100%;
+  top: $header-size;
+  display: none;
+  flex-direction: column;
+  align-items: flex-start;
+  box-shadow: $profile-menu-box-shadow;
+  background-color: $color-elements;
+
+  &__item {
+    padding: $profile-menu-item-padding;
+    font-size: $profile-menu-items;
+    color: $color-primary;
+
+    &:hover {
+      color: $color-secondary;
+    }
+
+    &:active {
+      text-decoration: underline;
+    }
+  }
+}

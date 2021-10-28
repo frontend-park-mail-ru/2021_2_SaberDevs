@@ -35,7 +35,7 @@ const sideBarLinks = ['hello'];
  */
 const InitialMainPageState = {
   isAuthenticated: false,
-  trackedCardId: 'loading-card', // отслеживаемая запись в ленте для подгрузки
+  trackedCardId: 'feed-loading', // отслеживаемая запись в ленте для подгрузки
   isLoading: false,              // отправлен ли запрос на сервер
   idLastLoaded: '',              // запоминаем последнюю загруженную запись
   lastScrollPos: 0,              // скрол для возврата к той же записи

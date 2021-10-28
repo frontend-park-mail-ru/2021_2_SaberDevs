@@ -11,6 +11,9 @@ import Router from './components/router.js';
 
 // components
 import signupModal from './components/signupModal.js';
+import searchField from './components/header/searchField.js';
+// TODO: настройки пользователя
+import userSettings from './components/settings/userSettings.js';
 
 // network
 import {logoutRequest} from './modules/ajaxRequests.js';
@@ -65,7 +68,14 @@ linksController
           if (store.getState().mainPage.isAuthenticated) {
             logoutRequest();
           }
-        });
+        })
+    .register(
+        'search',
+        searchField)
+// TODO: настройки пользователя
+    .register(
+        'user-settings',
+        userSettings);
 
 // TODO: экран загрузки
 cookieLogin()

@@ -6,12 +6,11 @@ import headerComponent from './header.pug.js';
  */
 export default class HeaderView extends BaseComponentView {
   /**
-    * @param {string} content - вид правого блока
     * @return {HTMLElement}
     */
-  render(content) {
+  render() {
     const wrapper = document.createElement('div');
-    wrapper.innerHTML = headerComponent({content});
+    wrapper.innerHTML = headerComponent();
     return wrapper.firstChild;
   }
 }

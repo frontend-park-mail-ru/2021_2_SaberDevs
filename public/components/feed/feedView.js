@@ -1,5 +1,7 @@
 import BaseComponentView from '../_basic/baseComponentView.js';
 import cardComponent from './card.pug.js';
+import previewComponent from './preview.pug.js';
+import feedComponent from './feed.pug.js';
 
 const loadingCard = {
   id: 'loading-card',
@@ -48,32 +50,39 @@ export default class FeedView extends BaseComponentView {
     * @return {HTMLElement}
     */
   render(cards) {
-    const contentDiv = document.createElement('div');
-    contentDiv.className = 'content col';
-    contentDiv.id = 'menu-content-block';
-
+    let content = '';
     cards.forEach((element) => {
-      contentDiv.innerHTML += cardComponent(element);
+      content += cardComponent(element);
     });
 
-    contentDiv.innerHTML += cardComponent(loadingCard);
-    this.root = contentDiv;
-    return contentDiv;
+    // TODO: preview -динамическая подборка популярых записей
+    const preview = previewComponent(loadingCard);
+
+    const wrapper = document.createElement('div');
+    wrapper.innerHTML = feedComponent({
+      preview,
+      cards: content,
+    });
+    this.root = wrapper.firstChild;
+    return wrapper.firstChild;
   }
 
   /**
-    * @param {HTMLElement} trackedCard
     * @param {Array.Card} cards
     */
-  addCards(trackedCard, cards) {
-    if (!trackedCard) {
-      return;
-    }
+  addCards(cards) {
     cards.forEach((element) => {
-      trackedCard.insertAdjacentHTML(
-          'beforebegin',
+      this.root.querySelector(`.feed__cards`).insertAdjacentHTML(
+          'beforeend',
           cardComponent(element),
       );
     });
+  }
+
+  /**
+   * hide loading component
+   */
+  hideLoadingAnimation() {
+    this.root.querySelector('#feed-loading').style.visibility = 'hidden';
   }
 }

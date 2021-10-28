@@ -1,0 +1,111 @@
+$settings-title-font-size: 36px;
+$settings-label-font-size: 24px;
+$settings-input-font-size: 24px;
+$settings-btn-font-size: 18px;
+$settings-other-page-font-size: 18px;
+$settings-btn-padding: 10px 20px;
+$settings-input-padding: 10px;
+$settings-other-page-margin-bottom: 20px;
+$settings-label-margin-right: 10px;
+$settings-btn-save-margin-right: 10px;
+$settings-title-margin-top: 50px;
+$settings-title-margin-bottom: 30px;
+$settings-row-margin-bottom: 20px;
+
+.settings {
+  @include col;
+
+  width: 80%;
+
+  &__title {
+    margin-top: $settings-title-margin-top;
+    margin-bottom: $settings-title-margin-bottom;
+    font-size: $settings-title-font-size;
+  }
+
+  &__links {
+    @include right;
+  }
+
+  &__other-page {
+    margin-bottom: $settings-other-page-margin-bottom;
+    font-size: $settings-other-page-font-size;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
+  &__form {
+    @include col;
+
+    width: 100%;
+  }
+
+  &__rows {
+    @include col;
+
+    width: 100%;
+  }
+
+  &__row {
+    display: flex;
+    margin-bottom: $settings-row-margin-bottom;
+    width: 100%;
+  }
+
+  &__elem {
+    display: flex;
+    flex-wrap: nowrap;
+    box-sizing: border-box;
+    white-space: nowrap;
+    text-align: center;
+  }
+
+  &__field {
+    width: 80%;
+  }
+
+  &__label {
+    justify-content: end;
+    margin-right: $settings-label-margin-right;
+    width: 20%;
+    font-size: $settings-label-font-size;
+  }
+
+  &__input {
+    border: $border;
+    border-radius: $border-radius;
+    padding: $settings-input-padding;
+    width: 100%;
+    font-size: $settings-input-font-size;
+    color: $color-primary;
+    background-color: $color-elements;
+  }
+
+  &__btn {
+    border-radius: $border-radius;
+    padding: $settings-btn-padding;
+    box-shadow: $box-shadow;
+    font-size: $settings-btn-font-size;
+    color: $color-elements;
+    background-color: $color-secondary;
+
+    &:hover {
+      opacity: $button-opacity;
+    }
+
+    &:active {
+      border-color: $color-elements;
+      box-shadow: none;
+    }
+  }
+
+  &__btn-save {
+    margin-right: $settings-btn-save-margin-right;
+  }
+
+  &__footer {
+    @include right;
+  }
+}

@@ -41,6 +41,7 @@ export default class Router {
 
     if (!root) {
       root = document.createElement('section');
+      root.className = 'view';
       this.root.appendChild(root);
     }
 
@@ -50,7 +51,7 @@ export default class Router {
 
     const redirectRoute = page.redirect(window.location.pathname);
     if (redirectRoute !== '') {
-      console.warn(page.constructor.name + ' | redirectRoute: ' +
+      console.log('[ROUTER]', page.constructor.name + ' | redirectRoute: ' +
       redirectRoute);
       this.open(redirectRoute);
       this.routes[path] = {PageClass, page, root};
@@ -103,7 +104,7 @@ export default class Router {
     });
 
     const currentPath = window.location.pathname;
-    console.warn(currentPath);
+    console.log('[ROUTER] start page:', currentPath);
     this.open(currentPath);
   }
 }
