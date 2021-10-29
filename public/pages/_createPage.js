@@ -3,8 +3,8 @@ import Header from '../components/header/header.js';
 import Sidebar from '../components/sidebar/sidebar.js';
 
 // синглтоны
-const header = new Header();
-const sidebar = new Sidebar();
+let header = null;
+let sidebar = null;
 
 /**
   * Генерирует HTML-страницу проекта
@@ -13,6 +13,10 @@ const sidebar = new Sidebar();
   * @return {HTMLElement}
   */
 export default function createPage(...elements) {
+  if (header === null || sidebar === null) {
+    header = new Header();
+    sidebar = new Sidebar();
+  }
   const bkgDiv = document.createElement('div');
   bkgDiv.className = 'background';
   const screenDiv = document.createElement('div');

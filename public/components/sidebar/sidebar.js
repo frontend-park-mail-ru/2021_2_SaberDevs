@@ -10,7 +10,8 @@ import {mainPageActions} from '../../flux/actions.js';
 import {authorizationTypes} from '../../flux/types.js';
 
 /**
- * TODO:
+ * Заполнить верхний блок сайдбара именем и
+ * аватаркой пользователя, кнопкой "новая запись"
  */
 function setSidebarUserPreview() {
   // TODO: вынести во вью
@@ -18,14 +19,13 @@ function setSidebarUserPreview() {
   const state = store.getState().authorization;
   topBlockContentDiv.innerHTML = userPreviewComponent({
     name: state.name,
-    // вроде как не заполняем
-    url: ``,
+    url: `/profile`,
     img: state.avatar,
   });
 }
 
 /**
- * TODO:
+ * Заполнить верхний блок сайдбара кнопками "войти / зарегистрироваться"
  */
 function setSidebarSignupButtons() {
   const topBlockContentDiv = document.getElementById('sidebarTopBlockContent');
@@ -63,30 +63,16 @@ export default class Sidebar extends BaseComponent {
     // на случай, если вход был совершен до инициализации
     if (store.getState().authorization.login !== '') {
       store.dispatch(
-          // TODO: проверить как работает
-          // mainPageActions.toggleLogin(
-          //     true,
-          //     store.getState().authorization.login,
-          // ),
-          (dispatch, getState) => mainPageActions.toggleLogin(
-              true,
-              getState().authorization.login,
-          ),
-      );
+          (dispatch, getState) => dispatch(
+              mainPageActions.toggleLogin(true, getState().authorization.login),
+          ));
     }
 
     this.unsubscribes.push(store.subscribe(authorizationTypes.LOGIN, () => {
       store.dispatch(
-          // TODO: проверить как работает
-          // mainPageActions.toggleLogin(
-          //     true,
-          //     store.getState().authorization.login,
-          // ),
-          (dispatch, getState) => mainPageActions.toggleLogin(
-              true,
-              getState().authorization.login,
-          ),
-      );
+          (dispatch, getState) => dispatch(
+              mainPageActions.toggleLogin(true, getState().authorization.login),
+          ));
       setSidebarUserPreview();
     }));
 
@@ -119,9 +105,9 @@ export default class Sidebar extends BaseComponent {
     } else {
       // TODO: заполнить
       topBlockContent = userPreviewComponent({
-        name: 'Григорий',
-        url: `#`,
-        img: `static/img/users/user.jpg`,
+        name: store.getState().authorization.name,
+        url: `/profile`,
+        img: store.getState().authorization.avatar,
       });
     }
     this.root = this.view.render(topBlockContent);

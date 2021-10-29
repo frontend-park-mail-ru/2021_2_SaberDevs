@@ -1,6 +1,7 @@
-a.sidebar__nav-item(data-section='user-settings-window') #{name}
-a.sidebar__nav-item
-    img.user-img(src=`${img}`)
-.profile-menu
-    a.profile-menu__item(href=`${url}` data-section='user-settings') Настройки
-    a.profile-menu__item(href='#') Выйти
+.user-preview
+  a.user-preview__links(href=`${url}`)
+    .sidebar__nav-item #{name}
+    img.user-img.user-preview__user-img(src=`${img}`)
+  .profile-menu
+      a.profile-menu__item(href='/profile/settings') Настройки
+      a.profile-menu__item(data-section='logout') Выйти

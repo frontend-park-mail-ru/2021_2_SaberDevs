@@ -1,34 +1,5 @@
 import Modal from './modal/modal.js';
 import SignupForm from './signupForm/signupForm.js';
-import {modalTypes} from '../flux/types.js';
-import store from '../flux/store.js';
-
-// ///////////////////////////////// //
-//
-//          Globals
-//
-// ///////////////////////////////// //
-
-/**
- * Выполняется, если вход успешный
- * @callback loginCallback
- * @param {Object} props
- */
-
-store.subscribe(modalTypes.MODAL_CLOSE, () => {
-  document.title = store.getState().page.docTitle;
-});
-
-store.subscribe(modalTypes.MODAL_OPEN, () => {
-  document.title = `SaberProject |
-  ${store.getState().signupForm.showRegister ? 'Sign Up':'Login'}`;
-});
-
-// ///////////////////////////////// //
-//
-//         Page Content
-//
-// ///////////////////////////////// //
 
 /**
  * Страница содержит главный компонент - форму регистрации
@@ -54,22 +25,13 @@ export default function signupModal(showRegister) {
   // форма
   const signupForm = new SignupForm(showRegister);
   const form = signupForm.render();
-  console.warn('после рендера формы:');
-  console.warn({form});
-  console.warn(form);
-  console.warn('тип form HTMLElement:', form instanceof HTMLElement);
 
   const contentDiv = document.createElement('div');
   contentDiv.appendChild(form);
-  // contentDiv.appendChild(changeFormTypeBtn);
-  console.warn(contentDiv);
-  // TODO: footer
-  // const okBtn = document.getElementById('modal-btn-ok');
-  // okBtn.textContent = 'Закрыть';
-  // const cancelBtn = document.getElementById('modal-btn-cancel');
-  // cancelBtn.style.display = 'none';
+  contentDiv.appendChild(changeFormTypeBtn);
 
+  Modal.setDocTitle(`SaberProject | ${showRegister ? 'Sign Up' : 'Login'}`);
   Modal.setTitle(showRegister ? 'Регистрация' : 'Вход');
-  Modal.setContent(contentDiv.firstChild);
+  Modal.setContent(contentDiv);
   Modal.open();
 }

@@ -3,6 +3,7 @@
 // pages
 import MainPage from './pages/mainPage.js';
 import ProfilePage from './pages/profilePage.js';
+import ProfileSettingsPage from './pages/profileSettingsPage.js';
 // import SignupPage from './pages/signupPage.js';
 
 // Controllers
@@ -12,8 +13,6 @@ import Router from './components/router.js';
 // components
 import signupModal from './components/signupModal.js';
 import searchField from './components/header/searchField.js';
-// TODO: настройки пользователя
-import userSettings from './components/settings/userSettings.js';
 
 // network
 import {logoutRequest} from './modules/ajaxRequests.js';
@@ -48,7 +47,8 @@ const linksController = new LinksController(root);
 // ///////////////////////////////// //
 router
     .register('/', MainPage)
-    .register('/profile', ProfilePage);
+    .register('/profile', ProfilePage)
+    .register('/profile/settings', ProfileSettingsPage);
 // .register('/login', LoginPage);
 // TODO:
 // .register('/signup', SignupPage);
@@ -71,11 +71,7 @@ linksController
         })
     .register(
         'search',
-        searchField)
-// TODO: настройки пользователя
-    .register(
-        'user-settings',
-        userSettings);
+        searchField);
 
 // TODO: экран загрузки
 cookieLogin()

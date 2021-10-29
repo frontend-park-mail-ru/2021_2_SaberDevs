@@ -1,6 +1,8 @@
-import {modalActions} from '../../flux/actions.js';
-import store from '../../flux/store.js';
 import modalComponent from './modal.pug.js';
+
+import store from '../../flux/store.js';
+import {modalTypes} from '../../flux/types.js';
+import {modalActions} from '../../flux/actions.js';
 
 const animationTime = 200;
 const informationWindowOpenTime = 2000;
@@ -9,6 +11,7 @@ let inClosing = false;
 let isDestroyed = false;
 let okBtnDispay = true;
 let cancelBtnDispay = true;
+let docTitle = '';
 
 /**
  * @param {object} props
@@ -78,6 +81,15 @@ function fillDefaultModal(props) {
 function _createModal(props) {
   const modalDiv = document.getElementById('modalroot');
   modalDiv.innerHTML = fillDefaultModal(props);
+
+  store.subscribe(modalTypes.MODAL_CLOSE, () => {
+    document.title = store.getState().page.docTitle;
+  });
+
+  store.subscribe(modalTypes.MODAL_OPEN, () => {
+    document.title = docTitle;
+  });
+
   return modalDiv;
 }
 
@@ -88,6 +100,10 @@ const modalDiv = _createModal({
 
 const Modal = {
   animationTime,
+
+  setDocTitle(title) {
+    docTitle = title;
+  },
 
   close() {
     if (isDestroyed) {
@@ -170,15 +186,18 @@ const Modal = {
     if (modalsDebug) {
       console.log('Modal: setContent to ', content);
     }
-    let contentDiv = modalDiv.querySelector('.modal__content');
+    const contentDiv = modalDiv.querySelector('.modal__content');
     if (typeof content === 'string') {
       contentDiv.innerHTML = content;
     }
     if (content instanceof HTMLElement) {
-      const newContentDiv = document.createElement('div');
-      contentDiv.className = 'modal__content';
-      newContentDiv.appendChild(content);
-      contentDiv = newContentDiv;
+      // const newContentDiv = document.createElement('div');
+      // newContentDiv.className = 'modal__content';
+      // newContentDiv.appendChild(content);
+      // Object.assign(contentDiv, newContentDiv);
+      // contentDiv.innerHTML = content.outerHTML;
+      contentDiv.innerHTML = '';
+      contentDiv.appendChild(content);
     }
   },
 

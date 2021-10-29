@@ -45,7 +45,7 @@ function wrapSubmitHandler(renderError) {
 export default class SignupForm extends BaseComponent {
   /**
    * Универсальный компонент заголовка
-   * @param {bolean} showRegister форма регистрации / форма входа
+   * @param {boolean} showRegister форма регистрации / форма входа
    */
   constructor(showRegister) {
     super();
@@ -59,21 +59,10 @@ export default class SignupForm extends BaseComponent {
    */
   render() {
     super.render();
-    return this.view.render(
+    this.root = this.view.render(
         this.showRegister,
         wrapSubmitHandler(this.view.appendWarning),
     );
-    // this.root = this.view.render(
-    //     this.showRegister,
-    //     wrapSubmitHandler(this.view.appendWarning),
-    // );
-    // return this.root;
-  }
-
-  /**
-   * Очистка памяти и отписка от связанных событий
-   */
-  destroy() {
-    super.destroy();
+    return this.root;
   }
 }

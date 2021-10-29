@@ -12,23 +12,25 @@ export default class SignupViewView extends BaseComponentView {
   constructor() {
     super();
     this.root = document.createElement('div');
-    /**
+  }
+
+  /**
      * @param {string} msg
      */
-    this.appendWarning = (msg) => {
-      // TODO: fix id
-      // const formWarning = document.getElementById('auth-form-waring') ||
-      //   document.createElement('div');
-      // formWarning.className = 'auth-form-waring';
-      // formWarning.id = 'auth-form-waring';
-      // formWarning.textContent = msg;
-      // this.root.appendChild(formWarning);
-      // TODO:: querySelector
-      const formWarning = document
-          .getElementsByClassName('form__warning')[0];
-      formWarning.getElementsByClassName.display = 'block';
-    };
-  }
+  appendWarning(msg) {
+    // TODO: fix id
+    // const formWarning = document.getElementById('auth-form-waring') ||
+    //   document.createElement('div');
+    // formWarning.className = 'auth-form-waring';
+    // formWarning.id = 'auth-form-waring';
+    // formWarning.textContent = msg;
+    // this.root.appendChild(formWarning);
+    // TODO:: querySelector
+    const formWarning = document
+        .getElementsByClassName('form__warning')[0];
+    formWarning.getElementsByClassName.display = 'block';
+  };
+
   /**
    * Содает форму регистрации
    * @param {boolean} showRegister - true, если нужно отобразить
@@ -153,7 +155,7 @@ export default class SignupViewView extends BaseComponentView {
         type: 'email',
         name: 'email',
         placeholder: 'Введите почту...',
-        pattern: '',
+        pattern: '.*',
       });
       formRows += emailInput;
     }
@@ -163,7 +165,9 @@ export default class SignupViewView extends BaseComponentView {
       type: 'password',
       name: 'password',
       placeholder: 'Введите пароль...',
-      pattern: '^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=(.*[a-zA-Z]){4}).{8,256}$',
+      pattern: '^\\S{8,40}$',
+      // '^[A-Za-z0-9.,\\/#!$%\\^&\\*;:{}=\\-_`~()]{8,40}$';
+      // '^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=(.*[a-zA-Z]){4}).{8,256}$';
     });
     formRows += passwordInput;
 
@@ -173,7 +177,7 @@ export default class SignupViewView extends BaseComponentView {
         type: 'password',
         name: 'password-repeat',
         placeholder: 'Введите пароль повторно...',
-        pattern: '^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=(.*[a-zA-Z]){4}).{8,256}$',
+        pattern: '^\\S{8,40}$',
       });
       formRows += passwordRepeatInput;
     }
@@ -198,6 +202,7 @@ export default class SignupViewView extends BaseComponentView {
         document.getElementsByName('password-repeat')[0];
       const passwordRepeated = passwordRepeatInput?.value;
 
+      // TODO: проверить поля на непустые значения
       // если пароли не совпадают
       if (showRegister && passwordRepeated !== password) {
         const warningLabel = document.createElement('label');
@@ -212,7 +217,7 @@ export default class SignupViewView extends BaseComponentView {
       submitHandler(showRegister, login, password, email);
     });
 
-    // this.root = form;
+    this.root = form;
     return form;
   }
 }

@@ -44,5 +44,6 @@ export default class BasePageView {
       console.log(`[PAGE ${this.constructor.name}]\trender`);
     }
     this.root.innerHTML = '';
+    // this.root.appendChild(createPage(контент));
   }
 }

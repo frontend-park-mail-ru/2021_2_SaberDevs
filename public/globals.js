@@ -9,7 +9,7 @@
 const disableSW = true;
 
 const ajaxDebug = true;
-const modalsDebug = false;
+const modalsDebug = true;
 const fluxDebug = true;
 const routerDebug = true;
 const linkControllerDebug = true;
