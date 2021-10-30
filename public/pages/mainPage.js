@@ -85,7 +85,8 @@ function uploadNextCards() {
         }
         Modal.setContent(response.msg);
         Modal.open(false);
-      });
+      })
+      .catch((err) => console.warn(err.message));
 }
 
 /**

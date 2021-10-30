@@ -5,6 +5,7 @@ import MainPage from './pages/mainPage.js';
 import ProfilePage from './pages/profilePage.js';
 import ProfileSettingsPage from './pages/profileSettingsPage.js';
 // import SignupPage from './pages/signupPage.js';
+import LoadingPage from './pages/loading.js';
 
 // Controllers
 import LinksController from './components/linksController.js';
@@ -12,7 +13,6 @@ import Router from './components/router.js';
 
 // components
 import signupModal from './components/signupModal.js';
-import searchField from './components/header/searchField.js';
 
 // network
 import {logoutRequest} from './modules/ajaxRequests.js';
@@ -39,6 +39,8 @@ if ('serviceWorker' in navigator && !disableSW) {
 const root = document.getElementById('root');
 const router = new Router(root);
 const linksController = new LinksController(root);
+// экран загрузки
+const loadingScreen = new LoadingPage();
 
 // ///////////////////////////////// //
 //
@@ -70,12 +72,14 @@ linksController
           }
         })
     .register(
-        'search',
-        searchField);
+        'back',
+        window.history.back,
+    );
 
-// TODO: экран загрузки
-cookieLogin()
-    .then(() => {
-      linksController.enable();
-      router.start();
-    });
+loadingScreen.start();
+(async function init() {
+  await cookieLogin();
+  await loadingScreen.end();
+  linksController.enable();
+  router.start();
+})();

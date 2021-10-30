@@ -32,7 +32,9 @@ export function cookieLogin() {
             if (status === Ajax.STATUS.ok) {
               store.dispatch(authorizationActions.login(response.data));
             }
-          });
+          })
+      // TODO: APIState
+      .catch((error) => console.warn(error.message));
 }
 
 const ajaxRequests = {
