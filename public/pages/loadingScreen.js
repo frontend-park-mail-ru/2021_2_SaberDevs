@@ -30,6 +30,7 @@ export default class LoadingPage {
       </progress>
     `;
     this.progressBar = this.root.querySelector('progress');
+    this.animationId = 0;
   }
 
   /**
@@ -57,19 +58,21 @@ export default class LoadingPage {
     };
 
     // начать анимацию
-    window.requestAnimationFrame(step);
+    this.animationId = window.requestAnimationFrame(step);
   }
 
   /**
    * Довести прогресс-бар до конца
    */
   async end() {
+    // остановить анимацию, если еще идет
+    window.cancelAnimationFrame(this.animationId);
+
     await new Promise((resolve) => {
       let prevTimestamp = performance.now();
 
       const step = (timestamp) => {
         this.progressValue += (timestamp - prevTimestamp) *SPEED_ON_END / 10000;
-        console.log(this.progressValue);
         prevTimestamp = timestamp;
         if (this.progressValue < 100) {
           this.progressBar.value = this.progressValue;

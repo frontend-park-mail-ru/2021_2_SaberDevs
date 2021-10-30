@@ -1,5 +1,5 @@
-import Modal from './modal/modal.js';
-import SignupForm from './signupForm/signupForm.js';
+import Modal from './modal.js';
+import SignupForm from '../signupForm/signupForm.js';
 
 /**
  * Страница содержит главный компонент - форму регистрации
@@ -33,5 +33,7 @@ export default function signupModal(showRegister) {
   Modal.setDocTitle(`SaberProject | ${showRegister ? 'Sign Up' : 'Login'}`);
   Modal.setTitle(showRegister ? 'Регистрация' : 'Вход');
   Modal.setContent(contentDiv);
+  Modal.disableCancelBtn();
+  Modal.disableOkBtn();
   Modal.open();
 }

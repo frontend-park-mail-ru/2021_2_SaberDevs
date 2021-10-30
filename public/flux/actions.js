@@ -3,6 +3,7 @@ import {authorizationTypes,
   mainPageTypes,
   signupFormTypes,
   modalTypes,
+  apiTypes,
 } from './types.js';
 
 // ////////////////
@@ -205,4 +206,29 @@ export const mainPageActions = {
   forbidCardsLoading,
   allowCardsLoading,
   toggleLogin,
+};
+
+// ////////////////
+//    apiActions
+// ////////////////
+
+/**
+ * @return {Action}
+ */
+function setUnavailable() {
+  return {
+    type: apiTypes.SET_UNAVAILABLE,
+  };
+}
+/**
+ * @return {Action}
+ */
+function setAvailable() {
+  return {
+    type: apiTypes.SET_AVAILABLE,
+  };
+}
+export const apiActions = {
+  setAvailable,
+  setUnavailable,
 };

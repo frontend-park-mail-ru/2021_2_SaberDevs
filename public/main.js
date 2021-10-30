@@ -5,14 +5,15 @@ import MainPage from './pages/mainPage.js';
 import ProfilePage from './pages/profilePage.js';
 import ProfileSettingsPage from './pages/profileSettingsPage.js';
 // import SignupPage from './pages/signupPage.js';
-import LoadingPage from './pages/loading.js';
+import LoadingPage from './pages/loadingScreen.js';
 
 // Controllers
 import LinksController from './components/linksController.js';
 import Router from './components/router.js';
 
 // components
-import signupModal from './components/signupModal.js';
+import signupModal from './components/modal/signupModal.js';
+import Warning from './components/modal/serviceWarning.js';
 
 // network
 import {logoutRequest} from './modules/ajaxRequests.js';
@@ -42,6 +43,7 @@ const linksController = new LinksController(root);
 // экран загрузки
 const loadingScreen = new LoadingPage();
 
+Warning.init();
 // ///////////////////////////////// //
 //
 //        Настройки переходов
