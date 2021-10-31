@@ -1,6 +1,7 @@
 import BaseComponentView from '../_basic/baseComponentView.js';
 import signupFormComponent from './signupForm.pug.js';
 import formRowComponent from './formRow.pug.js';
+import {createInput} from '../../utils.js';
 
 /**
  * @class SignupViewView
@@ -140,46 +141,64 @@ export default class SignupViewView extends BaseComponentView {
     /**
  */
     let formRows = '';
-    const loginInput = formRowComponent({
+    const loginInput = createInput('login', '', 'login', '', true,
+        '^[a-zA-Z][a-zA-Z0-9_]{4,20}$');
+    loginInput.className = 'form__input';
+
+    const loginRow = formRowComponent({
       label: 'Логин',
-      type: 'text',
-      name: 'login',
-      placeholder: 'Введите логин...',
-      pattern: '^[a-zA-Z][a-zA-Z0-9_]{4,20}$',
+      field: loginInput.outerHTML,
     });
-    formRows += loginInput;
+    formRows += loginRow;
 
     if (showRegister) {
-      const emailInput = formRowComponent({
+      const emailInput = createInput('email', '', 'email', '', true);
+      emailInput.className = 'form__input';
+
+      const emailRow = formRowComponent({
         label: 'Почта',
-        type: 'email',
-        name: 'email',
-        placeholder: 'Введите почту...',
-        pattern: '.*',
+        field: emailInput.outerHTML,
       });
-      formRows += emailInput;
+      formRows += emailRow;
+      console.log('emailInput: ', emailRow);
     }
 
-    const passwordInput = formRowComponent({
+    const passwordInputWrapper = document.createElement('div');
+    const passwordInput = createInput('password', '', 'password', '',
+        true, '^\\S{8,40}$');
+    // '^[A-Za-z0-9.,\\/#!$%\\^&\\*;:{}=\\-_`~()]{8,40}$';
+    // '^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=(.*[a-zA-Z]){4}).{8,256}$';
+    passwordInput.className = 'form__input';
+    const passwordShowBtn = document.createElement('a');
+    passwordShowBtn.className = 'password__control-btn';
+    passwordShowBtn.classList.add('control-password');
+
+    passwordInputWrapper.appendChild(passwordInput);
+    passwordInputWrapper.appendChild(passwordShowBtn);
+
+    const passwordRow = formRowComponent({
       label: 'Пароль',
-      type: 'password',
-      name: 'password',
-      placeholder: 'Введите пароль...',
-      pattern: '^\\S{8,40}$',
-      // '^[A-Za-z0-9.,\\/#!$%\\^&\\*;:{}=\\-_`~()]{8,40}$';
-      // '^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=(.*[a-zA-Z]){4}).{8,256}$';
+      field: passwordInputWrapper.innerHTML,
     });
-    formRows += passwordInput;
+    formRows += passwordRow;
 
     if (showRegister) {
-      const passwordRepeatInput = formRowComponent({
+      const passwordInputWrapper = document.createElement('div');
+      const passwordInput = createInput('password', '', 'password-repeat', '',
+          true, '^\\S{8,40}$');
+      passwordInput.className = 'form__input';
+      const passwordShowBtn = document.createElement('a');
+      passwordShowBtn.className = 'password__control-btn';
+      passwordShowBtn.classList.add('control-password-repeat');
+
+      passwordInputWrapper.appendChild(passwordInput);
+      passwordInputWrapper.appendChild(passwordShowBtn);
+
+      const passwordRow = formRowComponent({
         label: 'Повтор пароля',
-        type: 'password',
-        name: 'password-repeat',
-        placeholder: 'Введите пароль повторно...',
-        pattern: '^\\S{8,40}$',
+        field: passwordInputWrapper.innerHTML,
       });
-      formRows += passwordRepeatInput;
+      formRows += passwordRow;
     }
 
     const formWrapper = document.createElement('div');
@@ -190,6 +209,34 @@ export default class SignupViewView extends BaseComponentView {
     });
 
     const form = formWrapper.firstChild;
+
+    console.log('formWrapper:', formWrapper);
+    const btnPassword = formWrapper
+        .getElementsByClassName('control-password')[0];
+    btnPassword.addEventListener('click', ({target}) => {
+      const inputBtn = document.getElementById('input-password');
+      if (inputBtn.getAttribute('type') === 'password') {
+        target.classList.add('password__show');
+        inputBtn.setAttribute('type', 'text');
+      } else {
+        target.classList.remove('password__show');
+        inputBtn.setAttribute('type', 'password');
+      }
+    });
+    if (showRegister) {
+      const btnPasswordRepeat = formWrapper
+          .getElementsByClassName('control-password-repeat')[0];
+      btnPasswordRepeat.addEventListener('click', ({target}) => {
+        const inputBtn = document.getElementById('input-password-repeat');
+        if (inputBtn.getAttribute('type') === 'password') {
+          target.classList.add('password__show');
+          inputBtn.setAttribute('type', 'text');
+        } else {
+          target.classList.remove('password__show');
+          inputBtn.setAttribute('type', 'password');
+        }
+      });
+    }
 
     form.addEventListener('submit', (e) => {
       e.preventDefault();

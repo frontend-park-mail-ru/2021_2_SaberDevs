@@ -16,7 +16,9 @@ $form-row-margin: 15px;
   &__row {
     @include col;
 
+    position: relative;
     justify-content: flex-start;
+    align-items: flex-start;
     margin: $form-row-margin;
   }
 
@@ -48,5 +50,21 @@ $form-row-margin: 15px;
   &__label {
     margin-right: $label-margin;
     font-size: $label-font-size;
+  }
+}
+
+.password {
+  &__control-btn {
+    position: absolute;
+    top: 50px;
+    right: 0;
+    display: inline-block;
+    width: 24px;
+    height: 24px;
+    background: $img-icon-eye-closed 0 0 no-repeat;
+  }
+
+  &__show {
+    background: $img-icon-eye-open 0 0 no-repeat;
   }
 }

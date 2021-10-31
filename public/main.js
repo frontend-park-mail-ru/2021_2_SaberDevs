@@ -70,7 +70,7 @@ linksController
           }
         })
     .register(
-        'search',
+        'search__button',
         searchField);
 
 // TODO: экран загрузки

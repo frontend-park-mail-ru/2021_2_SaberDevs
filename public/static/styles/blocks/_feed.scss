@@ -10,6 +10,7 @@ $card-author-time-margin-left: 20px;
 
   &__preview {
     @include col;
+    @include background-img($img-preview);
 
     width: 100%;
   }

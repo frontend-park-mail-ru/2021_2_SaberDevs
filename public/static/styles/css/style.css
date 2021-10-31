@@ -351,6 +351,11 @@ body,
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
+  background: -webkit-gradient(linear, left top, left bottom, from(rgba(0, 0, 0, 0.7)), to(rgba(0, 0, 0, 0.7))), url("../../img/cards/home-office-336377_1920.jpg");
+  background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url("../../img/cards/home-office-336377_1920.jpg");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-attachment: scroll;
   width: 100%;
 }
 
@@ -492,11 +497,6 @@ body,
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
-  background: -webkit-gradient(linear, left top, left bottom, from(rgba(0, 0, 0, 0.7)), to(rgba(0, 0, 0, 0.7))), url("../../img/cards/home-office-336377_1920.jpg");
-  background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url("../../img/cards/home-office-336377_1920.jpg");
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-attachment: scroll;
   -webkit-box-align: start;
       -ms-flex-align: start;
           align-items: flex-start;
@@ -504,6 +504,7 @@ body,
       -ms-flex-pack: justify;
           justify-content: space-between;
   padding: 30px 60px;
+  width: 90%;
   min-height: 400px;
   font-weight: 300;
 }
@@ -679,10 +680,11 @@ body,
           align-items: center;
 }
 
-.modal__title {
+.modal__header {
   margin-bottom: 20px;
   font-family: "Lora", sans-serif;
   font-size: 72px;
+  text-align: center;
 }
 
 .modal__close-btn {
@@ -1159,9 +1161,13 @@ body,
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
+  position: relative;
   -webkit-box-pack: start;
       -ms-flex-pack: start;
           justify-content: flex-start;
+  -webkit-box-align: start;
+      -ms-flex-align: start;
+          align-items: flex-start;
   margin: 15px;
 }
 
@@ -1194,6 +1200,20 @@ body,
 .form__label {
   margin-right: 10px;
   font-size: 30px;
+}
+
+.password__control-btn {
+  position: absolute;
+  top: 50px;
+  right: 0;
+  display: inline-block;
+  width: 24px;
+  height: 24px;
+  background: url("../../img/icons/eye-closed.svg") 0 0 no-repeat;
+}
+
+.password__show {
+  background: url("../../img/icons/eye-open.svg") 0 0 no-repeat;
 }
 
 .tags {

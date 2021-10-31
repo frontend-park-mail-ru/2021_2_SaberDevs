@@ -13,8 +13,6 @@ $window-filter: drop-shadow(0 0 10px rgba(0, 0, 0, 0.5));
     left: 0;
     top: 0;
     z-index: 5;
-
-    // display: none;
     width: 100%;
     height: 100%;
     font-family: $font-secondary;
@@ -41,10 +39,11 @@ $window-filter: drop-shadow(0 0 10px rgba(0, 0, 0, 0.5));
     @include col;
   }
 
-  &__title {
+  &__header {
     margin-bottom: $title-margin-bottom;
     font-family: $font-secondary;
     font-size: $modal-title-font-size;
+    text-align: center;
   }
 
   &__close-btn {
