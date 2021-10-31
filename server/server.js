@@ -10,8 +10,8 @@ const mime = require('mime/lite');
 
 
 const port = 8080;
-// const ip = '192.168.0.104';
-const ip = 'localhost';
+// const ip = '';
+const ip = '192.168.0.31';
 
 const page404 = fs.readFileSync('./public/404.html');
 const CORS = '*';
