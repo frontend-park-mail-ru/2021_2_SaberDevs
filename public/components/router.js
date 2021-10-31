@@ -91,7 +91,11 @@ export default class Router {
       const link = event.target.pathname;
 
       if (routerDebug) {
-        console.log({pathname: link});
+        console.log({pathname: link || 'empty path (ignored)'});
+      }
+
+      if (link === '') {
+        return;
       }
 
       this.open(link);

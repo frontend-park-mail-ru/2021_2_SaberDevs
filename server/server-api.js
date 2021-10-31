@@ -9,10 +9,10 @@ const http = require('http'); // для работы с http
 
 const port = 8081;
 // const ip = '192.168.0.104';
-const ip = 'localhost';
+const ip = '192.168.0.31';
 const pathPrefix = '/api/v1';
 
-const CORS = 'http://localhost:8080';
+const CORS = 'http://89.208.197.247:8080';
 const requestLenLimit = 1e6;
 const APIUrls = [
   '/user/login',

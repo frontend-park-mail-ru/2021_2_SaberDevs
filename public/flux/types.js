@@ -33,6 +33,11 @@ export const mainPageTypes = {
   TOGGLE_AUTH: 'TOGGLE_AUTH',
 };
 
+export const apiTypes = {
+  SET_UNAVAILABLE: 'SET_UNAVAILABLE',
+  SET_AVAILABLE: 'SET_AVAILABLE',
+};
+
 export const SYSTYPES = {
   INIT: '__INIT__',
 };

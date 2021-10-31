@@ -2,7 +2,9 @@ import Ajax from './ajax.js';
 
 import store from '../flux/store.js';
 import {authorizationActions} from '../flux/actions.js';
+import {apiActions} from '../flux/actions.js';
 
+const RETRY_DELAY = 30000;
 /**
  * Выполняет logout-запрос на сервер. При успешном выполнении вызывает
  * событие authorizationTypes.LOGOUT
@@ -32,7 +34,17 @@ export function cookieLogin() {
             if (status === Ajax.STATUS.ok) {
               store.dispatch(authorizationActions.login(response.data));
             }
-          });
+            store.dispatch(apiActions.setAvailable());
+          })
+      .catch((error) => {
+        if (ajaxDebug) {
+          console.warn('[AJAX]', error.message);
+        }
+        store.dispatch(apiActions.setUnavailable());
+        store.dispatch((dispatch, getState) => {
+          setTimeout(cookieLogin, RETRY_DELAY);
+        });
+      });
 }
 
 const ajaxRequests = {

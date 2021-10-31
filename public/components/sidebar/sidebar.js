@@ -1,45 +1,12 @@
 import BaseComponent from '../_basic/baseComponent.js';
 import SidebarView from './sidebarView.js';
 
-// TODO: перенести во вью. Сделать ручки
 import userPreviewComponent from './userPreview.pug.js';
 import buttonNavComponent from './buttonNav.pug.js';
 
 import store from '../../flux/store.js';
 import {mainPageActions} from '../../flux/actions.js';
 import {authorizationTypes} from '../../flux/types.js';
-
-/**
- * Заполнить верхний блок сайдбара именем и
- * аватаркой пользователя, кнопкой "новая запись"
- */
-function setSidebarUserPreview() {
-  // TODO: вынести во вью
-  const topBlockContentDiv = document.getElementById('sidebarTopBlockContent');
-  const state = store.getState().authorization;
-  topBlockContentDiv.innerHTML = userPreviewComponent({
-    name: state.name,
-    url: `/profile`,
-    img: state.avatar,
-  });
-}
-
-/**
- * Заполнить верхний блок сайдбара кнопками "войти / зарегистрироваться"
- */
-function setSidebarSignupButtons() {
-  const topBlockContentDiv = document.getElementById('sidebarTopBlockContent');
-  topBlockContentDiv.innerHTML = buttonNavComponent({
-    href: '',
-    data_section: 'loginModal',
-    name: 'Логин',
-  });
-  topBlockContentDiv.innerHTML += buttonNavComponent({
-    href: '',
-    data_section: 'signupModal',
-    name: 'Регистрация',
-  });
-}
 
 /**
  * ViewModel-компонент соответсвующего View
@@ -73,12 +40,12 @@ export default class Sidebar extends BaseComponent {
           (dispatch, getState) => dispatch(
               mainPageActions.toggleLogin(true, getState().authorization.login),
           ));
-      setSidebarUserPreview();
+      this.setSidebarUserPreview();
     }));
 
     this.unsubscribes.push(store.subscribe(authorizationTypes.LOGOUT, () => {
       store.dispatch(mainPageActions.toggleLogin(false, ''));
-      setSidebarSignupButtons();
+      this.setSidebarSignupButtons();
     }));
   }
 
@@ -103,7 +70,6 @@ export default class Sidebar extends BaseComponent {
         name: 'Регистрация',
       });
     } else {
-      // TODO: заполнить
       topBlockContent = userPreviewComponent({
         name: store.getState().authorization.name,
         url: `/profile`,
@@ -115,9 +81,33 @@ export default class Sidebar extends BaseComponent {
   }
 
   /**
-   * Очистка памяти и отписка от связанных событий
+   * Заполнить верхний блок сайдбара именем и
+   * аватаркой пользователя, кнопкой "новая запись"
    */
-  destroy() {
-    super.destroy();
+  setSidebarUserPreview() {
+    const state = store.getState().authorization;
+    this.view.setTopBlockContent(
+        userPreviewComponent({
+          name: state.name,
+          url: `/profile`,
+          img: state.avatar,
+        }));
+  }
+
+  /**
+   * Заполнить верхний блок сайдбара кнопками "войти / зарегистрироваться"
+   */
+  setSidebarSignupButtons() {
+    let topBlockContent = buttonNavComponent({
+      href: '',
+      data_section: 'loginModal',
+      name: 'Логин',
+    });
+    topBlockContent += buttonNavComponent({
+      href: '',
+      data_section: 'signupModal',
+      name: 'Регистрация',
+    });
+    this.view.setTopBlockContent(topBlockContent);
   }
 }

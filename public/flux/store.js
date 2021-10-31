@@ -4,6 +4,7 @@ import authorizeReducer from './reducers/authorizeReducer.js';
 import changePageReducer from './reducers/changePageReducer.js';
 import mainPageReducer from './reducers/mainPageReducer.js';
 import signupFormReducer from './reducers/signupFormReducer.js';
+import apiReducer from './reducers/apiReducer.js';
 import combineReducers from './reducers/combineReducers.js';
 
 import thunk from './middleWares/asyncHandleThunk.js';
@@ -13,6 +14,7 @@ const store = createStore(combineReducers({
   page: changePageReducer,
   mainPage: mainPageReducer,
   signupForm: signupFormReducer,
+  api: apiReducer,
 }), {}, thunk);
 
 export default store;
