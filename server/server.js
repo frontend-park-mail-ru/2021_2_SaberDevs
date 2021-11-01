@@ -10,13 +10,19 @@ const mime = require('mime/lite');
 
 
 const port = 8080;
-// const ip = '192.168.0.104';
-const ip = 'localhost';
+// Поменять тут, в public/modules/ajax.js, server/server-api.js (не забыть CORS)
+// тачка Дмитрия Дорофеева
+const ip = '192.168.0.31';
+// локальная разработка
+// const ip = 'localhost';
 
 const page404 = fs.readFileSync('./public/404.html');
 const CORS = '*';
 
-const appPages = ['/', '/profile']; // TODO: signup, login
+const appPages = ['/',
+  // '/profile',
+  // TODO: signup, login
+];
 // ///////////////////////////////// //
 //
 //          Server

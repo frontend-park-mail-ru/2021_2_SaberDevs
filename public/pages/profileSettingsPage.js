@@ -36,4 +36,19 @@ export default class ProfileSettingsPage extends BasePageMV {
         ),
     );
   }
+
+  /**
+   * Вызывается в роутере. Если return не '', нужно выполнить переход
+   * по пути, возвращенному из функции
+   *
+   * Возможны редиректы на: /login
+   * @param {string} currentPath
+   * @return {string}
+   */
+  redirect(currentPath) {
+    if (store.getState().authorization.login !== '') {
+      return '';
+    }
+    return '/login';
+  }
 }

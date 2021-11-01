@@ -1,5 +1,10 @@
-// const APIurl = 'http://87.228.2.178:8081';
-const APIurl = 'http://localhost:8081/api/v1';
+// Поменять тут, в server/server.js, server/server-api.js (не забыть CORS)
+// Тачка Алексея
+// const APIurl = 'http://87.228.2.178:8081/api/v1';
+// Тачка Дорофеева
+const APIurl = 'http://89.208.197.247:8081/api/v1';
+// Локальная разработка
+// const APIurl = 'http://localhost:8081/api/v1';
 
 /**
  * Поддерживаемые методы: GET и POST

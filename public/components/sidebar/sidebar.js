@@ -71,8 +71,7 @@ export default class Sidebar extends BaseComponent {
       });
     } else {
       topBlockContent = userPreviewComponent({
-        name: store.getState().authorization.name,
-        url: `/profile`,
+        name: store.getState().authorization.firstName,
         img: store.getState().authorization.avatar,
       });
     }
@@ -88,8 +87,7 @@ export default class Sidebar extends BaseComponent {
     const state = store.getState().authorization;
     this.view.setTopBlockContent(
         userPreviewComponent({
-          name: state.name,
-          url: `/profile`,
+          name: state.firstName,
           img: state.avatar,
         }));
   }

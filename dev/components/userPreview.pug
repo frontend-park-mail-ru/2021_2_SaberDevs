@@ -1,7 +1,7 @@
 .user-preview
-  a.user-preview__links(href=`${url}`)
-    .sidebar__nav-item #{name}
-    img.user-img.user-preview__user-img(src=`${img}`)
+  a.user-preview__links(href='/profile')
+    .sidebar__nav-item(data-router='ignore') #{name}
+    img.user-img.user-preview__user-img(src=`${img}` data-router='ignore')
   .profile-menu
       a.profile-menu__item(href='/profile/settings') Настройки
       a.profile-menu__item(data-section='logout') Выйти

@@ -2,6 +2,8 @@ import BasePageView from './basePageView.js';
 import createPage from './_createPage.js';
 
 import Feed from '../components/feed/feed.js';
+import MainPagePreviewBar from
+  '../components/mainPagePreviewBar/mainPagePreviewBar.js';
 
 // ///////////////////////////////// //
 //
@@ -19,9 +21,12 @@ export default class MainPageView extends BasePageView {
    * @param {HTMLElement} root
    */
   constructor(root) {
+    // root не трогать
     super(root);
+    const feedPreview = new MainPagePreviewBar();
     this.pageComponents = {
-      feed: new Feed(),
+      feedPreview,
+      feed: new Feed(feedPreview),
     };
   }
 

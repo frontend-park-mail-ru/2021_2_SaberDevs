@@ -6,6 +6,7 @@ import ProfilePage from './pages/profilePage.js';
 import ProfileSettingsPage from './pages/profileSettingsPage.js';
 // import SignupPage from './pages/signupPage.js';
 import LoadingPage from './pages/loadingScreen.js';
+import ArticlePage from './pages/articlePage.js';
 
 // Controllers
 import LinksController from './components/linksController.js';
@@ -52,7 +53,8 @@ Warning.init();
 router
     .register('/', MainPage)
     .register('/profile', ProfilePage)
-    .register('/profile/settings', ProfileSettingsPage);
+    .register('/profile/settings', ProfileSettingsPage)
+    .register('/editor', ArticlePage);
 // .register('/login', LoginPage);
 // TODO:
 // .register('/signup', SignupPage);
@@ -75,8 +77,7 @@ linksController
         })
     .register(
         'back',
-        window.history.back,
-    );
+        window.history.back);
 
 loadingScreen.start();
 (async function init() {

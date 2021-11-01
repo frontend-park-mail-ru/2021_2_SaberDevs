@@ -28,6 +28,18 @@ const configuration = {};
 function linksControllerClickHandler(event) {
   const {target} = event;
 
+  // ставим preventDefault, чтобы предотварить переход по ссылкам,
+  // в которых есть вложенные элементы, ведь их href равен href'у ссылки
+  // на всех вложенных элементах такой ссылки должен быть указан
+  // data=router='ignore'
+  // Нет гарантии, что сработает раньше: linkController или Router
+  if (target.dataset.router === 'ignore') {
+    event.preventDefault();
+    if (linkControllerDebug) {
+      console.log('[linkController]', {target}, 'ignored');
+    }
+  }
+
   // проверям, что клик был по ссылке (anchor)
   if (target instanceof HTMLAnchorElement) {
     event.preventDefault();

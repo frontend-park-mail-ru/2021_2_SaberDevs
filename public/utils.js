@@ -4,6 +4,16 @@
 //
 // ///////////////////////////////// //
 
+/**
+ * Возврат содежимого в виде строки
+ * @param {HTMLElement} el
+ * @return {string}
+ */
+export function htmlToString(el) {
+  const wrapper = document.createElement('div');
+  wrapper.appendChild(el);
+  return wrapper.innerHTML;
+}
 
 /**
  * Создает импут-поле в одну строку

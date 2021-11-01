@@ -5,6 +5,7 @@ import BasePageView from './basePageView.js';
  */
 export default class BasePageMV {
   /**
+   * Страница содержит главный компонент - .
    * @param {HTMLElement} root
    */
   constructor(root) {
@@ -15,17 +16,13 @@ export default class BasePageMV {
   }
 
   /**
-   * Страница содержит главный компонент - ленту новостей, хедер, сайдбар.
-   */
-  render() {
-    this.view.render();
-  }
-
-  /**
    * true - эдемент активен, его нежелательно перетирать
    * @return {boolean}
    */
   isActive() {
+    if (pageDebug) {
+      console.log(`[PAGE ${this.constructor.name}]\tisActive`);
+    }
     return this.view.isActive();
   }
 
