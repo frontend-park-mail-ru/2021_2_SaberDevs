@@ -157,6 +157,13 @@ body,
   font-size: 36px;
 }
 
+.header__title-block {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  height: 100%;
+}
+
 .header__content {
   position: relative;
   display: -webkit-box;
@@ -208,6 +215,7 @@ body,
 .sidebar__item {
   padding-top: 20px;
   padding-left: 20px;
+  cursor: default;
 }
 
 .sidebar__categories {
@@ -234,6 +242,7 @@ body,
 
 .sidebar__categories-item {
   font-size: 24px;
+  cursor: pointer;
 }
 
 .sidebar__categories-item:hover {
@@ -317,10 +326,16 @@ body,
 
 .contacts__title {
   font-size: 36px;
+  cursor: default;
 }
 
 .contacts__developer {
   font-size: 20px;
+  cursor: pointer;
+}
+
+.contacts__developer:hover {
+  text-decoration: underline;
 }
 
 .feed {
@@ -336,6 +351,7 @@ body,
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
+  width: 100%;
 }
 
 .feed__preview {
@@ -359,7 +375,11 @@ body,
   width: 100%;
 }
 
-.feed__cards {
+.feed::-webkit-scrollbar {
+  width: 0;
+}
+
+.cards {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -369,10 +389,6 @@ body,
       -ms-flex-align: stretch;
           align-items: stretch;
   width: 100%;
-}
-
-.feed::-webkit-scrollbar {
-  width: 0;
 }
 
 .author-time {
@@ -587,6 +603,10 @@ body,
       -ms-flex-align: center;
           align-items: center;
   height: 100%;
+  min-width: 180px;
+  -webkit-box-pack: end;
+      -ms-flex-pack: end;
+          justify-content: flex-end;
 }
 
 .user-preview__user-img {
@@ -624,6 +644,7 @@ body,
   padding: 10px;
   font-size: 30px;
   color: #151414;
+  cursor: pointer;
 }
 
 .profile-menu__item:hover {
@@ -654,7 +675,7 @@ body,
   left: 50%;
   top: 50%;
   z-index: 5;
-  padding: 50px;
+  padding: 70px;
   background-color: #151414;
   opacity: 0;
   -webkit-filter: drop-shadow(0 0 10px rgba(0, 0, 0, 0.5));
@@ -932,16 +953,6 @@ body,
   pointer-events: all;
 }
 
-.password-control {
-  position: absolute;
-  right: 6px;
-  top: 11px;
-  display: inline-block;
-  width: 20px;
-  height: 20px;
-  background: url("../../img/icons/eye-open.svg") 0 0 no-repeat;
-}
-
 .search {
   position: absolute;
   right: 10px;
@@ -1146,6 +1157,7 @@ body,
   -webkit-box-align: end;
       -ms-flex-align: end;
           align-items: flex-end;
+  width: 100%;
 }
 
 .form__row {
@@ -1168,20 +1180,22 @@ body,
   -webkit-box-align: start;
       -ms-flex-align: start;
           align-items: flex-start;
-  margin: 15px;
+  margin: 15px 0;
+  width: 100%;
 }
 
 .form__input {
+  width: -webkit-fill-available;
   border: 2px solid #151414;
   border-radius: 5px;
   padding: 10px;
-  width: 100%;
   font-size: 24px;
   color: #151414;
   background-color: #dee4ea;
 }
 
 .form__submit-btn {
+  width: 100%;
   border-radius: 5px;
   padding: 10px 40px;
   -webkit-box-shadow: 0 0 5px rgba(0, 0, 0, 0.25);
@@ -1189,6 +1203,11 @@ body,
   font-size: 36px;
   color: #151414;
   background-color: #dee4ea;
+  cursor: pointer;
+}
+
+.form__field {
+  width: 100%;
 }
 
 .form__warning {
@@ -1204,12 +1223,13 @@ body,
 
 .password__control-btn {
   position: absolute;
-  top: 50px;
-  right: 0;
+  top: 52px;
+  right: 10px;
   display: inline-block;
   width: 24px;
   height: 24px;
   background: url("../../img/icons/eye-closed.svg") 0 0 no-repeat;
+  cursor: pointer;
 }
 
 .password__show {
@@ -1241,7 +1261,7 @@ body {
   background: #dee4ea;
 }
 
-#feed-loading {
+#loading {
   margin-top: 10px;
   margin-bottom: 50px;
   position: relative;
@@ -1256,7 +1276,7 @@ body {
           animation: loader 3s linear infinite;
 }
 
-#feed-loading:before {
+#loading:before {
   content: '';
   position: absolute;
   top: 10px;
@@ -1272,7 +1292,7 @@ body {
           animation: loader 2s linear infinite;
 }
 
-#feed-loading:after {
+#loading:after {
   content: '';
   position: absolute;
   top: 22px;

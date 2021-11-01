@@ -5,48 +5,52 @@ body {
 }
 
 #loading {
+  position: relative;
   margin-top: 10px;
   margin-bottom: 50px;
-  position: relative;
-  width: 80px;
-  height: 80px;
   border: 2px solid $color-elements;
-  box-shadow: 0 -2px 2px rgba(0,0,0,.2);
   border-bottom: 2px solid $color-secondary;
   border-radius: 50%;
-  animation: loader 3s linear infinite;
+  width: 80px;
+  height: 80px;
+  box-shadow: 0 -2px 2px rgba(0, 0, 0, 0.2);
+  animation: normal 3s linear infinite;
 
-  &:before {
-    content: '';
+  &::before {
+    content: "";
     position: absolute;
-    top: 10px;
     left: 10px;
-    bottom: 10px;
     right: 10px;
+    top: 10px;
+    bottom: 10px;
     border: 2px solid $color-elements;
-    box-shadow: 0 -2px 2px rgba(0,0,0,.2);
     border-bottom: 2px solid $color-secondary;
     border-radius: 50%;
-    animation: loader 2s linear infinite;
+    box-shadow: 0 -2px 2px rgba(0, 0, 0, 0.2);
+    animation: normal 2s linear infinite;
   }
 
-  &:after {
-    content: '';
+  &::after {
+    content: "";
     position: absolute;
-    top: 22px;
     left: 22px;
-    bottom: 22px;
     right: 22px;
+    top: 22px;
+    bottom: 22px;
     border: 2px solid $color-elements;
-    box-shadow: 0 -2px 2px rgba(0,0,0,.2);
     border-bottom: 2px solid $color-secondary;
     border-radius: 50%;
-    animation: all 1s linear infinite;
+    box-shadow: 0 -2px 2px rgba(0, 0, 0, 0.2);
+    animation: normal 1s linear infinite;
   }
 }
 
-@keyframes loader
-{
-  0%{transform: rotate(0deg);}
-  100%{transform: rotate(360deg);}
+@keyframes loader {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
 }

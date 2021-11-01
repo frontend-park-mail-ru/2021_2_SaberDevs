@@ -19,6 +19,7 @@
   &__item {
     padding-top: $sidebar-item-padding-top;
     padding-left: $sidebar-item-padding-side;
+    cursor: default;
   }
 
   &__categories {
@@ -33,6 +34,7 @@
 
   &__categories-item {
     font-size: $sidebar-items-font-size;
+    cursor: pointer;
 
     &:hover {
       text-decoration: underline;
@@ -79,9 +81,15 @@
 
   &__title {
     font-size: $title-font-size;
+    cursor: default;
   }
 
   &__developer {
     font-size: $links-font-size;
+    cursor: pointer;
+
+    &:hover {
+      text-decoration: underline;
+    }
   }
 }

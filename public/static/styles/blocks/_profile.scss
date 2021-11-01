@@ -1,16 +1,28 @@
+$profile-username-font-size: 30px;
+$profile-aboutme-font-size: 24px;
+
 .profile {
   @include col;
 
+  &__photo {
+    border: $border;
+    border-radius: $border-radius;
+  }
+
   &__info {
-
+    display: flex;
+    justify-content: space-between;
   }
+
   &__description {
-
+    @include col;
   }
+
   &__username {
-
+    font-size: $profile-username-font-size;
   }
-  &__aboutment {
 
+  &__aboutment {
+    font-size: $profile-aboutme-font-size;
   }
 }

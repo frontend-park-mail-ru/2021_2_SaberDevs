@@ -21,13 +21,3 @@ $user-img: 60px;
   height: $user-img;
   pointer-events: all;
 }
-
-.password-control {
-  position: absolute;
-  right: 6px;
-  top: 11px;
-  display: inline-block;
-  width: 20px;
-  height: 20px;
-  background: $img-icon-eye-open 0 0 no-repeat;
-}
