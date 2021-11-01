@@ -63,7 +63,7 @@ function ajax(requestParams) {
       })
       .then((response) => {
         if (ajaxDebug) {
-          console.log('ajax resolved ' + status +': ');
+          console.log('ajax resolved ' + status + ': ');
           console.log(response);
         }
         return {

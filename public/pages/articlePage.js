@@ -36,12 +36,22 @@ export default class ArticlePage extends BasePageMV {
     this.view.show(existingArticle);
 
     const form = this.view.root.querySelector('form');
-    const content = form.querySelector('textarea').value;
+    const textarea = form.querySelector('textarea');
+    const titleInput = form.querySelector('input[name="title"');
     form.addEventListener('submit', (e) => {
       e.preventDefault();
+
+      const text = textarea?.value;
+      const title = titleInput?.value;
+      if (text === null || title === null) {
+        console.warn('something wrong:', {textarea}, {titleInput});
+      }
+
       const body = {
         login: store.getState().authorization.login,
-        content,
+        title,
+        text,
+        tags: store.getState().articleEdit.tags,
       };
       if (existingArticle?.id) {
         Object.assign(body, {articleId: existingArticle.id});
