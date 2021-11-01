@@ -20,11 +20,13 @@ export default class BaseComponent {
 
   /**
    * Перерисовка подконтрольного элемента
+   * @return {HTMLElement}
    */
   render() {
     if (viewsDebug) {
       console.log(`[VIEW ${this.constructor.name}]\trender`);
     }
+    return document.createElement('div');
   }
 
   /**

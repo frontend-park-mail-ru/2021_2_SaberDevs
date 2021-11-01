@@ -3,7 +3,7 @@ import createPage from './_createPage.js';
 
 import Feed from '../components/feed/feed.js';
 import MainPagePreviewBar from
-  '../components/mainPagePreviewBar/mainPagePreviewBar.js';
+  '../components/feed/previews/mainPagePreviewBar.js';
 
 // ///////////////////////////////// //
 //

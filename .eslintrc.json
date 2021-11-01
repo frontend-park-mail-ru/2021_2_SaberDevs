@@ -12,8 +12,7 @@
         "sourceType": "module"
     },
     "ignorePatterns": [
-      "public/components/*/*.pug.js",
-      "public/components/*.pug.js",
+      "*.pug.js",
       "globals.js",
       "public/components/_template/*.js",
       "public/flux/reducers/template.js"

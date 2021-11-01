@@ -1,16 +1,7 @@
 import BasePageView from './basePageView.js';
 import createPage from './_createPage.js';
 
-/**
- * генерирует рандомный цвет
- * @param {number} size
- * @return {string}
- */
-function genRanHex(size = 6) {
-  return [...Array(size)].map(
-      () => Math.floor(Math.random() * 16).toString(16),
-  ).join('');
-}
+import {genRanHex} from '../utils.js';
 
 // ///////////////////////////////// //
 //
@@ -61,6 +52,7 @@ export default class ArticlePageView extends BasePageView {
     button.innerHTML = 'Создать';
     button.type = 'submit';
 
+    form.appendChild(titleInput);
     form.appendChild(textarea);
     form.appendChild(button);
 

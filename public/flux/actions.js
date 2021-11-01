@@ -6,6 +6,7 @@ import {authorizationTypes,
   apiTypes,
   articleEditTypes,
   profilePageTypes,
+  categoryPageTypes,
 } from './types.js';
 
 // ////////////////
@@ -268,6 +269,88 @@ export const profilePageActions = {
   setArticlesLoadingFlag,
   forbidArticlesLoading,
   allowArticlesLoading,
+};
+
+// ////////////////
+//  CategoryPageActions
+// ////////////////
+
+/**
+ * @param {string} idLastLoaded
+ * @param {Array<Object>} articles
+ * @return {Action}
+ */
+function saveNewCategoryArticles(idLastLoaded, articles) {
+  return {
+    type: categoryPageTypes.SAVE_NEW_CATEGORY_ARTICLES,
+    payload: {idLastLoaded, articles},
+  };
+}
+
+/**
+ * @return {Action}
+ */
+function setCategoryArticlesLoadingFlag() {
+  return {
+    type: categoryPageTypes.SET_CATEGORY_ARTICLES_LOADING,
+  };
+}
+
+/**
+ * @return {Action}
+ */
+function forbidCategoryArticlesLoading() {
+  return {
+    type: categoryPageTypes.FORBID_CATEGORY_ARTICLES_UPLOADING,
+  };
+}
+
+/**
+ * @return {Action}
+ */
+function allowCategoryArticlesLoading() {
+  return {
+    type: categoryPageTypes.ALLOW_CATEGORY_ARTICLES_UPLOADING,
+  };
+}
+
+/**
+ * @return {Action}
+ */
+function askNewCategoryArticles() {
+  return {
+    type: categoryPageTypes.ASK_NEW_CATEGORY_ARTICLES,
+  };
+}
+
+/**
+ * @param {string} tag
+ * @return {Action}
+ */
+function selectCategoryTag(tag) {
+  return {
+    type: categoryPageTypes.SELECT_CATEGORY_ARTICLES_TAG,
+    payload: tag,
+  };
+}
+
+/**
+ * @return {Action}
+ */
+function clearSelectedCategoryTags() {
+  return {
+    type: categoryPageTypes.CLEAR_CATEGORY_ARTICLES_TAG,
+  };
+}
+
+export const categoryPageActions = {
+  setCategoryArticlesLoadingFlag,
+  forbidCategoryArticlesLoading,
+  allowCategoryArticlesLoading,
+  askNewCategoryArticles,
+  saveNewCategoryArticles,
+  selectCategoryTag,
+  clearSelectedCategoryTags,
 };
 
 // ////////////////

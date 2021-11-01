@@ -27,8 +27,7 @@ export default class ArticlePage extends BasePageMV {
   show() {
     const state = store.getState().articleEdit;
     const existingArticle = {
-      // id: state.id,
-      // login: state.id,
+      title: state.title,
       text: state.text,
       tags: state.tags,
     };
@@ -48,7 +47,6 @@ export default class ArticlePage extends BasePageMV {
       }
 
       const body = {
-        login: store.getState().authorization.login,
         title,
         text,
         tags: store.getState().articleEdit.tags,
@@ -57,7 +55,7 @@ export default class ArticlePage extends BasePageMV {
         Object.assign(body, {articleId: existingArticle.id});
       }
       Ajax.post({
-        url: `/api/v1/articles/${existingArticle?.id ? 'update' : 'create'}`,
+        url: `/articles/${existingArticle?.id ? 'update' : 'create'}`,
         body,
       });
     });

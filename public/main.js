@@ -7,6 +7,7 @@ import ProfileSettingsPage from './pages/profileSettingsPage.js';
 // import SignupPage from './pages/signupPage.js';
 import LoadingPage from './pages/loadingScreen.js';
 import ArticlePage from './pages/articlePage.js';
+import CategoryPage from './pages/categoryPage.js';
 
 // Controllers
 import LinksController from './components/linksController.js';
@@ -54,7 +55,8 @@ router
     .register('/', MainPage)
     .register('/profile', ProfilePage)
     .register('/profile/settings', ProfileSettingsPage)
-    .register('/editor', ArticlePage);
+    .register('/editor', ArticlePage)
+    .register('/categories', CategoryPage);
 // .register('/login', LoginPage);
 // TODO:
 // .register('/signup', SignupPage);
