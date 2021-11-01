@@ -1,7 +1,7 @@
 import BasePageMV from './basePageMV.js';
 import ArticlePageView from './articlePageView.js';
 
-import Ajax from '../modules/Ajax.js';
+import Ajax from '../modules/ajax.js';
 
 import store from '../flux/store.js';
 /**

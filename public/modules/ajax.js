@@ -52,7 +52,7 @@ function ajax(requestParams) {
   };
 
   if (ajaxDebug) {
-    console.log('ajax request: ' + JSON.stringify(fetchParams));
+    console.log('ajax request', {url}, ': ' + JSON.stringify(fetchParams));
   }
 
   let status = 0;
