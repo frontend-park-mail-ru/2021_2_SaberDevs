@@ -30,12 +30,16 @@ const resetDoNotUploadTime = 60000;  // anti- brutforce
  */
 export default class Feed extends BaseComponent {
   /**
-   * Универсальный компонент заголовка
+   * Универсальный компонент ленты
+   * @param {BaseComponent} previewComponent - компонент,
+   * который будет вложен в .feed__preview в ленте
    */
-  constructor() {
+  constructor(previewComponent = new BaseComponent()) {
     super();
+    this.innerComponent = previewComponent;
     const cards = store.getState().mainPage.cards;
-    this.view = new FeedView(cards);
+    const preview = previewComponent.render().outerHTML;
+    this.view = new FeedView(preview, cards);
 
     // /////////////////////////////////
     //
@@ -76,14 +80,14 @@ export default class Feed extends BaseComponent {
   }
 
   /**
-  * @param {Array.Card} cards
   * @return {HTMLElement}
   */
   render() {
     super.render();
 
+    const preview = this.innerComponent.render().outerHTML;
     const cards = store.getState().mainPage.cards;
-    this.root = this.view.render(cards);
+    this.root = this.view.render(preview, cards);
 
     if (store.getState().mainPage.doNotUpload) {
       this.view.hideLoadingAnimation();

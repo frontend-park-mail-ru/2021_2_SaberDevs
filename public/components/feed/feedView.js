@@ -1,19 +1,6 @@
 import BaseComponentView from '../_basic/baseComponentView.js';
 import cardComponent from './card.pug.js';
-import previewComponent from './preview.pug.js';
 import feedComponent from './feed.pug.js';
-
-const loadingCard = {
-  id: 'loading-card',
-  previewUrl: 'static/img/loader-1-HorizontalBalls.gif',
-  tags: [],
-  title: 'Загрузка...',
-  text: `Еще чуть-чуть...`,
-  authorUrl: '',
-  authorName: 'loading',
-  authorAvatar: '',
-  commentsUrl: '',
-};
 
 /**
  * Описание сущности карточки в новостной ленте
@@ -38,25 +25,24 @@ const loadingCard = {
 export default class FeedView extends BaseComponentView {
   /**
    * Хранит состояние - текущие загруженные карточки
+   * @param {string} preview
    * @param {Array.Card} cards массив карточек (может быть пустым)
    */
-  constructor(cards) {
+  constructor(preview, cards) {
     super();
-    this.root = this.render(cards);
+    this.root = this.render(preview, cards);
   }
 
   /**
+    * @param {string} preview
     * @param {Array.Card} cards
     * @return {HTMLElement}
     */
-  render(cards) {
+  render(preview, cards) {
     let content = '';
     cards.forEach((element) => {
       content += cardComponent(element);
     });
-
-    // TODO: preview -динамическая подборка популярых записей
-    const preview = previewComponent(loadingCard);
 
     const wrapper = document.createElement('div');
     wrapper.innerHTML = feedComponent({
@@ -71,8 +57,13 @@ export default class FeedView extends BaseComponentView {
     * @param {Array.Card} cards
     */
   addCards(cards) {
+    const cardsDiv = this.root.querySelector(`.feed__cards`);
+    if (!cardsDiv) {
+      console.warn('cannot append cards till Feed is not rendered');
+      return;
+    }
     cards.forEach((element) => {
-      this.root.querySelector(`.feed__cards`).insertAdjacentHTML(
+      cardsDiv.insertAdjacentHTML(
           'beforeend',
           cardComponent(element),
       );

@@ -4,6 +4,8 @@ import {authorizationTypes,
   signupFormTypes,
   modalTypes,
   apiTypes,
+  articleEditTypes,
+  profilePageTypes,
 } from './types.js';
 
 // ////////////////
@@ -209,6 +211,66 @@ export const mainPageActions = {
 };
 
 // ////////////////
+//  profilePageActions
+// ////////////////
+
+/**
+ * @param {string} idLastLoaded
+ * @param {Array<Object>} articles
+ * @return {Action}
+ */
+function saveNewArticles(idLastLoaded, articles) {
+  return {
+    type: profilePageTypes.SAVE_NEW_USER_ARTICLES,
+    payload: {idLastLoaded, articles},
+  };
+}
+
+/**
+ * @return {Action}
+ */
+function setArticlesLoadingFlag() {
+  return {
+    type: profilePageTypes.SET_USER_ARTICLES_LOADING,
+  };
+}
+
+/**
+ * @return {Action}
+ */
+function forbidArticlesLoading() {
+  return {
+    type: profilePageTypes.FORBID_USER_ARTICLES_UPLOADING,
+  };
+}
+
+/**
+ * @return {Action}
+ */
+function allowArticlesLoading() {
+  return {
+    type: profilePageTypes.ALLOW_USER_ARTICLES_UPLOADING,
+  };
+}
+
+/**
+ * @return {Action}
+ */
+function askNewArticles() {
+  return {
+    type: profilePageTypes.ASK_NEW_USER_ARTICLES,
+  };
+}
+
+export const profilePageActions = {
+  askNewArticles,
+  saveNewArticles,
+  setArticlesLoadingFlag,
+  forbidArticlesLoading,
+  allowArticlesLoading,
+};
+
+// ////////////////
 //    apiActions
 // ////////////////
 
@@ -231,4 +293,62 @@ function setAvailable() {
 export const apiActions = {
   setAvailable,
   setUnavailable,
+};
+
+// ////////////////
+//    articleEditActions
+// ////////////////
+
+/**
+ * @return {Action}
+ */
+function appendTag() {
+  return {
+    type: articleEditTypes.APPEND_TAG,
+  };
+}
+/**
+ * @return {Action}
+ */
+function removeTag() {
+  return {
+    type: articleEditTypes.REMOVE_TAG,
+  };
+}
+/**
+ * @param {Article} article Object<id, text, login>
+ * @return {Action}
+ */
+function editExistingArticle(article) {
+  return {
+    type: articleEditTypes.EDIT_EXISTING_ARTICLE,
+    payload: article,
+  };
+}
+/**
+ * @return {Action}
+ */
+function createArticle() {
+  return {
+    type: articleEditTypes.CREATE_ARTICLE,
+  };
+}
+/**
+ * @param {String} title
+ * @param {String} text
+ * @return {Action}
+ */
+function saveText(title, text) {
+  return {
+    type: articleEditTypes.SAVE_TEXT,
+    payload: {title, text},
+  };
+}
+
+export const articleEditActions = {
+  appendTag,
+  removeTag,
+  editExistingArticle,
+  createArticle,
+  saveText,
 };

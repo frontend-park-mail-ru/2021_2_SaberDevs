@@ -7,13 +7,22 @@ const http = require('http'); // для работы с http
 // ///////////////////////////////// //
 
 
-const port = 8081;
+const port = 8081; // не забудь про CORS
+// Поменять тут, в server/server.js, public/modules/ajax.js
+// Сервер апускается у Алексея
 // const ip = '192.168.0.104';
+
+// У Дмитрия Дорофеева
 // const ip = '192.168.0.31';
-const ip = '127.0.0.1';
+// локально
+const ip = 'localhost';
 const pathPrefix = '/api/v1';
 
-const CORS = 'http://89.208.197.247:8080';
+// указываем тот ip, по которому заходим с браузера
+// тачка Дмитрия Дорофеева
+// const CORS = 'http://89.208.197.247:8080';
+// локальная разработка
+const CORS = 'http://localhost:8080';
 const requestLenLimit = 1e6;
 const APIUrls = [
   '/user/login',
@@ -51,8 +60,8 @@ const cookieTime = 600000; // in ms
 const users = {
   denistest: {
     login: 'DenisTest',
-    name: 'Денис',
-    surname: 'Турчин',
+    firstName: 'Денис',
+    lastName: 'Турчин',
     email: 'd.turchin@mail.ru',
     password: 'DenisTest1',
     score: 3,
@@ -467,8 +476,8 @@ function executeAPICall(req, res) {
                   email: reqBody.email,
                   score: 0,
                   login: reqBody.login,
-                  name: 'Тестировщик',
-                  surname: 'Дебагович',
+                  firstName: 'Тестировщик',
+                  lastName: 'Дебагович',
                 };
                 // отвечаем, что регистрация успешна
                 const cookie = createCookieFor(reqBody.login);

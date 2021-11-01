@@ -33,6 +33,7 @@ export default class Router {
     const route = this.routes[path];
 
     if (!route) {
+      console.log('[ROUTER] путь', path, 'не зарегистрирован');
       this.open('/');
       return;
     }
@@ -47,6 +48,7 @@ export default class Router {
 
     if (!page) {
       page = new PageClass(root);
+      console.warn('[ROUTER] создал вьюху', page);
     }
 
     const redirectRoute = page.redirect(window.location.pathname);
@@ -65,6 +67,7 @@ export default class Router {
       );
     }
 
+    console.warn('check !page.isActive():', !page.isActive());
     if (!page.isActive()) {
       Object.values(this.routes).forEach(({page}) => {
         if (page && page.isActive()) {
@@ -83,15 +86,27 @@ export default class Router {
    */
   start() {
     this.root.addEventListener('click', (event) => {
-      if (!(event.target instanceof HTMLAnchorElement)) {
+      const target = event.target;
+
+      // ставим preventDefault, чтобы предотварить переход по ссылкам,
+      // в которых есть вложенные элементы, ведь их href равен href'у ссылки
+      // на всех вложенных элементах такой ссылки должен быть указан
+      // data=router='ignore'
+      // Нет гарантии, что сработает раньше: linkController или Router
+      if (!(target instanceof HTMLAnchorElement ||
+          target.dataset.router === 'ignore')) {
         return;
+      }
+      if (routerDebug) {
+        console.warn('[ROUTER]', {target});
       }
 
       event.preventDefault();
-      const link = event.target.pathname;
+      const link = target.pathname || target.parentElement.pathname;
+      console.warn('link:', link);
 
       if (routerDebug) {
-        console.log({pathname: link || 'empty path (ignored)'});
+        console.log({pathname: link || '[ROUTER] empty path (ignored)'});
       }
 
       if (link === '') {
@@ -103,7 +118,6 @@ export default class Router {
 
     window.addEventListener('popstate', () => {
       const currentPath = window.location.pathname;
-
       this.open(currentPath);
     });
 
