@@ -74,9 +74,6 @@ linksController
           }
         })
     .register(
-        'search__button',
-        searchField)
-    .register(
         'back',
         window.history.back,
     );

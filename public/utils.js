@@ -29,8 +29,8 @@ export function createInput(
   input.id = 'input-' + name;
   input.placeholder = placeholder;
   input.required = required;
-  input.title = title;
-  input.pattern = pattern;
+  if (title != null) input.title = title;
+  if (pattern != null) input.pattern = pattern;
 
   return input;
 }

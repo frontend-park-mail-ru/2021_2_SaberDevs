@@ -9,7 +9,8 @@ const http = require('http'); // для работы с http
 
 const port = 8081;
 // const ip = '192.168.0.104';
-const ip = '192.168.0.31';
+// const ip = '192.168.0.31';
+const ip = '127.0.0.1';
 const pathPrefix = '/api/v1';
 
 const CORS = 'http://89.208.197.247:8080';
