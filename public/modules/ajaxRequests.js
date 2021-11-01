@@ -26,7 +26,7 @@ export function logoutRequest() {
  */
 export function cookieLogin() {
   return Ajax.post({
-    url: '/user/login',
+    url: '/',
     body: {},
   })
       .then(

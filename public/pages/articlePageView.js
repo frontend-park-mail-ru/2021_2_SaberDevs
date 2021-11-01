@@ -51,6 +51,10 @@ export default class ArticlePageView extends BasePageView {
       tagDiv.style.backgroundColor = '#' + genRanHex();
       tagsBox.appendChild(tagDiv);
     });
+    const titleInput = document.createElement('input');
+    titleInput.type = 'text';
+    titleInput.name = 'title';
+    titleInput.value = existingArticle.title || '';
     const textarea = document.createElement('textarea');
     textarea.value = existingArticle.text || '';
     const button = document.createElement('input');

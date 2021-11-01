@@ -43,7 +43,7 @@ function uploadNextArticles() {
   Ajax.get({
     // TODO: extend API idLastLoaded=${state.idLastLoaded ||
     // TODO: get login from profilePageState.user
-    url: `/articles/author?login=${store.getState().authorization.login}}`,
+    url: `/articles/author?login=${store.getState().authorization.login}`,
   })
       .then(({status, response}) => {
         if (status === Ajax.STATUS.ok) {

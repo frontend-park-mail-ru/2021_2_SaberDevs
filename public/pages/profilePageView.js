@@ -26,7 +26,7 @@ export default class ProfilePageView extends BasePageView {
     super.render();
     this.root.appendChild(createPage(
         createToMenuBtn(),
-        this.pageComponents.ProfileCard,
+        this.pageComponents.profileCard,
     ));
   }
 }
