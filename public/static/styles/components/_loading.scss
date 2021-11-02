@@ -1,7 +1,13 @@
-body {
-  margin: 0;
-  padding: 0;
-  background: $color-elements;
+$loading-page-title-font-size: 96px;
+
+.loading-page {
+  @include col;
+
+  &__title {
+    position: absolute;
+    top: 40%;
+    font-size: $loading-page-title-font-size;
+  }
 }
 
 #loading {

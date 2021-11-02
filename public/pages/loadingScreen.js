@@ -1,3 +1,5 @@
+import loadingComponent from '../components/loading/loading.pug.js';
+
 // про requestAnimationFrame:
 // https://developer.mozilla.org/ru/docs/Web/API/window/requestAnimationFrame
 // о важности performace now()
@@ -23,12 +25,9 @@ export default class LoadingPage {
     this.root = document.createElement('div');
     this.root.className = 'background';
     // TODO: нормальные стили по БЭМу. Смотреть ссылки выше
-    this.root.innerHTML = `
-      <h1 style="font-size: 5rem; display: flex;">Загрузка</h1>
-      <progress value="${this.progressValue}" max="100"
-      class="progress__loading">
-      </progress>
-    `;
+    this.root.innerHTML = loadingComponent({
+      progressValue: this.progressValue,
+    });
     this.progressBar = this.root.querySelector('progress');
     this.animationId = 0;
   }

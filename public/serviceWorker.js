@@ -23,6 +23,7 @@ const cacheUrls = [
   './static/styles/components/_loading.scss',
   './static/styles/components/_search.scss',
   './static/styles/components/_tags.scss',
+  './static/styles/blocks/_article.scss',
   './static/styles/blocks/_card.scss',
   './static/styles/blocks/_feed.scss',
   './static/styles/blocks/_header.scss',
@@ -145,6 +146,7 @@ const cacheUrls = [
   './components/mainPagePreviewBar/mainPagePreviewBar.js',
   './components/mainPagePreviewBar/mainPagePreviewBar.pug.js',
   './components/mainPagePreviewBar/mainPagePreviewBarView.js',
+  './components/loading/loading.pug.js',
   './components/header/header.js',
   './components/header/header.pug.js',
   './components/header/headerView.js',
@@ -152,6 +154,7 @@ const cacheUrls = [
   './components/feed/feed.js',
   './components/feed/feed.pug.js',
   './components/feed/feedView.js',
+  './components/feed/preview.pug.js',
 ];
 
 // наименование для нашего хранилища кэша

@@ -1,5 +1,10 @@
 import BasePageView from './basePageView.js';
 import createPage from './_createPage.js';
+import articleComponent from '../components/article/article.pug.js';
+import formSettingsTextareaComponent from
+  '../components/settings/formSettingsTextarea.pug.js';
+import formSettingsRowComponent from
+  '../components/settings/formSettingsRow.pug.js';
 
 /**
  * генерирует рандомный цвет
@@ -38,37 +43,56 @@ export default class ArticlePageView extends BasePageView {
     */
   render(existingArticle) {
     super.render();
+    let articleRows = '';
+    const title = formSettingsRowComponent({
+      label: 'Заголовок',
+      type: 'text',
+      name: 'title',
+      placeholder: 'Введите заголовок статьи',
+      pattern: '',
+      value: existingArticle.title || '',
+    });
+    articleRows += title;
+    const text = formSettingsTextareaComponent({
+      label: 'Текст статьи',
+      name: 'text',
+      placeholder: '',
+      value: existingArticle.text || '',
+    });
+    articleRows += text;
 
-    const editor = document.createElement('div');
-    const header = document.createElement('h2');
-    header.innerHTML = 'Добавление статьи';
-    const form = document.createElement('form');
     const tagsBox = document.createElement('div');
     existingArticle.tags.forEach((tag) => {
       const tagDiv = document.createElement('div');
+      tagDiv.className = 'tags__tag';
       tagDiv.innerHTML = tag;
       tagDiv.style.color = 'white';
       tagDiv.style.backgroundColor = '#' + genRanHex();
       tagsBox.appendChild(tagDiv);
     });
-    const titleInput = document.createElement('input');
-    titleInput.type = 'text';
-    titleInput.name = 'title';
-    titleInput.value = existingArticle.title || '';
-    const textarea = document.createElement('textarea');
-    textarea.value = existingArticle.text || '';
-    const button = document.createElement('input');
-    button.innerHTML = 'Создать';
-    button.type = 'submit';
 
-    form.appendChild(textarea);
-    form.appendChild(button);
+    const editor = document.createElement('div');
+    editor.innerHTML = articleComponent({
+      form_rows: articleRows,
+      tags: tagsBox.innerHTML,
+    });
 
-    editor.appendChild(header);
-    editor.appendChild(tagsBox);
-    editor.appendChild(form);
+    const addTag = editor.getElementsByClassName('article__add-tag')[0];
+    console.log('add tag: ', addTag);
+    addTag.addEventListener('click', (e) => {
+      console.log('clickkkk');
+      e.preventDefault();
+      const tags = document.getElementsByClassName('article__tags')[0];
+      const inputTag = document.getElementsByClassName('article__input-tag')[0];
+      const tagDiv = document.createElement('div');
+      tagDiv.className = 'tags__tag';
+      tagDiv.innerHTML = inputTag.value;
+      tagDiv.style.color = 'white';
+      tagDiv.style.backgroundColor = '#' + genRanHex();
+      tags.appendChild(tagDiv);
+    });
 
-    this.root.appendChild(createPage(editor));
+    this.root.appendChild(createPage(editor.firstChild));
   }
 
   /**
