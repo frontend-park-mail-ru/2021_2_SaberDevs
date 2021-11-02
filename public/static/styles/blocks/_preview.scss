@@ -33,6 +33,7 @@ $preview-tags-font-size: 14px;
 
   &__tag {
     font-size: $preview-tags-font-size;
+    cursor: pointer;
   }
 }
 

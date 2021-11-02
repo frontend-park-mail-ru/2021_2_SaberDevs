@@ -7,10 +7,27 @@ $user-img: 60px;
   &__img {
     width: $icon-size;
     height: $icon-size;
+    cursor: pointer;
   }
 
   &__text {
     font-size: $items-font-size;
+  }
+}
+
+.icon-like {
+  background: $img-icon-like;
+
+  &:hover {
+    background: $img-icon-like-hover;
+  }
+}
+
+.icon-comments {
+  background: $img-icon-comments;
+
+  &:hover {
+    background: $img-icon-comments-hover;
   }
 }
 

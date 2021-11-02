@@ -12,11 +12,12 @@ body,
   height: 100vh;
   font-family: $font-primary;
   color: $color-elements;
+  cursor: default;
 }
 
 .background {
   padding-top: $page-top;
-  background: $img-bg center;
+  background: $img-bg bottom;
   background-size: 100%;
 }
 
