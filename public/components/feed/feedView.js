@@ -71,6 +71,20 @@ export default class FeedView extends BaseComponentView {
   }
 
   /**
+    * @param {Array.Card} cards
+    */
+  refreshCards(cards) {
+    const cardsDiv = this.root.querySelector(`.feed__cards`);
+    cardsDiv.innerHTML = '';
+    cards.forEach((element) => {
+      cardsDiv.insertAdjacentHTML(
+          'beforeend',
+          cardComponent(element),
+      );
+    });
+  }
+
+  /**
    * hide loading component
    */
   hideLoadingAnimation() {

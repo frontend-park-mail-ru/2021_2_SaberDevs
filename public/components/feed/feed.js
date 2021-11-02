@@ -36,6 +36,8 @@ export default class Feed extends BaseComponent {
    * говорит, о том, что все данные загружены
    * @param {Action} allowCardsUploading - действие, которое
    * разрешает загрузку карточек снова через resetDoNotUploadTime
+   * @param {boolean} isAddCards true если карточки добавляются к
+   * существующим | false, если заменяют
    * @param {BaseComponent} previewComponent - компонент,
    * который будет вложен в .feed__preview в ленте
    */
@@ -44,6 +46,7 @@ export default class Feed extends BaseComponent {
       SAVE_NEW_CARDS_ACTION,
       forbidCardsUploading,
       allowCardsUploading,
+      isAddCards,
       previewComponent = new BaseComponent(),
   ) {
     console.log('{FEED} creation with params:');
@@ -56,8 +59,7 @@ export default class Feed extends BaseComponent {
     this.innerComponent = previewComponent;
     this.storeName = storeName;
     const cards = store.getState()[storeName].cards;
-    const preview = previewComponent.render().outerHTML;
-    this.view = new FeedView(preview, cards);
+    this.view = new FeedView(previewComponent.render().outerHTML, cards);
 
     // /////////////////////////////////
     //
@@ -67,7 +69,11 @@ export default class Feed extends BaseComponent {
     this.unsubscribes.push(
         store.subscribe(SAVE_NEW_CARDS_ACTION, ({idLastLoaded, cards})=>{
           if (Array.isArray(cards)) {
-            this.view.addCards(cards);
+            if (isAddCards) {
+              this.view.addCards(cards);
+            } else {
+              this.view.refreshCards(cards);
+            }
 
             if (cards[cards.length - 1]?.id === endOfFeedMarkerID) {
               this.view.hideLoadingAnimation();

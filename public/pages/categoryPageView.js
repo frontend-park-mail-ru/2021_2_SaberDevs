@@ -33,6 +33,7 @@ export default class CategoryPageView extends BasePageView {
           categoryPageTypes.SAVE_NEW_CATEGORY_ARTICLES,
           categoryPageActions.forbidCategoryArticlesLoading,
           categoryPageActions.allowCategoryArticlesLoading,
+          false,
       ),
     };
   }
