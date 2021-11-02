@@ -1,4 +1,4 @@
-import BaseComponentView from '../_basic/baseComponentView.js';
+import BaseComponentView from '../../_basic/baseComponentView.js';
 import mainPagePreviewBarComponent from './mainPagePreviewBar.pug.js';
 
 const loadingCard = {

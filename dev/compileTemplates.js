@@ -13,7 +13,7 @@ const pug = require('pug');
 // ///////////////////////////////// //
 const saveTo = {
   card: 'feed',
-  preview: 'feed',
+  mainPagePreviewBar: 'feed/previews',
   formRow: 'signupForm',
   formSettingsRow: 'settings',
   formSettingsTextarea: 'settings',

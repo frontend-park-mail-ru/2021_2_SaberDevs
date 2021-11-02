@@ -6,16 +6,7 @@ import formSettingsTextareaComponent from
 import formSettingsRowComponent from
   '../components/settings/formSettingsRow.pug.js';
 
-/**
- * генерирует рандомный цвет
- * @param {number} size
- * @return {string}
- */
-function genRanHex(size = 6) {
-  return [...Array(size)].map(
-      () => Math.floor(Math.random() * 16).toString(16),
-  ).join('');
-}
+import {genRanHex} from '../utils.js';
 
 // ///////////////////////////////// //
 //

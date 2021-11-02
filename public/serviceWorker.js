@@ -66,6 +66,8 @@ const cacheUrls = [
   './pages/articlePageView.js',
   './pages/basePageMV.js',
   './pages/basePageView.js',
+  './pages/categoryPage.js',
+  './pages/categoryPageView.js',
   './pages/loadingScreen.js',
   './pages/mainPage.js',
   './pages/mainPageView.js',
@@ -85,6 +87,7 @@ const cacheUrls = [
   './flux/reducers/apiReducer.js',
   './flux/reducers/articleEditReducer.js',
   './flux/reducers/authorizeReducer.js',
+  './flux/reducers/categoryPageReducer.js',
   './flux/reducers/changePageReducer.js',
   './flux/reducers/combineReducers.js',
   './flux/reducers/mainPageReducer.js',
@@ -158,6 +161,10 @@ const cacheUrls = [
   './components/feed/feed.pug.js',
   './components/feed/feedView.js',
   './components/feed/preview.pug.js',
+  './components/feed/previews/catergoryChooseBar.js',
+  './components/feed/previews/catergoryChooseBarView.js',
+  './components/feed/previews/mainPagePreviewBar.js',
+  './components/feed/previews/mainPagePreviewBar.pug.js',
 ];
 
 // наименование для нашего хранилища кэша

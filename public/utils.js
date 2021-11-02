@@ -16,6 +16,17 @@ export function htmlToString(el) {
 }
 
 /**
+ * генерирует рандомный цвет
+ * @param {number} size
+ * @return {string}
+ */
+export function genRanHex(size = 6) {
+  return [...Array(size)].map(
+      () => Math.floor(Math.random() * 16).toString(16),
+  ).join('');
+}
+
+/**
  * Создает импут-поле в одну строку
  * @param {string} type
  * @param {string} placeholder
