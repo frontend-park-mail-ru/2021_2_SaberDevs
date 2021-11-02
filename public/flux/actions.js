@@ -163,6 +163,15 @@ function setLoadingFlag() {
 /**
  * @return {Action}
  */
+function unsetLoadingFlag() {
+  return {
+    type: mainPageTypes.UNSET_LOADING_FLAG,
+  };
+}
+
+/**
+ * @return {Action}
+ */
 function forbidCardsLoading() {
   return {
     type: mainPageTypes.FORBID_CARDS_UPLOADING,
@@ -206,6 +215,7 @@ export const mainPageActions = {
   askNewCards,
   saveNewCards,
   setLoadingFlag,
+  unsetLoadingFlag,
   forbidCardsLoading,
   allowCardsLoading,
   toggleLogin,
@@ -233,6 +243,15 @@ function saveNewArticles(idLastLoaded, articles) {
 function setArticlesLoadingFlag() {
   return {
     type: profilePageTypes.SET_USER_ARTICLES_LOADING,
+  };
+}
+
+/**
+ * @return {Action}
+ */
+function unsetArticlesLoadingFlag() {
+  return {
+    type: profilePageTypes.UNSET_USER_ARTICLES_LOADING,
   };
 }
 
@@ -267,6 +286,7 @@ export const profilePageActions = {
   askNewArticles,
   saveNewArticles,
   setArticlesLoadingFlag,
+  unsetArticlesLoadingFlag,
   forbidArticlesLoading,
   allowArticlesLoading,
 };
@@ -293,6 +313,15 @@ function saveNewCategoryArticles(idLastLoaded, articles) {
 function setCategoryArticlesLoadingFlag() {
   return {
     type: categoryPageTypes.SET_CATEGORY_ARTICLES_LOADING,
+  };
+}
+
+/**
+ * @return {Action}
+ */
+function unsetCategoryArticlesLoadingFlag() {
+  return {
+    type: categoryPageTypes.UNSET_CATEGORY_ARTICLES_LOADING,
   };
 }
 
@@ -345,6 +374,7 @@ function clearSelectedCategoryTags() {
 
 export const categoryPageActions = {
   setCategoryArticlesLoadingFlag,
+  unsetCategoryArticlesLoadingFlag,
   forbidCategoryArticlesLoading,
   allowCategoryArticlesLoading,
   askNewCategoryArticles,

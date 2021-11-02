@@ -43,6 +43,11 @@ export default function categoryPageReducer(
         ...state,
         isLoading: true,
       };
+    case categoryPageTypes.UNSET_CATEGORY_ARTICLES_LOADING:
+      return {
+        ...state,
+        isLoading: false,
+      };
     case categoryPageTypes.FORBID_CATEGORY_ARTICLES_UPLOADING:
       return {
         ...state,

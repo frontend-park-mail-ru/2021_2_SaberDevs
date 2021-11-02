@@ -5,6 +5,8 @@ import Feed from '../components/feed/feed.js';
 import CategoryChooseBar from
   '../components/feed/previews/catergoryChooseBar.js';
 
+import {categoryPageTypes} from '../flux/types.js';
+
 // ///////////////////////////////// //
 //
 //          Category Page
@@ -22,10 +24,15 @@ export default class CategoryPageView extends BasePageView {
   constructor(root) {
     // root не трогать
     super(root);
-    const categoryChoose = new CategoryChooseBar();
+
     this.pageComponents = {
-      categoryChoose,
-      feed: new Feed(),
+      categoryChoose: new CategoryChooseBar(),
+      feed: new Feed(
+          'categoryPage',
+          categoryPageTypes.SAVE_NEW_CATEGORY_ARTICLES,
+          categoryPageTypes.FORBID_CATEGORY_ARTICLES_UPLOADING,
+          categoryPageTypes.ALLOW_CATEGORY_ARTICLES_UPLOADING,
+      ),
     };
   }
 
@@ -34,6 +41,14 @@ export default class CategoryPageView extends BasePageView {
     */
   render() {
     super.render();
-    this.root.appendChild(createPage(this.pageComponents.categoryChoose, this.pageComponents.feed));
+    const sign = document.createElement('p');
+    sign.innerHTML = 'Выберите тег';
+    sign.style.color = 'white';
+    sign.style.fontSize = '2rem';
+    this.root.appendChild(createPage(
+        sign,
+        this.pageComponents.categoryChoose,
+        this.pageComponents.feed,
+    ));
   }
 }

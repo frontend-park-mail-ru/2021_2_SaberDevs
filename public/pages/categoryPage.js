@@ -3,6 +3,7 @@ import CategoryPageView from './categoryPageView.js';
 
 import store from '../flux/store.js';
 import {changePageActions, categoryPageActions} from '../flux/actions.js';
+import {categoryPageTypes} from '../flux/types.js';
 
 import Modal from '../components/modal/modal.js';
 
@@ -35,7 +36,7 @@ import Ajax from '../modules/ajax.js';
 /**
  * Получить feedChunkSize записей (настройка на стороне сервера)
  */
-function uploadNextCards() {
+async function uploadCategoryCards() {
   const state = store.getState().categoryPage;
 
   if (state.doNotUpload || state.isLoading) {
@@ -64,7 +65,7 @@ function uploadNextCards() {
 
   store.dispatch(categoryPageActions.setCategoryArticlesLoadingFlag());
 
-  Ajax.get({
+  await Ajax.get({
     url: `/articles/tags?tag=${state.choosenTag}`,
   })
       .then(({status, response}) => {
@@ -83,6 +84,10 @@ function uploadNextCards() {
         Modal.open(false);
       })
       .catch((err) => console.warn(err.message));
+  // TODO: в других лентах unsetLoadingFlag
+  console.warn('после авеита');
+  console.warn(categoryPageActions.unsetCategoryArticlesLoadingFlag())
+  store.dispatch(categoryPageActions.unsetCategoryArticlesLoadingFlag());
 }
 
 /**
@@ -95,6 +100,10 @@ export default class CategoryPage extends BasePageMV {
   constructor(root) {
     super(root);
     this.view = new CategoryPageView(root);
+
+    store.subscribe(categoryPageTypes.SELECT_CATEGORY_ARTICLES_TAG, () => {
+      uploadCategoryCards();
+    });
   }
 
   /**
@@ -108,10 +117,6 @@ export default class CategoryPage extends BasePageMV {
             `SaberProject | Categories`,
         ),
     );
-
-    if (store.getState().categoryPage.cards.length === 0) {
-      store.dispatch(uploadNextCards);
-    }
 
     // const scrollable = document.querySelector('.content');
     // if (!scrollable) {

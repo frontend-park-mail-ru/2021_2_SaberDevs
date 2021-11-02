@@ -2,8 +2,6 @@ import BaseComponent from '../_basic/baseComponent.js';
 import FeedView from './feedView.js';
 
 import store from '../../flux/store.js';
-import {mainPageActions} from '../../flux/actions.js';
-import {mainPageTypes} from '../../flux/types.js';
 
 /**
  * @typedef {Object} Card
@@ -31,13 +29,33 @@ const resetDoNotUploadTime = 60000;  // anti- brutforce
 export default class Feed extends BaseComponent {
   /**
    * Универсальный компонент ленты
+   * @param {string} storeName - имя редьюсера
+   * @param {Action} SAVE_NEW_CARDS_ACTION - событие, на которое
+   * в ленту добавляются карточки
+   * @param {Action} FORBID_CARDS_UPLOADING - событие, которое
+   * говорит, о том, что все данные загружены
+   * @param {Action} ALLOW_CARDS_UPLOADING - событие, которое
+   * разрешает загрузку карточек снова через resetDoNotUploadTime
    * @param {BaseComponent} previewComponent - компонент,
    * который будет вложен в .feed__preview в ленте
    */
-  constructor(previewComponent = new BaseComponent()) {
+  constructor(
+      storeName,
+      SAVE_NEW_CARDS_ACTION,
+      FORBID_CARDS_UPLOADING,
+      ALLOW_CARDS_UPLOADING,
+      previewComponent = new BaseComponent(),
+  ) {
+    console.log('{FEED} creation with params:');
+    console.log({storeName});
+    console.log({SAVE_NEW_CARDS_ACTION});
+    console.log({FORBID_CARDS_UPLOADING});
+    console.log({ALLOW_CARDS_UPLOADING});
+    console.log({previewComponent});
     super();
     this.innerComponent = previewComponent;
-    const cards = store.getState().mainPage.cards;
+    this.storeName = storeName;
+    const cards = store.getState()[storeName].cards;
     const preview = previewComponent.render().outerHTML;
     this.view = new FeedView(preview, cards);
 
@@ -47,7 +65,7 @@ export default class Feed extends BaseComponent {
     //
     // /////////////////////////////////
     this.unsubscribes.push(
-        store.subscribe(mainPageTypes.SAVE_NEW_CARDS, ({idLastLoaded, cards})=>{
+        store.subscribe(SAVE_NEW_CARDS_ACTION, ({idLastLoaded, cards})=>{
           if (Array.isArray(cards)) {
             this.view.addCards(cards);
 
@@ -58,7 +76,7 @@ export default class Feed extends BaseComponent {
                 console.log('\'end\' found. doNotUpload flag is set to true');
               }
               // запрещаем загрузку карточек, чтобы не спамить сервер
-              store.dispatch(mainPageActions.forbidCardsLoading());
+              store.dispatch(FORBID_CARDS_UPLOADING);
               // асинхронное событие (выполняется с помощью преобразователя)
               // разрешает загрузку карточек спустя некоторое время
               store.dispatch((dispatch) => {
@@ -66,7 +84,7 @@ export default class Feed extends BaseComponent {
                   if (ajaxDebug) {
                     console.log('doNotUpload flag is reset to false');
                   }
-                  dispatch(mainPageActions.allowCardsLoading());
+                  dispatch(ALLOW_CARDS_UPLOADING);
                 }, resetDoNotUploadTime);
               });
             }
@@ -86,10 +104,10 @@ export default class Feed extends BaseComponent {
     super.render();
 
     const preview = this.innerComponent.render().outerHTML;
-    const cards = store.getState().mainPage.cards;
+    const cards = store.getState()[this.storeName].cards;
     this.root = this.view.render(preview, cards);
 
-    if (store.getState().mainPage.doNotUpload) {
+    if (store.getState()[this.storeName].doNotUpload) {
       this.view.hideLoadingAnimation();
     }
     return this.root;

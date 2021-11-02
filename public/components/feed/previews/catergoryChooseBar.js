@@ -23,20 +23,9 @@ export default class CatergoryChooseBar extends BaseComponent {
   render() {
     super.render();
     this.root = this.view.render();
-    // const tags = this.root.firstChild.querySelectorAll('div');
-    // if (tags.length === 0) {
-    //   console.warn('problem with tags');
-    // }
-    // tags.forEach((tagDiv) => {
-    //   tagDiv.addEventListener('click', (e) => {
-    //     e.preventDefault();
-    //     const tar
-    //     const choosenTag = store.getState().categoryPage.choosenTag;
-    //     if (e.target.in)
-    //     e.target.style.border = '1px solid white';
-    //   });
-    // });
-    const tagsListDiv = this.root.firstChild;
+
+    const tagsListDiv = this.root;
+    console.warn({tagsListDiv});
     tagsListDiv.addEventListener('click', (e) => {
       e.preventDefault();
       const target = e.target;
@@ -48,11 +37,10 @@ export default class CatergoryChooseBar extends BaseComponent {
       }
       console.warn('selecting choosen tag (',
           store.getState().categoryPage.choosenTag, ')');
-      console.warn({target});
-      console.warn(e.currentTarget);
-      e.currentTarget.childNodes.forEach((tagDiv) => {
+      target.parentElement.childNodes.forEach((tagDiv) => {
+        tagDiv.style.border = 'none';
         if (tagDiv.innerHTML === store.getState().categoryPage.choosenTag) {
-          tagDiv.style.border = '1px solid white';
+          tagDiv.style.border = '3px solid white';
         }
       });
     });
