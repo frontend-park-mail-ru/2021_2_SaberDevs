@@ -34,6 +34,8 @@ export default class CategoryPageView extends BasePageView {
     */
   render() {
     super.render();
-    this.root.appendChild(createPage(this.pageComponents.categoryChoose, this.pageComponents.feed));
+    this.root.appendChild(createPage(this.pageComponents.categoryChoose,
+        this.pageComponents.feed));
   }
 }
+
