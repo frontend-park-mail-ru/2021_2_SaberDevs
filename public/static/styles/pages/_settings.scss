@@ -36,6 +36,10 @@ $settings-row-margin-bottom: 20px;
     }
   }
 
+  &__warning {
+    display: none;
+  }
+
   &__form {
     @include col;
 

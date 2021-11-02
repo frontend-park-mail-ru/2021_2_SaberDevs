@@ -15,16 +15,16 @@ $card-author-time-margin-left: 20px;
     width: 100%;
   }
 
+  &__cards {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: stretch;
+    width: 100%;
+  }
+
   &::-webkit-scrollbar {
     width: 0;
   }
-}
-
-.cards {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: stretch;
-  width: 100%;
 }
 
 .author-time {

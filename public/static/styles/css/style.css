@@ -1071,7 +1071,7 @@ body,
   font-size: 96px;
 }
 
-#loading {
+#feed__loading {
   position: relative;
   margin-top: 10px;
   margin-bottom: 50px;
@@ -1082,11 +1082,11 @@ body,
   height: 80px;
   -webkit-box-shadow: 0 -2px 2px rgba(0, 0, 0, 0.2);
           box-shadow: 0 -2px 2px rgba(0, 0, 0, 0.2);
-  -webkit-animation: normal 3s linear infinite;
-          animation: normal 3s linear infinite;
+  -webkit-animation: loader 3s linear infinite;
+          animation: loader 3s linear infinite;
 }
 
-#loading::before {
+#feed__loading::before {
   content: "";
   position: absolute;
   left: 10px;
@@ -1098,11 +1098,11 @@ body,
   border-radius: 50%;
   -webkit-box-shadow: 0 -2px 2px rgba(0, 0, 0, 0.2);
           box-shadow: 0 -2px 2px rgba(0, 0, 0, 0.2);
-  -webkit-animation: normal 2s linear infinite;
-          animation: normal 2s linear infinite;
+  -webkit-animation: loader 2s linear infinite;
+          animation: loader 2s linear infinite;
 }
 
-#loading::after {
+#feed__loading::after {
   content: "";
   position: absolute;
   left: 22px;
@@ -1114,8 +1114,8 @@ body,
   border-radius: 50%;
   -webkit-box-shadow: 0 -2px 2px rgba(0, 0, 0, 0.2);
           box-shadow: 0 -2px 2px rgba(0, 0, 0, 0.2);
-  -webkit-animation: normal 1s linear infinite;
-          animation: normal 1s linear infinite;
+  -webkit-animation: loader 1s linear infinite;
+          animation: loader 1s linear infinite;
 }
 
 @-webkit-keyframes loader {
@@ -1177,11 +1177,7 @@ body,
   width: 100%;
 }
 
-.feed::-webkit-scrollbar {
-  width: 0;
-}
-
-.cards {
+.feed__cards {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -1191,6 +1187,10 @@ body,
       -ms-flex-align: stretch;
           align-items: stretch;
   width: 100%;
+}
+
+.feed::-webkit-scrollbar {
+  width: 0;
 }
 
 .author-time {
@@ -1261,6 +1261,10 @@ body,
 
 .settings__other-page:hover {
   text-decoration: underline;
+}
+
+.settings__warning {
+  display: none;
 }
 
 .settings__form {
@@ -1558,6 +1562,7 @@ body,
 
 .page-404__back-btn {
   display: inline-block;
+  margin-top: 0;
   border-radius: 50px;
   padding: 20px 60px;
   font-family: "Vollkorn", serif;
@@ -1571,14 +1576,13 @@ body,
   transition: 0.4s ease-out;
   -webkit-animation: slideup 1s ease-out 0.5s forwards;
           animation: slideup 1s ease-out 0.5s forwards;
-  margin-top: 0;
 }
 
 .page-404__back-btn:hover {
+  margin-top: -20px;
   -webkit-box-shadow: 0 0 5px rgba(0, 0, 0, 0.25);
           box-shadow: 0 0 5px rgba(0, 0, 0, 0.25);
   color: #354580;
-  margin-top: -20px;
 }
 
 @-webkit-keyframes fadein {
