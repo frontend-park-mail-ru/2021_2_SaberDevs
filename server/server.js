@@ -21,7 +21,10 @@ const page404 = fs.readFileSync('./public/404.html');
 const CORS = '*';
 
 const appPages = ['/',
-  // '/profile',
+  '/profile',
+  '/categories',
+  '/profile/settings',
+  '/editor',
   // TODO: signup, login
 ];
 // ///////////////////////////////// //
