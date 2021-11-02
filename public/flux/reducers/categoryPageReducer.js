@@ -63,7 +63,7 @@ export default function categoryPageReducer(
         ...state,
         isLoading: false,
         idLastLoaded: action.payload.idLastLoaded,
-        cards: state.cards.concat(action.payload.cards),
+        cards: action.payload.cards,
       };
     case categoryPageTypes.SELECT_CATEGORY_ARTICLES_TAG:
       return {

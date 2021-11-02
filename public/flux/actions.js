@@ -297,13 +297,13 @@ export const profilePageActions = {
 
 /**
  * @param {string} idLastLoaded
- * @param {Array<Object>} articles
+ * @param {Array<Card>} cards
  * @return {Action}
  */
-function saveNewCategoryArticles(idLastLoaded, articles) {
+function saveNewCategoryArticles(idLastLoaded, cards) {
   return {
     type: categoryPageTypes.SAVE_NEW_CATEGORY_ARTICLES,
-    payload: {idLastLoaded, articles},
+    payload: {idLastLoaded, cards},
   };
 }
 
