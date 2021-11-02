@@ -74,6 +74,6 @@ export default class FeedView extends BaseComponentView {
    * hide loading component
    */
   hideLoadingAnimation() {
-    this.root.querySelector('#feed-loading').style.visibility = 'hidden';
+    this.root.querySelector('#feed__loading').style.visibility = 'hidden';
   }
 }

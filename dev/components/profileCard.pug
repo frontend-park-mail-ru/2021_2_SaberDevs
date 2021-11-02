@@ -1,4 +1,9 @@
-.feed
-  p Этим профилем владеет #{firstName} #{lastName} (#{login}) 
-  .feed__cards !{articles}
-  #feed-loading &#11088;
+.profile
+    .profile__info
+      img.profile__photo(src=`${avatar}`)
+      .profile__description
+        .profile__username #{firstName} #{lastName} (#{login}) 
+        .profile__aboutme #{aboutme}
+    .profile__articles-title Статьи
+    .feed__cards !{articles}
+    #feed__loading &#11088;

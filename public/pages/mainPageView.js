@@ -5,7 +5,8 @@ import Feed from '../components/feed/feed.js';
 import MainPagePreviewBar from
   '../components/feed/previews/mainPagePreviewBar.js';
 
-import {mainPageTypes} from '../flux/types.js'; 
+import {mainPageTypes} from '../flux/types.js';
+import {mainPageActions} from '../flux/actions.js';
 // ///////////////////////////////// //
 //
 //              Main Page
@@ -30,8 +31,8 @@ export default class MainPageView extends BasePageView {
       feed: new Feed(
           'mainPage',
           mainPageTypes.SAVE_NEW_CARDS,
-          mainPageTypes.FORBID_CARDS_UPLOADING,
-          mainPageTypes.ALLOW_CARDS_UPLOADING,
+          mainPageActions.forbidCardsLoading,
+          mainPageActions.allowCardsLoading,
           feedPreview,
       ),
     };

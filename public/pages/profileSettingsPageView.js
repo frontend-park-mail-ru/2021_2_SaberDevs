@@ -35,8 +35,9 @@ export default class ProfileSettingsPageView extends BasePageView {
   render() {
     super.render();
     this.root.appendChild(createPage(this.pageComponents.settingsForm));
-    const form = this.view.root.querySelector('form');
+    const form = this.root.querySelector('form');
     form.addEventListener('submit', (e) => {
+      e.preventDefault();
       // TODO: смена пароля
       // const password = form.querySelector('input[name="password"]');
       const password = '';
@@ -56,7 +57,7 @@ export default class ProfileSettingsPageView extends BasePageView {
                   store.dispatch(authorizationActions.login(response.data));
                 }
               },
-          );
+          ).catch((error) => console.warn(error));
     });
   }
 }

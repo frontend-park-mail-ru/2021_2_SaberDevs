@@ -4,27 +4,31 @@ $input-font-size: 24px;
 $warning-font-size: 30px;
 $submit-btn-padding: 10px 40px;
 $input-padding: 10px;
-$form-row-margin: 15px;
+$form-row-margin: 15px 0;
 
 .form {
   &__rows {
     @include col;
 
     align-items: flex-end;
+    width: 100%;
   }
 
   &__row {
     @include col;
 
+    position: relative;
+    align-items: flex-start;
     justify-content: flex-start;
     margin: $form-row-margin;
+    width: 100%;
   }
 
   &__input {
     border: $border;
     border-radius: $border-radius;
     padding: $input-padding;
-    width: 100%;
+    width: fill-available;
     font-size: $input-font-size;
     color: $color-primary;
     background-color: $color-elements;
@@ -33,10 +37,16 @@ $form-row-margin: 15px;
   &__submit-btn {
     border-radius: $border-radius;
     padding: $submit-btn-padding;
+    width: 100%;
     box-shadow: $box-shadow;
     font-size: $submit-btn-font-size;
     color: $color-primary;
     background-color: $color-elements;
+    cursor: pointer;
+  }
+
+  &__field {
+    width: 100%;
   }
 
   &__warning {
@@ -48,5 +58,22 @@ $form-row-margin: 15px;
   &__label {
     margin-right: $label-margin;
     font-size: $label-font-size;
+  }
+}
+
+.password {
+  &__control-btn {
+    position: absolute;
+    right: 10px;
+    top: 52px;
+    display: inline-block;
+    width: 24px;
+    height: 24px;
+    background: $img-icon-eye-closed 0 0 no-repeat;
+    cursor: pointer;
+  }
+
+  &__show {
+    background: $img-icon-eye-open 0 0 no-repeat;
   }
 }

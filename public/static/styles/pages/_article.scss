@@ -1,0 +1,41 @@
+$article-title-font-size: 36px;
+$article-add-tag-font-size: 48px;
+$article-title-margin: 30px 0;
+$article-tag-width: 150px;
+$article-tag-font-size: 16px;
+$article-tag-margin-left: 10px;
+
+.article {
+  @include col;
+
+  width: 80%;
+
+  &__title {
+    margin: $article-title-margin;
+    font-size: $article-title-font-size;
+  }
+
+  &__add-tag {
+    margin-left: $article-tag-margin-left;
+    font-size: $article-add-tag-font-size;
+    cursor: pointer;
+  }
+
+  &__input-tag {
+    margin-left: $article-tag-margin-left;
+    width: $article-tag-width;
+    font-size: $article-tag-font-size;
+  }
+
+  &__row {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    min-height: 40px;
+  }
+
+  &__tags {
+    display: flex;
+    justify-content: center;
+  }
+}

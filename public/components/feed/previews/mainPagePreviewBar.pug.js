@@ -75,7 +75,7 @@ pug_html = pug_html + "\u003Cdiv class=\"likes icon__text\"\u003E";
 ;pug_debug_line = 16;pug_debug_filename = "dev\u002Fcomponents\u002FmainPagePreviewBar.pug";
 pug_html = pug_html + (pug_escape(null == (pug_interp = likes) ? "" : pug_interp)) + "\u003C\u002Fdiv\u003E";
 ;pug_debug_line = 17;pug_debug_filename = "dev\u002Fcomponents\u002FmainPagePreviewBar.pug";
-pug_html = pug_html + "\u003Cimg class=\"icon__img\" src=\"static\u002Fimg\u002Ficons\u002Flike.svg\"\u002F\u003E\u003C\u002Fdiv\u003E";
+pug_html = pug_html + "\u003Cdiv class=\"icon-like icon__img\"\u003E\u003C\u002Fdiv\u003E\u003C\u002Fdiv\u003E";
 ;pug_debug_line = 18;pug_debug_filename = "dev\u002Fcomponents\u002FmainPagePreviewBar.pug";
 pug_html = pug_html + "\u003Cdiv class=\"icon\"\u003E";
 ;pug_debug_line = 19;pug_debug_filename = "dev\u002Fcomponents\u002FmainPagePreviewBar.pug";
@@ -83,7 +83,7 @@ pug_html = pug_html + "\u003Cdiv class=\"comments icon__text\"\u003E";
 ;pug_debug_line = 19;pug_debug_filename = "dev\u002Fcomponents\u002FmainPagePreviewBar.pug";
 pug_html = pug_html + (pug_escape(null == (pug_interp = comments) ? "" : pug_interp)) + "\u003C\u002Fdiv\u003E";
 ;pug_debug_line = 20;pug_debug_filename = "dev\u002Fcomponents\u002FmainPagePreviewBar.pug";
-pug_html = pug_html + "\u003Cimg class=\"icon__img\" src=\"static\u002Fimg\u002Ficons\u002Fcomment.svg\"\u002F\u003E\u003C\u002Fdiv\u003E\u003C\u002Fdiv\u003E\u003C\u002Fdiv\u003E\u003C\u002Fdiv\u003E";
+pug_html = pug_html + "\u003Cdiv class=\"icon-comments icon__img\"\u003E\u003C\u002Fdiv\u003E\u003C\u002Fdiv\u003E\u003C\u002Fdiv\u003E\u003C\u002Fdiv\u003E\u003C\u002Fdiv\u003E";
     }.call(this, "authorName" in locals_for_with ?
         locals_for_with.authorName :
         typeof authorName !== 'undefined' ? authorName : undefined, "authorUrl" in locals_for_with ?

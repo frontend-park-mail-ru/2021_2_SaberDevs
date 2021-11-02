@@ -5,11 +5,11 @@ $preview-tags-font-size: 14px;
 
 .preview {
   @include col;
-  @include background-img($img-preview);
 
   align-items: flex-start;
   justify-content: space-between;
   padding: $preview-padding;
+  width: 90%;
   min-height: $preview-min-height;
   font-weight: $font-thin;
 
@@ -33,6 +33,7 @@ $preview-tags-font-size: 14px;
 
   &__tag {
     font-size: $preview-tags-font-size;
+    cursor: pointer;
   }
 }
 

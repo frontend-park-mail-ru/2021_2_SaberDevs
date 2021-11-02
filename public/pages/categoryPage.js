@@ -85,8 +85,6 @@ async function uploadCategoryCards() {
       })
       .catch((err) => console.warn(err.message));
   // TODO: в других лентах unsetLoadingFlag
-  console.warn('после авеита');
-  console.warn(categoryPageActions.unsetCategoryArticlesLoadingFlag())
   store.dispatch(categoryPageActions.unsetCategoryArticlesLoadingFlag());
 }
 

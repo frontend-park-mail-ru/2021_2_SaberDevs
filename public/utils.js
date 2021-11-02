@@ -33,6 +33,7 @@ export function genRanHex(size = 6) {
  * @param {string} name
  * @param {string} title
  * @param {boolean} [required = false]
+ * @param {string} pattern
  * @return {HTMLInputElement}
  */
 export function createInput(
@@ -41,6 +42,7 @@ export function createInput(
     name,
     title = null,
     required = false,
+    pattern = null,
 ) {
   const input = document.createElement('input');
   input.type = type;
@@ -48,7 +50,8 @@ export function createInput(
   input.id = 'input-' + name;
   input.placeholder = placeholder;
   input.required = required;
-  input.title = title;
+  if (title != null) input.title = title;
+  if (pattern != null) input.pattern = pattern;
 
   return input;
 }

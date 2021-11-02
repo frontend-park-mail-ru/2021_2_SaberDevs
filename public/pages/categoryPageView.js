@@ -6,6 +6,7 @@ import CategoryChooseBar from
   '../components/feed/previews/catergoryChooseBar.js';
 
 import {categoryPageTypes} from '../flux/types.js';
+import {categoryPageActions} from '../flux/actions.js';
 
 // ///////////////////////////////// //
 //
@@ -30,8 +31,8 @@ export default class CategoryPageView extends BasePageView {
       feed: new Feed(
           'categoryPage',
           categoryPageTypes.SAVE_NEW_CATEGORY_ARTICLES,
-          categoryPageTypes.FORBID_CATEGORY_ARTICLES_UPLOADING,
-          categoryPageTypes.ALLOW_CATEGORY_ARTICLES_UPLOADING,
+          categoryPageActions.forbidCategoryArticlesLoading,
+          categoryPageActions.allowCategoryArticlesLoading,
       ),
     };
   }

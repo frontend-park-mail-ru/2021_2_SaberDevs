@@ -7,10 +7,27 @@ $user-img: 60px;
   &__img {
     width: $icon-size;
     height: $icon-size;
+    cursor: pointer;
   }
 
   &__text {
     font-size: $items-font-size;
+  }
+}
+
+.icon-like {
+  background: $img-icon-like;
+
+  &:hover {
+    background: $img-icon-like-hover;
+  }
+}
+
+.icon-comments {
+  background: $img-icon-comments;
+
+  &:hover {
+    background: $img-icon-comments-hover;
   }
 }
 
@@ -20,14 +37,4 @@ $user-img: 60px;
   width: $user-img;
   height: $user-img;
   pointer-events: all;
-}
-
-.password-control {
-  position: absolute;
-  right: 6px;
-  top: 11px;
-  display: inline-block;
-  width: 20px;
-  height: 20px;
-  background: $img-icon-eye-open 0 0 no-repeat;
 }

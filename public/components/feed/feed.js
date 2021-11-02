@@ -30,11 +30,11 @@ export default class Feed extends BaseComponent {
   /**
    * Универсальный компонент ленты
    * @param {string} storeName - имя редьюсера
-   * @param {Action} SAVE_NEW_CARDS_ACTION - событие, на которое
+   * @param {Type} SAVE_NEW_CARDS_ACTION - событие, на которое
    * в ленту добавляются карточки
-   * @param {Action} FORBID_CARDS_UPLOADING - событие, которое
+   * @param {Action} forbidCardsUploading - действие, которое
    * говорит, о том, что все данные загружены
-   * @param {Action} ALLOW_CARDS_UPLOADING - событие, которое
+   * @param {Action} allowCardsUploading - действие, которое
    * разрешает загрузку карточек снова через resetDoNotUploadTime
    * @param {BaseComponent} previewComponent - компонент,
    * который будет вложен в .feed__preview в ленте
@@ -42,15 +42,15 @@ export default class Feed extends BaseComponent {
   constructor(
       storeName,
       SAVE_NEW_CARDS_ACTION,
-      FORBID_CARDS_UPLOADING,
-      ALLOW_CARDS_UPLOADING,
+      forbidCardsUploading,
+      allowCardsUploading,
       previewComponent = new BaseComponent(),
   ) {
     console.log('{FEED} creation with params:');
     console.log({storeName});
     console.log({SAVE_NEW_CARDS_ACTION});
-    console.log({FORBID_CARDS_UPLOADING});
-    console.log({ALLOW_CARDS_UPLOADING});
+    console.log({forbidCardsUploading});
+    console.log({allowCardsUploading});
     console.log({previewComponent});
     super();
     this.innerComponent = previewComponent;
@@ -76,7 +76,7 @@ export default class Feed extends BaseComponent {
                 console.log('\'end\' found. doNotUpload flag is set to true');
               }
               // запрещаем загрузку карточек, чтобы не спамить сервер
-              store.dispatch(FORBID_CARDS_UPLOADING);
+              store.dispatch(forbidCardsUploading());
               // асинхронное событие (выполняется с помощью преобразователя)
               // разрешает загрузку карточек спустя некоторое время
               store.dispatch((dispatch) => {
@@ -84,7 +84,7 @@ export default class Feed extends BaseComponent {
                   if (ajaxDebug) {
                     console.log('doNotUpload flag is reset to false');
                   }
-                  dispatch(ALLOW_CARDS_UPLOADING);
+                  dispatch(allowCardsUploading());
                 }, resetDoNotUploadTime);
               });
             }
