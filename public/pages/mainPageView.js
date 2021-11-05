@@ -31,9 +31,11 @@ export default class MainPageView extends BasePageView {
       feed: new Feed(
           'mainPage',
           mainPageTypes.SAVE_NEW_CARDS,
+          mainPageTypes.CLEAR_CARDS,
+          mainPageTypes.FORBID_CARDS_UPLOADING,
+          mainPageTypes.ALLOW_CARDS_UPLOADING,
           mainPageActions.forbidCardsLoading,
           mainPageActions.allowCardsLoading,
-          true,
           feedPreview,
       ),
     };

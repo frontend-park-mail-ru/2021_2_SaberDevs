@@ -31,9 +31,14 @@ export default class CategoryPageView extends BasePageView {
       feed: new Feed(
           'categoryPage',
           categoryPageTypes.SAVE_NEW_CATEGORY_ARTICLES,
+          categoryPageTypes.CLEAR_CATEGORY_ARTICLES,
+          categoryPageTypes.FORBID_CATEGORY_ARTICLES_UPLOADING,
+          categoryPageTypes.ALLOW_CATEGORY_ARTICLES_UPLOADING,
           categoryPageActions.forbidCategoryArticlesLoading,
-          categoryPageActions.allowCategoryArticlesLoading,
-          false,
+          () => {
+            console.log('{CategoryPage feed} isEndFound is not been reset');
+            return {type: '__EMPTY__'};
+          },
       ),
     };
   }

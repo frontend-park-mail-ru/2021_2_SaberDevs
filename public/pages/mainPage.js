@@ -22,27 +22,29 @@ import Utils from '../utils.js';
  */
 function newsFeedEndReachEventAction(event) {
   const state = store.getState().mainPage;
-  const trackedCard = document.getElementById(state.trackedCardId);
+  const trackedCard = document.getElementById('feed__loading');
   // работаем, только если отслеживаемый элемент
-  // находися в области видимости пользователя
-  if (state.isLoading ||
+  // находися в области видимости пользователя.
+  // При этом не находимся в состоянии ожидания запроса
+  // и трекинг-элемент не скрыт (при display: none - y = 0)
+  if (state.isLoading || state.isEndFound ||
     trackedCard.getBoundingClientRect().y>Utils.getUserWindowHeight()) {
     return;
   }
-  console.log('scroll trigger');
+  console.log('[Main Page] scroll trigger');
   store.dispatch(uploadNextCards);
 }
 
 /**
  * Получить feedChunkSize записей (настройка на стороне сервера)
- * и отрисовать их перед loadingCard
  */
-function uploadNextCards() {
+async function uploadNextCards() {
   const state = store.getState().mainPage;
 
-  if (state.doNotUpload || state.isLoading) {
+  if (state.isEndFound || state.isLoading) {
     if (ajaxDebug) {
-      console.log('can\'t load news as doNotUpload state flag is true');
+      console.log('[Main Page] can\'t load news as' +
+        'isEndFound state flag is true');
     }
     return;
   }
@@ -53,7 +55,7 @@ function uploadNextCards() {
    */
   function onLoad(cards) {
     if (ajaxDebug) {
-      console.log('more news loaded!');
+      console.log('[Main Page] more news loaded!');
     }
 
     store.dispatch(
@@ -66,7 +68,7 @@ function uploadNextCards() {
 
   store.dispatch(mainPageActions.setLoadingFlag());
 
-  Ajax.get({
+  await Ajax.get({
     url: `/articles/feed?idLastLoaded=${state.idLastLoaded || ''}` +
       '&login=' +
       (state.login === '' ? 'all' : state.login),
@@ -87,6 +89,7 @@ function uploadNextCards() {
         Modal.open(false);
       })
       .catch((err) => console.warn(err.message));
+  store.dispatch(mainPageActions.unsetLoadingFlag());
 }
 
 /**
@@ -120,12 +123,11 @@ export default class MainPage extends BasePageMV {
 
     const scrollable = document.querySelector('.content');
     if (!scrollable) {
-      console.error('нет дивака .content');
+      console.warn('[Main Page] нет дивака .content');
     } else {
       scrollable.addEventListener(
           'scroll',
           newsFeedEndReachEventAction,
-          false,
       );
     }
   }
@@ -137,12 +139,11 @@ export default class MainPage extends BasePageMV {
     super.hide();
     const scrollable = document.querySelector('.content');
     if (!scrollable) {
-      console.error('нет дивака .content');
+      console.warn('[MainPage] нет дивака .content');
     } else {
       scrollable.removeEventListener(
           'scroll',
           newsFeedEndReachEventAction,
-          false,
       );
     }
   }

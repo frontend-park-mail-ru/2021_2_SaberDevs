@@ -55,6 +55,8 @@ export default class FeedView extends BaseComponentView {
 
   /**
     * @param {Array.Card} cards
+    * Восстанавливает видимость индикатора загрузки,
+    * добавляет карточки вниз ленты
     */
   addCards(cards) {
     const cardsDiv = this.root.querySelector(`.feed__cards`);
@@ -68,26 +70,28 @@ export default class FeedView extends BaseComponentView {
           cardComponent(element),
       );
     });
+    this.showLoadingAnimation();
   }
 
   /**
-    * @param {Array.Card} cards
+    * Стирает содержимое ленты
     */
-  refreshCards(cards) {
+  clear() {
     const cardsDiv = this.root.querySelector(`.feed__cards`);
     cardsDiv.innerHTML = '';
-    cards.forEach((element) => {
-      cardsDiv.insertAdjacentHTML(
-          'beforeend',
-          cardComponent(element),
-      );
-    });
   }
 
   /**
    * hide loading component
    */
   hideLoadingAnimation() {
-    this.root.querySelector('#feed__loading').style.visibility = 'hidden';
+    this.root.querySelector('#feed__loading').style.display = 'none';
+  }
+
+  /**
+   * show loading component
+   */
+  showLoadingAnimation() {
+    this.root.querySelector('#feed__loading').style.display = 'block';
   }
 }

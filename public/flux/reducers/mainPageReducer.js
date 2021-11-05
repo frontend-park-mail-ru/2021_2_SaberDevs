@@ -12,13 +12,11 @@ const headerLinksOnLogout = [
 
 const sideBarLinks = ['hello'];
 
+const endOfFeedMarkerID = 'end';
 
 /**
  * Объект состояния на главной странице
  * @typedef {Object} MainCardState
- * @property {string} trackedCardId - ID карточки, которая при попадании
- *                                    в область видимости пользователя
- *                                    вызовет подгрузку новостей
  * @property {string} idLastLoaded  - ID последней загруженной карточки
  * @property {string} login         - пользователь, для которого запрашивается
  *                                    подборка новостей
@@ -26,7 +24,7 @@ const sideBarLinks = ['hello'];
  *                                    отправку запросов на обновлении ленты,
  *                                    чтобы не спамить сервер
  * @property {number} lastScrollPos - Позиция скролла при покидании mainPage
- * @property {boolean} doNotUpload  - Запрещает загрузку при обнаружении конца
+ * @property {boolean} isEndFound  - Запрещает загрузку при обнаружении конца
  *                                    ленты, чтобы не спамить сервер.
  *                                    Сбразывется через resetDoNotUploadTime мс
  * @property {Array.NewsCard} cards - Массив загруженных карточек для
@@ -35,13 +33,12 @@ const sideBarLinks = ['hello'];
  */
 const InitialMainPageState = {
   isAuthenticated: false,
-  trackedCardId: 'feed__loading', // отслеживаемая запись в ленте для подгрузки
   isLoading: false,              // отправлен ли запрос на сервер
   idLastLoaded: '',              // запоминаем последнюю загруженную запись
   lastScrollPos: 0,              // скрол для возврата к той же записи
   login: '',                     // для какого пользователя подборка
   cards: [],                     // массив загруженных новостей
-  doNotUpload: false,
+  isEndFound: false,
   headerLinks: headerLinksOnLogout,
   sideBarLinks,
 };
@@ -61,19 +58,38 @@ export default function mainPageReducer(state = InitialMainPageState, action) {
     case mainPageTypes.FORBID_CARDS_UPLOADING:
       return {
         ...state,
-        doNotUpload: true,
+        isEndFound: true,
       };
     case mainPageTypes.ALLOW_CARDS_UPLOADING:
       return {
         ...state,
-        doNotUpload: false,
+        isEndFound: false,
       };
     case mainPageTypes.SAVE_NEW_CARDS:
+      const cards = action.payload.cards;
+      if (cards.length === 0) {
+        return {
+          ...state,
+          isLoading: false,
+        };
+      }
+      // запрещаем загрузку карточек, чтобы не спамить сервер
+      const isEndFound = cards[cards.length - 1].id === endOfFeedMarkerID;
+      if (isEndFound) {
+        // Удаляем последнюю запись с end'ом
+        cards.splice(cards.length - 1, 1);
+      }
       return {
         ...state,
         isLoading: false,
-        idLastLoaded: action.payload.idLastLoaded,
-        cards: state.cards.concat(action.payload.cards),
+        idLastLoaded: cards[cards.length - 1]?.id || state.idLastLoaded,
+        cards: state.cards.concat(cards),
+        isEndFound,
+      };
+    case mainPageTypes.CLEAR_CARDS:
+      return {
+        ...state,
+        cards: [],
       };
     case mainPageTypes.TOGGLE_AUTH:
       return {

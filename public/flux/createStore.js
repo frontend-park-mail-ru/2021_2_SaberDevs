@@ -19,6 +19,12 @@ export default function createStore(rootReducer, initialState, ...middlewares) {
   }
 
   return {
+    /**
+     * Сначала вызывается соответсвующий reducer,
+     * затем выполняются подписки.
+     * В колбеки подписок передается payload
+     * @param {Action} action
+     */
     dispatch(action) {
       state = rootReducer(state, action);
       subscribers[action.type] = subscribers[action.type] || [];

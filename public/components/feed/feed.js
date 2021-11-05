@@ -19,8 +19,7 @@ import store from '../../flux/store.js';
  * @return {HTMLElement}
  */
 
-const endOfFeedMarkerID = 'end';
-const resetDoNotUploadTime = 60000;  // anti- brutforce
+const resetDoNotUploadTime = 6000;  // anti- brutforce
 
 /**
  * ViewModel-компонент соответсвующего View
@@ -32,28 +31,36 @@ export default class Feed extends BaseComponent {
    * @param {string} storeName - имя редьюсера
    * @param {Type} SAVE_NEW_CARDS_ACTION - событие, на которое
    * в ленту добавляются карточки
+   * @param {Type} CLEAR_CARDS_ACTION - событие, на которое
+   * лента стирается
+   * @param {Type} FORBID_CARDS_UPLOADING_ACTION - событие, на которое
+   * лента скрывает анимацию подгрузки. Предполаается,
+   * что такое событие генерируется методом forbidCardsUploading
+   * @param {Type} ALLOW_CARDS_UPLOADING_ACTION - событие, на которое
+   * лента приготавливаается к загрузке новых записей. Предполаается,
+   * что такое событие генерируется методом allowCardsUploading
    * @param {Action} forbidCardsUploading - действие, которое
    * говорит, о том, что все данные загружены
    * @param {Action} allowCardsUploading - действие, которое
    * разрешает загрузку карточек снова через resetDoNotUploadTime
-   * @param {boolean} isAddCards true если карточки добавляются к
-   * существующим | false, если заменяют
    * @param {BaseComponent} previewComponent - компонент,
    * который будет вложен в .feed__preview в ленте
    */
   constructor(
       storeName,
       SAVE_NEW_CARDS_ACTION,
+      CLEAR_CARDS_ACTION,
+      FORBID_CARDS_UPLOADING_ACTION,
+      ALLOW_CARDS_UPLOADING_ACTION,
       forbidCardsUploading,
       allowCardsUploading,
-      isAddCards,
       previewComponent = new BaseComponent(),
   ) {
     console.log('{FEED} creation with params:');
     console.log({storeName});
     console.log({SAVE_NEW_CARDS_ACTION});
+    console.log({CLEAR_CARDS_ACTION});
     console.log({forbidCardsUploading});
-    console.log({allowCardsUploading});
     console.log({previewComponent});
     super();
     this.innerComponent = previewComponent;
@@ -67,39 +74,48 @@ export default class Feed extends BaseComponent {
     //
     // /////////////////////////////////
     this.unsubscribes.push(
-        store.subscribe(SAVE_NEW_CARDS_ACTION, ({idLastLoaded, cards})=>{
-          if (Array.isArray(cards)) {
-            if (isAddCards) {
-              this.view.addCards(cards);
-            } else {
-              this.view.refreshCards(cards);
-            }
-
-            if (cards[cards.length - 1]?.id === endOfFeedMarkerID) {
-              this.view.hideLoadingAnimation();
-
-              if (ajaxDebug) {
-                console.log('\'end\' found. doNotUpload flag is set to true');
-              }
-              // запрещаем загрузку карточек, чтобы не спамить сервер
-              store.dispatch(forbidCardsUploading());
-              // асинхронное событие (выполняется с помощью преобразователя)
-              // разрешает загрузку карточек спустя некоторое время
-              store.dispatch((dispatch) => {
-                setTimeout(() => {
-                  if (ajaxDebug) {
-                    console.log('doNotUpload flag is reset to false');
-                  }
-                  dispatch(allowCardsUploading());
-                }, resetDoNotUploadTime);
-              });
-            }
-          } else {
+        store.subscribe(SAVE_NEW_CARDS_ACTION, ({idLastLoaded, cards}) => {
+          if (!Array.isArray(cards)) {
             if (ajaxDebug) {
-              console.error('API ERROR! Server must return array of Cards');
+              console.warn('API ERROR! Server must return array of Cards',
+                  'but returned', typeof cards, ':', {cards});
             }
+            return;
+          }
+
+          this.view.addCards(cards);
+
+          const endFound = store.getState()[storeName].isEndFound;
+          if (endFound) {
+            if (ajaxDebug) {
+              console.log(`{${storeName}FEED}
+              'end' found. isEndFound flag is true`);
+            }
+            this.view.hideLoadingAnimation();
+            // асинхронное событие (выполняется с помощью преобразователя)
+            // разрешает загрузку карточек спустя некоторое время
+            store.dispatch((dispatch) => {
+              setTimeout(() => {
+                if (ajaxDebug) {
+                  console.log('{FEED} isEndFound flag is reset to false');
+                }
+                dispatch(allowCardsUploading());
+              }, resetDoNotUploadTime);
+            });
           }
         }),
+        store.subscribe(
+            CLEAR_CARDS_ACTION,
+            () => this.view.clear(),
+        ),
+        store.subscribe(
+            ALLOW_CARDS_UPLOADING_ACTION,
+            () => this.view.showLoadingAnimation(),
+        ),
+        store.subscribe(
+            FORBID_CARDS_UPLOADING_ACTION,
+            () => this.view.hideLoadingAnimation(),
+        ),
     );
   }
 
@@ -113,16 +129,9 @@ export default class Feed extends BaseComponent {
     const cards = store.getState()[this.storeName].cards;
     this.root = this.view.render(preview, cards);
 
-    if (store.getState()[this.storeName].doNotUpload) {
+    if (store.getState()[this.storeName].isEndFound) {
       this.view.hideLoadingAnimation();
     }
     return this.root;
-  }
-
-  /**
-   * Очистка памяти и отписка от связанных событий
-   */
-  destroy() {
-    super.destroy();
   }
 }
