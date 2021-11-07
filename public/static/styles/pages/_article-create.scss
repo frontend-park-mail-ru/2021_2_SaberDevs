@@ -1,0 +1,85 @@
+$article-create-title-font-size: 36px;
+$article-create-add-tag-font-size: 48px;
+$article-create-title-margin: 30px 0;
+$article-create-tag-width: 150px;
+$article-create-tag-font-size: 16px;
+$article-create-tag-margin-left: 10px;
+$article-create-label-margin-right: 10px;
+$article-create-label-font-size: 24px;
+$article-create-input-padding: 10px;
+$article-create-trash-height: 40px;
+
+.article-create {
+  @include col;
+
+  width: 80%;
+
+  &__title {
+    margin: $article-create-title-margin;
+    font-size: $article-create-title-font-size;
+  }
+
+  &__form {
+    @include col;
+
+    width: 100%;
+  }
+
+  &__rows {
+    @include col;
+
+    width: 100%;
+  }
+
+  &__add-tag {
+    margin-left: $article-create-tag-margin-left;
+    font-size: $article-create-add-tag-font-size;
+    cursor: pointer;
+  }
+
+  &__input-tag {
+    margin-left: $article-create-tag-margin-left;
+    border: $border;
+    border-radius: $border-radius;
+    padding: $article-create-input-padding;
+    width: $article-create-tag-width;
+    font-size: $article-create-tag-font-size;
+    color: $color-primary;
+    background-color: $color-elements;
+  }
+
+  &__row {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    min-height: 40px;
+  }
+
+  &__label {
+    justify-content: end;
+    margin-right: $article-create-label-margin-right;
+    width: 20%;
+    font-size: $article-create-label-font-size;
+  }
+
+  &__tags {
+    display: flex;
+    justify-content: center;
+  }
+
+  &__tag::before {
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: $article-create-trash-height;
+    background: $img-icon-trash no-repeat;
+
+    &:hover {
+      background: $img-icon-trash-hover no-repeat;
+    }
+  }
+
+  &__footer {
+    @include right;
+  }
+}

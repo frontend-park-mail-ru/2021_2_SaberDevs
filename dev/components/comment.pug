@@ -1,0 +1,14 @@
+.comments__comment.comment
+    .comment__content
+        img.comment__author-photo(src=`${authorAvatar}`)
+        .comment__description
+            .comment__author-name #{authorName}
+            .comment__text #{text}
+    .comment__bottom
+        .action-btns
+            .icon-small.action-btns_m-right
+                .icon-small__text #{likes}
+                .action-btns__likes-icon.icon-small__img
+            .action-btns_m-right
+                a.comment__answer-btn Ответить
+            .comment__time #{time}

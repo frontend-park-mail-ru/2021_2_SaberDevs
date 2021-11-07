@@ -27,9 +27,9 @@ pug_html = pug_html + "\u003Cdiv class=\"preview__content\"\u003E";
 ;pug_debug_line = 7;pug_debug_filename = "dev\u002Fcomponents\u002FmainPagePreviewBar.pug";
 pug_html = pug_html + "\u003Cdiv class=\"tags\"\u003E";
 ;pug_debug_line = 8;pug_debug_filename = "dev\u002Fcomponents\u002FmainPagePreviewBar.pug";
-// iterate tags.length ? tags : ['no tags']
+// iterate tags.length ? tags : ['']
 ;(function(){
-  var $$obj = tags.length ? tags : ['no tags'];
+  var $$obj = tags.length ? tags : [''];
   if ('number' == typeof $$obj.length) {
       for (var pug_index0 = 0, $$l = $$obj.length; pug_index0 < $$l; pug_index0++) {
         var tag = $$obj[pug_index0];
@@ -69,21 +69,21 @@ pug_html = pug_html + "Read more -\u003E\u003C\u002Fdiv\u003E";
 ;pug_debug_line = 14;pug_debug_filename = "dev\u002Fcomponents\u002FmainPagePreviewBar.pug";
 pug_html = pug_html + "\u003Cdiv class=\"action-btns\"\u003E";
 ;pug_debug_line = 15;pug_debug_filename = "dev\u002Fcomponents\u002FmainPagePreviewBar.pug";
-pug_html = pug_html + "\u003Cdiv class=\"icon action-btns__first\"\u003E";
+pug_html = pug_html + "\u003Cdiv class=\"icon action-btns_m-right\"\u003E";
 ;pug_debug_line = 16;pug_debug_filename = "dev\u002Fcomponents\u002FmainPagePreviewBar.pug";
-pug_html = pug_html + "\u003Cdiv class=\"likes icon__text\"\u003E";
+pug_html = pug_html + "\u003Cdiv class=\"icon__text\"\u003E";
 ;pug_debug_line = 16;pug_debug_filename = "dev\u002Fcomponents\u002FmainPagePreviewBar.pug";
 pug_html = pug_html + (pug_escape(null == (pug_interp = likes) ? "" : pug_interp)) + "\u003C\u002Fdiv\u003E";
 ;pug_debug_line = 17;pug_debug_filename = "dev\u002Fcomponents\u002FmainPagePreviewBar.pug";
-pug_html = pug_html + "\u003Cdiv class=\"icon-like icon__img\"\u003E\u003C\u002Fdiv\u003E\u003C\u002Fdiv\u003E";
+pug_html = pug_html + "\u003Cdiv class=\"action-btns__likes-icon icon__img\"\u003E\u003C\u002Fdiv\u003E\u003C\u002Fdiv\u003E";
 ;pug_debug_line = 18;pug_debug_filename = "dev\u002Fcomponents\u002FmainPagePreviewBar.pug";
 pug_html = pug_html + "\u003Cdiv class=\"icon\"\u003E";
 ;pug_debug_line = 19;pug_debug_filename = "dev\u002Fcomponents\u002FmainPagePreviewBar.pug";
-pug_html = pug_html + "\u003Cdiv class=\"comments icon__text\"\u003E";
+pug_html = pug_html + "\u003Cdiv class=\"icon__text\"\u003E";
 ;pug_debug_line = 19;pug_debug_filename = "dev\u002Fcomponents\u002FmainPagePreviewBar.pug";
 pug_html = pug_html + (pug_escape(null == (pug_interp = comments) ? "" : pug_interp)) + "\u003C\u002Fdiv\u003E";
 ;pug_debug_line = 20;pug_debug_filename = "dev\u002Fcomponents\u002FmainPagePreviewBar.pug";
-pug_html = pug_html + "\u003Cdiv class=\"icon-comments icon__img\"\u003E\u003C\u002Fdiv\u003E\u003C\u002Fdiv\u003E\u003C\u002Fdiv\u003E\u003C\u002Fdiv\u003E\u003C\u002Fdiv\u003E";
+pug_html = pug_html + "\u003Cdiv class=\"action-btns__comments-icon icon__img\"\u003E\u003C\u002Fdiv\u003E\u003C\u002Fdiv\u003E\u003C\u002Fdiv\u003E\u003C\u002Fdiv\u003E\u003C\u002Fdiv\u003E";
     }.call(this, "authorName" in locals_for_with ?
         locals_for_with.authorName :
         typeof authorName !== 'undefined' ? authorName : undefined, "authorUrl" in locals_for_with ?

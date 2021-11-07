@@ -1,3 +1,6 @@
+$btn-font-size: 18px;
+$btn-padding: 10px 20px;
+
 .btn-more {
   font-weight: $font-thin;
   font-size: $button-font-size;
@@ -5,5 +8,25 @@
 
   &:hover {
     text-decoration: underline;
+  }
+}
+
+.btn {
+  &_color-elementary {
+    border-radius: $border-radius;
+    padding: $btn-padding;
+    box-shadow: $box-shadow;
+    font-size: $btn-font-size;
+    color: $color-elements;
+    background-color: $color-secondary;
+
+    &:hover {
+      opacity: $button-opacity;
+    }
+
+    &:active {
+      border-color: $color-elements;
+      box-shadow: none;
+    }
   }
 }

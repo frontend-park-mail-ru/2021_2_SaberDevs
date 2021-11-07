@@ -1,7 +1,7 @@
 .card(id=`${id}`)
   .card__top
     .tags
-        each tag in tags.length ? tags : ['no tags']
+        each tag in tags.length ? tags : ['']
             .tags__tag.card__tag #{tag}
     .author-time
         a.author-time__author-name(href=`${authorUrl}`) #{authorName}
@@ -12,9 +12,9 @@
   .card__bottom
       .btn-more Read more ->
       .action-btns
-          .icon.action-btns__first
-              .likes.icon__text #{likes}
-              .icon-like.icon__img
+          .icon.action-btns_m-right
+              .icon__text #{likes}
+              .action-btns__likes-icon.icon__img
           .icon
-              .comments.icon__text #{comments}
-              .icon-comments.icon__img
+              .icon__text #{comments}
+              .action-btns__comments-icon.icon__img

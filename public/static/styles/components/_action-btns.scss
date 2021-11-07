@@ -1,0 +1,43 @@
+.action-btns {
+  @include row;
+
+  &_m-right {
+    margin-right: $action-btns-margin-right;
+  }
+
+  &__likes-icon {
+    background: $img-icon-like;
+    background-size: cover;
+
+    &:hover {
+      background-image: $img-icon-like-hover;
+    }
+  }
+
+  &__comments-icon {
+    background: $img-icon-comments;
+    background-size: cover;
+
+    &:hover {
+      background-image: $img-icon-comments-hover;
+    }
+  }
+
+  &__share-icon {
+    background: $img-icon-share;
+    background-size: cover;
+
+    &:hover {
+      background-image: $img-icon-share-hover;
+    }
+  }
+
+  &__trash-icon {
+    background: $img-icon-share;
+    background-size: cover;
+
+    &:hover {
+      background-image: $img-icon-share-hover;
+    }
+  }
+}
