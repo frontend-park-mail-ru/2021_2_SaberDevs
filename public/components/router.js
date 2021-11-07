@@ -54,8 +54,6 @@ export default class Router {
    * @param {string} path
    */
   open(path) {
-    console.warn(this.routesPatterned)
-    console.warn(this.routes)
     // Проверяем, является ли путь шаблонным
     this.routesPatterned.forEach((pattern) => {
       if (path.startsWith(pattern)) {

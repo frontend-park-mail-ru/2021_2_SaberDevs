@@ -118,11 +118,9 @@ export default class ProfilePage extends BasePageMV {
 
     // берем login из урла и сверяемся, есть ли о юзере данные
     // или нужно загружать по сети
-    let user = state.user;
     // на странице /profile работаем только с авторизованным пользователем
-    if (document.URL.indexOf('profile/') !== -1) {
-      user = authState;
-      store.dispatch(profilePageActions.setUserInfo(user));
+    if (document.URL.indexOf('/profile') !== -1) {
+      store.dispatch(profilePageActions.setUserInfo(authState));
       // TODO: добавить везде dispatch
     } else {
       const userUrlParam = document.URL.slice(document.URL.indexOf('user/')+5);
@@ -132,12 +130,12 @@ export default class ProfilePage extends BasePageMV {
           Utils.redirect('/profile');
           return;
         }
-        store.dispatch(profilePageActions.setUserLoading());
+        store.dispatch(profilePageActions.setUserLoading({
+          login: userUrlParam,
+        }));
         // TODO: сходить в сеть за юзердатой
-        // TODO: setUserLoading
       }
     }
-    
 
     store.dispatch(
         changePageActions.changePage(
