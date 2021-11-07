@@ -4,7 +4,6 @@ import {authorizationTypes,
   signupFormTypes,
   modalTypes,
   apiTypes,
-  articleEditTypes,
   profilePageTypes,
   categoryPageTypes,
 } from './types.js';

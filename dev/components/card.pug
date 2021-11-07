@@ -1,7 +1,7 @@
 .card(id=`${id}`)
   .card__top
     .tags
-        each tag in tags.length ? tags : ['no tags']
+        each tag in tags.length ? tags : []
             .tags__tag.card__tag #{tag}
     .author-time
         a.author-time__author-name(href=`${authorUrl}`) #{authorName}

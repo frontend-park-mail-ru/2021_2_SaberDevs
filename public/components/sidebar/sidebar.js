@@ -26,7 +26,7 @@ export default class Sidebar extends BaseComponent {
     //
     // /////////////////////////////////
 
-    // Обновление вида хедера до создания подписки
+    // Обновление вида сайдбара до создания подписки
     // на случай, если вход был совершен до инициализации
     if (store.getState().authorization.login !== '') {
       store.dispatch(

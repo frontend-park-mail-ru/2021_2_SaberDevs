@@ -33,7 +33,7 @@ export default class Router {
     const route = this.routes[path];
 
     if (!route) {
-      console.log('[ROUTER] путь', path, 'не зарегистрирован');
+      console.warn('[ROUTER] путь', path, 'не зарегистрирован');
       this.open('/');
       return;
     }
@@ -67,7 +67,7 @@ export default class Router {
       );
     }
 
-    console.warn('check !page.isActive():', !page.isActive());
+    console.log('[ROUTER] !page.isActive():', !page.isActive());
     if (!page.isActive()) {
       Object.values(this.routes).forEach(({page}) => {
         if (page && page.isActive()) {
@@ -93,8 +93,8 @@ export default class Router {
       // на всех вложенных элементах такой ссылки должен быть указан
       // data=router='ignore'
       // Нет гарантии, что сработает раньше: linkController или Router
-      if (!(target instanceof HTMLAnchorElement ||
-          target.dataset.router === 'ignore')) {
+      if (!(target instanceof HTMLAnchorElement) ||
+          target.dataset.router === 'ignore') {
         return;
       }
       if (routerDebug) {

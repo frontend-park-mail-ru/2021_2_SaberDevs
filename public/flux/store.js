@@ -7,7 +7,7 @@ import profilePageReducer from './reducers/profilePageReducer.js';
 import categoryPageReducer from './reducers/categoryPageReducer.js';
 import signupFormReducer from './reducers/signupFormReducer.js';
 import apiReducer from './reducers/apiReducer.js';
-import articleEditReducer from './reducers/articleEditReducer.js';
+import editorReducer from './reducers/editorReducer.js';
 import combineReducers from './reducers/combineReducers.js';
 
 import thunk from './middleWares/asyncHandleThunk.js';
@@ -22,7 +22,7 @@ const store = createStore(combineReducers({
 
   signupForm: signupFormReducer,
   api: apiReducer,
-  articleEdit: articleEditReducer,
+  editor: editorReducer,
 }), {}, thunk);
 
 export default store;

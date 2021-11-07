@@ -1,19 +1,19 @@
-import BaseComponent from '../../_basic/baseComponent.js';
-import CatergoryChooseBarView from './catergoryChooseBarView.js';
+import BaseComponent from '../_basic/baseComponent.js';
+import TagChoiceBarView from './tagChoiceBarView.js';
 
-import store from '../../../flux/store.js';
-import {categoryPageActions} from '../../../flux/actions.js';
+import store from '../../flux/store.js';
+import {categoryPageActions} from '../../flux/actions.js';
 /**
  * ViewModel-компонент соответсвующего View
  * @class CatergoryChooseBar
  */
-export default class CatergoryChooseBar extends BaseComponent {
+export default class TagChoiceBar extends BaseComponent {
   /**
    * Универсальный компонент заголовка для страницы с категориями
    */
   constructor() {
     super();
-    this.view = new CatergoryChooseBarView();
+    this.view = new TagChoiceBarView();
   }
 
   /**
@@ -35,7 +35,7 @@ export default class CatergoryChooseBar extends BaseComponent {
       } else {
         store.dispatch(categoryPageActions.selectCategoryTag(target.innerHTML));
       }
-      console.warn('selecting choosen tag (',
+      console.log('{CatergoryChooseBar} selecting choosen tag (',
           store.getState().categoryPage.choosenTag, ')');
       target.parentElement.childNodes.forEach((tagDiv) => {
         tagDiv.style.border = 'none';

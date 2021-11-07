@@ -1,4 +1,4 @@
-import BaseComponentView from '../../_basic/baseComponentView.js';
+import BaseComponentView from '../_basic/baseComponentView.js';
 
 import {genRanHex} from '../../../utils.js';
 
@@ -24,7 +24,7 @@ border-radius: 5px;
 /**
  * @class CatergoryChooseBarView
  */
-export default class CatergoryChooseBarView extends BaseComponentView {
+export default class TagChoiceBarView extends BaseComponentView {
   /**
     * @return {HTMLElement}
     */
