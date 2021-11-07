@@ -2,6 +2,11 @@ import BaseComponentView from '../_basic/baseComponentView.js';
 import cardComponent from './card.pug.js';
 import feedComponent from './feed.pug.js';
 
+import {redirect} from '../../utils.js';
+
+import store from '../../flux/store.js';
+import {profilePageActions} from '../../flux/actions.js';
+
 /**
  * Описание сущности карточки в новостной ленте
  * @typedef {Object} Card
@@ -40,6 +45,7 @@ export default class FeedView extends BaseComponentView {
     */
   render(preview, cards) {
     let content = '';
+    // TODO: add event listeners here
     cards.forEach((element) => {
       content += cardComponent(element);
     });
@@ -64,11 +70,41 @@ export default class FeedView extends BaseComponentView {
       console.warn('cannot append cards till Feed is not rendered');
       return;
     }
+    // TODO: вынести в MV, карточки получить квериселектороллом
     cards.forEach((element) => {
-      cardsDiv.insertAdjacentHTML(
-          'beforeend',
-          cardComponent(element),
+      const cardWrapper = document.createElement('div');
+      cardWrapper.innerHTML = cardComponent(element);
+      const cardDiv = cardWrapper.firstChild;
+
+      cardDiv.addEventListener('click', (e) => {
+        e.preventDefault();
+        const currentTarget = e.currentTarget;
+        console.warn(currentTarget.id);
+      });
+
+      cardDiv.querySelector('.author-time__author-name').addEventListener(
+          'click',
+          (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            console.warn('клик по автору', e.currentTarget.textContent);
+            store.dispatch(profilePageActions.setUserLoading({
+              login: e.currentTarget.textContent,
+            }));
+            redirect('/user/' + e.currentTarget.textContent);
+          },
       );
+
+      cardDiv.querySelectorAll('.tags__tag').forEach((t) => t.addEventListener(
+          'click',
+          (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            console.warn('TODO: клик по тегу', e.currentTarget.textContent);
+          },
+      ));
+
+      cardsDiv.appendChild(cardDiv);
     });
     this.showLoadingAnimation();
   }

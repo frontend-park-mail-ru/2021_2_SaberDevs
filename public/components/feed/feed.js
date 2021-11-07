@@ -73,6 +73,7 @@ export default class Feed extends BaseComponent {
     //        Communication
     //
     // /////////////////////////////////
+
     this.unsubscribes.push(
         store.subscribe(SAVE_NEW_CARDS_ACTION, ({idLastLoaded, cards}) => {
           if (!Array.isArray(cards)) {

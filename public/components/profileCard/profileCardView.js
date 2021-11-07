@@ -16,9 +16,14 @@ export default class profileCardView extends BaseComponentView {
   }
 
   /**
-    * @param {Object} user
-    * @return {HTMLElement}
-    */
+   * @param {Object} user
+   * @property {string} login
+   * @property {string?} firstName
+   * @property {string?} lastName
+   * @property {string?} avatarUrl
+   * @property {number?} score
+   * @return {HTMLElement}
+   */
   render(user) {
     const wrapper = document.createElement('div');
     wrapper.innerHTML = profileCardComponent({

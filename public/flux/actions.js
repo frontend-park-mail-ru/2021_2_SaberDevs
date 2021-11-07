@@ -300,7 +300,50 @@ function askNewArticles() {
   };
 }
 
+/**
+ * @param {Object} user
+ * @property {string} login
+ * @property {string?} firstName
+ * @property {string?} lastName
+ * @property {string?} avatarUrl
+ * @property {number?} score
+ * @return {Action}
+ */
+function setUserLoading(user) {
+  return {
+    type: profilePageTypes.SET_USER_LOADING,
+    payload: {
+      firstName: 'загрузка',
+      lastName: 'загрузка',
+      avatarUrl: '',
+      score: 0,
+      ...user,
+    },
+  };
+}
+
+/**
+ * @param {Object} user
+ * @property {string} login
+ * @property {string?} firstName
+ * @property {string?} lastName
+ * @property {email?} email
+ * @property {string?} avatarUrl
+ * @property {number?} score
+ * @return {Action}
+ */
+function setUserInfo(user) {
+  return {
+    type: profilePageTypes.SET_USER_INFO,
+    payload: {
+      ...user,
+    },
+  };
+}
+
 export const profilePageActions = {
+  setUserLoading,
+  setUserInfo,
   askNewArticles,
   saveNewArticles,
   clearArticles,

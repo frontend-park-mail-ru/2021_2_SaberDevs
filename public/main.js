@@ -24,7 +24,7 @@ import {cookieLogin} from './modules/ajaxRequests.js';
 // flux store
 import store from './flux/store.js';
 import editorActions from './flux/actions/editorActions.js';
-// import {signupFormActions} from './flux/actions.js';
+import {profilePageActions} from './flux/actions.js';
 
 // ServiceWorker
 const SWJSFile = 'serviceWorker.js';
@@ -56,6 +56,7 @@ Warning.init();
 router
     .register('/', MainPage)
     .register('/profile', ProfilePage)
+    .registerPattern('/user/<login>', ProfilePage)
     .register('/profile/settings', ProfileSettingsPage)
     .register('/editor', EditorPage)
     // .register('/article', ArticlePage)
@@ -85,9 +86,15 @@ linksController
         'back',
         window.history.back,
     )
+    // TODO: перенести в MV sidebar
     .register(
         'article-create',
-        () => store.dispatch(editorActions.createArticle()),
+        () => {
+          store.dispatch(
+              profilePageActions.setUserInfo(store.getState().authorization),
+          );
+          store.dispatch(editorActions.createArticle());
+        },
     );
 
 loadingScreen.start();

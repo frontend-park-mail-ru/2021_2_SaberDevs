@@ -1,11 +1,11 @@
 import BasePageMV from './basePageMV.js';
 import SignupPageView from './signupPageView.js';
 
-
 import store from '../flux/store.js';
 import {changePageActions} from '../flux/actions.js';
 import {authorizationTypes} from '../flux/types.js';
 
+import {redirect} from '../utils.js';
 // ///////////////////////////////// //
 //
 //         Signup Page
@@ -34,10 +34,10 @@ export default class SignupPage extends BasePageMV {
     this.showRegister = false;
     this.unsubscribeLogin = store.subscribe(
         authorizationTypes.LOGIN,
-        () => window.location.href = '/',
+        () => {
+          redirect('/');
+        },
     );
-
-    this.view.root.querySelector('input[name="btn-submit"]').href = '/';
 
     this.view.changeFormTypeBtn.addEventListener('click', (e) => {
       e.preventDefault();

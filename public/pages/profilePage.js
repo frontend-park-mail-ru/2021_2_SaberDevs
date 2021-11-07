@@ -113,12 +113,36 @@ export default class ProfilePage extends BasePageMV {
    */
   show() {
     super.show();
+    const state = store.getState().profilePage;
+    const authState = store.getState().authorization;
 
-    const state = store.getState().authorization;
+    // берем login из урла и сверяемся, есть ли о юзере данные
+    // или нужно загружать по сети
+    let user = state.user;
+    // на странице /profile работаем только с авторизованным пользователем
+    if (document.URL.indexOf('profile/') !== -1) {
+      user = authState;
+      store.dispatch(profilePageActions.setUserInfo(user));
+      // TODO: добавить везде dispatch
+    } else {
+      const userUrlParam = document.URL.slice(document.URL.indexOf('user/')+5);
+      console.warn('[ProfilePage] user from Url ', document.URL, userUrlParam);
+      if (userUrlParam !== state.user.login) {
+        if (userUrlParam === authState.login) {
+          Utils.redirect('/profile');
+          return;
+        }
+        store.dispatch(profilePageActions.setUserLoading());
+        // TODO: сходить в сеть за юзердатой
+        // TODO: setUserLoading
+      }
+    }
+    
+
     store.dispatch(
         changePageActions.changePage(
             'profile',
-            `SaberProject | ${state.login}`,
+            `SaberProject | ${state.user.login}`,
         ),
     );
 
@@ -162,7 +186,11 @@ export default class ProfilePage extends BasePageMV {
    * @return {string}
    */
   redirect(currentPath) {
-    if (store.getState().authorization.login !== '') {
+    const profileUser = store.getState().profilePage.user;
+    const authorizedUser = store.getState().authorization;
+
+    if (authorizedUser !== profileUser.login ||
+      store.getState().authorization.login !== '') {
       return '';
     }
     return '/login';

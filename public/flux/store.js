@@ -8,11 +8,14 @@ import categoryPageReducer from './reducers/categoryPageReducer.js';
 import signupFormReducer from './reducers/signupFormReducer.js';
 import apiReducer from './reducers/apiReducer.js';
 import editorReducer from './reducers/editorReducer.js';
+import routerReducer from './reducers/routerReducer.js';
 import combineReducers from './reducers/combineReducers.js';
 
 import thunk from './middleWares/asyncHandleThunk.js';
 
 const store = createStore(combineReducers({
+  router: routerReducer,
+
   authorization: authorizeReducer,
   page: changePageReducer,
 

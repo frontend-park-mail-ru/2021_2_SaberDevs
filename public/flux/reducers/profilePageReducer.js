@@ -3,7 +3,7 @@ import {profilePageTypes} from '../types.js';
 const endOfFeedMarkerID = 'end';
 
 /**
- * Объект состояния на главной странице
+ * Объект состояния для ленты
  * @typedef {Object} MainCardState
  * @property {boolean} isLoading    - Идет ли загрузка сейчас. true запрещает
  *                                    отправку запросов на обновлении ленты,
@@ -16,7 +16,9 @@ const endOfFeedMarkerID = 'end';
  *                                    на MainPage
  */
 const InitialProfilePageState = {
-  user: {},
+  user: {
+    login: '',
+  },
   isLoading: false,              // отправлен ли запрос на сервер
   idLastLoaded: '',              // запоминаем последнюю загруженную запись
   cards: [],                     // массив загруженных новостей
@@ -73,6 +75,16 @@ export default function profilePageReducer(
       return {
         ...state,
         cards: [],
+      };
+    case profilePageTypes.SET_USER_INFO:
+      return {
+        ...state,
+        user: action.payload,
+      };
+    case profilePageTypes.SET_USER_LOADING:
+      return {
+        ...state,
+        user: action.payload,
       };
   }
   return state;

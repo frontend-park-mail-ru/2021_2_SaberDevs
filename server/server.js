@@ -25,7 +25,7 @@ const appPages = ['/',
   '/categories',
   '/profile/settings',
   '/editor',
-  // TODO: signup, login
+  '/login',
 ];
 // ///////////////////////////////// //
 //
@@ -37,7 +37,6 @@ const server = http.createServer((req, res) => {
   if (req.method === 'OPTIONS') {
     // CORS
     res.setHeader('Access-Control-Allow-Origin', CORS);
-    // res.setHeader('Access-Control-Allow-Credentials', true);
     res.end();
     return;
   }
