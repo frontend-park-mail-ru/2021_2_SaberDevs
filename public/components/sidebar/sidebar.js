@@ -85,11 +85,7 @@ export default class Sidebar extends BaseComponent {
    */
   setSidebarUserPreview() {
     const state = store.getState().authorization;
-    this.view.setTopBlockContent(
-        userPreviewComponent({
-          name: state.firstName,
-          img: state.avatar,
-        }));
+    this.view.setTopBlockContent(userPreviewComponent(state));
   }
 
   /**

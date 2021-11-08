@@ -74,6 +74,11 @@ export const editorTypes = {
   CLEAR_ARTICLE: 'CLEAR_ARTICLE',
 };
 
+export const readerTypes = {
+  SAVE_ARTICLE: 'READER_SAVE_ARTICLE',
+  OPEN_ARTICLE: 'READER_OPEN_ARTICLE',
+};
+
 export const routerTypes = {
   REDIRECT: 'REDIRECT',
 };

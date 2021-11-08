@@ -4,6 +4,9 @@ import EditorView from './editorView.js';
 import store from '../../flux/store.js';
 import editorActions from '../../flux/actions/editorActions.js';
 import {editorTypes} from '../../flux/types.js';
+
+import Ajax from '../../modules/ajax.js';
+import {redirect} from '../../utils.js';
 /**
  * Компонент редактора статей
  * @class Editor
@@ -51,10 +54,10 @@ export default class Editor extends BaseComponent {
     const state = store.getState().editor;
     this.setContent(state[state.currentId]);
 
-    // проверить, рейзится ли евент, если textValue меняется программой
+    // TODO: проверить, рейзится ли евент, если textValue меняется программой
     this.root.querySelector('textarea').addEventListener('change', (e) => {
       e.preventDefault();
-      const title = this.root.querySelector('input[name="title"]').textContent;
+      const title = this.root.querySelector('input[name="title"]').value;
       const content = this.root.querySelector('textarea').textContent;
       store.dispatch(editorActions.saveArticle(store.getState().currentId, {
         title,
@@ -62,6 +65,43 @@ export default class Editor extends BaseComponent {
       }));
     });
 
+    this.root.querySelector('form').addEventListener('submit', (e) => {
+      e.preventDefault();
+
+      const text = this.root.querySelector('textarea')?.textContent;
+      const title = this.root.querySelector('input[name="title"]')?.value;
+      if (!text || !title) {
+        console.warn('{Editor} пустые статьи - это плохо:', {text}, {title});
+      }
+
+      const state = store.getState().editor;
+      const isUpdate =
+          typeof state.currentId === 'string' && state.currentId !== '0' ||
+          typeof state.currentId === 'number' && state.currentId !== 0;
+
+      const body = {
+        title,
+        text,
+        tags: state.tags,
+      };
+      if (isUpdate) {
+        Object.assign(body, {id: state.currentId});
+      }
+
+      Ajax.post({
+        url: `/articles/${isUpdate ? 'update' : 'create'}`,
+        body,
+      }).then(({status, response}) => {
+        if (status === Ajax.STATUS.ok) {
+          store.dispatch(editorActions.publishArticle(response.id));
+          redirect('/profile');
+        }
+        // TODO: если кука сгорела, сервер вернул unauthorized
+        // редирект на авторизацию
+        // Вывести предупреждение о том, что стейт сохранен,
+        // и чтобы не перезапускали страницу
+      });
+    });
     return this.root;
   }
 

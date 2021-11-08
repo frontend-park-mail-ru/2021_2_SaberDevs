@@ -8,6 +8,7 @@ import categoryPageReducer from './reducers/categoryPageReducer.js';
 import signupFormReducer from './reducers/signupFormReducer.js';
 import apiReducer from './reducers/apiReducer.js';
 import editorReducer from './reducers/editorReducer.js';
+import readerReducer from './reducers/readerReducer.js';
 import routerReducer from './reducers/routerReducer.js';
 import combineReducers from './reducers/combineReducers.js';
 
@@ -26,6 +27,7 @@ const store = createStore(combineReducers({
   signupForm: signupFormReducer,
   api: apiReducer,
   editor: editorReducer,
+  reader: readerReducer,
 }), {}, thunk);
 
 export default store;

@@ -98,7 +98,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/User'
+                $ref: '#/components/schemas/UserProfile'
         400:
           description: Невалидный логин
         404:
@@ -309,7 +309,8 @@ paths:
           
 components:
   schemas:
-    User:
+    UserProfile:
+      description: Данные профиля другого пользователя
       type: object
       properties:
         login:
@@ -317,6 +318,8 @@ components:
         firstName:
           type: string
         lastName:
+          type: string
+        avatarUrl:
           type: string
         score:
           type: integer
@@ -342,7 +345,6 @@ components:
           type: string
         lastName:
           type: string
-        
     UserLogIn:
       description: Отправить для авторизации
       type: object
@@ -351,22 +353,6 @@ components:
           type: string
         password:
           type: string
-    UserProfile:
-      description: Данные профиля другого пользователя
-      type: object
-      properties:
-        avatarUrl:
-          type: string
-        login:
-          type: string
-        firstName:
-          type: string
-        lastName:
-          type: string
-        score:
-          type: integer
-          description: Popularity rating
-          format: int64
     UserAuth:
       type: object
       description: Данные текущего авторизованного пользователя
@@ -429,8 +415,16 @@ components:
         previewUrl:
           type: string
           description: сжатая (или нет) картинка
+        title:
+          type: string
+        text:
+          type: string
+          description: текст начала содержания
         author:
           $ref: '#/components/schemas/UserProfile'
+        datetime:
+          type: string
+          description: дата и время публикации в виде строки hh::mm dd::mm::yyyy
         comments:
           type: integer
           description: Number of comments

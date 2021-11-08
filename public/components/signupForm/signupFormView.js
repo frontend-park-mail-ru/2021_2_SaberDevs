@@ -109,7 +109,7 @@ export default class SignupFormView extends BaseComponentView {
       const emailInput = form.querySelector('input[name="email"]');
       const email = emailInput?.value;
       const passRepInput = form.querySelector('input[name="password-repeat"]');
-      const passwordRepeated = passRepInput.value;
+      const passwordRepeated = passRepInput?.value;
 
       // если пароли не совпадают
       if (showRegister && passwordRepeated !== password) {

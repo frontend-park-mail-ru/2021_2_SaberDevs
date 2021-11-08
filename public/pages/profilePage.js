@@ -121,7 +121,6 @@ export default class ProfilePage extends BasePageMV {
     // на странице /profile работаем только с авторизованным пользователем
     if (document.URL.indexOf('/profile') !== -1) {
       store.dispatch(profilePageActions.setUserInfo(authState));
-      // TODO: добавить везде dispatch
     } else {
       const userUrlParam = document.URL.slice(document.URL.indexOf('user/')+5);
       console.warn('[ProfilePage] user from Url ', document.URL, userUrlParam);
