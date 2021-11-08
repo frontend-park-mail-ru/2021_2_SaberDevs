@@ -1,8 +1,6 @@
 import BasePageMV from './basePageMV.js';
 import EditorView from './articleEditorView.js';
 
-import Ajax from '../modules/ajax.js';
-
 import store from '../flux/store.js';
 /**
  * @class EditorPage

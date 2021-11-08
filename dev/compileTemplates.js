@@ -20,6 +20,8 @@ const saveTo = {
   buttonNav: 'sidebar',
   userPreview: 'sidebar',
   articleEditor: 'editor',
+  articleReader: 'reader',
+  comment: 'reader',
 };
 
 const correctLaunchDir = '2021_2_SaberDevs';

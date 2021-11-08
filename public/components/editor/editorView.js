@@ -1,5 +1,5 @@
 import BaseComponentView from '../_basic/baseComponentView.js';
-import articleComponent from '../article/article.pug.js';
+import articleEditorComponent from '../reader/articleEditor.pug.js';
 import formSettingsTextareaComponent from
   '../settings/formSettingsTextarea.pug.js';
 import formSettingsRowComponent from
@@ -39,7 +39,7 @@ export default class EditorView extends BaseComponentView {
     articleRows += text;
 
     const editor = document.createElement('div');
-    editor.innerHTML = articleComponent({
+    editor.innerHTML = articleEditorComponent({
       form_rows: articleRows,
     });
 
