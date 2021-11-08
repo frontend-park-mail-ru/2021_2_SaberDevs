@@ -1,9 +1,7 @@
 $settings-title-font-size: 36px;
 $settings-label-font-size: 24px;
 $settings-input-font-size: 24px;
-$settings-btn-font-size: 18px;
 $settings-other-page-font-size: 18px;
-$settings-btn-padding: 10px 20px;
 $settings-input-padding: 10px;
 $settings-other-page-margin-bottom: 20px;
 $settings-label-margin-right: 10px;
@@ -85,24 +83,6 @@ $settings-row-margin-bottom: 20px;
     font-size: $settings-input-font-size;
     color: $color-primary;
     background-color: $color-elements;
-  }
-
-  &__btn {
-    border-radius: $border-radius;
-    padding: $settings-btn-padding;
-    box-shadow: $box-shadow;
-    font-size: $settings-btn-font-size;
-    color: $color-elements;
-    background-color: $color-secondary;
-
-    &:hover {
-      opacity: $button-opacity;
-    }
-
-    &:active {
-      border-color: $color-elements;
-      box-shadow: none;
-    }
   }
 
   &__btn-save {

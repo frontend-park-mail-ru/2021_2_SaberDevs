@@ -19,7 +19,7 @@ const saveTo = {
   formSettingsTextarea: 'settings',
   buttonNav: 'sidebar',
   userPreview: 'sidebar',
-
+  articleEditor: 'editor',
 };
 
 const correctLaunchDir = '2021_2_SaberDevs';

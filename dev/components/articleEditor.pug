@@ -1,0 +1,11 @@
+.article-create
+  .article-create__title Создание статьи
+  form.article-create__form
+    .article-create__rows !{form_rows}
+    .article-create__row
+      .article-create__label Теги
+      .article-create__tags !{tags}
+      input.article-create__input-tag(type="text" name="tag")
+      a(href='#').article-create__add-tag +
+    .article-create__footer
+        input.btn_color-elementary(type='submit' name='btn-submit' value='Создать')

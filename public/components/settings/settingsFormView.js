@@ -3,6 +3,8 @@ import settingsComponent from './settings.pug.js';
 import formSettingsTextareaComponent from './formSettingsTextarea.pug.js';
 import formSettingsRowComponent from './formSettingsRow.pug.js';
 
+import regexp from '../../common/regexpString.js';
+
 /**
  * @class SettingsFormView
  */
@@ -16,22 +18,19 @@ export default class SettingsFormView extends BaseComponentView {
       label: 'Имя',
       type: 'text',
       name: 'username',
-      placeholder: 'Введите имя',
-      pattern: '',
+      pattern: regexp.firstName,
     });
     settingsRows += username;
     const surname = formSettingsRowComponent({
       label: 'Фамилия',
       type: 'text',
       name: 'surname',
-      placeholder: 'Введите фамилию',
-      pattern: '',
+      pattern: regexp.lastName,
     });
     settingsRows += surname;
     const description = formSettingsTextareaComponent({
       label: 'О себе',
       name: 'description',
-      placeholder: 'О себе',
     });
     settingsRows += description;
     const photo = formSettingsRowComponent({
@@ -39,7 +38,6 @@ export default class SettingsFormView extends BaseComponentView {
       type: 'file',
       name: 'photo',
       placeholder: 'Загрузите фото',
-      pattern: '',
     });
     settingsRows += photo;
 

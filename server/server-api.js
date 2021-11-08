@@ -543,6 +543,8 @@ function executeAPICall(req, res) {
           case '/user/signup':
             // пользователь уже существует
             if (users[reqBody.login.toLowerCase()] !== undefined) {
+              console.log('\t\t\t\t', users[reqBody.login.toLowerCase()]);
+              console.log('\t\t\t\t', {users});
               fullfillLoginIsAlreadyTaken(res);
             } else {
               // проверяем наличие все полей
@@ -573,6 +575,7 @@ function executeAPICall(req, res) {
                 );
               }
             }
+            break;
 
           case '/user/logout':
             console.log(

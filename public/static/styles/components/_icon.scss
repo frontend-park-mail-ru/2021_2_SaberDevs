@@ -1,4 +1,7 @@
 $icon-size: 40px;
+$icon-font-size: 24px;
+$icon-small-size: 25px;
+$icon-small-font-size: 20px;
 $user-img: 60px;
 
 .icon {
@@ -11,23 +14,22 @@ $user-img: 60px;
   }
 
   &__text {
-    font-size: $items-font-size;
+    font-size: $icon-font-size;
   }
 }
 
-.icon-like {
-  background: $img-icon-like;
+.icon-small {
+  @include row;
 
-  &:hover {
-    background: $img-icon-like-hover;
+  &__img {
+    width: $icon-small-size;
+    height: $icon-small-size;
+    background-size: cover;
+    cursor: pointer;
   }
-}
 
-.icon-comments {
-  background: $img-icon-comments;
-
-  &:hover {
-    background: $img-icon-comments-hover;
+  &__text {
+    font-size: $icon-small-font-size;
   }
 }
 

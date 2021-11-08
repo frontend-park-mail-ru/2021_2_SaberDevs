@@ -1,0 +1,84 @@
+$article-top: 25px;
+$article-title-font-size: 48px;
+$article-text-font-size: 18px;
+$article-back-btn-font-size: 18px;
+$article-time-font-size: 18px;
+$article-tag-font-size: 24px;
+$article-author-font-size: 18px;
+$article-author-margin-right: 15px;
+$article-title-margin-bottom: 15px;
+$article-text-margin-bottom: 20px;
+$article-main-picture-margin: 15px 0;
+$article-tag-margin-right: 15px;
+
+.article-view {
+  @include col;
+
+  margin-top: $article-top;
+  font-weight: $font-thin;
+
+  &__content {
+    width: 90%;
+  }
+
+  &__top {
+    @include right;
+  }
+
+  &__back-btn {
+    font-size: $article-back-btn-font-size;
+    cursor: pointer;
+
+    &:hover {
+      color: $color-secondary;
+    }
+  }
+
+  &__title {
+    margin-bottom: $article-title-margin-bottom;
+    font-weight: $font-thick;
+    font-size: $article-title-font-size;
+  }
+
+  &__info {
+    @include row;
+
+    justify-content: space-between;
+  }
+
+  &__main-picture {
+    margin: $article-main-picture-margin;
+    width: 100%;
+  }
+
+  &__text {
+    margin-bottom: $article-text-margin-bottom;
+    font-size: $article-text-font-size;
+  }
+
+  &__tags {
+    display: flex;
+  }
+
+  &__tag {
+    margin-right: $article-tag-margin-right;
+    font-size: $article-tag-font-size;
+
+    &:hover {
+      color: $color-secondary;
+    }
+  }
+
+  &__author-time {
+    display: flex;
+  }
+
+  &__author {
+    margin-right: $article-author-margin-right;
+    font-size: $article-author-font-size;
+  }
+
+  &__time {
+    font-size: $article-time-font-size;
+  }
+}

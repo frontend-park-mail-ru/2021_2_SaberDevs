@@ -1,7 +1,8 @@
 import BaseComponentView from '../_basic/baseComponentView.js';
 import signupFormComponent from './signupForm.pug.js';
 import formRowComponent from './formRow.pug.js';
-import {createInput} from '../../utils.js';
+
+import regexp from '../../common/regexpString.js';
 
 /**
  * @class SignupFormView
@@ -34,64 +35,45 @@ export default class SignupFormView extends BaseComponentView {
    */
   render(showRegister, submitHandler) {
     let formRows = '';
-    const loginInput = createInput('login', '', 'login', '', true,
-        '^[a-zA-Z][a-zA-Z0-9_]{4,20}$');
-    loginInput.className = 'form__input';
 
     const loginRow = formRowComponent({
       label: 'Логин',
-      field: loginInput.outerHTML,
+      type: 'text',
+      name: 'login',
+      pattern: regexp.login,
+      required: true,
     });
     formRows += loginRow;
 
     if (showRegister) {
-      const emailInput = createInput('email', '', 'email', '', true);
-      emailInput.className = 'form__input';
-
       const emailRow = formRowComponent({
-        label: 'Почта',
-        field: emailInput.outerHTML,
+        label: 'e-mail',
+        type: 'email',
+        name: 'email',
+        required: true,
       });
       formRows += emailRow;
-      console.log('emailInput: ', emailRow);
     }
-
-    const passwordInputWrapper = document.createElement('div');
-    const passwordInput = createInput('password', '', 'password', '',
-        true, '^\\S{8,40}$');
-    // '^[A-Za-z0-9.,\\/#!$%\\^&\\*;:{}=\\-_`~()]{8,40}$';
-    // '^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=(.*[a-zA-Z]){4}).{8,256}$';
-    passwordInput.className = 'form__input';
-    const passwordShowBtn = document.createElement('a');
-    passwordShowBtn.className = 'password__control-btn';
-    passwordShowBtn.classList.add('control-password');
-
-    passwordInputWrapper.appendChild(passwordInput);
-    passwordInputWrapper.appendChild(passwordShowBtn);
 
     const passwordRow = formRowComponent({
       label: 'Пароль',
-      field: passwordInputWrapper.innerHTML,
+      type: 'password',
+      name: 'password',
+      pattern: regexp.password,
+      required: true,
+      eye: true,
     });
     formRows += passwordRow;
 
     if (showRegister) {
-      const passwordInputWrapper = document.createElement('div');
-      const passwordInput = createInput('password', '', 'password-repeat', '',
-          true, '^\\S{8,40}$');
-      passwordInput.className = 'form__input';
-      const passwordShowBtn = document.createElement('a');
-      passwordShowBtn.className = 'password__control-btn';
-      passwordShowBtn.classList.add('control-password-repeat');
-
-      passwordInputWrapper.appendChild(passwordInput);
-      passwordInputWrapper.appendChild(passwordShowBtn);
-
-      const passwordRow = formRowComponent({
+      const passwordRepeatRow = formRowComponent({
         label: 'Повтор пароля',
-        field: passwordInputWrapper.innerHTML,
+        type: 'password',
+        name: 'password-repeat',
+        required: true,
+        eye: false,
       });
-      formRows += passwordRow;
+      formRows += passwordRepeatRow;
     }
 
     const formWrapper = document.createElement('div');
@@ -100,36 +82,19 @@ export default class SignupFormView extends BaseComponentView {
       form_rows: formRows,
       submit_btn_placeholder: showRegister ? 'Зарегистрироваться' : 'Войти',
     });
-
     const form = formWrapper.firstChild;
 
-    console.log('formWrapper:', formWrapper);
-    const btnPassword = formWrapper
-        .getElementsByClassName('control-password')[0];
-    btnPassword.addEventListener('click', ({target}) => {
-      const inputBtn = document.getElementById('input-password');
-      if (inputBtn.getAttribute('type') === 'password') {
-        target.classList.add('password__show');
-        inputBtn.setAttribute('type', 'text');
-      } else {
-        target.classList.remove('password__show');
-        inputBtn.setAttribute('type', 'password');
-      }
-    });
-    if (showRegister) {
-      const btnPasswordRepeat = formWrapper
-          .getElementsByClassName('control-password-repeat')[0];
-      btnPasswordRepeat.addEventListener('click', ({target}) => {
-        const inputBtn = document.getElementById('input-password-repeat');
-        if (inputBtn.getAttribute('type') === 'password') {
-          target.classList.add('password__show');
-          inputBtn.setAttribute('type', 'text');
-        } else {
-          target.classList.remove('password__show');
-          inputBtn.setAttribute('type', 'password');
-        }
-      });
-    }
+    form.querySelector('.control-password').addEventListener('click',
+        ({target}) => {
+          const passwordInput = form.querySelector('input[name="password"]');
+          if (passwordInput.getAttribute('type') === 'password') {
+            target.classList.add('password__show');
+            passwordInput.type = 'text';
+          } else {
+            target.classList.remove('password__show');
+            passwordInput.type ='password';
+          }
+        });
 
     form.addEventListener('submit', (e) => {
       e.preventDefault();
@@ -144,7 +109,7 @@ export default class SignupFormView extends BaseComponentView {
       const emailInput = form.querySelector('input[name="email"]');
       const email = emailInput?.value;
       const passRepInput = form.querySelector('input[name="password-repeat"]');
-      const passwordRepeated = passRepInput?.value;
+      const passwordRepeated = passRepInput.value;
 
       // если пароли не совпадают
       if (showRegister && passwordRepeated !== password) {
