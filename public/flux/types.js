@@ -77,6 +77,7 @@ export const editorTypes = {
 export const readerTypes = {
   SAVE_ARTICLE: 'READER_SAVE_ARTICLE',
   OPEN_ARTICLE: 'READER_OPEN_ARTICLE',
+  SET_ARTICLE_LOADING: 'READER_SET_ARTICLE_LOADING',
 };
 
 export const routerTypes = {

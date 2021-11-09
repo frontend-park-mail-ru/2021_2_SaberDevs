@@ -5,7 +5,6 @@ $card-tags-font-size: 14px;
 
 .card {
   @include col;
-  @include background-img($img-4);
 
   flex-grow: 1;
   justify-content: space-between;

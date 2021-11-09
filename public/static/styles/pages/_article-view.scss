@@ -14,7 +14,10 @@ $article-tag-margin-right: 15px;
 .article-view {
   @include col;
 
+  justify-content: space-between;
   margin-top: $article-top;
+  width: 100%;
+  min-height: 450px;
   font-weight: $font-thin;
 
   &__content {

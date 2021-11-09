@@ -6,6 +6,7 @@ import {redirect} from '../../utils.js';
 
 import store from '../../flux/store.js';
 import {profilePageActions} from '../../flux/actions.js';
+import readerActions from '../../flux/actions/readerActions.js';
 
 /**
  * Описание сущности карточки в новостной ленте
@@ -40,6 +41,8 @@ function composeCards(root, cards) {
       e.preventDefault();
       const currentTarget = e.currentTarget;
       console.warn(currentTarget.id);
+      store.dispatch(readerActions.setArticleLoading(element));
+      redirect('/article/' + currentTarget.id);
     });
 
     cardDiv.querySelector('.author-time__author-name').addEventListener(
@@ -47,10 +50,8 @@ function composeCards(root, cards) {
         (e) => {
           e.preventDefault();
           e.stopPropagation();
-          const login = e.currentTarget.textContent;
-          console.warn('клик по автору', login);
-          store.dispatch(profilePageActions.setUserLoading({login}));
-          redirect('/user/' + login);
+          store.dispatch(profilePageActions.setUserInfo(element.author));
+          redirect('/user/' + e.currentTarget.textContent);
         },
     );
 

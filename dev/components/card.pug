@@ -1,22 +1,24 @@
-.card(id=`${id}`)
+.card(id=`${id}` style=`background: -webkit-gradient(linear, left top, left bottom, from(rgba(0, 0, 0, 0.7)), to(rgba(0, 0, 0, 0.7))), url(${previewUrl});
+background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url(${previewUrl}); background-size: cover; background-repeat: no-repeat;`)
+
   .card__top
     .tags
       if Array.isArray(tags)
         each tag in tags.length ? tags : []
           .tags__tag.card__tag #{tag}
     .author-time
-      //- TODO: rename fields
-      a.author-time__author-name(href=`/user/${authorName}`) #{authorName}
-      .author-time__time #{time}
+      //- TODO: добавить firstName, lastName, аватаУрл
+      a.author-time__author-name(href=`/user/${author.login}`) #{author.login}
+      .author-time__time #{datetime}
   .card__content
     .card__title #{title}
     .card__description #{text}
   .card__bottom
     .btn-more Read more ->
     .action-btns
-      .icon.action-btns__first
-        .likes.icon__text #{likes}
-        .icon-like.icon__img
+      .icon.action-btns_m-right
+        .icon__text #{likes}
+        .action-btns__likes-icon.icon__img
       .icon
-        .comments.icon__text #{comments}
-        .icon-comments.icon__img
+        .icon__text #{comments}
+        .action-btns__comments-icon.icon__img
