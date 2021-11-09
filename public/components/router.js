@@ -51,9 +51,10 @@ export default class Router {
   }
 
   /**
-   * @param {string} path
+   * @param {string} link
    */
-  open(path) {
+  open(link) {
+    let path = link;
     // Проверяем, является ли путь шаблонным
     this.routesPatterned.forEach((pattern) => {
       if (path.startsWith(pattern)) {
@@ -91,11 +92,11 @@ export default class Router {
       this.routes[path] = {PageClass, page, root};
       return;
     }
-    if (window.location.pathname !== path) {
+    if (window.location.pathname !== link) {
       window.history.pushState(
           null,
           '',
-          path,
+          link,
       );
     }
 

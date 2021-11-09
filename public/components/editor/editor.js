@@ -123,7 +123,10 @@ export default class Editor extends BaseComponent {
     const textarea = this.root.querySelector('textarea');
     const titleInput = this.root.querySelector('input[name="title"]');
     if (textarea === null || titleInput === null) {
-      console.warn('{Editor} component hasn\'t been rendered yet');
+      console.warn(
+          '{Editor} can\'t use setContent: component hasn\'t been rendered yet',
+      );
+      return;
     }
     textarea.textContent = content;
     titleInput.value = title;

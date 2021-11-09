@@ -1,5 +1,5 @@
 import BaseComponentView from '../_basic/baseComponentView.js';
-import articleEditorComponent from '../reader/articleEditor.pug.js';
+import articleEditorComponent from '../editor/articleEditor.pug.js';
 import formSettingsTextareaComponent from
   '../settings/formSettingsTextarea.pug.js';
 import formSettingsRowComponent from
@@ -25,16 +25,11 @@ export default class EditorView extends BaseComponentView {
       label: 'Заголовок',
       type: 'text',
       name: 'title',
-      placeholder: 'Введите заголовок статьи',
-      pattern: '',
-      value: '',
     });
     articleRows += title;
     const text = formSettingsTextareaComponent({
       label: 'Текст статьи',
       name: 'text',
-      placeholder: '',
-      value: '',
     });
     articleRows += text;
 

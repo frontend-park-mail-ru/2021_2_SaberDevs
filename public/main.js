@@ -24,7 +24,7 @@ import {cookieLogin} from './modules/ajaxRequests.js';
 // flux store
 import store from './flux/store.js';
 import editorActions from './flux/actions/editorActions.js';
-import {profilePageActions} from './flux/actions.js';
+// import {profilePageActions} from './flux/actions.js';
 
 // ServiceWorker
 const SWJSFile = 'serviceWorker.js';
@@ -90,9 +90,10 @@ linksController
     .register(
         'article-create',
         () => {
-          store.dispatch(
-              profilePageActions.setUserInfo(store.getState().authorization),
-          );
+          // TODO: зачем?
+          // store.dispatch(
+          //     profilePageActions.setUserInfo(store.getState().authorization),
+          // );
           store.dispatch(editorActions.createArticle());
         },
     );

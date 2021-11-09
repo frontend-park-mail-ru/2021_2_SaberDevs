@@ -7,7 +7,7 @@ import {changePageActions, mainPageActions} from '../flux/actions.js';
 import Modal from '../components/modal/modal.js';
 
 import Ajax from '../modules/ajax.js';
-import Utils from '../utils.js';
+import {getUserWindowHeight} from '../utils.js';
 
 // ///////////////////////////////// //
 //
@@ -20,15 +20,15 @@ import Utils from '../utils.js';
  * Проверяет, достигнут ли конец ленты
  * @param {event} event
  */
-function newsFeedEndReachEventAction(event) {
+function newsFeedEndReachEventAction({currentTarget}) {
   const state = store.getState().mainPage;
-  const trackedCard = document.getElementById('feed__loading');
+  const trackedCard = currentTarget.querySelector('#feed__loading');
   // работаем, только если отслеживаемый элемент
   // находися в области видимости пользователя.
   // При этом не находимся в состоянии ожидания запроса
   // и трекинг-элемент не скрыт (при display: none - y = 0)
   if (state.isLoading || state.isEndFound ||
-    trackedCard.getBoundingClientRect().y>Utils.getUserWindowHeight()) {
+    trackedCard.getBoundingClientRect().y > getUserWindowHeight()) {
     return;
   }
   console.log('[Main Page] scroll trigger');
@@ -121,7 +121,7 @@ export default class MainPage extends BasePageMV {
       store.dispatch(uploadNextCards);
     }
 
-    const scrollable = document.querySelector('.content');
+    const scrollable = this.view.root.querySelector('.content');
     if (!scrollable) {
       console.warn('[Main Page] нет дивака .content');
     } else {
@@ -137,7 +137,7 @@ export default class MainPage extends BasePageMV {
    */
   hide() {
     super.hide();
-    const scrollable = document.querySelector('.content');
+    const scrollable = this.view.root.querySelector('.content');
     if (!scrollable) {
       console.warn('[MainPage] нет дивака .content');
     } else {

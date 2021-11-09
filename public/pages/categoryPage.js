@@ -8,7 +8,7 @@ import {categoryPageTypes} from '../flux/types.js';
 import Modal from '../components/modal/modal.js';
 
 import Ajax from '../modules/ajax.js';
-import Utils from '../utils.js';
+import {getUserWindowHeight} from '../utils.js';
 
 // ///////////////////////////////// //
 //
@@ -21,13 +21,13 @@ import Utils from '../utils.js';
  * Проверяет, достигнут ли конец ленты
  * @param {event} event
  */
-function newsFeedEndReachEventAction(event) {
+function newsFeedEndReachEventAction({currentTarget}) {
   const state = store.getState().categoryPage;
-  const trackedElement = document.getElementById('feed__loading');
+  const trackedElement = currentTarget.querySelector('#feed__loading');
   // работаем, только если отслеживаемый элемент
   // находися в области видимости пользователя
   if (state.isLoading || state.isEndFound ||
-    trackedElement.getBoundingClientRect().y > Utils.getUserWindowHeight()) {
+    trackedElement.getBoundingClientRect().y > getUserWindowHeight()) {
     return;
   }
   console.log('[Category Page] scroll trigger');

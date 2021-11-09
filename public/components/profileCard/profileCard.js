@@ -37,7 +37,6 @@ export default class ProfileCard extends BaseComponent {
    */
   render() {
     super.render();
-    // TODO: user in profilepagestate
     const user = store.getState().profilePage.user;
     this.root = this.view.render(user);
     return this.root;
@@ -53,6 +52,8 @@ export default class ProfileCard extends BaseComponent {
    * @property {number?} score
    */
   setUser(user) {
-    this.root = this.view.render(user);
+    // Object.assign(this.root, this.view.render(user));
+    this.root.innerHTML = '';
+    this.root.appendChild(this.render(user).firstChild);
   }
 }

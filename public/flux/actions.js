@@ -335,9 +335,7 @@ function setUserLoading(user) {
 function setUserInfo(user) {
   return {
     type: profilePageTypes.SET_USER_INFO,
-    payload: {
-      ...user,
-    },
+    payload: user,
   };
 }
 

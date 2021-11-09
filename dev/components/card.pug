@@ -1,20 +1,22 @@
 .card(id=`${id}`)
   .card__top
     .tags
+      if Array.isArray(tags)
         each tag in tags.length ? tags : []
-            .tags__tag.card__tag #{tag}
+          .tags__tag.card__tag #{tag}
     .author-time
-        a.author-time__author-name(href=`${authorUrl}`) #{authorName}
-        .author-time__time #{time}
+      //- TODO: rename fields
+      a.author-time__author-name(href=`/user/${authorName}`) #{authorName}
+      .author-time__time #{time}
   .card__content
-      .card__title #{title}
-      .card__description #{text}
+    .card__title #{title}
+    .card__description #{text}
   .card__bottom
-      .btn-more Read more ->
-      .action-btns
-          .icon.action-btns__first
-              .likes.icon__text #{likes}
-              .icon-like.icon__img
-          .icon
-              .comments.icon__text #{comments}
-              .icon-comments.icon__img
+    .btn-more Read more ->
+    .action-btns
+      .icon.action-btns__first
+        .likes.icon__text #{likes}
+        .icon-like.icon__img
+      .icon
+        .comments.icon__text #{comments}
+        .icon-comments.icon__img

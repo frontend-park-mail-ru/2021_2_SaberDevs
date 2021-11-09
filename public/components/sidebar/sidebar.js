@@ -71,8 +71,8 @@ export default class Sidebar extends BaseComponent {
       });
     } else {
       topBlockContent = userPreviewComponent({
-        name: store.getState().authorization.firstName,
-        img: store.getState().authorization.avatar,
+        login: store.getState().authorization.login,
+        avatarUrl: store.getState().authorization.avatarUrl,
       });
     }
     this.root = this.view.render(topBlockContent);

@@ -76,15 +76,25 @@ export default function profilePageReducer(
         ...state,
         cards: [],
       };
-    case profilePageTypes.SET_USER_INFO:
+    case profilePageTypes.SET_USER_INFO: // смена пользователя
       return {
         ...state,
         user: action.payload,
+        // Сброс загруженных карточек
+        // TODO: сделать кеширование для кажлого юзера
+        isLoading: false,
+        idLastLoaded: '',
+        cards: [],
+        isEndFound: false,
       };
-    case profilePageTypes.SET_USER_LOADING:
+    case profilePageTypes.SET_USER_LOADING: // смена пользователя
       return {
         ...state,
         user: action.payload,
+        isLoading: false,
+        idLastLoaded: '',
+        cards: [],
+        isEndFound: false,
       };
   }
   return state;

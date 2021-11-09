@@ -20,9 +20,9 @@ import Utils from '../utils.js';
  * Проверяет, достигнут ли конец ленты
  * @param {event} event
  */
-function newsFeedEndReachEventAction(event) {
+function newsFeedEndReachEventAction({currentTarget}) {
   const state = store.getState().profilePage;
-  const trackedElement = document.getElementById('feed__loading');
+  const trackedElement = currentTarget.querySelector('#feed__loading');
   // работаем, только если отслеживаемый элемент
   // находися в области видимости пользователя
   if (state.isLoading || state.isEndFound ||
@@ -68,7 +68,7 @@ async function uploadNextArticles() {
   await Ajax.get({
     // TODO: get login from profilePageState.user
     url: `/articles/author?idLastLoaded=${state.idLastLoaded}` +
-    `&login=${store.getState().authorization.login}`,
+    `&login=${state.user.login}`,
   })
       .then(({status, response}) => {
         if (status === Ajax.STATUS.ok) {
@@ -121,9 +121,13 @@ export default class ProfilePage extends BasePageMV {
     // на странице /profile работаем только с авторизованным пользователем
     if (document.URL.indexOf('/profile') !== -1) {
       store.dispatch(profilePageActions.setUserInfo(authState));
+      store.dispatch(profilePageActions.clearArticles());
     } else {
       const userUrlParam = document.URL.slice(document.URL.indexOf('user/')+5);
       console.warn('[ProfilePage] user from Url ', document.URL, userUrlParam);
+      if (userUrlParam === '') {
+        Utils.redirect('/404');
+      }
       if (userUrlParam !== state.user.login) {
         if (userUrlParam === authState.login) {
           Utils.redirect('/profile');
@@ -132,6 +136,7 @@ export default class ProfilePage extends BasePageMV {
         store.dispatch(profilePageActions.setUserLoading({
           login: userUrlParam,
         }));
+        store.dispatch(profilePageActions.clearArticles());
         // TODO: сходить в сеть за юзердатой
       }
     }
@@ -147,13 +152,15 @@ export default class ProfilePage extends BasePageMV {
       store.dispatch(uploadNextArticles);
     }
 
-    const scrollable = document.querySelector('.content');
+    const scrollable = this.view.root.querySelector('.content');
     if (!scrollable) {
       console.warn('[ProfilePage] нет дивака .content');
     } else {
+      console.warn('[ProfilePage] newsFeedEndReachEventAction подключен');
       scrollable.addEventListener(
           'scroll',
           newsFeedEndReachEventAction,
+          // () => {console.warn('scroll trigger shit')}
       );
     }
   }
@@ -163,10 +170,11 @@ export default class ProfilePage extends BasePageMV {
    */
   hide() {
     super.hide();
-    const scrollable = document.querySelector('.content');
+    const scrollable = this.view.root.querySelector('.content');
     if (!scrollable) {
       console.warn('[ProfilePage] нет дивака .content');
     } else {
+      console.warn('[ProfilePage] newsFeedEndReachEventAction удален');
       scrollable.removeEventListener(
           'scroll',
           newsFeedEndReachEventAction,
