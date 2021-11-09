@@ -38,7 +38,7 @@ function createArticle() {
  * @param {number} id
  * @param {Object?} article
  * @property {string} title
- * @property {string} content
+ * @property {string} text
  * @property {Array<string>?} tags
  * @property {number?} time
  * @property {string?} author
@@ -73,7 +73,7 @@ function publishArticle(id) {
  *                      либо 0, если запись только создается
  * @param {Object?} article
  * @property {string} title
- * @property {string} content
+ * @property {string} text
  * @property {Array<string>?} tags
  * @property {number?} time
  * @property {string?} author
@@ -87,7 +87,7 @@ function saveArticle(id, article) {
     payload: {
       id,
       title: article.title,
-      content: article.content,
+      text: article.text,
     },
   };
 }

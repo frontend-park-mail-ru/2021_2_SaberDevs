@@ -32,9 +32,11 @@ export default class Editor extends BaseComponent {
           this.clear();
         }),
         store.subscribe(editorTypes.CREATE_ARTICLE, () => {
+          this.changeToCreate();
           this.setContent(store.getState().editor[0]);
         }),
         store.subscribe(editorTypes.EDIT_EXISTING_ARTICLE, ({id}) => {
+          this.changeToUpdate();
           this.setContent(store.getState().editor[id]);
         }),
     );
@@ -109,15 +111,15 @@ export default class Editor extends BaseComponent {
     * Перерисовать главную страницу
     * @param {Object?} existingArticle
     * @property {string} title
-    * @property {string} content
+    * @property {string} text
     * @property {Array<string>?} tags
     * @property {number?} time
     * @property {string?} author
     * @property {number?} likes
     * @property {number?} comments
     */
-  setContent({title, content}) {
-    if (title || content) {
+  setContent({title, text}) {
+    if (title || text) {
       console.log('{EDITOR} set content');
     }
     const textarea = this.root.querySelector('textarea');
@@ -128,7 +130,7 @@ export default class Editor extends BaseComponent {
       );
       return;
     }
-    textarea.textContent = content;
+    textarea.textContent = text;
     titleInput.value = title;
   }
 
@@ -139,7 +141,27 @@ export default class Editor extends BaseComponent {
     console.log('{EDITOR} clear');
     this.setContent({
       title: '',
-      content: '',
+      text: '',
     });
+  }
+
+  /**
+   * Поменять надписи на "Создание"
+   */
+  changeToCreate() {
+    this.root.querySelector('input[name="btn-submit"]').value = 'Создать';
+    this.root.querySelector('.article-create__title').textContent =
+      'Создание статьи';
+    this.root.querySelector('.article-create__del-btn').textContent= 'Очистить';
+  }
+
+  /**
+   * Поменять надписи на "Изменение"
+   */
+  changeToUpdate() {
+    this.root.querySelector('input[name="btn-submit"]').value = 'Изменить';
+    this.root.querySelector('.article-create__title').textContent =
+      'Изменение статьи';
+    this.root.querySelector('.article-create__del-btn').textContent= 'Удалить';
   }
 }

@@ -3,6 +3,8 @@ import ReaderView from './articleReaderView.js';
 
 import store from '../flux/store.js';
 import readerActions from '../flux/actions/readerActions.js';
+
+import Ajax from '../modules/ajax.js';
 /**
  * @class ReaderPage
  */
@@ -31,7 +33,23 @@ export default class ReaderPage extends BasePageMV {
     store.dispatch(readerActions.setArticleLoading({id: idUrlParam}));
     store.dispatch(readerActions.openArticle(idUrlParam));
     // onLoad
-    // store.dispatch(readerActions.saveArticle(article));
-    // store.dispatch(readerActions.openArticle(idUrlParam));
+    Ajax.get({url: `/articles?id=${idUrlParam}`})
+        .then(({status, response}) => {
+          if (status === Ajax.STATUS.ok) {
+            store.dispatch(readerActions.saveArticle(response.data));
+            store.dispatch(readerActions.openArticle(response.data.id));
+            return;
+          }
+
+          if (status / 500 === 1) {
+            Modal.setTitle(`Сервис временно не доступен: ${status}`);
+          }
+          if (status / 400 === 1) {
+            Modal.setTitle(/* пользовательская */`Ошибка ${status}`);
+          }
+          Modal.setContent(response.msg);
+          Modal.open(false);
+        })
+        .catch((err) => console.warn(err.message));
   }
 }

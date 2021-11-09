@@ -48,6 +48,8 @@ export default function readerReducer(state = InitialReaderState, action) {
       };
 
     case readerTypes.SET_ARTICLE_LOADING:
+      // Загрузка не ставится, если по этому id уже
+      // есть хотя бы какие-то достоверные данные
       if (action.payload.id in state &&
         state[action.payload.id].title !== 'Загрузка') {
         return state;
@@ -59,8 +61,6 @@ export default function readerReducer(state = InitialReaderState, action) {
           tags: [],
           datetime: '',
           author: {
-            // TODO: проверять, можно ли сделать клик по юзеру
-            // переход в профиль
             login: '',
             avatarUrl: '',
             firstName: '',

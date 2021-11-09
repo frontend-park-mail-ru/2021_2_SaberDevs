@@ -5,12 +5,12 @@ const InitialEditorState = {
   // создание статьи
   // 0: {
   //   title: string,
-  //   content: string,
+  //   text: string,
   // }
   // Изменение статьи
   // id: {
   //   title: string,
-  //   content: string,
+  //   text: string,
   // }
 };
 
@@ -26,7 +26,7 @@ export default function editorReducer(state = InitialEditorState, action) {
         ...state,
         [action.payload.id]: {
           title: action.payload.title,
-          content: action.payload.content,
+          text: action.payload.text,
         },
         currentId: action.payload.id,
       };
@@ -36,7 +36,7 @@ export default function editorReducer(state = InitialEditorState, action) {
         ...state,
         [action.payload.id]: {
           title: '',
-          content: '',
+          text: '',
         },
       };
 
@@ -47,7 +47,7 @@ export default function editorReducer(state = InitialEditorState, action) {
       if (!(0 in stateCopy)) {
         stateCopy[0] = {
           title: '',
-          content: '',
+          text: '',
         };
       }
       stateCopy.currentId = 0;
@@ -58,7 +58,7 @@ export default function editorReducer(state = InitialEditorState, action) {
         ...state,
         [action.payload.id]: {
           title: action.payload.title,
-          content: action.payload.content,
+          text: action.payload.text,
         },
       };
     case editorTypes.PUBLISH_ARTICLE:
@@ -68,7 +68,7 @@ export default function editorReducer(state = InitialEditorState, action) {
         [action.payload.id]: Object.assign({}, state[0]),
         0: {
           title: '',
-          content: '',
+          text: '',
         },
         currentId: 0,
       };

@@ -29,11 +29,14 @@ $article-tag-margin-right: 15px;
   }
 
   &__back-btn {
+    margin-left: 5px;
     font-size: $article-back-btn-font-size;
     cursor: pointer;
 
     &:hover {
+      text-decoration: underline;
       color: $color-secondary;
+      cursor: pointer;
     }
   }
 
@@ -68,7 +71,9 @@ $article-tag-margin-right: 15px;
     font-size: $article-tag-font-size;
 
     &:hover {
+      text-decoration: underline;
       color: $color-secondary;
+      cursor: pointer;
     }
   }
 
@@ -79,6 +84,12 @@ $article-tag-margin-right: 15px;
   &__author {
     margin-right: $article-author-margin-right;
     font-size: $article-author-font-size;
+
+    &:hover {
+      text-decoration: underline;
+      color: $color-secondary;
+      cursor: pointer;
+    }
   }
 
   &__time {

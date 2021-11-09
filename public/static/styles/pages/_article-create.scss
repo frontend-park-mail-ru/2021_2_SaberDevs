@@ -31,6 +31,17 @@ $article-create-trash-height: 40px;
     width: 100%;
   }
 
+  &__row-del-btn {
+    flex-direction: row;
+    align-items:flex-end;
+    justify-content: flex-end;
+    margin-bottom: 10px;
+  }
+
+  &__del-btn {
+    display: flex;
+  }
+
   &__add-tag {
     margin-left: $article-create-tag-margin-left;
     font-size: $article-create-add-tag-font-size;
