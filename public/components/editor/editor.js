@@ -157,12 +157,12 @@ export default class Editor extends BaseComponent {
         body,
       }).then(({status, response}) => {
         if (status === Ajax.STATUS.ok) {
-          store.dispatch(editorActions.publishArticle(response.data.id));
+          store.dispatch(editorActions.publishArticle(state.currentId));
           Modal.setTitle('Успех!');
           Modal.setContent(`Статья успешно ${isUpdate?'изменена' : 'создана'}`);
           Modal.open(false);
           setTimeout(
-              () => redirect(`/article/${response.data.id}`),
+              () => redirect(`/article/${state.currentId}`),
               Modal.animationTime,
           );
           return;
