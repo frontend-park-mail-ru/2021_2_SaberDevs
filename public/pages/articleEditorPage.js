@@ -15,21 +15,6 @@ export default class EditorPage extends BasePageMV {
   }
 
   /**
-   * Страница содержит главный компонент - интерфейс изменения статьи.
-   * Компонент управляется собственным StateObject Editor
-   */
-  show() {
-    const state = store.getState().editor;
-    const existingArticle = {
-      title: state.title,
-      text: state.text,
-      tags: state.tags,
-    };
-
-    this.view.show(existingArticle);
-  }
-
-  /**
    * Вызывается в роутере. Если return не '', нужно выполнить переход
    * по пути, возвращенному из функции
    *

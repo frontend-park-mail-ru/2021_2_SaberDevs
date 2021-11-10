@@ -1,5 +1,7 @@
 .article-create
   .article-create__title Создание статьи
+  .article-create__row-del-btn
+    button.btn_color-elementary.article-create__del-btn Очистить
   form.article-create__form
     .article-create__rows !{form_rows}
     .article-create__row
@@ -9,4 +11,4 @@
       button.article-create__add-tag +
       button.action-btns__trash-icon.icon__img
     .article-create__footer
-        input.btn_color-elementary(type='submit' name='btn-submit' value='Создать')
+      input.btn_color-elementary(type='submit' name='btn-submit' value='Создать')

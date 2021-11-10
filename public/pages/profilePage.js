@@ -125,6 +125,8 @@ export default class ProfilePage extends BasePageMV {
     } else {
       const userUrlParam = document.URL.slice(document.URL.indexOf('user/')+5);
       console.warn('[ProfilePage] user from Url ', document.URL, userUrlParam);
+      // путь '/user/' не пропустится сервером, т.к. путь не проходит валидацию
+      // для пути с параметром. Но доп. валидация нелишняя
       if (userUrlParam === '') {
         Utils.redirect('/404');
       }

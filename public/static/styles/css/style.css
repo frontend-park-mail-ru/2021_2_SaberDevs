@@ -353,11 +353,6 @@ body,
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
-  background: -webkit-gradient(linear, left top, left bottom, from(rgba(0, 0, 0, 0.7)), to(rgba(0, 0, 0, 0.7))), url("../../img/cards/mobile-phone-1875813_1920.jpg");
-  background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url("../../img/cards/mobile-phone-1875813_1920.jpg");
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-attachment: scroll;
   -webkit-box-flex: 1;
       -ms-flex-positive: 1;
           flex-grow: 1;
@@ -1373,6 +1368,26 @@ body,
   width: 100%;
 }
 
+.article-create__row-del-btn {
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -webkit-box-align: end;
+      -ms-flex-align: end;
+          align-items: flex-end;
+  -webkit-box-pack: end;
+      -ms-flex-pack: end;
+          justify-content: flex-end;
+  margin-bottom: 10px;
+}
+
+.article-create__del-btn {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
 .article-create__add-tag {
   margin-left: 10px;
   font-size: 48px;
@@ -1456,7 +1471,12 @@ body,
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
   margin-top: 25px;
+  width: 100%;
+  min-height: 450px;
   font-weight: 300;
 }
 
@@ -1475,12 +1495,15 @@ body,
 }
 
 .article-view__back-btn {
+  margin-left: 5px;
   font-size: 18px;
   cursor: pointer;
 }
 
 .article-view__back-btn:hover {
+  text-decoration: underline;
   color: #354580;
+  cursor: pointer;
 }
 
 .article-view__title {
@@ -1529,7 +1552,9 @@ body,
 }
 
 .article-view__tag:hover {
+  text-decoration: underline;
   color: #354580;
+  cursor: pointer;
 }
 
 .article-view__author-time {
@@ -1541,6 +1566,12 @@ body,
 .article-view__author {
   margin-right: 15px;
   font-size: 18px;
+}
+
+.article-view__author:hover {
+  text-decoration: underline;
+  color: #354580;
+  cursor: pointer;
 }
 
 .article-view__time {

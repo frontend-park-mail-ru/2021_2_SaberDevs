@@ -1,19 +1,20 @@
-.card(id=`${id}`)
+.card(id=`${id}` style=`background: -webkit-gradient(linear, left top, left bottom, from(rgba(0, 0, 0, 0.7)), to(rgba(0, 0, 0, 0.7))), url(${previewUrl});
+background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url(${previewUrl}); background-size: cover; background-repeat: no-repeat;`)
+
   .card__top
     .tags
       if Array.isArray(tags)
         each tag in tags.length ? tags : []
           .tags__tag.card__tag #{tag}
     .author-time
-      a.author-time__author-name(href=`/user/${authorName}`) #{authorName}
-      .author-time__time #{time}
+      .author-time__time #{datetime}
   .card__content
     a(href='#').preview__title #{title}
     .card__description #{text}
   .card__bottom
       .card__author
           img.card__author-photo(src=`${avatarUrl || 'static/img/users/user_icon_loading.svg'}`)
-          .card__author-username #{firstName} #{lastName} (#{login}) 
+          .author-time__author-name #{firstName} #{lastName} (#{login}) 
       .action-btns
           .icon.action-btns_m-right
               .icon__text #{likes}

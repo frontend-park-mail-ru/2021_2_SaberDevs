@@ -1,27 +1,31 @@
 .article-view
-    .article-view__content
-        .article-view__top
-            a(href='/').article-view__back-btn Назад
-        .article-view__author-time
-            .article-view__author #{authorName}
-            .article-view__time #{time}
-        .article-view__title #{title}
-        .article-view__info
-            .article-view__tags
-                if Array.isArray(tags)
-                    each tag in tags.length ? tags : []
-                        a(href='#').article-view__tag #{tag}
-            .action-btns
-              .icon.action-btns_m-right
-                  .icon__text #{likes}
-                  button.action-btns__likes-icon.icon__img
-              .icon.action-btns_m-right
-                  .icon__text #{comments}
-                  button.action-btns__comments-icon.icon__img
-              .icon
-                  button.action-btns__share-icon.icon__img
-    img(src=`${picture}`).article-view__main-picture
-    .article-view__content
-        .article-view__text #{text}
-        textarea.comments__input(type="text" name="comment" placeholder="Оставьте свой комментарий")
-        .comments !{commentsContent}
+  .article-view__content
+    .article-view__top
+      a(id='article-change-btn' style='display:none').article-view__back-btn Изменить
+      a(data-section='back').article-view__back-btn Назад
+    .article-view__author-time
+      if typeof author === "object"
+        .article-view__author #{author.login}
+      else
+        .article-view__author Ошибка
+      .article-view__time #{datetime}
+    .article-view__title #{title}
+    .article-view__info
+      .article-view__tags
+        if Array.isArray(tags)
+          each tag in tags.length ? tags : ['']
+            a.article-view__tag #{tag}
+        .action-btns
+          .icon.action-btns_m-right
+              .icon__text #{likes || ''}
+              .action-btns__likes-icon.icon__img
+          .icon.action-btns_m-right
+              .icon__text #{comments || ''}
+              .action-btns__comments-icon.icon__img
+          .icon
+              .action-btns__share-icon.icon__img
+  img(src=`${previewUrl}`).article-view__main-picture
+  .article-view__content
+    .article-view__text #{text}
+    textarea.comments__input(type="text" name="comment" placeholder="Оставьте свой комментарий")
+    .comments !{commentsContent}

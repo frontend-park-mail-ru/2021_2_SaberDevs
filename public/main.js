@@ -6,6 +6,7 @@ import ProfilePage from './pages/profilePage.js';
 import ProfileSettingsPage from './pages/profileSettingsPage.js';
 import LoadingPage from './pages/loadingScreen.js';
 import EditorPage from './pages/articleEditorPage.js';
+import ReaderPage from './pages/articleReaderPage.js';
 import CategoryPage from './pages/categoryPage.js';
 import SignupPage from './pages/signupPage.js';
 
@@ -24,7 +25,6 @@ import {cookieLogin} from './modules/ajaxRequests.js';
 // flux store
 import store from './flux/store.js';
 import editorActions from './flux/actions/editorActions.js';
-// import {profilePageActions} from './flux/actions.js';
 
 // ServiceWorker
 const SWJSFile = 'serviceWorker.js';
@@ -57,9 +57,9 @@ router
     .register('/', MainPage)
     .register('/profile', ProfilePage)
     .registerPattern('/user/<login>', ProfilePage)
+    .registerPattern('/article/<id>', ReaderPage)
     .register('/profile/settings', ProfileSettingsPage)
     .register('/editor', EditorPage)
-    // .register('/article', ArticlePage)
     .register('/categories', CategoryPage)
     .register('/login', SignupPage);
 
@@ -90,10 +90,6 @@ linksController
     .register(
         'article-create',
         () => {
-          // TODO: зачем?
-          // store.dispatch(
-          //     profilePageActions.setUserInfo(store.getState().authorization),
-          // );
           store.dispatch(editorActions.createArticle());
         },
     );

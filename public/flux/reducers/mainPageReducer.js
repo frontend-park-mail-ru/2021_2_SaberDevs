@@ -24,10 +24,10 @@ const endOfFeedMarkerID = 'end';
  *                                    отправку запросов на обновлении ленты,
  *                                    чтобы не спамить сервер
  * @property {number} lastScrollPos - Позиция скролла при покидании mainPage
- * @property {boolean} isEndFound  - Запрещает загрузку при обнаружении конца
+ * @property {boolean} isEndFound   - Запрещает загрузку при обнаружении конца
  *                                    ленты, чтобы не спамить сервер.
  *                                    Сбразывется через resetDoNotUploadTime мс
- * @property {Array.NewsCard} cards - Массив загруженных карточек для
+ * @property {Array.Card} cards     - Массив загруженных карточек для
  *                                    восстановления состояния при возвращении
  *                                    на MainPage
  */

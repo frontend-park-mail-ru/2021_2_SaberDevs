@@ -31,10 +31,12 @@ const appPages = [
 
 const appPagesPatterned = [
   /^\/user\/(\w+)$/,
+  /^\/article\/(\w+)$/,
 ];
 
 const subDomains = [
   '/user/',
+  '/article/',
 ];
 
 // ///////////////////////////////// //
@@ -82,7 +84,6 @@ const server = http.createServer((req, res) => {
     if (err) {
       // вот тут отдать страничку 404
       data = page404;
-      console.log(err);
     }
 
     console.log(
