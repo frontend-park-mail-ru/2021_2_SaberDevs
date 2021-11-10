@@ -17,17 +17,19 @@ export default class EditorPage extends BasePageMV {
     super(root);
     this.view = new EditorView(root);
     store.subscribe(authorizationTypes.LOGOUT, () => {
-      Modal.configurate({
-        title: 'Вы неавторизованы',
-        content: `Чтобы продолжить редактирование, выполните вход.
-        Текущее состояние сохранено.
-        Не перезагружайте страницу.`,
-        isEnteractive: true,
-        isCancelable: false,
-        onConfirm: () => redirect('/'),
-      });
-      Modal.open();
-    }),
+      if (this.isActive()) {
+        Modal.configurate({
+          title: 'Вы неавторизованы',
+          content: `Чтобы продолжить редактирование, выполните вход.
+          Текущее состояние сохранено.
+          Не перезагружайте страницу.`,
+          isEnteractive: true,
+          isCancelable: false,
+          onConfirm: () => redirect('/'),
+        });
+        Modal.open();
+      }
+    });
   }
 
   /**

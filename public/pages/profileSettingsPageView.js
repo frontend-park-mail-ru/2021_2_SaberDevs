@@ -32,7 +32,9 @@ export default class ProfileSettingsPageView extends BasePageView {
     };
 
     store.subscribe(authorizationTypes.LOGOUT, () => {
-      redirect('/');
+      if (this.isActive()) {
+        redirect('/');
+      }
     });
   }
 
@@ -63,7 +65,17 @@ export default class ProfileSettingsPageView extends BasePageView {
               ({status, response}) => {
                 if (status === Ajax.STATUS.ok) {
                   store.dispatch(authorizationActions.login(response.data));
+                  return;
                 }
+                // В случае ошибки
+                if (status / 100 === 5) {
+                  Modal.setTitle(`Сервис временно не доступен: ${status}`);
+                }
+                if (status / 100 === 4) {
+                  Modal.setTitle(/* пользовательская */`Ошибка ${status}`);
+                }
+                Modal.setContent(response.msg);
+                Modal.open(false);
               },
           ).catch((error) => console.warn(error));
     });
