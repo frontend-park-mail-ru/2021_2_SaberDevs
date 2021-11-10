@@ -9,7 +9,7 @@ import Ajax from '../../modules/ajax.js';
 import {redirect} from '../../utils.js';
 
 import Modal from '../modal/modal.js';
-import signupModal from '../modal/signupModal.js'
+import signupModal from '../modal/signupModal.js';
 
 /**
  * Компонент редактора статей
@@ -74,7 +74,6 @@ export default class Editor extends BaseComponent {
 
     // TODO: проверить, рейзится ли евент, если textValue меняется программой
     this.root.querySelector('textarea').addEventListener('change', (e) => {
-      // Эти строки добавлены в интерфейсе изменения статьи
       const title = this.root.querySelector('input[name="title"]').value;
       const text = this.root.querySelector('textarea').value;
       store.dispatch(editorActions.saveArticle(
@@ -106,7 +105,7 @@ export default class Editor extends BaseComponent {
                   Modal.setTitle('Успех!');
                   Modal.setContent('Статья была удалена');
                   Modal.open(false);
-                  redirect('/profile');
+                  setTimeout(() => redirect('/profile'), Modal.animationTime);
                   return;
                 }
                 if (status === Ajax.STATUS.invalidSession) {
@@ -124,6 +123,7 @@ export default class Editor extends BaseComponent {
                 Modal.open(false);
               });
             }});
+          Modal.open();
         },
     );
 
@@ -132,8 +132,11 @@ export default class Editor extends BaseComponent {
 
       const text = this.root.querySelector('textarea')?.value;
       const title = this.root.querySelector('input[name="title"]')?.value;
-      if (!text || !title) {
+      if (!text || !title || text.trim() === '' || title.trim() === '') {
         console.warn('{Editor} пустые статьи - это плохо:', {text}, {title});
+        Modal.setTitle('Ошибка');
+        Modal.setContent('Заголовок и текст статьи не должны быть пустыми');
+        Modal.open(false);
       }
 
       const state = store.getState().editor;
@@ -157,15 +160,14 @@ export default class Editor extends BaseComponent {
         if (status === Ajax.STATUS.ok) {
           store.dispatch(editorActions.publishArticle(response.id));
           Modal.setTitle('Успех!');
-          Modal.setContent('Статья успешно создана');
+          Modal.setContent(`Статья успешно ${isUpdate?'изменена' : 'создана'}`);
           Modal.open(false);
-          redirect('/profile');
+          setTimeout(
+              () => redirect(`/article/${response.id}`),
+              Modal.animationTime,
+          );
           return;
         }
-        // TODO: если кука сгорела, сервер вернул unauthorized
-        // редирект на авторизацию
-        // Вывести предупреждение о том, что стейт сохранен,
-        // и чтобы не перезапускали страницу
         if (status === Ajax.STATUS.invalidSession) {
           signupModal(false);
           return;

@@ -44,6 +44,7 @@ export default function editorReducer(state = InitialEditorState, action) {
       const stateCopyDel = {};
       Object.assign(stateCopyDel, state);
       delete stateCopyDel[action.payload.id];
+      stateCopyDel.currentId = 0;
       return stateCopyDel;
 
     case editorTypes.CREATE_ARTICLE:
