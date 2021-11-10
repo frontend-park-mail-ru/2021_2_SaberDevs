@@ -26,7 +26,7 @@ export default class Sidebar extends BaseComponent {
     //
     // /////////////////////////////////
 
-    // Обновление вида хедера до создания подписки
+    // Обновление вида сайдбара до создания подписки
     // на случай, если вход был совершен до инициализации
     if (store.getState().authorization.login !== '') {
       store.dispatch(
@@ -71,8 +71,8 @@ export default class Sidebar extends BaseComponent {
       });
     } else {
       topBlockContent = userPreviewComponent({
-        name: store.getState().authorization.firstName,
-        img: store.getState().authorization.avatar,
+        login: store.getState().authorization.login,
+        avatarUrl: store.getState().authorization.avatarUrl,
       });
     }
     this.root = this.view.render(topBlockContent);
@@ -85,11 +85,7 @@ export default class Sidebar extends BaseComponent {
    */
   setSidebarUserPreview() {
     const state = store.getState().authorization;
-    this.view.setTopBlockContent(
-        userPreviewComponent({
-          name: state.firstName,
-          img: state.avatar,
-        }));
+    this.view.setTopBlockContent(userPreviewComponent(state));
   }
 
   /**

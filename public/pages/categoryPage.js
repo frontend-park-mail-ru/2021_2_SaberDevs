@@ -8,6 +8,7 @@ import {categoryPageTypes} from '../flux/types.js';
 import Modal from '../components/modal/modal.js';
 
 import Ajax from '../modules/ajax.js';
+import {getUserWindowHeight} from '../utils.js';
 
 // ///////////////////////////////// //
 //
@@ -20,18 +21,18 @@ import Ajax from '../modules/ajax.js';
  * Проверяет, достигнут ли конец ленты
  * @param {event} event
  */
-// function newsFeedEndReachEventAction(event) {
-//   const state = store.getState().categoryPage;
-//   const trackedCard = document.getElementById(state.trackedCardId);
-//   // работаем, только если отслеживаемый элемент
-//   // находися в области видимости пользователя
-//   if (state.isLoading ||
-//     trackedCard.getBoundingClientRect().y>Utils.getUserWindowHeight()) {
-//     return;
-//   }
-//   console.log('scroll trigger');
-//   store.dispatch(uploadNextCards);
-// }
+function newsFeedEndReachEventAction({currentTarget}) {
+  const state = store.getState().categoryPage;
+  const trackedElement = currentTarget.querySelector('#feed__loading');
+  // работаем, только если отслеживаемый элемент
+  // находися в области видимости пользователя
+  if (state.isLoading || state.isEndFound ||
+    trackedElement.getBoundingClientRect().y > getUserWindowHeight()) {
+    return;
+  }
+  console.log('[Category Page] scroll trigger');
+  store.dispatch(uploadCategoryCards);
+}
 
 /**
  * Получить feedChunkSize записей (настройка на стороне сервера)
@@ -39,9 +40,10 @@ import Ajax from '../modules/ajax.js';
 async function uploadCategoryCards() {
   const state = store.getState().categoryPage;
 
-  if (state.doNotUpload || state.isLoading) {
+  if (state.isEndFound || state.isLoading) {
     if (ajaxDebug) {
-      console.log('can\'t load news as doNotUpload state flag is true');
+      console.log('[Category Page] Can\'t load articles on ' +
+        'as isEndFound state flag is true');
     }
     return;
   }
@@ -52,7 +54,7 @@ async function uploadCategoryCards() {
    */
   function onLoad(cards) {
     if (ajaxDebug) {
-      console.log('more news loaded!');
+      console.log('[Category Page] more news loaded!');
     }
 
     store.dispatch(
@@ -66,7 +68,8 @@ async function uploadCategoryCards() {
   store.dispatch(categoryPageActions.setCategoryArticlesLoadingFlag());
 
   await Ajax.get({
-    url: `/articles/tags?tag=${state.choosenTag}`,
+    url: `/articles/tags?idLastLoaded=${state.idLastLoaded}` +
+        `&tag=${state.choosenTag}`,
   })
       .then(({status, response}) => {
         if (status === Ajax.STATUS.ok) {
@@ -84,7 +87,6 @@ async function uploadCategoryCards() {
         Modal.open(false);
       })
       .catch((err) => console.warn(err.message));
-  // TODO: в других лентах unsetLoadingFlag
   store.dispatch(categoryPageActions.unsetCategoryArticlesLoadingFlag());
 }
 
@@ -99,7 +101,10 @@ export default class CategoryPage extends BasePageMV {
     super(root);
     this.view = new CategoryPageView(root);
 
+    // Communication
     store.subscribe(categoryPageTypes.SELECT_CATEGORY_ARTICLES_TAG, () => {
+      store.dispatch(categoryPageActions.clearCategoryArticles());
+      store.dispatch(categoryPageActions.allowCategoryArticlesLoading());
       uploadCategoryCards();
     });
   }
@@ -116,16 +121,22 @@ export default class CategoryPage extends BasePageMV {
         ),
     );
 
-    // const scrollable = document.querySelector('.content');
-    // if (!scrollable) {
-    //   console.error('нет дивака .content');
-    // } else {
-    //   scrollable.addEventListener(
-    //       'scroll',
-    //       newsFeedEndReachEventAction,
-    //       false,
-    //   );
-    // }
+    // Чтобы спрятать анимацию загрузки, пока теги не выбраны
+    // TODO: проверка массива
+    if (store.getState().categoryPage.choosenTag === '') {
+      store.dispatch(categoryPageActions.forbidCategoryArticlesLoading());
+    }
+
+
+    const scrollable = document.querySelector('.content');
+    if (!scrollable) {
+      console.warn('[Category Page] нет дивака .content');
+    } else {
+      scrollable.addEventListener(
+          'scroll',
+          newsFeedEndReachEventAction,
+      );
+    }
   }
 
   /**
@@ -133,15 +144,14 @@ export default class CategoryPage extends BasePageMV {
    */
   hide() {
     super.hide();
-  //   const scrollable = document.querySelector('.content');
-  //   if (!scrollable) {
-  //     console.error('нет дивака .content');
-  //   } else {
-  //     scrollable.removeEventListener(
-  //         'scroll',
-  //         newsFeedEndReachEventAction,
-  //         false,
-  //     );
-  //   }
+    const scrollable = document.querySelector('.content');
+    if (!scrollable) {
+      console.warn('[Category Page] нет дивака .content');
+    } else {
+      scrollable.removeEventListener(
+          'scroll',
+          newsFeedEndReachEventAction,
+      );
+    }
   }
 }

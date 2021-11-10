@@ -2,8 +2,8 @@ import BasePageView from './basePageView.js';
 import createPage from './_createPage.js';
 
 import Feed from '../components/feed/feed.js';
-import CategoryChooseBar from
-  '../components/feed/previews/catergoryChooseBar.js';
+import TagChoiceBar from
+  '../components/tagChoiceBar/tagChoiceBar.js';
 
 import {categoryPageTypes} from '../flux/types.js';
 import {categoryPageActions} from '../flux/actions.js';
@@ -27,13 +27,18 @@ export default class CategoryPageView extends BasePageView {
     super(root);
 
     this.pageComponents = {
-      categoryChoose: new CategoryChooseBar(),
+      categoryChoose: new TagChoiceBar(),
       feed: new Feed(
           'categoryPage',
           categoryPageTypes.SAVE_NEW_CATEGORY_ARTICLES,
+          categoryPageTypes.CLEAR_CATEGORY_ARTICLES,
+          categoryPageTypes.FORBID_CATEGORY_ARTICLES_UPLOADING,
+          categoryPageTypes.ALLOW_CATEGORY_ARTICLES_UPLOADING,
           categoryPageActions.forbidCategoryArticlesLoading,
-          categoryPageActions.allowCategoryArticlesLoading,
-          false,
+          () => {
+            console.log('{CategoryPage feed} isEndFound is not been reset');
+            return {type: '__EMPTY__'};
+          },
       ),
     };
   }

@@ -8,17 +8,18 @@
         .article-view__title #{title}
         .article-view__info
             .article-view__tags
-                each tag in tags.length ? tags : ['']
-                    a(href='#').article-view__tag #{tag}
+                if Array.isArray(tags)
+                    each tag in tags.length ? tags : []
+                        a(href='#').article-view__tag #{tag}
             .action-btns
               .icon.action-btns_m-right
                   .icon__text #{likes}
-                  .action-btns__likes-icon.icon__img
+                  button.action-btns__likes-icon.icon__img
               .icon.action-btns_m-right
                   .icon__text #{comments}
-                  .action-btns__comments-icon.icon__img
+                  button.action-btns__comments-icon.icon__img
               .icon
-                  .action-btns__share-icon.icon__img
+                  button.action-btns__share-icon.icon__img
     img(src=`${picture}`).article-view__main-picture
     .article-view__content
         .article-view__text #{text}

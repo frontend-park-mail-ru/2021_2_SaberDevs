@@ -392,6 +392,10 @@ body,
   text-align: center;
 }
 
+.card__title:hover {
+  text-decoration: underline;
+}
+
 .card__description {
   font-weight: 300;
   font-size: 18px;
@@ -418,6 +422,27 @@ body,
       -ms-flex-pack: justify;
           justify-content: space-between;
   width: 100%;
+}
+
+.card__author {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+}
+
+.card__author-photo {
+  width: 50px;
+  height: 50px;
+}
+
+.card__author-username {
+  font-size: 14px;
 }
 
 .preview {
@@ -459,6 +484,10 @@ body,
   margin-bottom: 30px;
   font-weight: 400;
   font-size: 48px;
+}
+
+.preview__title:hover {
+  text-decoration: underline;
 }
 
 .preview__content {
@@ -720,12 +749,12 @@ body,
 }
 
 .action-btns__trash-icon {
-  background: url("../../img/icons/share.svg");
+  background: url("../../img/icons/trash.svg");
   background-size: cover;
 }
 
 .action-btns__trash-icon:hover {
-  background-image: url("../../img/icons/share_hover.svg");
+  background-image: url("../../img/icons/trash_hover.svg");
 }
 
 .icon {
@@ -1111,9 +1140,14 @@ body,
 
 .tags__tag {
   margin-left: 5px;
+  border: none;
   border-radius: 5px;
   padding: 5px;
   background: #313030;
+}
+
+.tags__tag_clicked {
+  border: 2px solid #dee4ea;
 }
 
 .loading-page {
@@ -1342,6 +1376,8 @@ body,
 .article-create__add-tag {
   margin-left: 10px;
   font-size: 48px;
+  color: #dee4ea;
+  background-color: transparent;
   cursor: pointer;
 }
 

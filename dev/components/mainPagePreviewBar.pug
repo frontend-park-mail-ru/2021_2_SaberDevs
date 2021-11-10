@@ -5,16 +5,19 @@
             .author-time__time #{time}
     .preview__content
         .tags
-            each tag in tags.length ? tags : ['']
-                .tags__tag.preview__tag #{tag}
-        .preview__title #{title}
+            if Array.isArray(tags)
+                each tag in tags.length ? tags : []
+                    .tags__tag.preview__tag #{tag}     
+        a(href='#').preview__title #{title}
         .preview__description #{text}
     .card__bottom
-        .btn-more Read more ->
+        .card__author
+            img.card__author-photo(src=`${avatarUrl || 'static/img/users/user_icon_loading.svg'}`)
+            .card__author-username #{firstName} #{lastName} (#{login}) 
         .action-btns
             .icon.action-btns_m-right
                 .icon__text #{likes}
-                .action-btns__likes-icon.icon__img
+                button.action-btns__likes-icon.icon__img
             .icon
                 .icon__text #{comments}
-                .action-btns__comments-icon.icon__img
+                button.action-btns__comments-icon.icon__img

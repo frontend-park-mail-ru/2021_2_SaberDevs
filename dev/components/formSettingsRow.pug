@@ -1,5 +1,19 @@
 .settings__row
-    .settings__label #{label}
-    .settings__field
-        //- TODO: pattern=`${pattern}`
-        input.settings__input(type=`${type}` name=`${name}` placeholder=`${placeholder}`)
+  .settings__label #{label}
+  .settings__field
+    if placeholder != undefined && pattern != undefined && required
+      input.settings__input(type=`${type}` name=`${name}` placeholder=`${placeholder}` pattern=`${pattern}` required=`${required}`)
+    if placeholder != undefined && pattern != undefined && !required
+      input.settings__input(type=`${type}` name=`${name}` placeholder=`${placeholder}` pattern=`${pattern}` required=false)
+    if placeholder != undefined && pattern == undefined && required
+      input.settings__input(type=`${type}` name=`${name}` placeholder=`${placeholder}` required=`${required}`)
+    if placeholder != undefined && pattern == undefined && !required
+      input.settings__input(type=`${type}` name=`${name}` required=false)
+    if placeholder == undefined && pattern != undefined && required
+      input.settings__input(type=`${type}` name=`${name}` pattern=`${pattern}` required=`${required}`)
+    if placeholder == undefined && pattern != undefined && !required
+      input.settings__input(type=`${type}` name=`${name}` pattern=`${pattern}` required=false)
+    if placeholder == undefined && pattern == undefined && required
+      input.settings__input(type=`${type}` name=`${name}` required=`${required}`)
+    if placeholder == undefined && pattern == undefined && !required
+      input.settings__input(type=`${type}` name=`${name}` required=false)

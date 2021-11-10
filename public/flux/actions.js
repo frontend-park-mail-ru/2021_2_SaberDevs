@@ -4,7 +4,6 @@ import {authorizationTypes,
   signupFormTypes,
   modalTypes,
   apiTypes,
-  articleEditTypes,
   profilePageTypes,
   categoryPageTypes,
 } from './types.js';
@@ -188,6 +187,15 @@ function allowCardsLoading() {
 }
 
 /**
+ * @return {Action}
+ */
+function clearCards() {
+  return {
+    type: mainPageTypes.CLEAR_CARDS,
+  };
+}
+
+/**
  * @param {boolean} isAuthenticated
  * @param {string} login
  * @return {Action}
@@ -214,6 +222,7 @@ function askNewCards() {
 export const mainPageActions = {
   askNewCards,
   saveNewCards,
+  clearCards,
   setLoadingFlag,
   unsetLoadingFlag,
   forbidCardsLoading,
@@ -227,13 +236,22 @@ export const mainPageActions = {
 
 /**
  * @param {string} idLastLoaded
- * @param {Array<Object>} articles
+ * @param {Array<Card>} cards
  * @return {Action}
  */
-function saveNewArticles(idLastLoaded, articles) {
+function saveNewArticles(idLastLoaded, cards) {
   return {
     type: profilePageTypes.SAVE_NEW_USER_ARTICLES,
-    payload: {idLastLoaded, articles},
+    payload: {idLastLoaded, cards},
+  };
+}
+
+/**
+ * @return {Action}
+ */
+function clearArticles() {
+  return {
+    type: profilePageTypes.CLEAR_USER_ARTICLES,
   };
 }
 
@@ -282,9 +300,51 @@ function askNewArticles() {
   };
 }
 
+/**
+ * @param {Object} user
+ * @property {string} login
+ * @property {string?} firstName
+ * @property {string?} lastName
+ * @property {string?} avatarUrl
+ * @property {number?} score
+ * @return {Action}
+ */
+function setUserLoading(user) {
+  return {
+    type: profilePageTypes.SET_USER_LOADING,
+    payload: {
+      firstName: 'загрузка',
+      lastName: 'загрузка',
+      avatarUrl: '',
+      score: 0,
+      ...user,
+    },
+  };
+}
+
+/**
+ * @param {Object} user
+ * @property {string} login
+ * @property {string?} firstName
+ * @property {string?} lastName
+ * @property {email?} email
+ * @property {string?} avatarUrl
+ * @property {number?} score
+ * @return {Action}
+ */
+function setUserInfo(user) {
+  return {
+    type: profilePageTypes.SET_USER_INFO,
+    payload: user,
+  };
+}
+
 export const profilePageActions = {
+  setUserLoading,
+  setUserInfo,
   askNewArticles,
   saveNewArticles,
+  clearArticles,
   setArticlesLoadingFlag,
   unsetArticlesLoadingFlag,
   forbidArticlesLoading,
@@ -304,6 +364,15 @@ function saveNewCategoryArticles(idLastLoaded, cards) {
   return {
     type: categoryPageTypes.SAVE_NEW_CATEGORY_ARTICLES,
     payload: {idLastLoaded, cards},
+  };
+}
+
+/**
+ * @return {Action}
+ */
+function clearCategoryArticles() {
+  return {
+    type: categoryPageTypes.CLEAR_CATEGORY_ARTICLES,
   };
 }
 
@@ -379,6 +448,7 @@ export const categoryPageActions = {
   allowCategoryArticlesLoading,
   askNewCategoryArticles,
   saveNewCategoryArticles,
+  clearCategoryArticles,
   selectCategoryTag,
   clearSelectedCategoryTags,
 };

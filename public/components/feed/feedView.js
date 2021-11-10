@@ -2,6 +2,11 @@ import BaseComponentView from '../_basic/baseComponentView.js';
 import cardComponent from './card.pug.js';
 import feedComponent from './feed.pug.js';
 
+import {redirect} from '../../utils.js';
+
+import store from '../../flux/store.js';
+import {profilePageActions} from '../../flux/actions.js';
+
 /**
  * Описание сущности карточки в новостной ленте
  * @typedef {Object} Card
@@ -18,6 +23,49 @@ import feedComponent from './feed.pug.js';
  * @property {Array.string} tags   - отмеченные автором темы сообщений
  * @return {HTMLElement}
  */
+
+/**
+ * Добавить карточки в root-HTMLElement, навесить нужные обработчики
+ * @param {HTMLElement} root - элемент, куда будут вставлены карточки
+ * @param {Array<Card>} cards - Массив карточек
+ */
+function composeCards(root, cards) {
+  // TODO: вынести в MV, карточки получить квериселектороллом
+  cards.forEach((element) => {
+    const cardWrapper = document.createElement('div');
+    cardWrapper.innerHTML = cardComponent(element);
+    const cardDiv = cardWrapper.firstChild;
+
+    cardDiv.addEventListener('click', (e) => {
+      e.preventDefault();
+      const currentTarget = e.currentTarget;
+      console.warn(currentTarget.id);
+    });
+
+    cardDiv.querySelector('.author-time__author-name').addEventListener(
+        'click',
+        (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          const login = e.currentTarget.textContent;
+          console.warn('клик по автору', login);
+          store.dispatch(profilePageActions.setUserLoading({login}));
+          redirect('/user/' + login);
+        },
+    );
+
+    cardDiv.querySelectorAll('.tags__tag').forEach((t) => t.addEventListener(
+        'click',
+        (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          console.warn('TODO: клик по тегу', e.currentTarget.textContent);
+        },
+    ));
+
+    root.appendChild(cardDiv);
+  });
+}
 
 /**
  * @class FeedView
@@ -39,22 +87,22 @@ export default class FeedView extends BaseComponentView {
     * @return {HTMLElement}
     */
   render(preview, cards) {
-    let content = '';
-    cards.forEach((element) => {
-      content += cardComponent(element);
-    });
-
     const wrapper = document.createElement('div');
     wrapper.innerHTML = feedComponent({
       preview,
-      cards: content,
+      cards: '',
     });
-    this.root = wrapper.firstChild;
-    return wrapper.firstChild;
+    const feed = wrapper.firstChild;
+    composeCards(feed.querySelector(`.feed__cards`), cards);
+
+    this.root = feed;
+    return feed;
   }
 
   /**
     * @param {Array.Card} cards
+    * Восстанавливает видимость индикатора загрузки,
+    * добавляет карточки вниз ленты
     */
   addCards(cards) {
     const cardsDiv = this.root.querySelector(`.feed__cards`);
@@ -62,32 +110,29 @@ export default class FeedView extends BaseComponentView {
       console.warn('cannot append cards till Feed is not rendered');
       return;
     }
-    cards.forEach((element) => {
-      cardsDiv.insertAdjacentHTML(
-          'beforeend',
-          cardComponent(element),
-      );
-    });
+    composeCards(cardsDiv, cards);
+    this.showLoadingAnimation();
   }
 
   /**
-    * @param {Array.Card} cards
+    * Стирает содержимое ленты
     */
-  refreshCards(cards) {
+  clear() {
     const cardsDiv = this.root.querySelector(`.feed__cards`);
     cardsDiv.innerHTML = '';
-    cards.forEach((element) => {
-      cardsDiv.insertAdjacentHTML(
-          'beforeend',
-          cardComponent(element),
-      );
-    });
   }
 
   /**
    * hide loading component
    */
   hideLoadingAnimation() {
-    this.root.querySelector('#feed__loading').style.visibility = 'hidden';
+    this.root.querySelector('#feed__loading').style.display = 'none';
+  }
+
+  /**
+   * show loading component
+   */
+  showLoadingAnimation() {
+    this.root.querySelector('#feed__loading').style.display = 'block';
   }
 }

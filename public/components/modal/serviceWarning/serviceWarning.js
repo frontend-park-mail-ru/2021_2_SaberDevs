@@ -21,8 +21,6 @@ export default class ServiceWarning extends BaseComponent {
   render() {
     super.render();
     this.root = this.view.render();
-    console.warn(this.root);
-
     return this.root;
   }
 

@@ -5,6 +5,23 @@
 // ///////////////////////////////// //
 
 /**
+ * Вызов Router.open(to) через имитацию клика
+ * Обязательно наличие элемента #root в DOM
+ * @param {string} to
+ */
+export function redirect(to) {
+  const clickSimulator = document.createElement('a');
+  const root = document.querySelector('#root');
+
+  clickSimulator.id = 'clickSimulator';
+  clickSimulator.href = to;
+
+  root.appendChild(clickSimulator);
+  clickSimulator.click();
+  root.removeChild(clickSimulator);
+}
+
+/**
  * Возврат содежимого в виде строки
  * @param {HTMLElement} el
  * @return {string}
@@ -133,13 +150,16 @@ export function getCurrentPageYPos() {
 }
 
 const Utils = {
-  createInput: createInput,
-  createLabel: createLabel,
-  createInputRow: createInputRow,
-  getPageHeight: getPageHeight,
-  getUserWindowWidth: getUserWindowWidth,
-  getUserWindowHeight: getUserWindowHeight,
-  getCurrentPageYPos: getCurrentPageYPos,
+  createInput,
+  createLabel,
+  createInputRow,
+  getPageHeight,
+  getUserWindowWidth,
+  getUserWindowHeight,
+  getCurrentPageYPos,
+  redirect,
+  htmlToString,
+  genRanHex,
 };
 
 export default Utils;

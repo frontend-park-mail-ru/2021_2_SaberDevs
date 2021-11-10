@@ -34,6 +34,8 @@ $article-create-trash-height: 40px;
   &__add-tag {
     margin-left: $article-create-tag-margin-left;
     font-size: $article-create-add-tag-font-size;
+    color: $color-elements;
+    background-color: transparent;
     cursor: pointer;
   }
 

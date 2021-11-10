@@ -41,7 +41,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/UserData'
+                $ref: '#/components/schemas/UserAuth'
         400:
           description: Логин или пароль неверные
         405:
@@ -72,13 +72,13 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/UserData'
+                $ref: '#/components/schemas/UserAuth'
         400:
           description: Логин или пароль неверные или Логин уже занят
         405:
           description: Невалидные данные
       x-codegen-request-body-name: body
-  /api/v1/user/{User}:
+  /api/v1/user:
     get:
       tags:
       - user
@@ -86,8 +86,8 @@ paths:
       description: Returns a common user data
       operationId: ""
       parameters:
-      - name: User
-        in: path
+      - name: login
+        in: query
         description: Login of user to return
         required: true
         schema:
@@ -98,26 +98,11 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/User'
+                $ref: '#/components/schemas/UserProfile'
         400:
           description: Невалидный логин
         404:
           description: Пользователь не найдет
-  /api/v1/user/profile:
-    get:
-      tags:
-      - user
-      summary: Просмотр профиля текущего авторизованного пользователя
-      description: This can only be done by the logged in user.
-      responses:
-        200:
-          description: ок
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/UserProfile'
-        401:
-          description: Не авторизован
   /api/v1/user/profile/update:
     post:
       tags:
@@ -240,6 +225,29 @@ paths:
                   $ref: '#/components/schemas/ArticlePreview'
         404:
           description: Not found
+  /api/v1/articles/author:
+    get:
+      tags:
+      - article
+      summary: Finds news by author
+      parameters:
+      - name: login
+        in: query
+        description: author login to filter by
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description:  ОК
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ArticlePreview'
+        404:
+          description: Not found
   /api/v1/articles/create:
     post:
       tags:
@@ -301,7 +309,8 @@ paths:
           
 components:
   schemas:
-    User:
+    UserProfile:
+      description: Данные профиля другого пользователя
       type: object
       properties:
         login:
@@ -309,6 +318,8 @@ components:
         firstName:
           type: string
         lastName:
+          type: string
+        avatarUrl:
           type: string
         score:
           type: integer
@@ -334,7 +345,6 @@ components:
           type: string
         lastName:
           type: string
-        
     UserLogIn:
       description: Отправить для авторизации
       type: object
@@ -343,28 +353,12 @@ components:
           type: string
         password:
           type: string
-    UserProfile:
-      description: Данные профиля другого пользователя
-      type: object
-      properties:
-        login:
-          type: string
-        firstName:
-          type: string
-        lastName:
-          type: string
-        score:
-          type: integer
-          description: Popularity rating
-          format: int64
-        articles:
-          type: array
-          items:
-            $ref: '#/components/schemas/ArticlePreview'
-    UserData:
+    UserAuth:
       type: object
       description: Данные текущего авторизованного пользователя
       properties:
+        avatarUrl:
+          type: string
         email:
           type: string
         login:
@@ -377,10 +371,6 @@ components:
           type: integer
           description: Popularity rating
           format: int64
-        articles:
-          type: array
-          items:
-            $ref: '#/components/schemas/ArticlePreview'
             
     Tag:
       type: object
@@ -393,6 +383,9 @@ components:
     Article:
       type: object
       properties:
+        datetime:
+          type: string
+          description: дата и время публикации в виде строки hh::mm dd::mm::yyyy
         id:
           type: string
         title:
@@ -400,9 +393,8 @@ components:
         text:
           type: string
           description: HTML-верстка содержания
-        authorLogin:
-          type: string
-          description: по логину можно взять аватар, ссылки и т.п.
+        author:
+          $ref: '#/components/schemas/UserProfile'
         comments:
           type: integer
           description: Number of comments
@@ -427,8 +419,12 @@ components:
           type: string
         text:
           type: string
-        authorLogin:
+          description: текст начала содержания
+        author:
+          $ref: '#/components/schemas/UserProfile'
+        datetime:
           type: string
+          description: дата и время публикации в виде строки hh::mm dd::mm::yyyy
         comments:
           type: integer
           description: Number of comments

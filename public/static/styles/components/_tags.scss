@@ -9,8 +9,13 @@ $tag-margin-left: 5px;
 
   &__tag {
     margin-left: $tag-margin-left;
+    border: none;
     border-radius: $border-radius;
     padding: $tag-padding;
     background: $color-sidebar;
+
+    &_clicked {
+      border: 2px solid $color-elements;
+    }
   }
 }

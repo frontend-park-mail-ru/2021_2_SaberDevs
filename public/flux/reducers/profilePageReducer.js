@@ -1,17 +1,14 @@
 import {profilePageTypes} from '../types.js';
 
+const endOfFeedMarkerID = 'end';
+
 /**
- * Объект состояния на главной странице
+ * Объект состояния для ленты
  * @typedef {Object} MainCardState
- * @property {string} trackedCardId - ID карточки, которая при попадании
- *                                    в область видимости пользователя
- *                                    вызовет подгрузку новостей
- * @property {string} idLastLoaded  - ID последней загруженной карточки
- *                                    подборка новостей
  * @property {boolean} isLoading    - Идет ли загрузка сейчас. true запрещает
  *                                    отправку запросов на обновлении ленты,
  *                                    чтобы не спамить сервер
- * @property {boolean} doNotUpload  - Запрещает загрузку при обнаружении конца
+ * @property {boolean} isEndFound  - Запрещает загрузку при обнаружении конца
  *                                    ленты, чтобы не спамить сервер.
  *                                    Сбразывется через resetDoNotUploadTime мс
  * @property {Array.NewsCard} cards - Массив загруженных карточек для
@@ -19,12 +16,13 @@ import {profilePageTypes} from '../types.js';
  *                                    на MainPage
  */
 const InitialProfilePageState = {
-  user: {},
-  trackedCardId: 'feed-loading', // отслеживаемая запись в ленте для подгрузки
+  user: {
+    login: '',
+  },
   isLoading: false,              // отправлен ли запрос на сервер
   idLastLoaded: '',              // запоминаем последнюю загруженную запись
-  articles: [],                     // массив загруженных новостей
-  doNotUpload: false,
+  cards: [],                     // массив загруженных новостей
+  isEndFound: false,
 };
 
 /**
@@ -45,19 +43,58 @@ export default function profilePageReducer(
     case profilePageTypes.FORBID_USER_ARTICLES_UPLOADING:
       return {
         ...state,
-        doNotUpload: true,
+        isEndFound: true,
       };
     case profilePageTypes.ALLOW_USER_ARTICLES_UPLOADING:
       return {
         ...state,
-        doNotUpload: false,
+        isEndFound: false,
       };
     case profilePageTypes.SAVE_NEW_USER_ARTICLES:
+      const cards = action.payload.cards;
+      if (cards.length === 0) {
+        return {
+          ...state,
+          isLoading: false,
+        };
+      }
+      // запрещаем загрузку карточек, чтобы не спамить сервер
+      const isEndFound = cards[cards.length - 1].id === endOfFeedMarkerID;
+      if (isEndFound) {
+        // Удаляем последнюю запись с end'ом
+        cards.splice(cards.length - 1, 1);
+      }
       return {
         ...state,
         isLoading: false,
-        idLastLoaded: action.payload.idLastLoaded,
-        articles: state.articles.concat(action.payload.articles),
+        idLastLoaded: cards[cards.length - 1]?.id || state.idLastLoaded,
+        cards: state.cards.concat(cards),
+        isEndFound,
+      };
+    case profilePageTypes.CLEAR_USER_ARTICLES:
+      return {
+        ...state,
+        cards: [],
+      };
+    case profilePageTypes.SET_USER_INFO: // смена пользователя
+      return {
+        ...state,
+        user: action.payload,
+        // Сброс загруженных карточек
+        // TODO: сделать кеширование для кажлого юзера
+        isLoading: false,
+        idLastLoaded: '',
+        cards: [],
+        isEndFound: false,
+      };
+    case profilePageTypes.SET_USER_LOADING: // смена пользователя
+      return {
+        ...state,
+        user: action.payload,
+        isLoading: false,
+        idLastLoaded: '',
+        cards: [],
+        isEndFound: false,
       };
   }
   return state;

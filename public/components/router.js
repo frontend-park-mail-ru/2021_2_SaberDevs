@@ -1,3 +1,6 @@
+import store from '../flux/store.js';
+import {routerTypes} from '../flux/types.js';
+
 /**
  * @class Router
  * @module Router
@@ -8,6 +11,7 @@ export default class Router {
    */
   constructor(root) {
     this.routes = {};
+    this.routesPatterned = [];
     this.root = root;
   }
 
@@ -27,13 +31,42 @@ export default class Router {
   }
 
   /**
+   * Для url параметров .../path/<param>
    * @param {string} path
+   * текст url внутри знаков <> вида <param> не будет проверяться
+   * на точное равенство
+   * @param {BasePageMV} PageClass
+   * @return {Router}
    */
-  open(path) {
+  registerPattern(path, PageClass) {
+    path = path.slice(0, path.indexOf('<'));
+    this.routesPatterned.push(path);
+    this.routes[path] = {
+      PageClass,
+      page: null,
+      root: null,
+    };
+
+    return this;
+  }
+
+  /**
+   * @param {string} link
+   */
+  open(link) {
+    let path = link;
+    // Проверяем, является ли путь шаблонным
+    this.routesPatterned.forEach((pattern) => {
+      if (path.startsWith(pattern)) {
+        console.log(`[ROUTER] ${path} matched pattern ${pattern}`);
+        path = pattern;
+      }
+    });
+
     const route = this.routes[path];
 
     if (!route) {
-      console.log('[ROUTER] путь', path, 'не зарегистрирован');
+      console.warn('[ROUTER] путь', path, 'не зарегистрирован');
       this.open('/');
       return;
     }
@@ -53,21 +86,21 @@ export default class Router {
 
     const redirectRoute = page.redirect(window.location.pathname);
     if (redirectRoute !== '') {
-      console.log('[ROUTER]', page.constructor.name + ' | redirectRoute: ' +
+      console.warn('[ROUTER]', page.constructor.name + ' | redirectRoute: ' +
       redirectRoute);
       this.open(redirectRoute);
       this.routes[path] = {PageClass, page, root};
       return;
     }
-    if (window.location.pathname !== path) {
+    if (window.location.pathname !== link) {
       window.history.pushState(
           null,
           '',
-          path,
+          link,
       );
     }
 
-    console.warn('check !page.isActive():', !page.isActive());
+    console.log('[ROUTER] !page.isActive():', !page.isActive());
     if (!page.isActive()) {
       Object.values(this.routes).forEach(({page}) => {
         if (page && page.isActive()) {
@@ -85,6 +118,10 @@ export default class Router {
    * Запуск ротуера. Отображение первого элемента, указанного в register()
    */
   start() {
+    store.subscribe(routerTypes.REDIRECT, (to) => {
+      this.open(to);
+    });
+
     this.root.addEventListener('click', (event) => {
       const target = event.target;
 

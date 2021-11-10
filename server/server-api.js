@@ -28,11 +28,15 @@ const APIUrls = [
   '/user/login',
   '/user/signup',
   '/articles/feed',
+  '/articles/tags',
+  '/articles/author',
   '/user/logout',
+  '/',
 ];
 const feedChunkSize = 5;  // размер подгружаемой части ленты
 const endOfFeedMarkerID = 'end';
 const cookieTime = 600000; // in ms
+const DB_ANSWER_DELAY = 1000;
 
 // ///////////////////////////////// //
 //
@@ -88,7 +92,7 @@ const testData = [
   {
     id: '1',
     previewUrl: 'static/img/computer.png',
-    tags: ['IT-News', 'Study'],
+    tags: ['design', 'Study'],
     title: '7 Skills of Highly Effective Programmers',
     text: 'Our team was inspired by the seven skills of highly effective' +
     'programmers created by the TechLead. We wanted to provide our own'+
@@ -103,7 +107,7 @@ const testData = [
   {
     id: '2',
     previewUrl: 'static/img/computer.png',
-    tags: ['IT-News', 'Testing'],
+    tags: ['IT-News', 'design'],
     title: 'Article 1',
     text: `hello`,
     authorUrl: '#',
@@ -116,7 +120,7 @@ const testData = [
   {
     id: '3',
     previewUrl: 'static/img/computer.png',
-    tags: ['IT-News', 'Testing'],
+    tags: ['career', 'marketing'],
     title: 'Article 2',
     text: `hello`,
     authorUrl: '#',
@@ -142,7 +146,7 @@ const testData = [
   {
     id: '5',
     previewUrl: 'static/img/computer.png',
-    tags: ['IT-News', 'Testing'],
+    tags: ['marketing', 'design'],
     title: 'Article 5',
     text: `\tЧуть меньше текста\tЧуть Чуть
     \tЧуть меньше текста`,
@@ -156,7 +160,7 @@ const testData = [
   {
     id: '6',
     previewUrl: 'static/img/computer.png',
-    tags: ['IT-News', 'Testing'],
+    tags: ['personal', 'finance'],
     title: 'Article 6',
     text: `\tЧуть меньше текста\tЧуть меньше текста\tЧуть
     \tЧуть меньше текста`,
@@ -170,7 +174,7 @@ const testData = [
   {
     id: '7',
     previewUrl: 'static/img/computer.png',
-    tags: ['IT-News', 'Testing'],
+    tags: ['IT-News', 'finance'],
     title: 'Article 7',
     text: `\tОчень много текста\tОчень много текста\tОчень много текста
       \tОчень много текста\tОчень много текста\tОчень много текста
@@ -298,10 +302,49 @@ function getFeedChunk(login, idLastLoaded) {
   }
   if (idLastLoaded === '') {
     return new Promise((r) => setTimeout(
-        () => r(dataSource.slice(0, feedChunkSize)), 2000),
+        () => r(dataSource.slice(0, feedChunkSize)), DB_ANSWER_DELAY),
     );
   }
+  const dataChunk = [];
+  for (let i=0; i < dataSource.length; i++) {
+    if (dataSource[i].id === idLastLoaded) {
+      let j=1;
+      for (; i + j < dataSource.length && j <= feedChunkSize; j++) {
+        dataChunk.push(dataSource[i+j]);
+      }
+      // если записи кончились
+      if (i + j >= dataSource.length) {
+        dataChunk.push(endOfFeed);
+      }
+      break;
+    }
+  }
+  return new Promise((r) => setTimeout(() => r(dataChunk), DB_ANSWER_DELAY));
+}
 
+/**
+ * Имитация похода в базу
+ * @param {string} tag
+ * @param {string} idLastLoaded
+ * @return {Promise.Array}
+ */
+function getFeedChunkByTag(tag, idLastLoaded) {
+  const dataSource = testData.filter((el) => el.tags.indexOf(tag) !== -1);
+  if (idLastLoaded === endOfFeedMarkerID) {
+    return new Promise((resolve) => resolve([]));
+  }
+  if (idLastLoaded === '') {
+    if (dataSource.length > feedChunkSize) {
+      return new Promise((r) => setTimeout(
+          () => r(dataSource.slice(0, feedChunkSize)), DB_ANSWER_DELAY),
+      );
+    } else {
+      return new Promise((r) => setTimeout(
+          () => r(dataSource.slice(0, dataSource.length).concat(endOfFeed)),
+          DB_ANSWER_DELAY,
+      ));
+    }
+  }
   const dataChunk = [];
   for (let i=0; i < dataSource.length; i++) {
     if (dataSource[i].id === idLastLoaded) {
@@ -317,7 +360,7 @@ function getFeedChunk(login, idLastLoaded) {
     }
   }
 
-  return new Promise((r) => setTimeout(() => r(dataChunk), 2000));
+  return new Promise((r) => setTimeout(() => r(dataChunk), DB_ANSWER_DELAY));
 }
 
 /**
@@ -397,6 +440,44 @@ function executeAPICall(req, res) {
     switch (req.method) {
       case 'POST':
         switch (path) {
+          case '/':
+            let loginByCookie_ = '';
+            console.log('\t\tvalidCookies list: ', validCookies);
+            // действительно перебираем все свойства объекта
+            for (const cookie in cookies) {
+              for (let i = 0; i < validCookies.length &&
+                  loginByCookie_ === ''; ++i) {
+                const el = validCookies[i];
+                if (cookies[cookie] === el.cookie) {
+                  loginByCookie_ = el.login;
+                }
+              }
+            }
+
+            let userData_ = undefined;
+            if (loginByCookie_ !== '') {
+              userData_ = users[loginByCookie_];
+            }
+
+            if (userData_ !== undefined) {
+              console.log('\t\tUser has been found in db');
+
+              // cookie authentification
+              if (loginByCookie_ !== '') {
+                console.log(`\t\tUser ${loginByCookie_}` +
+                ` has been validated with cookie`);
+                fullfillOKResponse(
+                    res,
+                    'Welcome back, ' + loginByCookie_,
+                    senduserData_(loginByCookie_),
+                );
+              } else {
+                fullfillIncorrectLogin(res);
+              }
+            } else {
+              fullfillIncorrectLogin(res);
+            }
+            break;
           case '/user/login':
             let loginByCookie = '';
             console.log('\t\tvalidCookies list: ', validCookies);
@@ -462,6 +543,8 @@ function executeAPICall(req, res) {
           case '/user/signup':
             // пользователь уже существует
             if (users[reqBody.login.toLowerCase()] !== undefined) {
+              console.log('\t\t\t\t', users[reqBody.login.toLowerCase()]);
+              console.log('\t\t\t\t', {users});
               fullfillLoginIsAlreadyTaken(res);
             } else {
               // проверяем наличие все полей
@@ -492,6 +575,7 @@ function executeAPICall(req, res) {
                 );
               }
             }
+            break;
 
           case '/user/logout':
             console.log(
@@ -540,6 +624,70 @@ function executeAPICall(req, res) {
           );
 
           await getFeedChunk(login, idLastLoaded)
+              .then((nextChunk) => {
+                fullfillOKResponse(
+                    res,
+                    `feed uploaded to ${nextChunk.length > 0 ?
+                      nextChunk[nextChunk.length-1].id : endOfFeedMarkerID}`,
+                    nextChunk,
+                );
+              })
+              .catch(
+                  () => {
+                    fullfillError(res, 504, 'База данных недоступна');
+                  });
+        }
+        if (path.slice(0, 16) === '/articles/author') {
+          const idLastLoadedPos = req.url.indexOf('idLastLoaded=');
+          const loginPos = req.url.indexOf('login=');
+          if (idLastLoadedPos === -1 || loginPos === -1) {
+            fullfillError(res, 400, 'Не достаточно данных');
+            break;
+          }
+          // /feed?idLastLoaded=<id>&login=<login>
+          const login = req.url.substr(loginPos + 6);
+          const idLastLoaded = req.url.substr(
+              idLastLoadedPos + 13,
+              loginPos - idLastLoadedPos - 14,
+          );
+          console.log(
+              '\t\tarticles/author API:\n\t\t\tlogin:', login,
+              'idLastLoaded:', idLastLoaded,
+          );
+
+          await getFeedChunk(login, idLastLoaded)
+              .then((nextChunk) => {
+                fullfillOKResponse(
+                    res,
+                    `feed uploaded to ${nextChunk.length > 0 ?
+                      nextChunk[nextChunk.length-1].id : endOfFeedMarkerID}`,
+                    nextChunk,
+                );
+              })
+              .catch(
+                  () => {
+                    fullfillError(res, 504, 'База данных недоступна');
+                  });
+        }
+        if (path.slice(0, 14) === '/articles/tags') {
+          const idLastLoadedPos = req.url.indexOf('idLastLoaded=');
+          const tagPos = req.url.indexOf('tag=');
+          if (idLastLoadedPos === -1 || tagPos === -1) {
+            fullfillError(res, 400, 'Не достаточно данных');
+            break;
+          }
+          // /feed?idLastLoaded=<id>&tags=<tag>
+          const tag = req.url.substr(tagPos + 4);
+          const idLastLoaded = req.url.substr(
+              idLastLoadedPos + 13,
+              tagPos - idLastLoadedPos - 14,
+          );
+          console.log(
+              '\t\tarticles/tags API:\n\t\t\ttag:', tag,
+              'idLastLoaded:', idLastLoaded,
+          );
+
+          await getFeedChunkByTag(tag, idLastLoaded)
               .then((nextChunk) => {
                 fullfillOKResponse(
                     res,
@@ -602,7 +750,7 @@ function parseCookies(req) {
 // ///////////////////////////////// //
 
 const server = http.createServer((req, res) => {
-  console.log('\turl: ' + req.url);
+  console.log(req.method, '\turl: ' + req.url);
 
   // CORS
   res.setHeader('Access-Control-Allow-Origin', CORS);
@@ -629,7 +777,12 @@ const server = http.createServer((req, res) => {
   const path = req.url.replace(pathPrefix, '');
 
   // обработка апи. Если урл есть в массиве APIUrls, то это апи
-  if (APIUrls.indexOf(path) != -1 || path.indexOf('/feed') !== -1) {
+  if (APIUrls.indexOf(path) != -1 ||
+      path.indexOf('/feed') !== -1 ||
+      path.indexOf('/tags') !== -1 ||
+      path.indexOf('/author') !== -1
+      // path.indexOf('/author') !== -1 ||
+  ) {
     console.log('\t\tAPI call: ', path, ' | method: ', req.method);
     executeAPICall(req, res);
   } else {

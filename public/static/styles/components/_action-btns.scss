@@ -33,11 +33,11 @@
   }
 
   &__trash-icon {
-    background: $img-icon-share;
+    background: $img-icon-trash;
     background-size: cover;
 
     &:hover {
-      background-image: $img-icon-share-hover;
+      background-image: $img-icon-trash-hover;
     }
   }
 }

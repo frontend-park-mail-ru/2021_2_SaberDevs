@@ -28,6 +28,10 @@ $card-tags-font-size: 14px;
     margin-bottom: $card-title-margin-bottom;
     font-size: $title-font-size;
     text-align: center;
+
+    &:hover {
+      text-decoration: underline;
+    }
   }
 
   &__description {
@@ -44,5 +48,20 @@ $card-tags-font-size: 14px;
 
     justify-content: space-between;
     width: 100%;
+  }
+
+  &__author {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  &__author-photo {
+    width: 50px;
+    height: 50px;
+  }
+
+  &__author-username {
+    font-size: 14px;
   }
 }

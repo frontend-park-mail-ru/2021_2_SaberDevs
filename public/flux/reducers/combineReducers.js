@@ -22,8 +22,11 @@ export default function combineReducers(reducers) {
       if (newState !== state[reducer]) {
         let printState = state[reducer];
         let printNewState = newState;
+        // Игнор логов поля cards в этих редьюсерах
         if (fluxDebug) {
-          if (reducer === 'mainPage') {
+          if (reducer === 'mainPage' ||
+              reducer === 'profilePage' ||
+              reducer === 'categoryPage') {
             printState = {};
             Object.assign(printState, state[reducer]);
             delete printState.cards;

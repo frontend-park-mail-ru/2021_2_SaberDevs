@@ -1,20 +1,23 @@
 .card(id=`${id}`)
   .card__top
     .tags
-        each tag in tags.length ? tags : ['']
-            .tags__tag.card__tag #{tag}
+      if Array.isArray(tags)
+        each tag in tags.length ? tags : []
+          .tags__tag.card__tag #{tag}
     .author-time
-        a.author-time__author-name(href=`${authorUrl}`) #{authorName}
-        .author-time__time #{time}
+      a.author-time__author-name(href=`/user/${authorName}`) #{authorName}
+      .author-time__time #{time}
   .card__content
-      .card__title #{title}
-      .card__description #{text}
+    a(href='#').preview__title #{title}
+    .card__description #{text}
   .card__bottom
-      .btn-more Read more ->
+      .card__author
+          img.card__author-photo(src=`${avatarUrl || 'static/img/users/user_icon_loading.svg'}`)
+          .card__author-username #{firstName} #{lastName} (#{login}) 
       .action-btns
           .icon.action-btns_m-right
               .icon__text #{likes}
-              .action-btns__likes-icon.icon__img
+              button.action-btns__likes-icon.icon__img
           .icon
               .icon__text #{comments}
-              .action-btns__comments-icon.icon__img
+              button.action-btns__comments-icon.icon__img
