@@ -1,9 +1,9 @@
 import BaseComponentView from '../_basic/baseComponentView.js';
 import articleEditorComponent from '../editor/articleEditor.pug.js';
-import formSettingsTextareaComponent from
-  '../settings/formSettingsTextarea.pug.js';
-import formSettingsRowComponent from
-  '../settings/formSettingsRow.pug.js';
+import formArticleEditorTextareaComponent from
+  '../editor/formArticleEditorTextarea.pug.js';
+import formArticleEditorRowComponent from
+  '../editor/formArticleEditorRow.pug.js';
 import {genRanHex} from '../../utils.js';
 
 /**
@@ -22,13 +22,13 @@ export default class EditorView extends BaseComponentView {
    */
   render() {
     let articleRows = '';
-    const title = formSettingsRowComponent({
+    const title = formArticleEditorRowComponent({
       label: 'Заголовок',
       type: 'text',
       name: 'title',
     });
     articleRows += title;
-    const text = formSettingsTextareaComponent({
+    const text = formArticleEditorTextareaComponent({
       label: 'Текст статьи',
       name: 'text',
     });
@@ -36,6 +36,8 @@ export default class EditorView extends BaseComponentView {
 
     const editor = document.createElement('div');
     editor.innerHTML = articleEditorComponent({
+      pageName: 'Создание статьи',
+      buttonAction: 'clear',
       form_rows: articleRows,
     });
 
@@ -44,9 +46,20 @@ export default class EditorView extends BaseComponentView {
     addTag?.addEventListener('click', (e) => {
       e.preventDefault();
       const tags = document.getElementsByClassName('article-create__tags')[0];
+      const existTagsDiv = document
+          .getElementsByClassName('article-create__tags');
+      const existTags = existTagsDiv[0].children;
       const inputTag =
         document.getElementsByClassName('article-create__input-tag')[0];
-      if (inputTag.value.trim() != '') {
+      let tagIsExist = false;
+      for (const eTag of existTags) {
+        if (eTag.innerText != undefined) {
+          if (eTag.innerText.trim() == inputTag.value.trim()) {
+            tagIsExist = true;
+          }
+        }
+      }
+      if (inputTag.value.trim() != '' && !tagIsExist) {
         const tagDiv = document.createElement('div');
         tagDiv.className = 'tags__tag';
         tagDiv.innerHTML = inputTag.value;

@@ -63,4 +63,8 @@ $card-tags-font-size: 14px;
   &__author-username {
     font-size: 14px;
   }
+
+  &:hover {
+    border: 2px solid $color-elements;
+  }
 }

@@ -20,6 +20,8 @@ const saveTo = {
   buttonNav: 'sidebar',
   userPreview: 'sidebar',
   articleEditor: 'editor',
+  formArticleEditorRow: 'editor',
+  formArticleEditorTextarea: 'editor',
   articleReader: 'reader',
   comment: 'reader',
 };

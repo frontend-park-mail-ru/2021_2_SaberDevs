@@ -1,8 +1,8 @@
 .article-view
   .article-view__content
     .article-view__top
-      a(id='article-change-btn' style='display:none').article-view__back-btn Изменить
-      a(data-section='back').article-view__back-btn Назад
+      button(id='article-change-btn' style='display:none').btn_color-elementary Изменить
+      button(data-section='back').btn_color-elementary Назад
     .article-view__author-time
       if typeof author === "object"
         .article-view__author #{author.login}
@@ -15,7 +15,7 @@
         if Array.isArray(tags)
           each tag in tags.length ? tags : ['']
             a.article-view__tag #{tag}
-        .action-btns
+      .action-btns
           .icon.action-btns_m-right
               .icon__text #{likes || ''}
               .action-btns__likes-icon.icon__img
