@@ -7,6 +7,10 @@ import {editorTypes} from '../../flux/types.js';
 
 import Ajax from '../../modules/ajax.js';
 import {redirect} from '../../utils.js';
+
+import Modal from '../modal/modal.js';
+import signupModal from '../modal/signupModal.js'
+
 /**
  * Компонент редактора статей
  * @class Editor
@@ -55,22 +59,78 @@ export default class Editor extends BaseComponent {
     // до рендера. Если было, то в сторе есть изменения.
     const state = store.getState().editor;
     this.setContent(state[state.currentId]);
+    if (typeof state.currentId === 'string' && state.currentId !== '0' ||
+        typeof state.currentId === 'number' && state.currentId !== 0) {
+      this.changeToUpdate();
+    }
+
+    this.root.querySelector('.article-create__add-tag').addEventListener(
+        'click',
+        (e) => {
+          e.preventDefault();
+          // TODO: теги
+        },
+    );
 
     // TODO: проверить, рейзится ли евент, если textValue меняется программой
     this.root.querySelector('textarea').addEventListener('change', (e) => {
-      e.preventDefault();
+      // Эти строки добавлены в интерфейсе изменения статьи
       const title = this.root.querySelector('input[name="title"]').value;
-      const content = this.root.querySelector('textarea').textContent;
-      store.dispatch(editorActions.saveArticle(store.getState().currentId, {
-        title,
-        content,
-      }));
+      const text = this.root.querySelector('textarea').value;
+      store.dispatch(editorActions.saveArticle(
+          store.getState().editor.currentId, {
+            title,
+            text,
+          },
+      ));
     });
+
+    this.root.querySelector('.article-create__del-btn').addEventListener(
+        'click',
+        (e) => {
+          e.preventDefault();
+          Modal.configurate({
+            title: 'Удаление',
+            content: 'Вы точно хотите удалить статью?',
+            btnOkSign: 'Да',
+            isEnteractive: true,
+            onConfirm: () => {
+              Ajax.post({
+                url: `/articles/delete?id=${store.getState().editor.currentId}`,
+                body: {},
+              }).then(({status, response}) => {
+                if (status === Ajax.STATUS.ok) {
+                  store.dispatch(editorActions.deleteArticle(
+                      store.getState().editor.currentId,
+                  ));
+                  Modal.setTitle('Успех!');
+                  Modal.setContent('Статья была удалена');
+                  Modal.open(false);
+                  redirect('/profile');
+                  return;
+                }
+                if (status === Ajax.STATUS.invalidSession) {
+                  signupModal(false);
+                  return;
+                }
+                // В случае ошибки
+                if (status / 100 === 5) {
+                  Modal.setTitle(`Сервис временно не доступен: ${status}`);
+                }
+                if (status / 100 === 4) {
+                  Modal.setTitle(/* пользовательская */`Ошибка ${status}`);
+                }
+                Modal.setContent(response.msg);
+                Modal.open(false);
+              });
+            }});
+        },
+    );
 
     this.root.querySelector('form').addEventListener('submit', (e) => {
       e.preventDefault();
 
-      const text = this.root.querySelector('textarea')?.textContent;
+      const text = this.root.querySelector('textarea')?.value;
       const title = this.root.querySelector('input[name="title"]')?.value;
       if (!text || !title) {
         console.warn('{Editor} пустые статьи - это плохо:', {text}, {title});
@@ -96,12 +156,30 @@ export default class Editor extends BaseComponent {
       }).then(({status, response}) => {
         if (status === Ajax.STATUS.ok) {
           store.dispatch(editorActions.publishArticle(response.id));
+          Modal.setTitle('Успех!');
+          Modal.setContent('Статья успешно создана');
+          Modal.open(false);
           redirect('/profile');
+          return;
         }
         // TODO: если кука сгорела, сервер вернул unauthorized
         // редирект на авторизацию
         // Вывести предупреждение о том, что стейт сохранен,
         // и чтобы не перезапускали страницу
+        if (status === Ajax.STATUS.invalidSession) {
+          signupModal(false);
+          return;
+        }
+
+        // В случае ошибки
+        if (status / 100 === 5) {
+          Modal.setTitle(`Сервис временно не доступен: ${status}`);
+        }
+        if (status / 100 === 4) {
+          Modal.setTitle(/* пользовательская */`Ошибка ${status}`);
+        }
+        Modal.setContent(response.msg);
+        Modal.open(false);
       });
     });
     return this.root;
@@ -152,7 +230,7 @@ export default class Editor extends BaseComponent {
     this.root.querySelector('input[name="btn-submit"]').value = 'Создать';
     this.root.querySelector('.article-create__title').textContent =
       'Создание статьи';
-    this.root.querySelector('.article-create__del-btn').textContent= 'Очистить';
+    this.root.querySelector('.article-create__del-btn').style.display = 'none';
   }
 
   /**
@@ -162,6 +240,6 @@ export default class Editor extends BaseComponent {
     this.root.querySelector('input[name="btn-submit"]').value = 'Изменить';
     this.root.querySelector('.article-create__title').textContent =
       'Изменение статьи';
-    this.root.querySelector('.article-create__del-btn').textContent= 'Удалить';
+    this.root.querySelector('.article-create__del-btn').style.display = 'flex';
   }
 }

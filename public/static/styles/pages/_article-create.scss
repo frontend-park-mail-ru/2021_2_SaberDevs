@@ -33,13 +33,21 @@ $article-create-trash-height: 40px;
 
   &__row-del-btn {
     flex-direction: row;
-    align-items:flex-end;
+    align-items: flex-end;
     justify-content: flex-end;
     margin-bottom: 10px;
+    width: 100%;
   }
 
   &__del-btn {
     display: flex;
+    cursor: pointer;
+  }
+
+  &__clear-btn {
+    display: flex;
+    margin-left: auto;
+    cursor: pointer;
   }
 
   &__add-tag {

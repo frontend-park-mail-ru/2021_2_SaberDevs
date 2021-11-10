@@ -68,6 +68,17 @@ function publishArticle(id) {
 }
 
 /**
+ * @param {number} id - id, присвоенный записи на сервере
+ * @return {Action}
+ */
+function deleteArticle(id) {
+  return {
+    type: editorTypes.DELETE_ARTICLE,
+    payload: {id},
+  };
+}
+
+/**
  * Перерисовать главную страницу
  * @param {number} id - id, полученный с сервера,
  *                      либо 0, если запись только создается
@@ -98,6 +109,7 @@ const editorActions = {
   editArticle,
   publishArticle,
   saveArticle,
+  deleteArticle,
 };
 
 export default editorActions;

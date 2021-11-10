@@ -40,6 +40,12 @@ export default function editorReducer(state = InitialEditorState, action) {
         },
       };
 
+    case editorTypes.DELETE_ARTICLE:
+      const stateCopyDel = {};
+      Object.assign(stateCopyDel, state);
+      delete stateCopyDel[action.payload.id];
+      return stateCopyDel;
+
     case editorTypes.CREATE_ARTICLE:
       const stateCopy = Object.assign({}, state);
       // обнуление только если до этого не создавали статью

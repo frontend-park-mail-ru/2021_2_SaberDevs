@@ -1346,12 +1346,22 @@ body,
       -ms-flex-pack: end;
           justify-content: flex-end;
   margin-bottom: 10px;
+  width: 100%;
 }
 
 .article-create__del-btn {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
+  cursor: pointer;
+}
+
+.article-create__clear-btn {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  margin-left: auto;
+  cursor: pointer;
 }
 
 .article-create__add-tag {
