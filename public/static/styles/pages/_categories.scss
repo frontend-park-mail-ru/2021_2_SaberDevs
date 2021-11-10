@@ -1,0 +1,22 @@
+.categories {
+  @include col;
+
+  width: 100%;
+
+  &__title {
+    font-size: 48px;
+  }
+
+  &__search {
+    @include row;
+
+    width: 100%;
+  }
+
+  &__search-input {
+    border: $border;
+    border-radius: $border-radius;
+    color: $color-primary;
+    background-color: $color-elements;
+  }
+}

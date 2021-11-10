@@ -4,6 +4,7 @@ import createPage from './_createPage.js';
 import Feed from '../components/feed/feed.js';
 import TagChoiceBar from
   '../components/tagChoiceBar/tagChoiceBar.js';
+import categoriesComponent from '../components/categories/categories.pug.js';
 
 import {categoryPageTypes} from '../flux/types.js';
 import {categoryPageActions} from '../flux/actions.js';
@@ -48,12 +49,10 @@ export default class CategoryPageView extends BasePageView {
     */
   render() {
     super.render();
-    const sign = document.createElement('p');
-    sign.innerHTML = 'Выберите тег';
-    sign.style.color = 'white';
-    sign.style.fontSize = '2rem';
+    const categoriesPage = document.createElement('div');
+    categoriesPage.outerHTML = categoriesComponent({});
     this.root.appendChild(createPage(
-        sign,
+        categoriesPage,
         this.pageComponents.categoryChoose,
         this.pageComponents.feed,
     ));

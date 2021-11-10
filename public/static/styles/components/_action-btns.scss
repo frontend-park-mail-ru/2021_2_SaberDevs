@@ -40,4 +40,13 @@
       background-image: $img-icon-trash-hover;
     }
   }
+
+  &__search-icon {
+    background: $img-icon-search;
+    background-size: cover;
+
+    &:hover {
+      background-image: $img-icon-search-hover;
+    }
+  }
 }

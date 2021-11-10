@@ -1,6 +1,11 @@
 button {
   border-style: none;
   border-radius: 10px;
+  background-color: transparent;
+
+  &:hover {
+    background-color: transparent;
+  }
 }
 
 a,
