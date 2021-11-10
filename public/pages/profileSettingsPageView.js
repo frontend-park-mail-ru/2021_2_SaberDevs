@@ -3,7 +3,13 @@ import createPage from './_createPage.js';
 
 import SettingsForm from '../components/settings/settingsForm.js';
 
+import store from '../flux/store.js';
+import {authorizationTypes} from '../flux/types.js';
+
 import Ajax from '../modules/ajax.js';
+import {redirect} from '../utils.js';
+
+import Modal from '../components/modal/modal.js';
 
 // ///////////////////////////////// //
 //
@@ -25,8 +31,9 @@ export default class ProfileSettingsPageView extends BasePageView {
       settingsForm: new SettingsForm(),
     };
 
-    // TODO: подписка на логаут
-    // проверка авторизации
+    store.subscribe(authorizationTypes.LOGOUT, () => {
+      redirect('/');
+    });
   }
 
   /**
@@ -35,18 +42,19 @@ export default class ProfileSettingsPageView extends BasePageView {
   render() {
     super.render();
     this.root.appendChild(createPage(this.pageComponents.settingsForm));
+
+    // TODO: вынести в MV
     const form = this.root.querySelector('form');
     form.addEventListener('submit', (e) => {
       e.preventDefault();
       // TODO: смена пароля
       // const password = form.querySelector('input[name="password"]');
-      const password = '';
       const firstName = form.querySelector('input[name="username"]')?.value;
       const lastName = form.querySelector('input[name="surname"]')?.value;
       Ajax.post({
         url: '/user/profile/update',
         body: {
-          password,
+          // password,
           firstName,
           lastName,
         },

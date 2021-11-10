@@ -89,9 +89,8 @@ export default class Editor extends BaseComponent {
         (e) => {
           e.preventDefault();
           Modal.configurate({
-            title: 'Удаление',
-            content: 'Вы точно хотите удалить статью?',
-            btnOkSign: 'Да',
+            title: 'Точно хотите удалить?',
+            content: 'Продолжив, вы удалите статью',
             isEnteractive: true,
             onConfirm: () => {
               Ajax.post({
@@ -158,12 +157,12 @@ export default class Editor extends BaseComponent {
         body,
       }).then(({status, response}) => {
         if (status === Ajax.STATUS.ok) {
-          store.dispatch(editorActions.publishArticle(response.id));
+          store.dispatch(editorActions.publishArticle(response.data.id));
           Modal.setTitle('Успех!');
           Modal.setContent(`Статья успешно ${isUpdate?'изменена' : 'создана'}`);
           Modal.open(false);
           setTimeout(
-              () => redirect(`/article/${response.id}`),
+              () => redirect(`/article/${response.data.id}`),
               Modal.animationTime,
           );
           return;
