@@ -5,7 +5,7 @@ import SignupForm from '../signupForm/signupForm.js';
  * Страница содержит главный компонент - форму регистрации
  * @param {boolean} showRegister
  * true, если нужно отобразить форму
- * для входа, false - для регистрации
+ * для регистрации, false - для входа
  */
 export default function signupModal(showRegister) {
   // Элементы навигации

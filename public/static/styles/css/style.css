@@ -113,6 +113,10 @@ body,
   width: 0;
 }
 
+.hide {
+  display: none;
+}
+
 .header {
   display: -webkit-box;
   display: -ms-flexbox;
@@ -1399,12 +1403,22 @@ body,
       -ms-flex-pack: end;
           justify-content: flex-end;
   margin-bottom: 10px;
+  width: 100%;
 }
 
 .article-create__del-btn {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
+  cursor: pointer;
+}
+
+.article-create__clear-btn {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  margin-left: auto;
+  cursor: pointer;
 }
 
 .article-create__add-tag {
@@ -2088,7 +2102,7 @@ body,
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
-  width: 100%;
+  width: 50%;
 }
 
 .categories__title {
@@ -2108,12 +2122,71 @@ body,
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
   width: 100%;
 }
 
 .categories__search-input {
+  margin-top: 10px;
+  margin-right: 10px;
   border: 2px solid #151414;
   border-radius: 5px;
+  padding: 0 10px;
+  width: 100%;
+  height: 100%;
+  font-size: 18px;
   color: #151414;
+  background-color: #dee4ea;
+}
+
+.categories__search-block {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-flow: nowrap;
+      flex-flow: nowrap;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  margin-bottom: 20px;
+  width: 100%;
+}
+
+.categories__tags {
+  margin-top: 20px;
+  width: 100%;
+}
+
+.categories__tag {
+  margin: 5px;
+  border: 2px solid #151414;
+  text-shadow: 2px 2px 2px #151414;
+}
+
+.categories__tag_mark {
+  color: #354580;
+}
+
+.categories__choose-bar {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+  -webkit-box-align: start;
+      -ms-flex-align: start;
+          align-items: flex-start;
+  overflow-y: scroll;
+  margin-bottom: 20px;
+  border: 2px solid #151414;
+  border-radius: 5px;
+  width: 100%;
+  height: 80px;
   background-color: #dee4ea;
 }

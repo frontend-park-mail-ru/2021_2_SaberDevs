@@ -146,7 +146,7 @@ export default class Router {
         console.log({pathname: link || '[ROUTER] empty path (ignored)'});
       }
 
-      if (link === '') {
+      if (!link) {
         return;
       }
 

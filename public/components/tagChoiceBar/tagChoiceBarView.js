@@ -11,16 +11,6 @@ const tags = [
   'technical',
 ];
 
-const tagCSS = () => `
-color: white;
-background-color: #${genRanHex()};
-display: flex;
-margin: 10px;
-padding: 3px;
-box-sizing: border-box;
-border-radius: 5px;
-`;
-
 /**
  * @class CatergoryChooseBarView
  */
@@ -30,15 +20,13 @@ export default class TagChoiceBarView extends BaseComponentView {
     */
   render() {
     const barDiv = document.createElement('div');
-    barDiv.style.flexDirection = 'row';
-    barDiv.style.width = '100%';
-    barDiv.style.display = 'flex';
-    barDiv.style.padding = '2px';
-    barDiv.style.backgroundColor = 'transparent';
+    barDiv.className = 'categories__choose-bar';
     tags.forEach((tag) => {
       const tagDiv = document.createElement('div');
+      tagDiv.className = 'tags__tag';
+      tagDiv.classList.add('categories__tag');
       tagDiv.innerHTML = tag;
-      tagDiv.style.cssText = tagCSS();
+      tagDiv.style.backgroundColor = '#' + genRanHex();
       barDiv.appendChild(tagDiv);
     });
     return barDiv;

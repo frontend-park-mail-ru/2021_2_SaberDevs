@@ -1,10 +1,11 @@
 .article-create
-  .article-create__title #{pageName}
+  .article-create__title 
   .article-create__right
       if buttonAction == 'delete'
-          button.btn_color-elementary Удалить
+          button.btn_color-elementary.article-create__del-btn Удалить
       else if buttonAction == 'clear'
-          button.btn_color-elementary Очистить
+          button.btn_color-elementary.article-create__clear-btn Очистить
+  .article-create__title #{pageName}
   form.article-create__form
     .article-create__rows !{form_rows}
     .article-create__row

@@ -37,6 +37,7 @@ const appPagesPatterned = [
 const subDomains = [
   '/user/',
   '/article/',
+  '/profile/',
 ];
 
 // ///////////////////////////////// //

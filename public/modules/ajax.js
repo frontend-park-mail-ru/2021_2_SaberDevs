@@ -29,6 +29,7 @@ const ajaxStatuses = {
   notFound: 404,
   // redirect: 303,
   badRequest: 400,
+  invalidSession: 424,
 };
 
 /**
