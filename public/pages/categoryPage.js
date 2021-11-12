@@ -3,7 +3,7 @@ import CategoryPageView from './categoryPageView.js';
 
 import store from '../flux/store.js';
 import {changePageActions, categoryPageActions} from '../flux/actions.js';
-import {categoryPageTypes} from '../flux/types.js';
+import {categoryPageTypes, editorTypes} from '../flux/types.js';
 
 import Modal from '../components/modal/modal.js';
 
@@ -101,11 +101,23 @@ export default class CategoryPage extends BasePageMV {
     super(root);
     this.view = new CategoryPageView(root);
 
-    // Communication
+    // /////////////////////////////////
+    //
+    //        Communication
+    //
+    // /////////////////////////////////
+
+    // обновить ленту в соответствии с фильтром
     store.subscribe(categoryPageTypes.SELECT_CATEGORY_ARTICLES_TAG, () => {
       store.dispatch(categoryPageActions.clearCategoryArticles());
       store.dispatch(categoryPageActions.allowCategoryArticlesLoading());
       uploadCategoryCards();
+    });
+
+    // Обновить ленту, если есть изменения в статье или пользователь
+    // опубликовал новую
+    store.subscribe(editorTypes.PUBLISH_ARTICLE, () => {
+      store.dispatch(categoryPageActions.clearCategoryArticles());
     });
   }
 

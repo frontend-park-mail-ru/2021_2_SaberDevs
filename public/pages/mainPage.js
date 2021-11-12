@@ -3,6 +3,7 @@ import MainPageView from './mainPageView.js';
 
 import store from '../flux/store.js';
 import {changePageActions, mainPageActions} from '../flux/actions.js';
+import {editorTypes} from '../flux/types.js';
 
 import Modal from '../components/modal/modal.js';
 
@@ -103,6 +104,20 @@ export default class MainPage extends BasePageMV {
   constructor(root) {
     super(root);
     this.view = new MainPageView(root);
+
+    // /////////////////////////////////
+    //
+    //        Communication
+    //
+    // /////////////////////////////////
+
+    // TODO: (неприоритет) добавить экшны на обновление записи и удаление, чтобы
+    // не скачивать ленту еще раз. Во всех лентах.
+    // Обновить ленту, если есть изменения в статье или пользователь
+    // опубликовал новую
+    store.subscribe(editorTypes.PUBLISH_ARTICLE, () => {
+      store.dispatch(mainPageActions.clearCards());
+    });
   }
 
   /**

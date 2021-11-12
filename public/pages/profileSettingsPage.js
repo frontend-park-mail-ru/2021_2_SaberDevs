@@ -4,7 +4,10 @@ import ProfileSettingsPageView from './profileSettingsPageView.js';
 import ModalTemplates from '../components/modal/modalTemplates.js';
 
 import store from '../flux/store.js';
-import {changePageActions, authorizationActions} from '../flux/actions.js';
+import {
+  changePageActions,
+  authorizationActions,
+} from '../flux/actions.js';
 import {authorizationTypes} from '../flux/types.js';
 
 import Ajax from '../modules/ajax.js';
@@ -66,6 +69,7 @@ export default class ProfileSettingsPage extends BasePageMV {
               ({status, response}) => {
                 if (status === Ajax.STATUS.ok) {
                   store.dispatch(authorizationActions.login(response.data));
+                  redirect('/profile');
                   return;
                 }
                 if (status === 424) {

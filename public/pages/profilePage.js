@@ -3,7 +3,7 @@ import ProfilePageView from './profilePageView.js';
 
 import store from '../flux/store.js';
 import {changePageActions, profilePageActions} from '../flux/actions.js';
-import {authorizationTypes} from '../flux/types.js';
+import {authorizationTypes, editorTypes} from '../flux/types.js';
 
 import {showModalNetOrServerError} from '../components/modal/modalTemplates.js';
 
@@ -106,6 +106,12 @@ export default class ProfilePage extends BasePageMV {
           Utils.redirect('/');
         }
       }
+    });
+
+    // Обновить ленту, если есть изменения в статье или пользователь
+    // опубликовал новую
+    store.subscribe(editorTypes.PUBLISH_ARTICLE, () => {
+      store.dispatch(profilePageActions.clearArticles());
     });
   }
 
