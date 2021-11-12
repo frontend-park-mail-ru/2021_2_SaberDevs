@@ -83,7 +83,7 @@ linksController
     )
     .register(
         'back',
-        window.history.back,
+        () => window.history.back(),
     );
 
 loadingScreen.start();

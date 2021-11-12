@@ -11,6 +11,16 @@ import {redirect} from '../../utils.js';
 import ModalTemplates from '../modal/modalTemplates.js';
 
 /**
+   * Проверяет состояние editor
+   * @return {boolean}
+   */
+function isUpdateFromState() {
+  const state = store.getState().editor;
+  return typeof state.currentId === 'string' && state.currentId !== '0' ||
+         typeof state.currentId === 'number' && state.currentId !== 0;
+}
+
+/**
  * Компонент редактора статей
  * @class Editor
  */
@@ -61,6 +71,8 @@ export default class Editor extends BaseComponent {
     if (typeof state.currentId === 'string' && state.currentId !== '0' ||
         typeof state.currentId === 'number' && state.currentId !== 0) {
       this.changeToUpdate();
+    } else {
+      this.changeToCreate();
     }
 
     // //////////////////////////////////
@@ -95,7 +107,7 @@ export default class Editor extends BaseComponent {
           e.preventDefault();
           ModalTemplates.confirm(
               'Вы собираетесь очистить то, что написали',
-              'Продолжив, вы сотрете все, что написали',
+              'Продолжив, вы сотрете все',
               () => {
                 this.clear();
               });
@@ -111,8 +123,8 @@ export default class Editor extends BaseComponent {
               'Продолжив, вы удалите статью',
               () => {
                 Ajax.post({
-                  url: `/articles/delete?id=
-                      ${store.getState().editor.currentId}`,
+                  url:
+                    `/articles/delete?id=${store.getState().editor.currentId}`,
                   body: {},
                 }).then(({status, response}) => {
                   if (status === Ajax.STATUS.ok) {
@@ -150,7 +162,7 @@ export default class Editor extends BaseComponent {
       }
 
       const state = store.getState().editor;
-      const isUpdate = this.isUpdate();
+      const isUpdate = isUpdateFromState();
 
       const body = {
         title,
@@ -213,16 +225,6 @@ export default class Editor extends BaseComponent {
   }
 
   /**
-   * Проверяет состояние editor
-   * @return {boolean}
-   */
-  isUpdate() {
-    const state = store.getState().editor;
-    return typeof state.currentId === 'string' && state.currentId !== '0' ||
-           typeof state.currentId === 'number' && state.currentId !== 0;
-  }
-
-  /**
    * сбросить value форм
    */
   clear() {
@@ -237,7 +239,15 @@ export default class Editor extends BaseComponent {
    * Поменять надписи на "Создание"
    */
   changeToCreate() {
-    this.root.querySelector('input[name="btn-submit"]').value = 'Создать';
+    const submitBtn = this.root.querySelector('input[name="btn-submit"]');
+    if (!submitBtn) {
+      console.warn(
+          `{Editor} can\'t use changeToCreate:
+          component hasn\'t been rendered yet`,
+      );
+      return;
+    }
+    submitBtn.value = 'Создать';
     this.root.querySelector('.article-create__title').textContent =
       'Создание статьи';
     this.root.querySelector('.article-create__del-btn').style.display = 'none';
@@ -247,7 +257,15 @@ export default class Editor extends BaseComponent {
    * Поменять надписи на "Изменение"
    */
   changeToUpdate() {
-    this.root.querySelector('input[name="btn-submit"]').value = 'Изменить';
+    const submitBtn = this.root.querySelector('input[name="btn-submit"]');
+    if (!submitBtn) {
+      console.warn(
+          `{Editor} can\'t use changeToCreate:
+          component hasn\'t been rendered yet`,
+      );
+      return;
+    }
+    submitBtn.value = 'Изменить';
     this.root.querySelector('.article-create__title').textContent =
       'Изменение статьи';
     this.root.querySelector('.article-create__del-btn').style.display = 'flex';

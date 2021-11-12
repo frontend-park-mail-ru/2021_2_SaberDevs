@@ -77,6 +77,10 @@ export default class Sidebar extends BaseComponent {
       });
     }
     this.root = this.view.render(topBlockContent);
+    this.view.root.querySelector('a.sidebar__nav-item').addEventListener(
+        'click',
+        () => store.dispatch(editorActions.createArticle()),
+    );
     return this.root;
   }
 
@@ -87,10 +91,6 @@ export default class Sidebar extends BaseComponent {
   setSidebarUserPreview() {
     const state = store.getState().authorization;
     this.view.setTopBlockContent(userPreviewComponent(state));
-    this.view.root.querySelector('a.sidebar__nav-item').addEventListener(
-        'click',
-        () => store.dispatch(editorActions.createArticle()),
-    );
   }
 
   /**

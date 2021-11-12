@@ -19,10 +19,10 @@ export default function authorizeReducer(state = InitialUserState, action) {
     case authorizationTypes.LOGIN:
       return {
         ...state,
-        ...action.payload,  // так избегаем неправильных payload'ов
+        ...action.payload,
       };
     case authorizationTypes.LOGOUT:
-      return state;
+      return InitialUserState;
   }
   return state;
 }

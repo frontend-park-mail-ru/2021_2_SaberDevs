@@ -4,7 +4,18 @@ import EditorView from './articleEditorView.js';
 import store from '../flux/store.js';
 import ModalTemplates from '../components/modal/modalTemplates.js';
 import {authorizationTypes} from '../flux/types.js';
+import {changePageActions} from '../flux/actions.js';
 import {redirect} from '../utils.js';
+
+/**
+   * Проверяет состояние editor
+   * @return {boolean}
+   */
+function isUpdate() {
+  const state = store.getState().editor;
+  return typeof state.currentId === 'string' && state.currentId !== '0' ||
+         typeof state.currentId === 'number' && state.currentId !== 0;
+}
 
 /**
  * @class EditorPage
@@ -17,6 +28,7 @@ export default class EditorPage extends BasePageMV {
     super(root);
     this.view = new EditorView(root);
     store.subscribe(authorizationTypes.LOGOUT, () => {
+      console.log('[ArticleEditorPage] Logout reaction');
       if (this.isActive()) {
         ModalTemplates.warn(
             'Вы неавторизованы',
@@ -35,7 +47,7 @@ export default class EditorPage extends BasePageMV {
     store.dispatch(
         changePageActions.changePage(
             'editor',
-            `Article | ${this.view.isUpdate() ? 'Edit' : 'Create'}`,
+            `SaberProject | ${isUpdate() ? 'Edit' : 'Create'} article`,
         ),
     );
   }

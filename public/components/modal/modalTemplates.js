@@ -7,7 +7,7 @@ import signupModal from './signupModal.js';
  * @param {string | HTMLElement} content
  */
 export function showModalInformative(header = '', content = '') {
-  Modal.setHeader(header);
+  Modal.setTitle(header);
   Modal.setContent(content);
   Modal.open(false);
 }
@@ -18,10 +18,10 @@ export function showModalInformative(header = '', content = '') {
  * @param {string} msg
  */
 export function showModalNetOrServerError(status, msg) {
-  if (status / 100 === 5) {
+  if ((status / 100 + '')[0] === '5') {
     Modal.setTitle(`Сервис временно не доступен: ${status}`);
   }
-  if (status / 100 === 4) {
+  if ((status / 100 + '')[0] === '4') {
     Modal.setTitle(/* пользовательская */`Ошибка ${status}`);
   }
   Modal.setContent(msg);
@@ -34,8 +34,8 @@ export function showModalNetOrServerError(status, msg) {
  * @param {string | HTMLElement} content
  * @param {function} onConfirm
  */
-export function showModalWarn(header, content) {
-  Modal.setHeader(header);
+export function showModalWarn(header, content, onConfirm = () => {}) {
+  Modal.setTitle(header);
   Modal.setContent(content);
   Modal.enableOkBtn();
   Modal.changeBtnOkSign('Понятно');
@@ -54,7 +54,7 @@ export function showModalWarn(header, content) {
 export function showModalConfirm(
     header, content, onConfirm, onDecline = () => {},
 ) {
-  Modal.setHeader(header);
+  Modal.setTitle(header);
   Modal.setContent(content);
   Modal.changeBtnOkSign('Да');
   Modal.enableOkBtn();

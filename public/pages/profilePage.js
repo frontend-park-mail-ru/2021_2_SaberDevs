@@ -3,6 +3,7 @@ import ProfilePageView from './profilePageView.js';
 
 import store from '../flux/store.js';
 import {changePageActions, profilePageActions} from '../flux/actions.js';
+import {authorizationTypes} from '../flux/types.js';
 
 import {showModalNetOrServerError} from '../components/modal/modalTemplates.js';
 
@@ -92,6 +93,20 @@ export default class ProfilePage extends BasePageMV {
   constructor(root) {
     super(root);
     this.view = new ProfilePageView(root);
+
+    // /////////////////////////////////
+    //
+    //        Communication
+    //
+    // /////////////////////////////////
+    store.subscribe(authorizationTypes.LOGOUT, () => {
+      if (this.isActive()) {
+        console.log('[ProfilePage] Logout reaction');
+        if (document.URL.indexOf('/profile') !== -1) {
+          Utils.redirect('/');
+        }
+      }
+    });
   }
 
   /**
@@ -132,6 +147,7 @@ export default class ProfilePage extends BasePageMV {
                 return;
               }
               showModalNetOrServerError(status, response.msg);
+              Utils.redirect('/');
             })
             .catch((err) => console.warn(err.message));
       }
@@ -187,7 +203,7 @@ export default class ProfilePage extends BasePageMV {
     const profileUser = store.getState().profilePage.user;
     const authorizedUser = store.getState().authorization;
 
-    if (authorizedUser !== profileUser.login ||
+    if (authorizedUser.login !== profileUser.login ||
       store.getState().authorization.login !== '') {
       return '';
     }

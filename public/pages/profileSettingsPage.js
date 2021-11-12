@@ -35,6 +35,7 @@ export default class ProfileSettingsPage extends BasePageMV {
     // /////////////////////////////////
     store.subscribe(authorizationTypes.LOGOUT, () => {
       if (this.isActive()) {
+        console.log('[ProfileSettingsPage] Logout reaction');
         redirect('/');
       }
     });
@@ -66,6 +67,11 @@ export default class ProfileSettingsPage extends BasePageMV {
                 if (status === Ajax.STATUS.ok) {
                   store.dispatch(authorizationActions.login(response.data));
                   return;
+                }
+                if (status === 424) {
+                  ModalTemplates.informativeMsg(
+                      'Сессия устарела', 'Пройдите авторизацию',
+                  );
                 }
                 // В случае ошибки
                 ModalTemplates.netOrServerError(status, response.msg);

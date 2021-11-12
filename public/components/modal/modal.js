@@ -142,12 +142,14 @@ const Modal = {
     if (!isEnteractive) {
       setTimeout(() => {
         this.close();
-        if (okBtnDispay) {
-          okBtn.style.display = 'block';
-        }
-        if (cancelBtnDispay) {
-          cancelBtn.style.display = 'block';
-        }
+        setTimeout(() => {
+          if (okBtnDispay) {
+            okBtn.style.display = 'block';
+          }
+          if (cancelBtnDispay) {
+            cancelBtn.style.display = 'block';
+          }
+        }, animationTime);
       }, informationWindowOpenTime);
     }
   },
