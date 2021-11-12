@@ -3,6 +3,7 @@ import EditorView from './editorView.js';
 
 import store from '../../flux/store.js';
 import editorActions from '../../flux/actions/editorActions.js';
+import {authorizationActions} from '../../flux/actions.js';
 import {editorTypes} from '../../flux/types.js';
 
 import Ajax from '../../modules/ajax.js';
@@ -137,6 +138,7 @@ export default class Editor extends BaseComponent {
                     return;
                   }
                   if (status === Ajax.STATUS.invalidSession) {
+                    store.dispatch(authorizationActions.logout());
                     ModalTemplates.signup(false);
                     return;
                   }
@@ -186,6 +188,7 @@ export default class Editor extends BaseComponent {
           return;
         }
         if (status === Ajax.STATUS.invalidSession) {
+          store.dispatch(authorizationActions.logout());
           ModalTemplates.signup(false);
           return;
         }

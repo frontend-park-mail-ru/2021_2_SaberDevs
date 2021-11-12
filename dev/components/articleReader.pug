@@ -5,7 +5,8 @@
       a(data-section='back').article-view__back-btn Назад
     .article-view__author-time
       if typeof author === "object"
-        .article-view__author #{author.login}
+        .article-view__author 
+          a(href=`/user/${author.login}`) #{author.login}
       else
         .article-view__author Ошибка
       .article-view__time #{datetime}

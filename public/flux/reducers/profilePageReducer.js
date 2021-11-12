@@ -75,6 +75,9 @@ export default function profilePageReducer(
       return {
         ...state,
         cards: [],
+        isLoading: false,
+        idLastLoaded: '',
+        isEndFound: false,
       };
     case profilePageTypes.SET_USER_INFO: // смена пользователя
       return {

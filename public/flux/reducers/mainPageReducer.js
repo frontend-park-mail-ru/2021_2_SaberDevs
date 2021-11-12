@@ -1,17 +1,5 @@
 import {mainPageTypes} from '../types.js';
 
-const headerLinksOnLogin = [
-  {name: 'Профиль', section: 'profilePage', href: '/profile'},
-  {section: 'logout', name: 'Выход'},
-];
-
-const headerLinksOnLogout = [
-  {name: 'Зарегистрироваться', section: 'signupModal'},
-  {name: 'Войти', section: 'loginModal'},
-];
-
-const sideBarLinks = ['hello'];
-
 const endOfFeedMarkerID = 'end';
 
 /**
@@ -36,11 +24,8 @@ const InitialMainPageState = {
   isLoading: false,              // отправлен ли запрос на сервер
   idLastLoaded: '',              // запоминаем последнюю загруженную запись
   lastScrollPos: 0,              // скрол для возврата к той же записи
-  login: '',                     // для какого пользователя подборка
   cards: [],                     // массив загруженных новостей
   isEndFound: false,
-  headerLinks: headerLinksOnLogout,
-  sideBarLinks,
 };
 
 /**
@@ -90,14 +75,10 @@ export default function mainPageReducer(state = InitialMainPageState, action) {
       return {
         ...state,
         cards: [],
-      };
-    case mainPageTypes.TOGGLE_AUTH:
-      return {
-        ...state,
-        isAuthenticated: action.payload.isAuthenticated,
-        login: action.payload.login,
-        headerLinks: action.payload.isAuthenticated ?
-          headerLinksOnLogin : headerLinksOnLogout,
+        isLoading: false,
+        idLastLoaded: '',
+        lastScrollPos: 0,
+        isEndFound: false,
       };
   }
   return state;

@@ -72,7 +72,7 @@ export default class ProfileSettingsPage extends BasePageMV {
                   redirect('/profile');
                   return;
                 }
-                if (status === 424) {
+                if (status === Ajax.STATUS.invalidSession) {
                   ModalTemplates.informativeMsg(
                       'Сессия устарела', 'Пройдите авторизацию',
                   );

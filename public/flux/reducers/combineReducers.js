@@ -30,13 +30,9 @@ export default function combineReducers(reducers) {
             printState = {};
             Object.assign(printState, state[reducer]);
             delete printState.cards;
-            delete printState.headerLinks;
-            delete printState.sideBarLinks;
             printNewState = {};
             Object.assign(printNewState, newState);
             delete printNewState.cards;
-            delete printNewState.headerLinks;
-            delete printNewState.sideBarLinks;
           }
           console.log(`${reducer} | action: , ${action.type}
           \t| prev state:\n${JSON.stringify(printState)}

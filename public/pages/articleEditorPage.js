@@ -61,7 +61,8 @@ export default class EditorPage extends BasePageMV {
    * @return {string}
    */
   redirect(currentPath) {
-    if (store.getState().authorization.login !== '') {
+    if (store.getState().authorization.login !== '' ||
+      currentPath === '/editor') {
       return '';
     }
     return '/login';

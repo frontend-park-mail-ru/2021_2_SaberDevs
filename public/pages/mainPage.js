@@ -41,6 +41,7 @@ function newsFeedEndReachEventAction({currentTarget}) {
  */
 async function uploadNextCards() {
   const state = store.getState().mainPage;
+  const stateAuth = store.getState().authorization;
 
   if (state.isEndFound || state.isLoading) {
     if (ajaxDebug) {
@@ -72,7 +73,7 @@ async function uploadNextCards() {
   await Ajax.get({
     url: `/articles/feed?idLastLoaded=${state.idLastLoaded || ''}` +
       '&login=' +
-      (state.login === '' ? 'all' : state.login),
+      (stateAuth.isAuthenticated ? stateAuth.login : 'all'),
   })
       .then(({status, response}) => {
         if (status === Ajax.STATUS.ok) {

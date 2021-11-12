@@ -1,6 +1,7 @@
 import {authorizationTypes} from '../types.js';
 
 const InitialUserState = {
+  isAuthenticated: false,
   login: '',
   avatarUrl: `../static/img/users/user.jpg`,
   firstName: 'UNAUTHORIZED',
@@ -17,9 +18,14 @@ const InitialUserState = {
 export default function authorizeReducer(state = InitialUserState, action) {
   switch (action.type) {
     case authorizationTypes.LOGIN:
+      if (action.payload.login === '') {
+        console.warn('Trying to set an empty login. LOGIN action ignored');
+        return state;
+      }
       return {
         ...state,
         ...action.payload,
+        isAuthenticated: true,
       };
     case authorizationTypes.LOGOUT:
       return InitialUserState;

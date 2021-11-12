@@ -76,7 +76,7 @@ linksController
     .register(
         'logout',
         () => {
-          if (store.getState().mainPage.isAuthenticated) {
+          if (store.getState().authorization.isAuthenticated) {
             logoutRequest();
           }
         },

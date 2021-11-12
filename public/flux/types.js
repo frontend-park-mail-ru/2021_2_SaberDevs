@@ -32,7 +32,6 @@ export const mainPageTypes = {
   ALLOW_CARDS_UPLOADING: 'ALLOW_CARDS_UPLOADING',
   SET_LOADING_FLAG: 'SET_LOADING_FLAG',
   UNSET_LOADING_FLAG: 'UNSET_LOADING_FLAG',
-  TOGGLE_AUTH: 'TOGGLE_AUTH',
 };
 
 export const profilePageTypes = {

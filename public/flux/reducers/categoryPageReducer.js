@@ -82,6 +82,10 @@ export default function categoryPageReducer(
       return {
         ...state,
         cards: [],
+        isLoading: false,
+        idLastLoaded: '',
+        lastScrollPos: 0,
+        isEndFound: false,
       };
     case categoryPageTypes.SELECT_CATEGORY_ARTICLES_TAG:
       return {

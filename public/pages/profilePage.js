@@ -108,6 +108,19 @@ export default class ProfilePage extends BasePageMV {
       }
     });
 
+    // Если были на своей страницы и сделали вход,
+    // Перерисовываем страницу как профиль
+    store.subscribe(authorizationTypes.LOGIN, () => {
+      if (this.isActive()) {
+        console.log('[ProfilePage] Login reaction');
+        if (document.URL.indexOf('/profile') === -1 &&
+            store.getState().profilePage.user.login ===
+            store.getState().authorization.login) {
+          Utils.redirect('/profile');
+        }
+      }
+    });
+
     // Обновить ленту, если есть изменения в статье или пользователь
     // опубликовал новую
     store.subscribe(editorTypes.PUBLISH_ARTICLE, () => {
@@ -206,13 +219,15 @@ export default class ProfilePage extends BasePageMV {
    * @return {string}
    */
   redirect(currentPath) {
-    const profileUser = store.getState().profilePage.user;
     const authorizedUser = store.getState().authorization;
 
-    if (authorizedUser.login !== profileUser.login ||
-      store.getState().authorization.login !== '') {
-      return '';
+    // редирект с user/<login> на /profile обрабатыватеся
+    // в самой страничке
+
+    if (document.URL.indexOf('/profile') !== -1 &&
+        !authorizedUser.isAuthenticated) {
+      return '/login';
     }
-    return '/login';
+    return '';
   }
 }
