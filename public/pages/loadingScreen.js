@@ -1,12 +1,5 @@
 import loadingComponent from '../components/loading/loading.pug.js';
 
-// про requestAnimationFrame:
-// https://developer.mozilla.org/ru/docs/Web/API/window/requestAnimationFrame
-// о важности performace now()
-// https://coderoad.ru/21316084/requestAnimationFrame-что-именно-такое-timestamp
-// про прогресс-бар
-// https://html-plus.in.ua/use-progress-element-in-css-js/
-
 const SPEED_MIN_LIMIT = 100;  // 1000 frames ~ 10% of progress
 const INITIAL_SPEED = 400;  // 1000 frames ~ 40% of progress
 const PROGRESS_STOP_AT = 75;  // %
@@ -24,7 +17,6 @@ export default class LoadingPage {
     this.progressValue = 0;
     this.root = document.createElement('div');
     this.root.className = 'background';
-    // TODO: нормальные стили по БЭМу. Смотреть ссылки выше
     this.root.innerHTML = loadingComponent({
       progressValue: this.progressValue,
     });

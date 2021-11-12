@@ -1,7 +1,11 @@
 import BaseComponent from '../_basic/baseComponent.js';
 import FeedView from './feedView.js';
 
+import {redirect} from '../../utils.js';
+
 import store from '../../flux/store.js';
+import {profilePageActions} from '../../flux/actions.js';
+import readerActions from '../../flux/actions/readerActions.js';
 
 /**
  * @typedef {Object} Card
@@ -21,6 +25,49 @@ import store from '../../flux/store.js';
 
 const resetDoNotUploadTime = 6000;  // anti- brutforce
 
+/**
+ * Создает обработчики клика на разные участки карточки
+ * @param {HTMLElement} where место, где искать смонтированные шаблонизатором
+ * карточки
+ * @param {Array<Card>} cards массив с данными, по которым
+ * карточки монтировались
+ */
+function addClickListenersOnCards(where, cards) {
+  cards.forEach((card) => {
+    const cardDiv = where.querySelector('#card' + card.id);
+    if (cardDiv === null) {
+      console.warn('{Feed} card with id', card.id, 'has mounted with error');
+      return;
+    }
+
+    cardDiv.addEventListener('click', (e) => {
+      e.preventDefault();
+      const currentTarget = e.currentTarget;
+      console.warn(currentTarget.id);
+      store.dispatch(readerActions.setArticleLoading(card));
+      redirect('/article/' + currentTarget.id.replace('card', ''));
+    });
+
+    cardDiv.querySelector('.author-time__author-name').addEventListener(
+        'click',
+        (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          store.dispatch(profilePageActions.setUserInfo(card.author));
+          redirect('/user/' + e.currentTarget.textContent);
+        },
+    );
+
+    cardDiv.querySelectorAll('.tags__tag').forEach((t) => t.addEventListener(
+        'click',
+        (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          console.warn('TODO: клик по тегу', e.currentTarget.textContent);
+        },
+    ));
+  });
+}
 /**
  * ViewModel-компонент соответсвующего View
  * @class Feed
@@ -85,6 +132,10 @@ export default class Feed extends BaseComponent {
           }
 
           this.view.addCards(cards);
+          addClickListenersOnCards(
+              this.view.root.querySelector(`.feed__cards`),
+              cards,
+          );
 
           const endFound = store.getState()[storeName].isEndFound;
           if (endFound) {
@@ -129,6 +180,10 @@ export default class Feed extends BaseComponent {
     const preview = this.innerComponent.render().outerHTML;
     const cards = store.getState()[this.storeName].cards;
     this.root = this.view.render(preview, cards);
+    addClickListenersOnCards(
+        this.view.root.querySelector(`.feed__cards`),
+        cards,
+    );
 
     if (store.getState()[this.storeName].isEndFound) {
       this.view.hideLoadingAnimation();

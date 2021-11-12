@@ -52,8 +52,7 @@ export default class ProfileCard extends BaseComponent {
    * @property {number?} score
    */
   setUser(user) {
-    // Object.assign(this.root, this.view.render(user));
     this.root.innerHTML = '';
-    this.root.appendChild(this.render(user).firstChild);
+    this.root.appendChild(this.view.render(user).firstChild);
   }
 }

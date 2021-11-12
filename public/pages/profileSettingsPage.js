@@ -1,10 +1,15 @@
 import BasePageMV from './basePageMV.js';
 import ProfileSettingsPageView from './profileSettingsPageView.js';
 
-import store from '../flux/store.js';
-import {changePageActions} from '../flux/actions.js';
+import ModalTemplates from '../components/modal/modalTemplates.js';
 
-// import Ajax from '../modules/ajax.js';
+import store from '../flux/store.js';
+import {changePageActions, authorizationActions} from '../flux/actions.js';
+import {authorizationTypes} from '../flux/types.js';
+
+import Ajax from '../modules/ajax.js';
+import {redirect} from '../utils.js';
+
 
 // ///////////////////////////////// //
 //
@@ -22,6 +27,17 @@ export default class ProfileSettingsPage extends BasePageMV {
   constructor(root) {
     super(root);
     this.view = new ProfileSettingsPageView(root);
+
+    // /////////////////////////////////
+    //
+    //        Communication
+    //
+    // /////////////////////////////////
+    store.subscribe(authorizationTypes.LOGOUT, () => {
+      if (this.isActive()) {
+        redirect('/');
+      }
+    });
   }
 
   /**
@@ -29,6 +45,34 @@ export default class ProfileSettingsPage extends BasePageMV {
    */
   show() {
     super.show();
+
+    const form = this.view.root.querySelector('form');
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      // TODO: смена пароля
+      // const password = form.querySelector('input[name="password"]');
+      const firstName = form.querySelector('input[name="username"]')?.value;
+      const lastName = form.querySelector('input[name="surname"]')?.value;
+      Ajax.post({
+        url: '/user/profile/update',
+        body: {
+          // password,
+          firstName,
+          lastName,
+        },
+      })
+          .then(
+              ({status, response}) => {
+                if (status === Ajax.STATUS.ok) {
+                  store.dispatch(authorizationActions.login(response.data));
+                  return;
+                }
+                // В случае ошибки
+                ModalTemplates.netOrServerError(status, response.msg);
+              },
+          ).catch((error) => console.warn(error));
+    });
+
     store.dispatch(
         changePageActions.changePage(
             'profileSettings',

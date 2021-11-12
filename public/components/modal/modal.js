@@ -12,6 +12,8 @@ let isDestroyed = false;
 let okBtnDispay = true;
 let cancelBtnDispay = true;
 let docTitle = '';
+let clearOkListener = () => {};
+let clearCancelListener = () => {};
 
 /**
  * @param {object} props
@@ -197,16 +199,21 @@ const Modal = {
     modalDiv.innerHTML = fillDefaultModal(props);
 
     const okBtn = modalDiv.querySelector('#modal__btn-ok');
-    okBtn.addEventListener('click', (e) => {
+    const activeOkEventListener = (e) => {
       e.preventDefault();
       props.onConfirm ? props.onConfirm() : console.log('Modal: confirm');
-    });
+    };
+    okBtn.addEventListener('click', activeOkEventListener);
+    clearOkListener = () => removeEventListener('click', activeOkEventListener);
 
     const cancelBtn = modalDiv.querySelector('#modal__btn-cancel');
-    cancelBtn.addEventListener('click', (e) => {
+    const activeCancelEventListener = (e) => {
       e.preventDefault();
       props.onDecline ? props.onDecline() : console.log('Modal: decline');
-    });
+    };
+    cancelBtn.addEventListener('click', activeCancelEventListener);
+    clearCancelListener = () =>
+      removeEventListener('click', activeOkEventListener);
 
     if (!props.isEnteractive) {
       okBtn.style.display = 'none';
@@ -249,6 +256,29 @@ const Modal = {
   changeBtnCancelSign(text) {
     const cancelBtn = modalDiv.querySelector('#modal__btn-cancel');
     cancelBtn.innerText = text;
+  },
+
+  setOkBtnAction(onConfirm) {
+    clearOkListener();
+    const okBtn = modalDiv.querySelector('#modal__btn-ok');
+    const activeOkEventListener = (e) => {
+      e.preventDefault();
+      onConfirm ? onConfirm() : console.log('Modal: confirm');
+    };
+    okBtn.addEventListener('click', activeOkEventListener);
+    clearOkListener = () => removeEventListener('click', activeOkEventListener);
+  },
+
+  setCancelBtnAction(onDecline) {
+    clearCancelListener();
+    const cancelBtn = modalDiv.querySelector('#modal__btn-cancel');
+    const activeCancelEventListener = (e) => {
+      e.preventDefault();
+      onDecline ? onDecline() : console.log('Modal: confirm');
+    };
+    cancelBtn.addEventListener('click', activeCancelEventListener);
+    clearCancelListener = () =>
+      removeEventListener('click', activeCancelEventListener);
   },
 };
 

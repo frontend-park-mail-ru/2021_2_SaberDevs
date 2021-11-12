@@ -24,7 +24,6 @@ import {cookieLogin} from './modules/ajaxRequests.js';
 
 // flux store
 import store from './flux/store.js';
-import editorActions from './flux/actions/editorActions.js';
 
 // ServiceWorker
 const SWJSFile = 'serviceWorker.js';
@@ -85,13 +84,6 @@ linksController
     .register(
         'back',
         window.history.back,
-    )
-    // TODO: перенести в MV sidebar
-    .register(
-        'article-create',
-        () => {
-          store.dispatch(editorActions.createArticle());
-        },
     );
 
 loadingScreen.start();

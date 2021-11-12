@@ -23,10 +23,6 @@ export default class ReaderPage extends BasePageMV {
    */
   show() {
     super.show();
-    // TODO: сходить здесь в сеть задиспатчить
-    // const state = store.getState().reader;
-    // const article = state[state.currentId];
-
     // берем id из урла
     const idUrlParam = document.URL.slice(document.URL.indexOf('article/') + 8);
     console.warn('[ArticleReaderPage] id from Url ', document.URL, idUrlParam);

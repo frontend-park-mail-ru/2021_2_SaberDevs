@@ -142,6 +142,7 @@ const cacheUrls = [
   './components/profileCard/profileCardView.js',
   './components/modal/modal.js',
   './components/modal/modal.pug.js',
+  './components/modal/modalTemplates.js',
   './components/modal/serviceWarning.js',
   './components/modal/signupModal.js',
   './components/modal/serviceWarning/serviceWarning.js',

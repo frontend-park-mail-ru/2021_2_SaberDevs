@@ -3,7 +3,6 @@ import createPage from './_createPage.js';
 
 import Feed from '../components/feed/feed.js';
 import ProfileCard from '../components/profileCard/profileCard.js';
-import createToMenuBtn from '../components/buttonToMenu.js';
 
 import {profilePageTypes} from '../flux/types.js';
 import {profilePageActions} from '../flux/actions.js';
@@ -40,7 +39,6 @@ export default class ProfilePageView extends BasePageView {
   render() {
     super.render();
     this.root.appendChild(createPage(
-        createToMenuBtn(),
         this.pageComponents.profileCard,
         this.pageComponents.feed,
     ));

@@ -7,6 +7,7 @@ import buttonNavComponent from './buttonNav.pug.js';
 import store from '../../flux/store.js';
 import {mainPageActions} from '../../flux/actions.js';
 import {authorizationTypes} from '../../flux/types.js';
+import editorActions from '../../flux/actions/editorActions.js';
 
 /**
  * ViewModel-компонент соответсвующего View
@@ -86,6 +87,10 @@ export default class Sidebar extends BaseComponent {
   setSidebarUserPreview() {
     const state = store.getState().authorization;
     this.view.setTopBlockContent(userPreviewComponent(state));
+    this.view.root.querySelector('a.sidebar__nav-item').addEventListener(
+        'click',
+        () => store.dispatch(editorActions.createArticle()),
+    );
   }
 
   /**

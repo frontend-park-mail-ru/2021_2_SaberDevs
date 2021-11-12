@@ -2,12 +2,6 @@ import BaseComponentView from '../_basic/baseComponentView.js';
 import cardComponent from './card.pug.js';
 import feedComponent from './feed.pug.js';
 
-import {redirect} from '../../utils.js';
-
-import store from '../../flux/store.js';
-import {profilePageActions} from '../../flux/actions.js';
-import readerActions from '../../flux/actions/readerActions.js';
-
 /**
  * Описание сущности карточки в новостной ленте
  * @typedef {Object} Card
@@ -31,40 +25,10 @@ import readerActions from '../../flux/actions/readerActions.js';
  * @param {Array<Card>} cards - Массив карточек
  */
 function composeCards(root, cards) {
-  // TODO: вынести в MV, карточки получить квериселектороллом
   cards.forEach((element) => {
     const cardWrapper = document.createElement('div');
     cardWrapper.innerHTML = cardComponent(element);
-    const cardDiv = cardWrapper.firstChild;
-
-    cardDiv.addEventListener('click', (e) => {
-      e.preventDefault();
-      const currentTarget = e.currentTarget;
-      console.warn(currentTarget.id);
-      store.dispatch(readerActions.setArticleLoading(element));
-      redirect('/article/' + currentTarget.id);
-    });
-
-    cardDiv.querySelector('.author-time__author-name').addEventListener(
-        'click',
-        (e) => {
-          e.preventDefault();
-          e.stopPropagation();
-          store.dispatch(profilePageActions.setUserInfo(element.author));
-          redirect('/user/' + e.currentTarget.textContent);
-        },
-    );
-
-    cardDiv.querySelectorAll('.tags__tag').forEach((t) => t.addEventListener(
-        'click',
-        (e) => {
-          e.preventDefault();
-          e.stopPropagation();
-          console.warn('TODO: клик по тегу', e.currentTarget.textContent);
-        },
-    ));
-
-    root.appendChild(cardDiv);
+    root.appendChild(cardWrapper.firstChild);
   });
 }
 
@@ -101,9 +65,9 @@ export default class FeedView extends BaseComponentView {
   }
 
   /**
-    * @param {Array.Card} cards
     * Восстанавливает видимость индикатора загрузки,
     * добавляет карточки вниз ленты
+    * @param {Array.Card} cards
     */
   addCards(cards) {
     const cardsDiv = this.root.querySelector(`.feed__cards`);

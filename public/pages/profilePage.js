@@ -4,7 +4,7 @@ import ProfilePageView from './profilePageView.js';
 import store from '../flux/store.js';
 import {changePageActions, profilePageActions} from '../flux/actions.js';
 
-import Modal from '../components/modal/modal.js';
+import {showModalNetOrServerError} from '../components/modal/modalTemplates.js';
 
 import Ajax from '../modules/ajax.js';
 import Utils from '../utils.js';
@@ -66,7 +66,6 @@ async function uploadNextArticles() {
   store.dispatch(profilePageActions.setArticlesLoadingFlag());
 
   await Ajax.get({
-    // TODO: get login from profilePageState.user
     url: `/articles/author?idLastLoaded=${state.idLastLoaded}` +
     `&login=${state.user.login}`,
   })
@@ -75,25 +74,12 @@ async function uploadNextArticles() {
           onLoad(response.data);
           return;
         }
-
-        if (status / 500 === 1) {
-          Modal.setTitle(`Сервис временно не доступен: ${status}`);
-        }
-        if (status / 400 === 1) {
-          Modal.setTitle(/* пользовательская */`Ошибка ${status}`);
-        }
-        Modal.setContent(response.msg);
-        Modal.open(false);
+        showModalNetOrServerError(status, response.msg);
       })
       .catch((err) => console.warn(err.message));
   store.dispatch(profilePageActions.unsetArticlesLoadingFlag());
 }
 
-// ///////////////////////////////// //
-//
-//              Profile Page
-//
-// ///////////////////////////////// //
 
 /**
  * @class ProfilePage
@@ -139,7 +125,15 @@ export default class ProfilePage extends BasePageMV {
           login: userUrlParam,
         }));
         store.dispatch(profilePageActions.clearArticles());
-        // TODO: сходить в сеть за юзердатой
+        Ajax.get({url: `/user?user=${userUrlParam}`})
+            .then(({status, response}) => {
+              if (status === Ajax.STATUS.ok) {
+                store.dispatch(profilePageActions.setUserInfo(response.data));
+                return;
+              }
+              showModalNetOrServerError(status, response.msg);
+            })
+            .catch((err) => console.warn(err.message));
       }
     }
 
@@ -158,11 +152,9 @@ export default class ProfilePage extends BasePageMV {
     if (!scrollable) {
       console.warn('[ProfilePage] нет дивака .content');
     } else {
-      console.warn('[ProfilePage] newsFeedEndReachEventAction подключен');
       scrollable.addEventListener(
           'scroll',
           newsFeedEndReachEventAction,
-          // () => {console.warn('scroll trigger shit')}
       );
     }
   }
@@ -176,7 +168,6 @@ export default class ProfilePage extends BasePageMV {
     if (!scrollable) {
       console.warn('[ProfilePage] нет дивака .content');
     } else {
-      console.warn('[ProfilePage] newsFeedEndReachEventAction удален');
       scrollable.removeEventListener(
           'scroll',
           newsFeedEndReachEventAction,

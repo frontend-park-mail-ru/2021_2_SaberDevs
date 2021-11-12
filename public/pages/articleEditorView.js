@@ -25,15 +25,6 @@ export default class EditorView extends BasePageView {
     };
   }
 
-  // TODO:
-  /**
-    * Перерисовать главную страницу
-    * @param {Object} existingArticle
-    * @property {String} title
-    * @property {String} text
-    * @property {Array<string>} tags
-    */
-
   /**
    * Отрисовка страницы
    */
