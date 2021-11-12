@@ -73,6 +73,7 @@ export default class ProfileSettingsPage extends BasePageMV {
                   return;
                 }
                 if (status === Ajax.STATUS.invalidSession) {
+                  store.dispatch(authorizationActions.logout());
                   ModalTemplates.informativeMsg(
                       'Сессия устарела', 'Пройдите авторизацию',
                   );

@@ -5,6 +5,8 @@ import store from '../flux/store.js';
 import readerActions from '../flux/actions/readerActions.js';
 
 import Ajax from '../modules/ajax.js';
+import {showModalNetOrServerError} from '../components/modal/modalTemplates.js';
+
 /**
  * @class ReaderPage
  */
@@ -36,15 +38,7 @@ export default class ReaderPage extends BasePageMV {
             store.dispatch(readerActions.openArticle(response.data.id));
             return;
           }
-
-          if (status / 500 === 1) {
-            Modal.setTitle(`Сервис временно не доступен: ${status}`);
-          }
-          if (status / 400 === 1) {
-            Modal.setTitle(/* пользовательская */`Ошибка ${status}`);
-          }
-          Modal.setContent(response.msg);
-          Modal.open(false);
+          showModalNetOrServerError(status, response.msg);
         })
         .catch((err) => console.warn(err.message));
   }

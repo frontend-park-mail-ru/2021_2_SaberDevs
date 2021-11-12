@@ -18,6 +18,7 @@ const cacheUrls = [
   './static/styles/_variables.scss',
   './static/styles/pages/_article-create.scss',
   './static/styles/pages/_article-view.scss',
+  './static/styles/pages/_categories.scss',
   './static/styles/pages/_feed.scss',
   './static/styles/pages/_not-found.scss',
   './static/styles/pages/_profile.scss',
@@ -161,6 +162,9 @@ const cacheUrls = [
   './components/editor/articleEditor.pug.js',
   './components/editor/editor.js',
   './components/editor/editorView.js',
+  './components/editor/formArticleEditorRow.pug.js',
+  './components/editor/formArticleEditorTextarea.pug.js',
+  './components/categories/categories.pug.js',
   './common/regexp.js',
 ];
 

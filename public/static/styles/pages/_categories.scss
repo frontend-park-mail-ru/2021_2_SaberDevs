@@ -1,0 +1,71 @@
+$categories-margin: 20px;
+
+.categories {
+  @include col;
+
+  width: 50%;
+
+  &__title {
+    font-size: 48px;
+  }
+
+  &__search {
+    @include row;
+
+    justify-content: center;
+    width: 100%;
+  }
+
+  &__search-input {
+    margin-right: 10px;
+    border: $border;
+    border-radius: $border-radius;
+    padding: 0 10px;
+    width: 100%;
+    height: 100%;
+    font-size: 18px;
+    color: $color-primary;
+    background-color: $color-elements;
+  }
+
+  &__search-block {
+    @include col;
+
+    margin-top: 30px;
+    margin-bottom: $categories-margin;
+    width: 100%;
+  }
+
+  &__tags {
+    margin-top: 20px;
+    width: 100%;
+  }
+
+  &__tag {
+    margin: 5px;
+    border: 2px solid $color-primary;
+    font-weight: $font-thick;
+    text-shadow: 2px 2px 2px $color-primary;
+
+    &_mark {
+      color: $color-secondary;
+    }
+
+    &_choosen {
+      box-shadow: 0 0 2px 2px $color-primary;
+    }
+  }
+
+  &__choose-bar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    overflow-y: scroll;
+    margin-bottom: $categories-margin;
+    border: $border;
+    border-radius: $border-radius;
+    width: 100%;
+    height: 80px;
+    background-color: $color-elements;
+  }
+}

@@ -4,7 +4,6 @@
 //
 // ///////////////////////////////// //
 
-// не работает()
 // const ajaxDebug = process && process.env.ajaxDebug === 'true';
 const disableSW = true;
 

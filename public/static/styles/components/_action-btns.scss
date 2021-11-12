@@ -33,11 +33,29 @@
   }
 
   &__trash-icon {
-    background: $img-icon-share;
+    background: $img-icon-trash;
     background-size: cover;
 
     &:hover {
-      background-image: $img-icon-share-hover;
+      background-image: $img-icon-trash-hover;
+    }
+  }
+
+  &__search-icon {
+    background: $img-icon-search;
+    background-size: cover;
+
+    &:hover {
+      background-image: $img-icon-search-hover;
+    }
+  }
+
+  &__send-icon {
+    background: $img-icon-send;
+    background-size: cover;
+
+    &:hover {
+      opacity: 0.5;
     }
   }
 }

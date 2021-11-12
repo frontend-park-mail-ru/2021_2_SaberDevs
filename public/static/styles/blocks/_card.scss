@@ -1,7 +1,7 @@
 $card-min-height: 300px;
 $card-padding: 30px;
 $card-title-margin-bottom: 30px;
-$card-tags-font-size: 14px;
+$tag-margin-right: 5px;
 
 .card {
   @include col;
@@ -20,18 +20,23 @@ $card-tags-font-size: 14px;
   }
 
   &__tag {
-    font-size: $card-tags-font-size;
+    margin-right: $tag-margin-right;
+    font-size: $font-size-small;
   }
 
   &__title {
     margin-bottom: $card-title-margin-bottom;
     font-size: $title-font-size;
     text-align: center;
+
+    &:hover {
+      text-decoration: underline;
+    }
   }
 
   &__description {
     font-weight: $font-thin;
-    font-size: $text-font-size;
+    font-size: $font-size-normal;
   }
 
   &__content {
@@ -41,7 +46,45 @@ $card-tags-font-size: 14px;
   &__bottom {
     @include row;
 
-    justify-content: space-between;
+    justify-content: flex-end;
     width: 100%;
+  }
+
+  &__author {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  &__author-photo {
+    margin-right: 10px;
+    width: 50px;
+    height: 50px;
+  }
+
+  &__time {
+    margin-bottom: 5px;
+    font-size: $font-size-normal;
+  }
+
+  &:hover {
+    transform: translateY(-20px);
+    transition: transform 0.5s ease, -webkit-transform 0.5s ease, -moz-transform 0.5s ease;
+    cursor: pointer;
+  }
+}
+
+.author-name {
+  @include col;
+
+  align-items: flex-start;
+  min-width: 20%;
+
+  &__username {
+    font-size: $font-size-small;
+  }
+
+  &__login {
+    font-size: $font-size-normal;
   }
 }

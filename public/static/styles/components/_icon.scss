@@ -1,7 +1,6 @@
 $icon-size: 40px;
 $icon-font-size: 24px;
 $icon-small-size: 25px;
-$icon-small-font-size: 20px;
 $user-img: 60px;
 
 .icon {
@@ -14,7 +13,7 @@ $user-img: 60px;
   }
 
   &__text {
-    font-size: $icon-font-size;
+    font-size: $font-size-normal;
   }
 }
 
@@ -29,7 +28,7 @@ $user-img: 60px;
   }
 
   &__text {
-    font-size: $icon-small-font-size;
+    font-size: $font-size-normal;
   }
 }
 

@@ -19,8 +19,10 @@ $btn-padding: 10px 20px;
     font-size: $btn-font-size;
     color: $color-elements;
     background-color: $color-secondary;
+    cursor: pointer;
 
     &:hover {
+      background-color: $color-secondary;
       opacity: $button-opacity;
     }
 

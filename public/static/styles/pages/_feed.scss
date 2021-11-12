@@ -1,8 +1,3 @@
-$card-author-font-size: 18px;
-$card-time-font-size: 14px;
-$card-author-margin-bottom: 5px;
-$card-author-time-margin-left: 20px;
-
 .feed {
   @include col;
 
@@ -24,22 +19,5 @@ $card-author-time-margin-left: 20px;
 
   &::-webkit-scrollbar {
     width: 0;
-  }
-}
-
-.author-time {
-  @include col;
-
-  align-items: flex-end;
-  min-width: 20%;
-
-  &__author-name {
-    margin-bottom: $card-author-margin-bottom;
-    margin-left: $card-author-time-margin-left;
-    font-size: $card-author-font-size;
-  }
-
-  &__time {
-    font-size: $card-time-font-size;
   }
 }

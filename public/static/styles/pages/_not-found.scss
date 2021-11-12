@@ -56,6 +56,7 @@ $page-404-back-btn-font-size: 28px;
     transform: translateY(0);
     transition: 0.4s ease-out;
     animation: slideup 1s ease-out 0.5s forwards;
+    cursor: pointer;
 
     &:hover {
       margin-top: -20px;

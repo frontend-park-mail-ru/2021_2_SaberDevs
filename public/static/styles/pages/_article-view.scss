@@ -10,6 +10,7 @@ $article-title-margin-bottom: 15px;
 $article-text-margin-bottom: 20px;
 $article-main-picture-margin: 15px 0;
 $article-tag-margin-right: 15px;
+$photo-size: 50px;
 
 .article-view {
   @include col;
@@ -94,5 +95,33 @@ $article-tag-margin-right: 15px;
 
   &__time {
     font-size: $article-time-font-size;
+  }
+
+  &__add-comment {
+    @include row;
+  }
+
+  &__author-photo {
+    margin-right: 15px;
+    width: $photo-size;
+    height: $photo-size;
+  }
+
+  &__send-comment-btn {
+    width: 80px;
+    height: 80px;
+  }
+
+  &__comment-input {
+    border: 3px solid $color-elements;
+    border-radius: $border-radius;
+    padding: 15px;
+    width: 100%;
+    font-size: $comments-input-font-size;
+    background-color: $color-elements;
+
+    &:hover {
+      border: 3px solid $color-secondary;
+    }
   }
 }

@@ -1,6 +1,11 @@
 button {
   border-style: none;
   border-radius: 10px;
+  background-color: transparent;
+
+  &:hover {
+    background-color: transparent;
+  }
 }
 
 a,
@@ -17,6 +22,7 @@ input:focus {
   outline: none;
   border: $border;
   box-shadow: none;
+  font-family: $font-primary;
 }
 
 textarea,
@@ -26,4 +32,5 @@ textarea:focus {
   outline: none;
   border-color: $color-primary;
   box-shadow: none;
+  font-family: $font-primary;
 }

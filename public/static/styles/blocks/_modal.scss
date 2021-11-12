@@ -1,5 +1,5 @@
 $modal-bg: rgba(0, 0, 0, 0.7);
-$modal-title-font-size: 72px;
+$modal-title-font-size: 48px;
 $label-margin: 10px;
 $title-margin-bottom: 20px;
 $btn-box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
@@ -37,6 +37,8 @@ $window-filter: drop-shadow(0 0 10px rgba(0, 0, 0, 0.5));
 
   &__content {
     @include col;
+
+    font-size: $font-size-normal;
   }
 
   &__header {
@@ -61,18 +63,31 @@ $window-filter: drop-shadow(0 0 10px rgba(0, 0, 0, 0.5));
 
   &__footer {
     @include row;
+
+    justify-content: center;
+    margin-top: 15px;
   }
 
   &__btn-ok {
-    background-color: rgb(255, 0, 0);
+    background-color: $color-secondary;
   }
 
   &__btn {
-    background-color: rgb(255, 0, 0);
+    border: $border;
+    border-radius: $border-radius;
+    padding: 10px;
+    font-size: 24px;
+    color: $color-elements;
+    background-color: $color-secondary;
+
+    &:hover {
+      background-color: $color-secondary;
+      opacity: 0.5;
+    }
   }
 
   &__btn-cancel {
-    background-color: rgb(255, 0, 0);
+    background-color: $color-secondary;
   }
 
   &_open {

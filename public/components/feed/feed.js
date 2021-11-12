@@ -48,13 +48,13 @@ function addClickListenersOnCards(where, cards) {
       redirect('/article/' + currentTarget.id.replace('card', ''));
     });
 
-    cardDiv.querySelector('.author-time__author-name').addEventListener(
+    cardDiv.querySelector('.author-name').addEventListener(
         'click',
         (e) => {
           e.preventDefault();
           e.stopPropagation();
           store.dispatch(profilePageActions.setUserInfo(card.author));
-          redirect('/user/' + e.currentTarget.textContent);
+          redirect('/user/' + card.author.login);
         },
     );
 
