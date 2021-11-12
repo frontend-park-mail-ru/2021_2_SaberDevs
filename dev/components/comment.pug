@@ -1,14 +1,13 @@
-.comments__comment.comment
-    .comment__content
-        img.comment__author-photo(src=`${avatarUrl}`)
-        .comment__description
-            .comment__author-name #{firstName}
-            .comment__text #{text}
-    .comment__bottom
-        .action-btns
-            .icon-small.action-btns_m-right
-                .icon-small__text #{likes}
-                .action-btns__likes-icon.icon-small__img
-            .action-btns_m-right
-                button.comment__answer-btn Ответить
-            .comment__time #{datetime}
+.comment__content
+    img.comment__author-photo(src=`${avatarUrl}`)
+    .comment__description
+        .comment__author-name #{firstName}
+        .comment__text #{text}
+.comment__bottom
+    .action-btns
+        .icon-small.action-btns_m-right
+            .icon-small__text #{likes}
+            .action-btns__likes-icon.icon-small__img
+        .action-btns_m-right
+            button.comment__answer-btn Ответить
+        .comment__time #{datetime}

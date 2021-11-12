@@ -2,9 +2,11 @@ $submit-btn-font-size: 36px;
 $label-font-size: 30px;
 $input-font-size: 24px;
 $warning-font-size: 30px;
+$form-title-font-size: 64px;
 $submit-btn-padding: 10px 40px;
 $input-padding: 10px;
 $form-row-margin: 15px 0;
+$form-padding: 70px;
 
 .form {
   &__rows {
@@ -58,6 +60,26 @@ $form-row-margin: 15px 0;
   &__label {
     margin-right: $label-margin;
     font-size: $label-font-size;
+  }
+
+  &__title {
+    font-size: $form-title-font-size;
+  }
+
+  &__page {
+    @include col;
+
+    justify-content: center;
+    border-radius: 30px;
+    padding: $form-padding;
+    background-color: $color-secondary;
+
+    &_bg {
+      @include center;
+
+      background: $color-primary;
+      background-size: cover;
+    }
   }
 }
 

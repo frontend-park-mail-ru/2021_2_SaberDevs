@@ -1,8 +1,10 @@
 .preview
     .preview__top
-        .author-time
-            a.author-time__author-name(href=`${authorUrl}`) #{authorName}
-            .author-time__time #{time}
+        .card__author
+          .author-name
+              .author-name__login #{login}
+              .author-name__username #{firstName} #{lastName}
+          img.card__author-photo(src=`${avatarUrl || 'static/img/users/user_icon_loading.svg'}`)
     .preview__content
         .tags
             if Array.isArray(tags)
@@ -11,9 +13,6 @@
         a(href='#').preview__title #{title}
         .preview__description #{text}
     .card__bottom
-        .card__author
-            img.card__author-photo(src=`${avatarUrl || 'static/img/users/user_icon_loading.svg'}`)
-            .card__author-username #{firstName} #{lastName} (#{login}) 
         .action-btns
             .icon.action-btns_m-right
                 .icon__text #{likes}

@@ -31,6 +31,7 @@ function fillDefaultModal(props) {
     console.log('[Modal] modal filling: ' + JSON.stringify(props));
   }
   const modal = modalComponent({
+    title: props.title || '',
     content: props.content || '',
     ok_sign: props.btnOkSign || 'Понятно',
     cancel_sign: props.btnCancelSign || 'Отмена',
@@ -126,6 +127,10 @@ const Modal = {
 
     const okBtn = modalDiv.querySelector('#modal__btn-ok');
     const cancelBtn = modalDiv.querySelector('#modal__btn-cancel');
+    okBtn.className = 'modal__btn-ok';
+    okBtn.classList.add('modal__btn');
+    cancelBtn.className = 'modal__btn-cancel';
+    cancelBtn.classList.add('modal__btn');
 
     if (!isEnteractive) {
       okBtn.style.display = 'none';

@@ -29,6 +29,7 @@
   }
 
   &__categories-title {
+    margin-right: 5px;
     font-size: $title-font-size;
   }
 
@@ -39,6 +40,10 @@
     &:hover {
       text-decoration: underline;
     }
+  }
+
+  &__categories-search {
+    @include row;
   }
 
   &__nav-item {

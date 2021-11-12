@@ -7,8 +7,10 @@
       .sidebar__nav-buttons#sidebarTopBlockContent !{topBlockContent}
   .sidebar__content
       .sidebar__categories
-          .sidebar__categories-title.sidebar__item
-            a(href='/categories') Категории
+          .sidebar__item.sidebar__categories-search
+            .sidebar__categories-title Категории
+            a(href='/categories')
+              button.action-btns__search-icon.icon__img
           .sidebar__categories-item.sidebar__item IT-Новости
           .sidebar__categories-item.sidebar__item UX-Дизайн
           .sidebar__categories-item.sidebar__item Разработка

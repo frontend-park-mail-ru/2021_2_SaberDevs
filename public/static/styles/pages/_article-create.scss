@@ -38,17 +38,6 @@ $article-create-trash-height: 40px;
     width: 100%;
   }
 
-  &__del-btn {
-    display: flex;
-    cursor: pointer;
-  }
-
-  &__clear-btn {
-    display: flex;
-    margin-left: auto;
-    cursor: pointer;
-  }
-
   &__add-tag {
     margin-left: $article-create-tag-margin-left;
     font-size: $article-create-add-tag-font-size;

@@ -49,4 +49,13 @@
       background-image: $img-icon-search-hover;
     }
   }
+
+  &__send-icon {
+    background: $img-icon-send;
+    background-size: cover;
+
+    &:hover {
+      opacity: 0.5;
+    }
+  }
 }

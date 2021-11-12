@@ -39,4 +39,8 @@ $preview-tags-font-size: 14px;
     font-size: $preview-tags-font-size;
     cursor: pointer;
   }
+
+  &__time {
+    font-size: $text-font-size;
+  }
 }

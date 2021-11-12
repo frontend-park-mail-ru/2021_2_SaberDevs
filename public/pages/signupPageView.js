@@ -18,6 +18,7 @@ export default class SignupPageView extends BasePageView {
    */
   constructor(root) {
     super(root);
+    this.title = null;
     this.formDiv = null;
     this.changeFormTypeBtn = null;
   }
@@ -35,9 +36,15 @@ export default class SignupPageView extends BasePageView {
     pageDiv.className = 'page';
     const contentDiv = document.createElement('div');
     contentDiv.className = 'content';
+    const bkgPage = document.createElement('div');
+    bkgPage.className = 'form__page_bg';
     const formDiv = document.createElement('div');
 
     // //////////////////////////////////
+
+    const formTitle = document.createElement('div');
+    formTitle.textContent = 'Вход';
+    formTitle.classList.add('form__title');
 
     // Элементы навигации
     const changeFormTypeBtn = document.createElement('a');
@@ -45,17 +52,21 @@ export default class SignupPageView extends BasePageView {
     changeFormTypeBtn.dataset.router = 'ignore';
 
     // форма
+    formDiv.classList.add('form__page');
+    formDiv.appendChild(formTitle);
     formDiv.appendChild(new SignupForm(false).render());
+    formDiv.appendChild(changeFormTypeBtn);
 
     // //////////////////////////////////
 
-    this.formDiv = formDiv;
+    this.title = formTitle;
     this.changeFormTypeBtn = changeFormTypeBtn;
+    this.formDiv = formDiv;
 
     // //////////////////////////////////
 
-    contentDiv.appendChild(formDiv);
-    contentDiv.appendChild(changeFormTypeBtn);
+    bkgPage.appendChild(formDiv);
+    contentDiv.appendChild(bkgPage);
     pageDiv.appendChild(contentDiv);
     screenDiv.appendChild(pageDiv);
     bkgDiv.appendChild(screenDiv);
@@ -72,9 +83,15 @@ export default class SignupPageView extends BasePageView {
       console.warn('[SignupPage] was not rendered yet');
       return;
     }
-    this.formDiv.innerHTML = '';
-    this.formDiv.appendChild(new SignupForm(showRegister).render());
+
+    this.title.textContent = showRegister ? 'Регистрация' : 'Вход';
     this.changeFormTypeBtn.textContent =
       showRegister ? 'У меня уже есть аккаунт' : 'Создать аккаунт';
+
+    this.formDiv.innerHTML = '';
+    this.formDiv.appendChild(this.title);
+    this.formDiv.appendChild(new SignupForm(showRegister).render());
+    this.formDiv.appendChild(this.changeFormTypeBtn);
+    this.formDiv.classList.add('form__page');
   }
 }

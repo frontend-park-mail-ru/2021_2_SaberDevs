@@ -45,7 +45,7 @@ function composeCards(root, cards) {
       redirect('/article/' + currentTarget.id);
     });
 
-    cardDiv.querySelector('.author-time__author-name').addEventListener(
+    cardDiv.querySelector('.card__author-photo').addEventListener(
         'click',
         (e) => {
           e.preventDefault();

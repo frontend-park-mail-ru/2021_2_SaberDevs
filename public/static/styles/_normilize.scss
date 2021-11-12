@@ -22,6 +22,7 @@ input:focus {
   outline: none;
   border: $border;
   box-shadow: none;
+  font-family: $font-primary;
 }
 
 textarea,
@@ -31,4 +32,5 @@ textarea:focus {
   outline: none;
   border-color: $color-primary;
   box-shadow: none;
+  font-family: $font-primary;
 }

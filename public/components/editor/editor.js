@@ -231,7 +231,8 @@ export default class Editor extends BaseComponent {
     this.root.querySelector('input[name="btn-submit"]').value = 'Создать';
     this.root.querySelector('.article-create__title').textContent =
       'Создание статьи';
-    this.root.querySelector('.article-create__del-btn').style.display = 'none';
+    this.root.querySelector('.article-create__clear-btn')
+        .style.display = 'flex';
   }
 
   /**

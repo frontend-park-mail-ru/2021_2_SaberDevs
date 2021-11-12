@@ -56,6 +56,7 @@ const cacheUrls = [
   './static/img/icons/mail.svg',
   './static/img/icons/search.svg',
   './static/img/icons/search_hover.svg',
+  './static/img/icons/send.svg',
   './static/img/icons/share.svg',
   './static/img/icons/share_hover.svg',
   './static/img/icons/trash.svg',

@@ -17,7 +17,6 @@ $categories-margin: 20px;
   }
 
   &__search-input {
-    margin-top: 10px;
     margin-right: 10px;
     border: $border;
     border-radius: $border-radius;
@@ -32,6 +31,7 @@ $categories-margin: 20px;
   &__search-block {
     @include col;
 
+    margin-top: 30px;
     margin-bottom: $categories-margin;
     width: 100%;
   }
@@ -43,11 +43,16 @@ $categories-margin: 20px;
 
   &__tag {
     margin: 5px;
-    border: $border;
+    border: 2px solid $color-primary;
+    font-weight: $font-thick;
     text-shadow: 2px 2px 2px $color-primary;
 
     &_mark {
       color: $color-secondary;
+    }
+
+    &_choosen {
+      box-shadow: 0 0 2px 2px $color-primary;
     }
   }
 
