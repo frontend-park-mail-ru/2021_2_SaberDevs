@@ -1,9 +1,9 @@
 $modal-bg: rgba(0, 0, 0, 0.7);
-$modal-title-font-size: 48px;
 $label-margin: 10px;
 $title-margin-bottom: 20px;
+$form-width-limit: 350px;
 $btn-box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
-$modal-window-padding: 70px;
+$modal-window-padding: 1.5%;
 $close-btn-margin: 10px;
 $window-filter: drop-shadow(0 0 10px rgba(0, 0, 0, 0.5));
 
@@ -28,6 +28,10 @@ $window-filter: drop-shadow(0 0 10px rgba(0, 0, 0, 0.5));
     top: 50%;
     z-index: 5;
     padding: $modal-window-padding;
+    min-width: 15%;
+    min-height: 20%;
+    max-width: 55%;
+    max-height: 50%;
     background-color: $color-primary;
     opacity: 0;
     filter: $window-filter;
@@ -44,7 +48,7 @@ $window-filter: drop-shadow(0 0 10px rgba(0, 0, 0, 0.5));
   &__header {
     margin-bottom: $title-margin-bottom;
     font-family: $font-secondary;
-    font-size: $modal-title-font-size;
+    font-size: $font-size-large;
     text-align: center;
   }
 
@@ -59,6 +63,8 @@ $window-filter: drop-shadow(0 0 10px rgba(0, 0, 0, 0.5));
 
   &__form {
     @include col;
+
+    max-width: $form-width-limit;
   }
 
   &__footer {

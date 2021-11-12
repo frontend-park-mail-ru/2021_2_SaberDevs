@@ -78,8 +78,14 @@ export default class ProfileSettingsPage extends BasePageMV {
                       'Сессия устарела', 'Пройдите авторизацию',
                   );
                 }
-                // В случае ошибки
-                ModalTemplates.netOrServerError(status, response.msg);
+                const msg = response.msg;
+                // В случае ошибки сервера
+                if ((status + '')[0] === '5') {
+                  ModalTemplates.netOrServerError(status, msg);
+                  return;
+                }
+                // в случае провала валидации формы
+                this.view.pageComponents.settingsForm.appendWarning(msg);
               },
           ).catch((error) => console.warn(error));
     });

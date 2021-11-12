@@ -16,10 +16,12 @@ export default class SignupFormView extends BaseComponentView {
     this.root = document.createElement('div');
     this.appendWarning = (msg) => {
       const formWarning = this.root.querySelector('.form__warning');
+      const formWarningLabel = this.root.querySelector('#form-warning-label');
       if (!formWarning) {
         console.warn(`[SignupFormView]
           appendWarning call while SignupForm was not rendered`);
       }
+      formWarningLabel.style.display = 'block';
       formWarning.style.display = 'block';
       formWarning.textContent = msg;
     };
@@ -114,7 +116,7 @@ export default class SignupFormView extends BaseComponentView {
       // если пароли не совпадают
       if (showRegister && passwordRepeated !== password) {
         formWarning.style.display = 'block';
-        formWarning.textContent = 'Пароли должны совпасть. Старайтесь';
+        formWarning.textContent = 'Удостоверьтесь, что пароли совпадают';
         return;
       }
       // Пустые значения не пропускаются благодаря свойству required

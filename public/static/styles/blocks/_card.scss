@@ -28,10 +28,6 @@ $tag-margin-right: 5px;
     margin-bottom: $card-title-margin-bottom;
     font-size: $title-font-size;
     text-align: center;
-
-    &:hover {
-      text-decoration: underline;
-    }
   }
 
   &__description {

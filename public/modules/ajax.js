@@ -2,9 +2,9 @@
 // Тачка Алексея
 // const APIurl = 'http://87.228.2.178:8081/api/v1';
 // Тачка Дорофеева
-// const APIurl = 'http://89.208.197.247:8081/api/v1';
+const APIurl = 'http://89.208.197.247:8081/api/v1';
 // Локальная разработка
-const APIurl = 'http://localhost:8081/api/v1';
+// const APIurl = 'http://localhost:8081/api/v1';
 
 /**
  * Поддерживаемые методы: GET и POST

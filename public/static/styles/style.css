@@ -230,11 +230,15 @@ section[data-view="MainPageView"] {
 }
 
 .sidebar__categories-title {
-  font-size: 36px;
+  font-size: 2rem;
+}
+
+.sidebar__categories-item:hover {
+  text-decoration: underline;
 }
 
 .sidebar__categories-item {
-  font-size: 24px;
+  font-size: 1.5rem;
 }
 
 .sidebar__categories-item:hover {

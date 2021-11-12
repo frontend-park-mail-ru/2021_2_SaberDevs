@@ -21,10 +21,6 @@ $preview-tags-font-size: 14px;
     margin-bottom: $card-title-margin-bottom;
     font-weight: $font-thick;
     font-size: $preview-title-font-size;
-
-    &:hover {
-      text-decoration: underline;
-    }
   }
 
   &__content {

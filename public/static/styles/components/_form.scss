@@ -1,11 +1,10 @@
 $submit-btn-font-size: 36px;
-$label-font-size: 30px;
 $input-font-size: 24px;
 $warning-font-size: 30px;
 $form-title-font-size: 64px;
 $submit-btn-padding: 10px 40px;
 $input-padding: 10px;
-$form-row-margin: 15px 0;
+$form-row-margin: 0.5rem 0;
 $form-padding: 70px;
 
 .form {
@@ -34,14 +33,19 @@ $form-padding: 70px;
     font-size: $input-font-size;
     color: $color-primary;
     background-color: $color-elements;
+
+    &:hover {
+      border: 2px solid $color-secondary;
+      box-shadow: 0 0 15px $color-secondary;
+    }
   }
 
   &__submit-btn {
     border-radius: $border-radius;
     padding: $submit-btn-padding;
     width: 100%;
-    box-shadow: $box-shadow;
-    font-size: $submit-btn-font-size;
+    box-sizing: border-box;
+    font-size: $font-size-normal;
     color: $color-primary;
     background-color: $color-elements;
     cursor: pointer;
@@ -53,13 +57,19 @@ $form-padding: 70px;
 
   &__warning {
     display: none;
-    font-size: $warning-font-size;
-    color: $color-secondary;
+    border: 2px solid $color-secondary;
+    border-radius: $border-radius;
+    padding: $input-padding;
+    width: fill-available;
+    box-shadow: 0 0 25px $color-warning;
+    font-size: $input-font-size;
+    hyphens: auto;
+    color: $color-warning;
+    background-color: $color-elements;
   }
 
   &__label {
     margin-right: $label-margin;
-    font-size: $label-font-size;
   }
 
   &__title {
@@ -87,7 +97,7 @@ $form-padding: 70px;
   &__control-btn {
     position: absolute;
     right: 10px;
-    top: 52px;
+    top: 50%;
     display: inline-block;
     width: 24px;
     height: 24px;

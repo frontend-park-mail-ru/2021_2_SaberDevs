@@ -4,7 +4,10 @@
         a.settings__other-page(href = `${other_page_href}`) #{other_page_name}
     form.settings__form
         .settings__rows !{form_rows}
-        .settings__warning Поля заполнены неверно
+          .settings__row
+            .settings__label(id="settings-warning-label" style="color: transparent;") |
+            .settings__field
+              div.settings__input.settings__warning Поля заполнены неверно
         .settings__footer
             input.btn_color-secondary(type='submit' name='btn-submit' value='Сохранить')
             a(href='/')

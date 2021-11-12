@@ -4,6 +4,7 @@ const cacheName = 'SaberDevs-Project';
 const cacheUrls = [
   '/',
   './404.html',
+  './favicon.ino',
   './globals.js',
   './index.html',
   './main.js',

@@ -13,6 +13,7 @@ export default function signupModal(showRegister) {
   changeFormTypeBtn.textContent =
     showRegister ? 'У меня уже есть аккаунт' : 'Создать аккаунт';
   changeFormTypeBtn.href = showRegister ? '/login' : '/register';
+  changeFormTypeBtn.classList.add('link');
   changeFormTypeBtn.addEventListener('click', (e) => {
     e.preventDefault();
 
