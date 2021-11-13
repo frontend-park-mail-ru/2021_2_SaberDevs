@@ -115,7 +115,7 @@ export default class Editor extends BaseComponent {
         });
 
     // удаление статьи
-    this.root.querySelector('.article-create__del-btn').addEventListener(
+    this.root.querySelector('.article-create__clear-btn').addEventListener(
         'click',
         (e) => {
           e.preventDefault();
@@ -253,7 +253,8 @@ export default class Editor extends BaseComponent {
     submitBtn.value = 'Создать';
     this.root.querySelector('.article-create__title').textContent =
       'Создание статьи';
-    this.root.querySelector('.article-create__del-btn').style.display = 'none';
+    this.root.querySelector('.article-create__clear-btn')
+        .style.display = 'flex';
   }
 
   /**

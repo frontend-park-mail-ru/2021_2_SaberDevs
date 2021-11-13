@@ -28,14 +28,17 @@ export default class SignupPageView extends BasePageView {
   render() {
     super.render();
     const bkgDiv = document.createElement('div');
-    bkgDiv.className = 'background';
-    const screenDiv = document.createElement('div');
-    screenDiv.className = 'screen';
+    bkgDiv.className = 'background-space';
     const pageDiv = document.createElement('div');
-    pageDiv.className = 'page';
+    pageDiv.className = 'page-space';
     const contentDiv = document.createElement('div');
-    contentDiv.className = 'content';
+    contentDiv.className = 'content-space';
     const formDiv = document.createElement('div');
+    const logoDiv = document.createElement('a');
+    logoDiv.innerHTML = 'SaberNews';
+    logoDiv.className = 'header__title';
+    logoDiv.href = '/';
+    logoDiv.style.cssText = 'position: absolute;';
 
     // //////////////////////////////////
 
@@ -56,9 +59,9 @@ export default class SignupPageView extends BasePageView {
 
     contentDiv.appendChild(formDiv);
     contentDiv.appendChild(changeFormTypeBtn);
+    pageDiv.appendChild(logoDiv);
     pageDiv.appendChild(contentDiv);
-    screenDiv.appendChild(pageDiv);
-    bkgDiv.appendChild(screenDiv);
+    bkgDiv.appendChild(pageDiv);
     this.root.appendChild(bkgDiv);
   }
 

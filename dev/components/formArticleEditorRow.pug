@@ -1,0 +1,19 @@
+.article-create__row
+    .article-create__label #{label}
+    .article-create__field
+        if placeholder != undefined && pattern != undefined && required
+          input.article-create__input(type=`${type}` name=`${name}` placeholder=`${placeholder}` pattern=`${pattern}` required=`${required}`)
+        if placeholder != undefined && pattern != undefined && !required
+          input.article-create__input(type=`${type}` name=`${name}` placeholder=`${placeholder}` pattern=`${pattern}` required=false)
+        if placeholder != undefined && pattern == undefined && required
+          input.article-create__input(type=`${type}` name=`${name}` placeholder=`${placeholder}` required=`${required}`)
+        if placeholder != undefined && pattern == undefined && !required
+          input.article-create__input(type=`${type}` name=`${name}` required=false)
+        if placeholder == undefined && pattern != undefined && required
+          input.article-create__input(type=`${type}` name=`${name}` pattern=`${pattern}` required=`${required}`)
+        if placeholder == undefined && pattern != undefined && !required
+          input.article-create__input(type=`${type}` name=`${name}` pattern=`${pattern}` required=false)
+        if placeholder == undefined && pattern == undefined && required
+          input.article-create__input(type=`${type}` name=`${name}` required=`${required}`)
+        if placeholder == undefined && pattern == undefined && !required
+          input.article-create__input(type=`${type}` name=`${name}` required=false)

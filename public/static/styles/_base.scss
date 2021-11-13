@@ -3,6 +3,7 @@
 html,
 body,
 .background,
+.background-space,
 #root,
 .view {
   overflow-y: hidden;
@@ -19,6 +20,17 @@ body,
   padding-top: $page-top;
   background: $img-bg bottom;
   background-size: 100%;
+}
+
+.background-space {
+  display: flex;
+  padding-top: $page-top;
+  background: $img-bg-space bottom;
+  background-size: cover;
+  background-repeat: no-repeat;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
 }
 
 .screen {
@@ -56,6 +68,27 @@ body,
   &::-webkit-scrollbar {
     width: 0;
   }
+}
+
+.page-space {
+  position: fixed;
+  width: $screen-width;
+  height: 100%;
+  font-family: "Roboto", sans-serif;
+  backdrop-filter: blur(5px);
+  display: flex;
+}
+
+.content-space {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  padding: 1.5%;
+  min-width: 15%;
+  min-height: 20%;
+  max-width: 55%;
+  max-height: 50%;
+  transform: translate(-50%, -50%) scale(1);
 }
 
 .hide {

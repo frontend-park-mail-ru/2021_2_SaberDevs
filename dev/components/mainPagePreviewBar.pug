@@ -1,20 +1,22 @@
 .preview
     .preview__top
-        .author-time
-            a.author-time__author-name(href=`${authorUrl}`) #{authorName}
-            .author-time__time #{time}
+        .card__author
+          .author-name
+              .author-name__login #{login}
+              .author-name__username #{firstName} #{lastName}
+          img.card__author-photo(src=`${avatarUrl || 'static/img/users/user_icon_loading.svg'}`)
     .preview__content
         .tags
-            each tag in tags.length ? tags : ['no tags']
-                .tags__tag.preview__tag #{tag}
-        .preview__title #{title}
+            if Array.isArray(tags)
+                each tag in tags.length ? tags : []
+                    .tags__tag.preview__tag #{tag}     
+        a(href='#').preview__title #{title}
         .preview__description #{text}
     .card__bottom
-        .btn-more Read more ->
         .action-btns
-            .icon.action-btns__first
-                .likes.icon__text #{likes}
-                .icon-like.icon__img
+            .icon.action-btns_m-right
+                .icon__text #{likes}
+                button.action-btns__likes-icon.icon__img
             .icon
-                .comments.icon__text #{comments}
-                .icon-comments.icon__img
+                .icon__text #{comments}
+                button.action-btns__comments-icon.icon__img

@@ -1,14 +1,18 @@
 .article-create
-  .article-create__title Создание статьи
-  .article-create__row-del-btn
-    button.btn_color-elementary.article-create__del-btn Удалить
-    button.btn_color-elementary.article-create__clear-btn Очистить
+  .article-create__title #{pageName}
+  .article-create__right
+      if buttonAction == 'delete'
+          button.btn_color-elementary.article-create__del-btn Удалить
+      else if buttonAction == 'clear'
+          button.btn_color-elementary.article-create__clear-btn Очистить
   form.article-create__form
     .article-create__rows !{form_rows}
     .article-create__row
       .article-create__label Теги
+      .article-create__tags-actions
+          input.article-create__input-tag(type="text" name="tag")
+          button.article-create__add-tag +
+          button.action-btns__trash-icon.icon__img
       .article-create__tags !{tags}
-      input.article-create__input-tag(type="text" name="tag")
-      button.article-create__add-tag +
-    .article-create__footer
-      input.btn_color-elementary(type='submit' name='btn-submit' value='Создать')
+    .article-create__right
+        input.btn_color-elementary(type='submit' name='btn-submit' value='Создать')

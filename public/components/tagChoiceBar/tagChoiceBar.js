@@ -38,9 +38,9 @@ export default class TagChoiceBar extends BaseComponent {
       console.log('{CatergoryChooseBar} selecting choosen tag (',
           store.getState().categoryPage.choosenTag, ')');
       target.parentElement.childNodes.forEach((tagDiv) => {
-        tagDiv.style.border = 'none';
+        tagDiv.classList.remove('categories__tag_choosen');
         if (tagDiv.innerHTML === store.getState().categoryPage.choosenTag) {
-          tagDiv.style.border = '3px solid white';
+          tagDiv.classList.add('categories__tag_choosen');
         }
       });
     });
