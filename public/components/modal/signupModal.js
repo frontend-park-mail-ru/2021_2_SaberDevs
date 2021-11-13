@@ -7,7 +7,7 @@ import SignupForm from '../signupForm/signupForm.js';
  * true, если нужно отобразить форму
  * для регистрации, false - для входа
  */
-export default function signupModal(showRegister) {
+export function signupModal(showRegister) {
   // Элементы навигации
   const changeFormTypeBtn = document.createElement('a');
   changeFormTypeBtn.textContent =
@@ -37,4 +37,31 @@ export default function signupModal(showRegister) {
   Modal.disableCancelBtn();
   Modal.disableOkBtn();
   Modal.open();
+}
+
+/**
+ * @class SignupModal
+ */
+export default class SignupModal {
+  /**
+   * @param {boolean} showRegister
+   * true, если нужно отобразить форму
+   * для регистрации, false - для входа
+   * По умолчанию false
+   */
+  static show(showRegister = false) {
+    signupModal(showRegister);
+  }
+
+  /**
+   * показать ошибку принудительно
+   * @param {string} msg
+   */
+  static appendWarning(msg) {
+    const contentDiv = Modal.getContent();
+    if (!contentDiv) {
+      return;
+    }
+    contentDiv.innerHTML += msg;
+  }
 }

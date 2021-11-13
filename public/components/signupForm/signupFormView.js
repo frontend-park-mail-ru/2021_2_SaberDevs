@@ -2,7 +2,7 @@ import BaseComponentView from '../_basic/baseComponentView.js';
 import signupFormComponent from './signupForm.pug.js';
 import formRowComponent from './formRow.pug.js';
 
-import regexp from '../../common/regexpString.js';
+import regexp from '../../common/regexp.js';
 
 /**
  * @class SignupFormView
@@ -14,17 +14,6 @@ export default class SignupFormView extends BaseComponentView {
   constructor() {
     super();
     this.root = document.createElement('div');
-    this.appendWarning = (msg) => {
-      const formWarning = this.root.querySelector('.form__warning');
-      const formWarningLabel = this.root.querySelector('#form-warning-label');
-      if (!formWarning) {
-        console.warn(`[SignupFormView]
-          appendWarning call while SignupForm was not rendered`);
-      }
-      formWarningLabel.style.display = 'block';
-      formWarning.style.display = 'block';
-      formWarning.textContent = msg;
-    };
   }
 
 
@@ -42,7 +31,6 @@ export default class SignupFormView extends BaseComponentView {
       label: 'Логин',
       type: 'text',
       name: 'login',
-      pattern: regexp.login,
       required: true,
     });
     formRows += loginRow;
@@ -61,7 +49,6 @@ export default class SignupFormView extends BaseComponentView {
       label: 'Пароль',
       type: 'password',
       name: 'password',
-      pattern: regexp.password,
       required: true,
       eye: true,
     });
@@ -103,8 +90,10 @@ export default class SignupFormView extends BaseComponentView {
 
       // убираем сообщения об ошибках от предыдущих попыток
       const formWarning = form.querySelector('.form__warning');
+      const formWarningLabel = this.root.querySelector('#form-warning-label');
       formWarning.style.display = 'none';
       formWarning.textContent = '';
+      formWarningLabel.style.display = 'none';
 
       const login = form.querySelector('input[name="login"]').value;
       const password = form.querySelector('input[name="password"]').value;
@@ -113,9 +102,26 @@ export default class SignupFormView extends BaseComponentView {
       const passRepInput = form.querySelector('input[name="password-repeat"]');
       const passwordRepeated = passRepInput?.value;
 
+      if (!regexp.login.test(login)) {
+        formWarning.style.display = 'block';
+        formWarningLabel.style.display = 'block';
+        formWarning.textContent = 'Логин - это латинские буквы, цифры и' +
+            'нижнее подчеркивание (_). Длина логина - от 4 до 20 символов';
+        return;
+      }
+
+      if (!regexp.password.test(password)) {
+        formWarning.style.display = 'block';
+        formWarningLabel.style.display = 'block';
+        formWarning.textContent = 'В качестве пароля используйте любую ' +
+            'комбинацию непробельных символы длиной более 8';
+        return;
+      }
+
       // если пароли не совпадают
       if (showRegister && passwordRepeated !== password) {
         formWarning.style.display = 'block';
+        formWarningLabel.style.display = 'block';
         formWarning.textContent = 'Удостоверьтесь, что пароли совпадают';
         return;
       }
@@ -126,4 +132,21 @@ export default class SignupFormView extends BaseComponentView {
     this.root = form;
     return form;
   }
+
+  /**
+   * @param {string} msg
+   */
+  appendWarning(msg) {
+    const formWarning = this.root.querySelector('.form__warning');
+    const formWarningLabel = this.root.querySelector('#form-warning-label');
+    console.warn(formWarningLabel);
+    console.warn(formWarning);
+    if (!formWarning) {
+      console.warn(`[SignupFormView]
+        appendWarning call while SignupForm was not rendered`);
+    }
+    formWarningLabel.style.display = 'block';
+    formWarning.style.display = 'block';
+    formWarning.textContent = msg;
+  };
 }

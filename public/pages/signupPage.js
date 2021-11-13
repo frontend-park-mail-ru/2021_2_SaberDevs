@@ -5,7 +5,7 @@ import store from '../flux/store.js';
 import {changePageActions} from '../flux/actions.js';
 import {authorizationTypes} from '../flux/types.js';
 
-import {redirect} from '../utils.js';
+import {redirect} from '../common/utils.js';
 // ///////////////////////////////// //
 //
 //         Signup Page

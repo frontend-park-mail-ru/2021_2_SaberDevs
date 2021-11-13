@@ -7,7 +7,7 @@ import {authorizationActions} from '../../flux/actions.js';
 import {editorTypes} from '../../flux/types.js';
 
 import Ajax from '../../modules/ajax.js';
-import {redirect} from '../../utils.js';
+import {redirect} from '../../common/utils.js';
 
 import ModalTemplates from '../modal/modalTemplates.js';
 

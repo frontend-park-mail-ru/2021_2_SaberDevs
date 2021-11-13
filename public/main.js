@@ -15,7 +15,7 @@ import LinksController from './components/linksController.js';
 import Router from './components/router.js';
 
 // components
-import signupModal from './components/modal/signupModal.js';
+import SignupModal from './components/modal/signupModal.js';
 import Warning from './components/modal/serviceWarning.js';
 
 // network
@@ -65,12 +65,12 @@ router
 linksController
     .register(
         'signupModal',
-        signupModal,
+        SignupModal.show,
         true,
     )
     .register(
         'loginModal',
-        signupModal,
+        SignupModal.show,
         false,
     )
     .register(

@@ -1084,8 +1084,6 @@ body,
   color: #dee4ea;
   background: #354580;
   opacity: 0;
-  -webkit-transition: all 1s;
-  transition: all 1s;
 }
 
 .search__input_open {
@@ -1940,10 +1938,10 @@ body,
   -webkit-box-shadow: 0 0 25px #bb1717;
           box-shadow: 0 0 25px #bb1717;
   font-size: 24px;
-  color: #bb1717;
   -webkit-hyphens: auto;
       -ms-hyphens: auto;
           hyphens: auto;
+  color: #bb1717;
   background-color: #dee4ea;
 }
 

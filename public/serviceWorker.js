@@ -9,7 +9,6 @@ const cacheUrls = [
   './index.html',
   './main.js',
   './serviceWorker.js',
-  './utils.js',
   './static/styles/style.css',
   './static/styles/style.css.map',
   './static/styles/style.scss',
@@ -112,7 +111,6 @@ const cacheUrls = [
   './flux/actions/editorActions.js',
   './flux/actions/readerActions.js',
   './flux/actions/routerActions.js',
-  './components/buttonToMenu.js',
   './components/linksController.js',
   './components/router.js',
   './components/_template/serviceWarning.js',
@@ -167,6 +165,7 @@ const cacheUrls = [
   './components/editor/formArticleEditorTextarea.pug.js',
   './components/categories/categories.pug.js',
   './common/regexp.js',
+  './common/regexpString.js',
 ];
 
 // наименование для нашего хранилища кэша

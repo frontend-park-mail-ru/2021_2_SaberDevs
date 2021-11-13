@@ -2,30 +2,6 @@ import BaseComponent from '../_basic/baseComponent.js';
 import HeaderView from './headerView.js';
 
 /**
- * Раскрытие строки поиска
- * @param {HTMLElement} navItems
- * @param {HTMLElement} searchButton
- * @param {HTMLElement} searchInput
- */
-function openSearchField(navItems, searchButton, searchInput) {
-  if (searchButton.classList.contains('search__button_search-icon')) {
-    console.log('to open');
-    navItems.style.pointerEvents = 'none';
-    searchButton.classList.remove('search__button_search-icon');
-    searchButton.classList.add('search__button_cross-icon');
-    searchInput.classList.remove('search__input_close');
-    searchInput.classList.add('search__input_open');
-  } else if (searchButton.classList.contains('search__button_cross-icon')) {
-    console.log('to close');
-    navItems.style.pointerEvents = 'all';
-    searchButton.classList.add('search__button_search-icon');
-    searchButton.classList.remove('search__button_cross-icon');
-    searchInput.classList.add('search__input_close');
-    searchInput.classList.remove('search__input_open');
-  }
-}
-
-/**
  * ViewModel-компонент соответсвующего View
  * @class Header
  */
@@ -36,6 +12,8 @@ export default class Header extends BaseComponent {
   constructor() {
     super();
     this.view = new HeaderView();
+    this.isBlur = false;
+    this.isOpen = false;
   }
 
   /**
@@ -47,14 +25,65 @@ export default class Header extends BaseComponent {
     this.root = this.view.render();
 
     const searchBtn = this.root.querySelector('.search__button');
-    const navItems = this.root.querySelector('.header__nav-items');
     const searchInput = this.root.querySelector('.search__input');
 
     searchBtn.addEventListener('click', (e) => {
       e.preventDefault();
-      openSearchField(navItems, searchBtn, searchInput);
+      if (!this.isBlur && !this.isOpen) {
+        this.openSearchField();
+      }
+    });
+
+    searchInput.addEventListener('keydown', ({keyCode, target}) => {
+      if (keyCode === 13) {
+        console.log('{Header} searchField enter (идем искать)', target.value);
+        this.closeSearchField();
+        setTimeout(() => console.log('{Header} searchField вот тут редирект'));
+      }
+    });
+
+    searchInput.addEventListener('focusout', (e) => {
+      console.log('{Header} searchField lost focus');
+      this.closeSearchField();
+      this.isBlur = true;
+      const delay = parseFloat(searchInput.style.transitionDuration) * 1000;
+      setTimeout(() => this.isBlur=false, delay);
     });
 
     return this.root;
   }
+
+  /**
+   * closeSearchField
+   */
+  closeSearchField() {
+    const searchBtn = this.root.querySelector('.search__button');
+    const navItems = this.root.querySelector('.header__nav-items');
+    const searchInput = this.root.querySelector('.search__input');
+    console.log('{Header} searchField close');
+    navItems.style.pointerEvents = 'all';
+    searchBtn.classList.add('search__button_search-icon');
+    searchBtn.classList.remove('search__button_cross-icon');
+    searchInput.classList.add('search__input_close');
+    searchInput.classList.remove('search__input_open');
+    this.isOpen = false;
+  };
+
+  /**
+   * openSearchField
+   */
+  openSearchField() {
+    const searchBtn = this.root.querySelector('.search__button');
+    const navItems = this.root.querySelector('.header__nav-items');
+    const searchInput = this.root.querySelector('.search__input');
+    console.log('{Header} searchField open');
+    navItems.style.pointerEvents = 'none';
+    searchBtn.classList.remove('search__button_search-icon');
+    searchBtn.classList.add('search__button_cross-icon');
+    searchInput.classList.remove('search__input_close');
+    searchInput.classList.add('search__input_open');
+    searchInput.focus();
+    searchInput.select();
+    this.isOpen = true;
+  };
 }

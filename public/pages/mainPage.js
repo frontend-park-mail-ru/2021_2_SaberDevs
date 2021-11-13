@@ -8,7 +8,7 @@ import {editorTypes} from '../flux/types.js';
 import Modal from '../components/modal/modal.js';
 
 import Ajax from '../modules/ajax.js';
-import {getUserWindowHeight} from '../utils.js';
+import {getUserWindowHeight} from '../common/utils.js';
 
 // ///////////////////////////////// //
 //

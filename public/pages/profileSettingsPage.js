@@ -11,7 +11,7 @@ import {
 import {authorizationTypes} from '../flux/types.js';
 
 import Ajax from '../modules/ajax.js';
-import {redirect} from '../utils.js';
+import {redirect} from '../common/utils.js';
 
 
 // ///////////////////////////////// //

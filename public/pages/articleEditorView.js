@@ -2,7 +2,7 @@ import BasePageView from './basePageView.js';
 import createPage from './_createPage.js';
 
 import Editor from '../components/editor/editor.js';
-// import {genRanHex} from '../utils.js';
+// import {genRanHex} from '../common/utils.js';
 
 // ///////////////////////////////// //
 //

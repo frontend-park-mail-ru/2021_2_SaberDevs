@@ -1,7 +1,7 @@
 import BaseComponent from '../_basic/baseComponent.js';
 import FeedView from './feedView.js';
 
-import {redirect} from '../../utils.js';
+import {redirect} from '../../common/utils.js';
 
 import store from '../../flux/store.js';
 import {profilePageActions} from '../../flux/actions.js';

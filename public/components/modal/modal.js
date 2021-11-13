@@ -154,6 +154,14 @@ const Modal = {
     }
   },
 
+  getContent() {
+    const contentDiv = modalDiv.querySelector('.modal__content');
+    if (!contentDiv) {
+      console.warn('[Modal] no .modal__content found');
+    }
+    return contentDiv;
+  },
+
   setContent(content) {
     if (modalsDebug) {
       console.log('[Modal]: setContent to ', content);
@@ -164,6 +172,19 @@ const Modal = {
     }
     if (content instanceof HTMLElement) {
       contentDiv.innerHTML = '';
+      contentDiv.appendChild(content);
+    }
+  },
+
+  appendContent(content) {
+    if (modalsDebug) {
+      console.log('[Modal]: appendContent:', content);
+    }
+    const contentDiv = modalDiv.querySelector('.modal__content');
+    if (typeof content === 'string') {
+      contentDiv.innerHTML += content;
+    }
+    if (content instanceof HTMLElement) {
       contentDiv.appendChild(content);
     }
   },

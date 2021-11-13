@@ -1,5 +1,5 @@
 import Modal from './modal.js';
-import signupModal from './signupModal.js';
+import SignupModal from './signupModal.js';
 
 /**
  * Информационное окно
@@ -78,7 +78,7 @@ export default class ModalTemplates {
  * для регистрации, false - для входа
  */
   static signup(showRegister) {
-    signupModal(showRegister);
+    SignupModal.show(showRegister);
   }
 
   /**

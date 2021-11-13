@@ -1,6 +1,6 @@
 import BaseComponentView from '../_basic/baseComponentView.js';
 
-import {genRanHex} from '../../../utils.js';
+import {genRanHex} from '../../../common/utils.js';
 
 const tags = [
   'personal',

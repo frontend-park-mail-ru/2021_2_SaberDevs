@@ -8,7 +8,7 @@ import {authorizationTypes, editorTypes} from '../flux/types.js';
 import {showModalNetOrServerError} from '../components/modal/modalTemplates.js';
 
 import Ajax from '../modules/ajax.js';
-import Utils from '../utils.js';
+import Utils from '../common/utils.js';
 
 // ///////////////////////////////// //
 //
