@@ -19,12 +19,18 @@ const endOfFeedMarkerID = 'end';
  *                                    на MainPage
  */
 const InitialCategoryPageState = {
-  choosenTag: '',                // категория, по которой фильтруются записи
+  currentCategory: '',            // категория, по которой фильтруются записи
   isLoading: false,              // отправлен ли запрос на сервер
   idLastLoaded: '',              // запоминаем последнюю загруженную запись
   lastScrollPos: 0,              // скрол для возврата к той же записи
   cards: [],                     // массив загруженных новостей
   isEndFound: false,
+  tags: {
+    // category: {
+    //  tag1: false,
+    //  tag2: true,
+    // }
+  },
 };
 
 /**
@@ -87,17 +93,73 @@ export default function categoryPageReducer(
         lastScrollPos: 0,
         isEndFound: false,
       };
-    case categoryPageTypes.SELECT_CATEGORY_ARTICLES_TAG:
+    case categoryPageTypes.ADD_TAG:
+      if (state.currentCategory !== '') {
+        for (const category in state.tags) {
+          if (action.payload in category) {
+            category[action] = true;
+          }
+        }
+      }
+      const tagsChanged = {...state.tags};
+      tagsChanged[currentCategory][action.payload] = true;
       return {
         ...state,
-        idLastLoaded: '',
-        choosenTag: action.payload,
+        tags: {
+          ...state.tags,
+          tags: tagsChanged,
+        },
       };
-    case categoryPageTypes.CLEAR_CATEGORY_ARTICLES_TAG:
+    case categoryPageTypes.REMOVE_TAG:
+      if (state.currentCategory !== '') {
+        for (const category in state.tags) {
+          if (action.payload in category) {
+            category[action] = false;
+          }
+        }
+      }
+      const tagsChanged2 = {...state.tags};
+      tagsChanged[currentCategory][action.payload] = false;
       return {
         ...state,
-        idLastLoaded: '',
-        choosenTag: '',
+        tags: {
+          ...state.tags,
+          tags: tagsChanged2,
+        },
+      };
+    case categoryPageTypes.CLEAR_TAGS:
+      const clearedTags = {};
+      for (const category in state) {
+        clearedTags[category] = {};
+        state[category].forEach((tag) => {
+          clearedTags[category][tag] = false;
+        });
+      }
+      return {
+        ...state,
+        tags: clearedTags,
+      };
+    case categoryPageTypes.SET_CATEGORY:
+      return {
+        ...state,
+        currentCategory: action.payload,
+      };
+    case categoryPageTypes.RESET_CATEGORY:
+      return {
+        ...state,
+        currentCategory: '',
+      };
+    case categoryPageTypes.LOAD_TAGS:
+      const loadedTags = {};
+      for (const category in action.payload) {
+        loadedTags[category] = {};
+        action.payload[category].forEach((tag) => {
+          loadedTags[category][tag] = false;
+        });
+      }
+      return {
+        ...state,
+        tags: loadedTags,
       };
   }
   return state;
