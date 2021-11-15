@@ -17,6 +17,7 @@ import Router from './components/router.js';
 // components
 import SignupModal from './components/modal/signupModal.js';
 import Warning from './components/modal/serviceWarning.js';
+import ImgPreloader from './components/imgPreloader.js';
 
 // network
 import {logoutRequest} from './modules/ajaxRequests.js';
@@ -24,6 +25,30 @@ import {cookieLogin} from './modules/ajaxRequests.js';
 
 // flux store
 import store from './flux/store.js';
+
+// Preload
+ImgPreloader.upload([
+  'static/img/background-space.png',
+  'static/img/background.png',
+  'static/img/icons/cross.svg',
+  'static/img/icons/eye-closed.svg',
+  'static/img/icons/eye-open.svg',
+  'static/img/icons/key.svg',
+  'static/img/icons/mail.svg',
+  'static/img/icons/username.svg',
+  'static/img/icons/like.svg',
+  'static/img/icons/like_hover.svg',
+  'static/img/icons/comment.svg',
+  'static/img/icons/comment_hover.svg',
+  'static/img/icons/share.svg',
+  'static/img/icons/share_hover.svg',
+  'static/img/icons/trash.svg',
+  'static/img/icons/trash_hover.svg',
+  'static/img/icons/search.svg',
+  'static/img/icons/search_hover.svg',
+  'static/img/icons/send.svg',
+]);
+
 
 // ServiceWorker
 const SWJSFile = 'serviceWorker.js';

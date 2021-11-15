@@ -2,7 +2,8 @@ import BasePageMV from './basePageMV.js';
 import CategoryPageView from './categoryPageView.js';
 
 import store from '../flux/store.js';
-import {changePageActions, categoryPageActions} from '../flux/actions.js';
+import {changePageActions} from '../flux/actions.js';
+import categoryPageActions from '../flux/actions/categoryPageActions.js';
 import {categoryPageTypes, editorTypes} from '../flux/types.js';
 
 import Modal from '../components/modal/modal.js';

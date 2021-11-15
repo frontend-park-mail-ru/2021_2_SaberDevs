@@ -9,7 +9,7 @@ import {categoryPageTypes} from '../types.js';
  * @param {Array<Card>} cards
  * @return {Action}
  */
- function saveNewCategoryArticles(idLastLoaded, cards) {
+function saveNewCategoryArticles(idLastLoaded, cards) {
   return {
     type: categoryPageTypes.SAVE_NEW_CATEGORY_ARTICLES,
     payload: {idLastLoaded, cards},
@@ -132,7 +132,28 @@ function loadTags(categories) {
   };
 }
 
-export const categoryPageActions = {
+// TODO: разобраться с категорями
+/**
+ * @param {string} tag
+ * @return {Action}
+ */
+function selectCategoryTag(tag) {
+  return {
+    type: categoryPageTypes.SELECT_CATEGORY_ARTICLES_TAG,
+    payload: tag,
+  };
+}
+
+/**
+ * @return {Action}
+ */
+function clearSelectedCategoryTags() {
+  return {
+    type: categoryPageTypes.CLEAR_CATEGORY_ARTICLES_TAG,
+  };
+}
+
+const categoryPageActions = {
   setCategoryArticlesLoadingFlag,
   unsetCategoryArticlesLoadingFlag,
   forbidCategoryArticlesLoading,
@@ -146,4 +167,9 @@ export const categoryPageActions = {
   removeTag,
   clearTags,
   loadTags,
+  // TODO: разобраться с категорями
+  selectCategoryTag,
+  clearSelectedCategoryTags,
 };
+
+export default categoryPageActions;

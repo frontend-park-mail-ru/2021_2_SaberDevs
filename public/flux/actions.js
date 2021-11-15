@@ -5,7 +5,6 @@ import {authorizationTypes,
   modalTypes,
   apiTypes,
   profilePageTypes,
-  categoryPageTypes,
 } from './types.js';
 
 // ////////////////

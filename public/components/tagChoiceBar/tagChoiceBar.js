@@ -2,7 +2,7 @@ import BaseComponent from '../_basic/baseComponent.js';
 import TagChoiceBarView from './tagChoiceBarView.js';
 
 import store from '../../flux/store.js';
-import {categoryPageActions} from '../../flux/actions.js';
+import categoryPageActions from '../../flux/actions/categoryPageActions.js';
 /**
  * ViewModel-компонент соответсвующего View
  * @class CatergoryChooseBar

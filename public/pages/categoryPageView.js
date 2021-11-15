@@ -7,7 +7,7 @@ import TagChoiceBar from
 import categoriesComponent from '../components/categories/categories.pug.js';
 
 import {categoryPageTypes} from '../flux/types.js';
-import {categoryPageActions} from '../flux/actions.js';
+import categoryPageActions from '../flux/actions/categoryPageActions.js';
 
 // ///////////////////////////////// //
 //
