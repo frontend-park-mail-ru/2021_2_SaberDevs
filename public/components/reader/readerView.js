@@ -30,11 +30,9 @@ export default class ReaderView extends BaseComponentView {
     reader.innerHTML = articleReaderComponent(article);
 
     const commentBtn = reader
-        .getElementsByClassName('article-view__send-comment-btn')[0];
-    console.log('commentBtn:', commentBtn);
-    commentBtn?.addEventListener('click', (e) => {
+        .querySelector('.article-view__send-comment-btn');
+    commentBtn.addEventListener('click', (e) => {
       e.preventDefault();
-      console.log('click commentbtn');
       const input = document.querySelector('.article-view__comment-input');
       if (input.value != '') {
         const comments = document.querySelector('#comments');

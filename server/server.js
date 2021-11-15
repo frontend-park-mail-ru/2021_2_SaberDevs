@@ -32,6 +32,7 @@ const appPages = [
 const appPagesPatterned = [
   /^\/user\/(\w+)$/,
   /^\/article\/(\w+)$/,
+  /^\/categories\/(\w+)$/,
 ];
 
 const subDomains = [

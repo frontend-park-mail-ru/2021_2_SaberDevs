@@ -4,7 +4,7 @@
 Проект: vc.ru
 
 ## Репозиторий бекенда
-- [тут будет ссылочка]()
+- [throwing a deploy](http://89.208.197.247:8080)
 
 ## Команда
 - [Турчин Денис](https://github.com/Denactive)
@@ -21,22 +21,17 @@
 - dev: работа с шаблонами + скрипт интерпретации шаблонов в .js
   Скрипт сохраняет скомпилированные шаблоны в public/components по исходными названием
   ./dev/compile.js или npm run build для запуска. Запускать из корня проекта
-- server: сервер-заглушка для разработки
-  ./server/server.js или npm run start для запуска
+- server: сервер статики
+  ./server/server.js или npm run build-static для запуска
+- server-api: сервер-заглушка для тестов
+  ./server/server-api.js или npm run build для запуска вместе со статическим
 
 ## API
 - сервер всегда возвращает структуры (описаны в JSDoc):
     response: {
-        msg: string,  // текстовые сообщения/пояснения от сервера. Позволяет не нарушать http-rest Content-Type: application/json
-        data: obj     // произвольный объект, который пробрасывается в пропсы компонента по окончанию выполнения запроса
+        msg: string?,      // текстовые сообщения/пояснения от сервера. Позволяет не нарушать http-rest Content-Type: application/json
+        data: object?,     // произвольный объект, который пробрасывается в пропсы компонента по окончанию выполнения запроса
+        status: number,    // дубль HTTP status
     }
-- URL'ы API описаны в server/server.js/APIUrls. Предварительно: const APIUrls = ["/login", "/signup", "profile/<username>"];
-- Пользователи представлены объектом UserData (описан в JSDoc). Пароль на клиент не возвращается
-    предварительно: UserData: {
-        login: string,
-        name: string,
-        surname: string,
-        email: string,
-        password: string,
-        score: number,
-    }
+- URL'ы web-приложения API описаны в server/server.js/APIUrls. По ним можно получить наш index.html
+- API (касается только поля data) описано в swagger[v*].yaml в корне проекта. Открыть можно [здесь](https://editor.swagger.io)

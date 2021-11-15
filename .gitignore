@@ -4,5 +4,6 @@ package-lock.json
 public/components/*.pug.js
 public/components/*/*.pug.js
 public/components/*/*/*.pug.js
+public/components/feed/previews/*.pug.js
 public/components/_template/
 public/flux/reducers/template.js

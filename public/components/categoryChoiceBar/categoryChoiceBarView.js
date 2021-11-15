@@ -14,7 +14,7 @@ const tags = [
 /**
  * @class CatergoryChooseBarView
  */
-export default class TagChoiceBarView extends BaseComponentView {
+export default class CatergoryChoiceBarView extends BaseComponentView {
   /**
     * @return {HTMLElement}
     */

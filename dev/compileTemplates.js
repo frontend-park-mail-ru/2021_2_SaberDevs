@@ -24,6 +24,7 @@ const saveTo = {
   formArticleEditorTextarea: 'editor',
   articleReader: 'reader',
   comment: 'reader',
+  categories: 'categoryChoiceBar',
 };
 
 const correctLaunchDir = '2021_2_SaberDevs';

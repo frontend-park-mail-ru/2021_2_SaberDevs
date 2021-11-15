@@ -1,5 +1,5 @@
 import BaseComponent from '../_basic/baseComponent.js';
-import TagChoiceBarView from './tagChoiceBarView.js';
+import CatergoryChoiceBarView from './categoryChoiceBarView.js';
 
 import store from '../../flux/store.js';
 import categoryPageActions from '../../flux/actions/categoryPageActions.js';
@@ -7,13 +7,13 @@ import categoryPageActions from '../../flux/actions/categoryPageActions.js';
  * ViewModel-компонент соответсвующего View
  * @class CatergoryChooseBar
  */
-export default class TagChoiceBar extends BaseComponent {
+export default class CatergoryChoiceBar extends BaseComponent {
   /**
    * Универсальный компонент заголовка для страницы с категориями
    */
   constructor() {
     super();
-    this.view = new TagChoiceBarView();
+    this.view = new CatergoryChoiceBarView();
   }
 
   /**
@@ -25,22 +25,22 @@ export default class TagChoiceBar extends BaseComponent {
     this.root = this.view.render();
 
     const tagsListDiv = this.root;
-    console.warn({tagsListDiv});
     tagsListDiv.addEventListener('click', (e) => {
       e.preventDefault();
       const target = e.target;
-      const choosenTag = store.getState().categoryPage.choosenTag;
+      const choosenTag = store.getState().categoryPage.currentCategory;
       if (target.innerHTML === choosenTag) {
-        store.dispatch(categoryPageActions.clearSelectedCategoryTags());
+        store.dispatch(categoryPageActions.clearSelectedCategory());
       } else {
-        store.dispatch(categoryPageActions.selectCategoryTag(target.innerHTML));
+        store.dispatch(categoryPageActions.selectCategory(target.innerHTML));
       }
-      console.log('{CatergoryChooseBar} selecting choosen tag (',
-          store.getState().categoryPage.choosenTag, ')');
-      target.parentElement.childNodes.forEach((tagDiv) => {
-        tagDiv.classList.remove('categories__tag_choosen');
-        if (tagDiv.innerHTML === store.getState().categoryPage.choosenTag) {
-          tagDiv.classList.add('categories__tag_choosen');
+      console.log('{CatergoryChooseBar} selecting category:',
+          store.getState().categoryPage.currentCategory);
+      target.parentElement.childNodes.forEach((categoryDiv) => {
+        categoryDiv.classList.remove('categories__tag_choosen');
+        if (categoryDiv.innerHTML ===
+              store.getState().categoryPage.currentCategory) {
+          categoryDiv.classList.add('categories__tag_choosen');
         }
       });
     });

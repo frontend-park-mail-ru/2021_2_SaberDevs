@@ -102,26 +102,6 @@ function clearTags() {
 }
 
 /**
- * @param {string} category
- * @return {Action}
- */
-function setCategory(category) {
-  return {
-    type: categoryPageTypes.SET_CATEGORY,
-    payload: category,
-  };
-}
-
-/**
- * @return {Action}
- */
-function resetCategory() {
-  return {
-    type: categoryPageTypes.RESET_CATEGORY,
-  };
-}
-
-/**
  * @param {Object<Array<string>>} categories
  * @return {Action}
  */
@@ -132,24 +112,23 @@ function loadTags(categories) {
   };
 }
 
-// TODO: разобраться с категорями
 /**
- * @param {string} tag
+ * @param {string} category
  * @return {Action}
  */
-function selectCategoryTag(tag) {
+function selectCategory(category) {
   return {
-    type: categoryPageTypes.SELECT_CATEGORY_ARTICLES_TAG,
-    payload: tag,
+    type: categoryPageTypes.SELECT_CATEGORY,
+    payload: category,
   };
 }
 
 /**
  * @return {Action}
  */
-function clearSelectedCategoryTags() {
+function clearSelectedCategory() {
   return {
-    type: categoryPageTypes.CLEAR_CATEGORY_ARTICLES_TAG,
+    type: categoryPageTypes.CLEAR_CATEGORY,
   };
 }
 
@@ -161,15 +140,12 @@ const categoryPageActions = {
   askNewCategoryArticles,
   saveNewCategoryArticles,
   clearCategoryArticles,
-  setCategory,
-  resetCategory,
   addTag,
   removeTag,
   clearTags,
   loadTags,
-  // TODO: разобраться с категорями
-  selectCategoryTag,
-  clearSelectedCategoryTags,
+  selectCategory,
+  clearSelectedCategory,
 };
 
 export default categoryPageActions;

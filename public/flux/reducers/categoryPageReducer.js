@@ -31,8 +31,6 @@ const InitialCategoryPageState = {
     //  tag2: true,
     // }
   },
-  // TODO: разобраться с категорями
-  choosenTag: '',
 };
 
 /**
@@ -141,12 +139,12 @@ export default function categoryPageReducer(
         ...state,
         tags: clearedTags,
       };
-    case categoryPageTypes.SET_CATEGORY:
+    case categoryPageTypes.SELECT_CATEGORY:
       return {
         ...state,
         currentCategory: action.payload,
       };
-    case categoryPageTypes.RESET_CATEGORY:
+    case categoryPageTypes.CLEAR_CATEGORY:
       return {
         ...state,
         currentCategory: '',
@@ -162,19 +160,6 @@ export default function categoryPageReducer(
       return {
         ...state,
         tags: loadedTags,
-      };
-    // TODO: разобраться с категорями
-    case categoryPageTypes.SELECT_CATEGORY_ARTICLES_TAG:
-      return {
-        ...state,
-        idLastLoaded: '',
-        choosenTag: action.payload,
-      };
-    case categoryPageTypes.CLEAR_CATEGORY_ARTICLES_TAG:
-      return {
-        ...state,
-        idLastLoaded: '',
-        choosenTag: '',
       };
   }
   return state;

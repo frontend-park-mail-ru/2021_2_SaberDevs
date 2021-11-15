@@ -67,6 +67,11 @@ export default class Editor extends BaseComponent {
 
     // Проверяем, было ли вызвано событие EDIT_EXISTING_ARTICLE
     // до рендера. Если было, то в сторе есть изменения.
+    // Проверяем, что стор неинициализирован. такое бывает, если перешли
+    // в редактор по урлу. Должен быть редирект на логин
+    if (!store.getState().editor[store.getState().editor.currentId]) {
+      store.dispatch(editorActions.createArticle());
+    }
     const state = store.getState().editor;
     this.setContent(state[state.currentId]);
     if (typeof state.currentId === 'string' && state.currentId !== '0' ||
@@ -115,7 +120,7 @@ export default class Editor extends BaseComponent {
         });
 
     // удаление статьи
-    this.root.querySelector('.article-create__clear-btn').addEventListener(
+    this.root.querySelector('.article-create__del-btn').addEventListener(
         'click',
         (e) => {
           e.preventDefault();
@@ -169,6 +174,8 @@ export default class Editor extends BaseComponent {
       const body = {
         title,
         text,
+        category: '',
+        img: '',
         tags: state.tags,
       };
       if (isUpdate) {
@@ -180,11 +187,11 @@ export default class Editor extends BaseComponent {
         body,
       }).then(({status, response}) => {
         if (status === Ajax.STATUS.ok) {
-          store.dispatch(editorActions.publishArticle(state.currentId));
+          store.dispatch(editorActions.publishArticle(response.data));
           ModalTemplates.informativeMsg(
               'Успех!', `Статья успешно ${isUpdate?'изменена' : 'создана'}`,
           );
-          redirect(`/article/${state.currentId}`);
+          redirect(`/article/${response.data}`);
           return;
         }
         if (status === Ajax.STATUS.invalidSession) {
@@ -253,8 +260,7 @@ export default class Editor extends BaseComponent {
     submitBtn.value = 'Создать';
     this.root.querySelector('.article-create__title').textContent =
       'Создание статьи';
-    this.root.querySelector('.article-create__clear-btn')
-        .style.display = 'flex';
+    this.root.querySelector('.article-create__del-btn').style.display = 'none';
   }
 
   /**

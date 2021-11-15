@@ -12,10 +12,12 @@ servers:
 tags:
 - name: article
   description: операции над статьями
-- name: photo
+- name: img
   description: операции над фотками
 - name: user
   description: операции над пользователями и их сессиями
+- name: comment
+  description: комментарий и все. Че тут описывать
 paths:
   /api/v1/user/login:
     post:
@@ -86,7 +88,7 @@ paths:
       description: Returns a common user data
       operationId: ""
       parameters:
-      - name: login
+      - name: user
         in: query
         description: Login of user to return
         required: true
@@ -225,6 +227,30 @@ paths:
                   $ref: '#/components/schemas/ArticlePreview'
         404:
           description: Not found
+  /api/v1/articles/category:
+    get:
+      tags:
+      - article
+      summary: Finds news by category
+      parameters:
+      - name: category
+        in: query
+        description: category to filter by
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description:  ОК
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ArticlePreview'
+        404:
+          description: Not found
+    
   /api/v1/articles/author:
     get:
       tags:
@@ -253,9 +279,21 @@ paths:
       tags:
       - article
       summary: Загрузка новой статьи
+      requestBody:
+        description: содержание статьи, заголовок, теги, категория
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ArticleEditorCreate'
+        required: true
       responses:
         200:
           description: ОК
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: 29
         401:
           description: Нет прав на добавление статьи
   /api/v1/articles/delete:
@@ -282,13 +320,13 @@ paths:
       tags:
       - article
       summary: Изменение существующей статьи
-      parameters:
-      - name: id
-        in: query
-        description: ID статьи, с которой работаем
+      requestBody:
+        description: айди, измененные содержание статьи, заголовок, теги, категория
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ArticleEditorUpdate'
         required: true
-        schema:
-          type: string
       responses:
         200:
           description: ОК
@@ -307,6 +345,112 @@ paths:
         401:
           description: Не авторизован
           
+  /api/v1/img/upload:
+    post:
+      tags:
+      - img
+      description: Загрузка фото. ВНИМАНИЕ! до 5 мБ
+      requestBody:
+        content: 
+          multipart/form-data: # Media type
+            schema:
+              type: object
+              properties: # Request parts
+                img:
+                  type: string
+                  format: binary
+            encoding: # The same level as schema
+              profileImage: # Property name (see above)
+                contentType: image/png, image/jpeg
+      responses:
+        200:
+          description: ОК
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  imgId:
+                    type: string
+        401:
+          description: Нет прав на загрузку картинки
+        413:
+          description: Превышен размер 5 Мб
+        400:
+          description: Отправили не png/jpg/
+  /api/v1/img/{pathname}:
+    get:
+      tags:
+      - img
+      description: Загрузка фото
+      parameters:
+        - in: path
+          name: pathname
+          schema:
+            type: string
+          required: true
+          description: hash картинки
+      responses:
+        200:
+          description: ОК
+        401:
+          description: Нет прав на добавление статьи
+          
+  /api/v1/comments:
+    get:
+      tags:
+      - comment
+      description: Загрузка комментариев к записи с id
+      parameters:
+        - in: query
+          name: id
+          schema:
+            type: string
+          required: true
+          description: айди статьи
+      responses:
+        200:
+          description: ОК
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Comment'
+
+  /api/v1/comments/create:
+    post:
+      tags:
+      - comment
+      description: Создание комментариев к записи с articleId
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CommentCreate'
+        required: true
+      responses:
+        200:
+          description: ОК
+        401:
+          description: Не авторизован, чтобы оставлять мнение
+  /api/v1/comments/update:
+    post:
+      tags:
+      - comment
+      description: изменение комментария
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CommentUpdate'
+        required: true
+      responses:
+        200:
+          description: ОК
+        401:
+          description: Не имеешь право, чтобы что-то менять
+
 components:
   schemas:
     UserProfile:
@@ -345,6 +489,9 @@ components:
           type: string
         lastName:
           type: string
+        avatar:
+          type: string
+          description: хеш, который получил, загрузив картинку предварительно
     UserLogIn:
       description: Отправить для авторизации
       type: object
@@ -403,6 +550,8 @@ components:
           type: integer
           description: Popularity rating
           format: int64
+        category:
+          type: string
         tags:
           type: array
           items:
@@ -433,10 +582,89 @@ components:
           type: integer
           description: Popularity rating
           format: int64
+        category:
+          type: string
         tags:
           type: array
           items:
             type: string
+    ArticleEditorCreate:
+      type: object
+      properties:
+        title:
+          type: string
+        text:
+          type: string
+        category:
+          type: string
+        img:
+          type: string
+          description: hash предварительно загруженной картинки
+        tags:
+          type: array
+          items:
+            type: string
+    ArticleEditorUpdate:
+      type: object
+      properties:
+        id:
+          type: string
+        title:
+          type: string
+        text:
+          type: string
+        category:
+          type: string
+        img:
+          type: string
+          description: hash предварительно загруженной картинки
+        tags:
+          type: array
+          items:
+            type: string
+            
+
+    Comment:
+      type: object
+      properties:
+        text:
+          type: string
+        articleId:
+          type: string
+        parentId:
+          type: string
+        id:
+          type: string
+        dateTime:
+          type: string
+        isEdited:
+          type: boolean
+        author:
+          $ref: '#/components/schemas/UserProfile'
+          
+    CommentCreate:
+      type: object
+      properties:
+        text:
+          type: string
+        articleId:
+          type: string
+        parentId:
+          type: string
+          description: 0, если нет родителя
+        login:
+          type: string
+          description: логин автора
+          
+    CommentUpdate:
+      type: object
+      properties:
+        id:
+          type: string
+          description: айди комментария
+        text:
+          type: string
+
     ApiResponse:
       type: object
       properties:

@@ -84,6 +84,7 @@ router
     .registerPattern('/article/<id>', ReaderPage)
     .register('/profile/settings', ProfileSettingsPage)
     .register('/editor', EditorPage)
+    .registerPattern('/categories/<сategory>', CategoryPage)
     .register('/categories', CategoryPage)
     .register('/login', SignupPage);
 

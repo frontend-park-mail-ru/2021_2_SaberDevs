@@ -70,7 +70,7 @@ async function uploadCategoryCards() {
 
   await Ajax.get({
     url: `/articles/tags?idLastLoaded=${state.idLastLoaded}` +
-        `&tag=${state.choosenTag}`,
+        `&tag=${state.currentCategory}`,
   })
       .then(({status, response}) => {
         if (status === Ajax.STATUS.ok) {
@@ -109,7 +109,7 @@ export default class CategoryPage extends BasePageMV {
     // /////////////////////////////////
 
     // обновить ленту в соответствии с фильтром
-    store.subscribe(categoryPageTypes.SELECT_CATEGORY_ARTICLES_TAG, () => {
+    store.subscribe(categoryPageTypes.SELECT_CATEGORY, () => {
       store.dispatch(categoryPageActions.clearCategoryArticles());
       store.dispatch(categoryPageActions.allowCategoryArticlesLoading());
       uploadCategoryCards();
@@ -127,6 +127,18 @@ export default class CategoryPage extends BasePageMV {
    */
   show() {
     super.show();
+
+    let categoryUrlParam = '';
+    const idx = document.URL.indexOf('categories/');
+    if (idx !== -1) {
+      categoryUrlParam = document.URL.slice(idx + 11);
+      console.warn('[CategoryPage] category from Url:', categoryUrlParam);
+      store.dispatch(categoryPageActions.selectCategory(categoryUrlParam));
+    } else {
+      // Если была выбрана категориф, но юзер перешел по урлу на categories/
+      store.dispatch(categoryPageActions.clearSelectedCategory());
+    }
+
     store.dispatch(
         changePageActions.changePage(
             'categories',
@@ -134,9 +146,9 @@ export default class CategoryPage extends BasePageMV {
         ),
     );
 
-    // Чтобы спрятать анимацию загрузки, пока теги не выбраны
+    // Чтобы спрятать анимацию загрузки, пока Category не выбранa
     // TODO: проверка массива
-    if (store.getState().categoryPage.choosenTag === '') {
+    if (store.getState().categoryPage.currentCategory === '') {
       store.dispatch(categoryPageActions.forbidCategoryArticlesLoading());
     }
 

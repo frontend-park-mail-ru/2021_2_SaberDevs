@@ -2,9 +2,10 @@ import BasePageView from './basePageView.js';
 import createPage from './_createPage.js';
 
 import Feed from '../components/feed/feed.js';
-import TagChoiceBar from
-  '../components/tagChoiceBar/tagChoiceBar.js';
-import categoriesComponent from '../components/categories/categories.pug.js';
+import CategoryChoiceBar from
+  '../components/categoryChoiceBar/categoryChoiceBar.js';
+import categoriesComponent from
+  '../components/categoryChoiceBar/categories.pug.js';
 
 import {categoryPageTypes} from '../flux/types.js';
 import categoryPageActions from '../flux/actions/categoryPageActions.js';
@@ -28,7 +29,7 @@ export default class CategoryPageView extends BasePageView {
     super(root);
 
     this.pageComponents = {
-      categoryChoose: new TagChoiceBar(),
+      categoryChoose: new CategoryChoiceBar(),
       feed: new Feed(
           'categoryPage',
           categoryPageTypes.SAVE_NEW_CATEGORY_ARTICLES,
