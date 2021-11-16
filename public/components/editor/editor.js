@@ -194,7 +194,7 @@ export default class Editor extends BaseComponent {
           ModalTemplates.informativeMsg(
               'Успех!', `Статья успешно ${isUpdate?'изменена' : 'создана'}`,
           );
-          redirect(`/article/${response.data}`);
+          redirect(`/article/${isUpdate ? state.currentId : response.data}`);
           return;
         }
         if (status === Ajax.STATUS.invalidSession) {
