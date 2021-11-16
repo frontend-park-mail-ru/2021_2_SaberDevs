@@ -12,8 +12,8 @@ let isDestroyed = false;
 let okBtnDispay = true;
 let cancelBtnDispay = true;
 let docTitle = '';
-let clearOkListener = () => {};
-let clearCancelListener = () => {};
+let clearOkListener = () => console.log('[Modal] clearOkListener initial');
+let clearCancelListener =()=>console.log('[Modal] clearCancelListener initial');
 
 /**
  * @param {object} props
@@ -231,17 +231,23 @@ const Modal = {
       e.preventDefault();
       props.onConfirm ? props.onConfirm() : console.log('Modal: confirm');
     };
+    console.log('[Modal] clearset OkListener', activeOkEventListener);
     okBtn.addEventListener('click', activeOkEventListener);
-    clearOkListener = () => removeEventListener('click', activeOkEventListener);
-
+    clearOkListener = () => {
+      console.log('[Modal] clearOkListener', activeOkEventListener);
+      removeEventListener('click', activeOkEventListener);
+    };
     const cancelBtn = modalDiv.querySelector('#modal__btn-cancel');
     const activeCancelEventListener = (e) => {
       e.preventDefault();
       props.onDecline ? props.onDecline() : console.log('Modal: decline');
     };
     cancelBtn.addEventListener('click', activeCancelEventListener);
-    clearCancelListener = () =>
-      removeEventListener('click', activeOkEventListener);
+    console.log('[Modal] set Cancel Listener', activeCancelEventListener);
+    clearCancelListener = () => {
+      console.log('[Modal] clear Cancel Listener', activeCancelEventListener);
+      removeEventListener('click', activeCancelEventListener);
+    };
 
     if (!props.isEnteractive) {
       okBtn.style.display = 'none';
@@ -293,8 +299,12 @@ const Modal = {
       e.preventDefault();
       onConfirm ? onConfirm() : console.log('Modal: confirm');
     };
+    console.log('[Modal] set Ok Listener', activeOkEventListener);
     okBtn.addEventListener('click', activeOkEventListener);
-    clearOkListener = () => removeEventListener('click', activeOkEventListener);
+    clearOkListener = () => {
+      console.log('[Modal] clear Ok Listener', activeOkEventListener);
+      removeEventListener('click', activeOkEventListener);
+    };
   },
 
   setCancelBtnAction(onDecline) {
@@ -305,8 +315,11 @@ const Modal = {
       onDecline ? onDecline() : console.log('Modal: confirm');
     };
     cancelBtn.addEventListener('click', activeCancelEventListener);
-    clearCancelListener = () =>
+    console.log('[Modal] set Cancel Listener', activeCancelEventListener);
+    clearCancelListener = () => {
+      console.log('[Modal] clear Cancel Listener', activeCancelEventListener);
       removeEventListener('click', activeCancelEventListener);
+    };
   },
 };
 

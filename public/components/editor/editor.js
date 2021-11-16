@@ -233,7 +233,7 @@ export default class Editor extends BaseComponent {
       );
       return;
     }
-    textarea.textContent = text;
+    textarea.value = text;
     titleInput.value = title;
   }
 
