@@ -77,7 +77,6 @@ const cacheUrls = [
   './static/css/loading.css',
   './pages/articleEditorPage.js',
   './pages/articleEditorView.js',
-  './pages/articlePageView.js',
   './pages/articleReaderPage.js',
   './pages/articleReaderView.js',
   './pages/basePageMV.js',

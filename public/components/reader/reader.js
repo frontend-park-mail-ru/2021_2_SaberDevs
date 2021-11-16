@@ -43,7 +43,7 @@ export default class Reader extends BaseComponent {
           }
           // Берем автора статьи по полю логина в верстке
           const author =
-            this.root.querySelector('.article-view__author').textContent;
+            this.root.querySelector('div.article-view__author > a').textContent;
           if (author === store.getState().authorization.login) {
             articleChangeBtn.style.display = 'block';
             articleChangeBtn.href = '/editor';

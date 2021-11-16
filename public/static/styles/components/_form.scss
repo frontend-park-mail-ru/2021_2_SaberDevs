@@ -29,7 +29,7 @@ $form-padding: 70px;
     border: $border;
     border-radius: $border-radius;
     padding: $input-padding;
-    width: fill-available;
+    width: -webkit-fill-available;
     font-size: $input-font-size;
     color: $color-primary;
     background-color: $color-elements;

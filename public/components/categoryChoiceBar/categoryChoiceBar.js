@@ -24,12 +24,12 @@ export default class CatergoryChoiceBar extends BaseComponent {
     super.render();
     this.root = this.view.render();
 
-    const tagsListDiv = this.root;
-    tagsListDiv.addEventListener('click', (e) => {
+    const categorysListDiv = this.root;
+    categorysListDiv.addEventListener('click', (e) => {
       e.preventDefault();
       const target = e.target;
-      const choosenTag = store.getState().categoryPage.currentCategory;
-      if (target.innerHTML === choosenTag) {
+      const choosenCategory = store.getState().categoryPage.currentCategory;
+      if (target.innerHTML === choosenCategory) {
         store.dispatch(categoryPageActions.clearSelectedCategory());
       } else {
         store.dispatch(categoryPageActions.selectCategory(target.innerHTML));

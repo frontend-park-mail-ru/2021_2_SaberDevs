@@ -713,7 +713,6 @@
 		"value-list-comma-space-after": "always-single-line",
 		"value-list-comma-space-before": "never",
 		"value-list-max-empty-lines": 0,
-		"value-no-vendor-prefix": true,
 		"scss/at-else-closing-brace-newline-after": "always-last-in-chain",
 		"scss/at-else-closing-brace-space-after": "always-intermediate",
 		"scss/at-else-empty-line-before": "never",
