@@ -14,6 +14,17 @@ export default class SignupFormView extends BaseComponentView {
   constructor() {
     super();
     this.root = document.createElement('div');
+    this.appendWarning = (msg) => {
+      const formWarning = this.root.querySelector('.form__warning');
+      const formWarningLabel = this.root.querySelector('#form-warning-label');
+      if (!formWarning) {
+        console.warn(`[SignupFormView]
+          appendWarning call while SignupForm was not rendered`);
+      }
+      formWarningLabel.style.display = 'block';
+      formWarning.style.display = 'block';
+      formWarning.textContent = msg;
+    };
   }
 
 
@@ -132,21 +143,4 @@ export default class SignupFormView extends BaseComponentView {
     this.root = form;
     return form;
   }
-
-  /**
-   * @param {string} msg
-   */
-  appendWarning(msg) {
-    const formWarning = this.root.querySelector('.form__warning');
-    const formWarningLabel = this.root.querySelector('#form-warning-label');
-    console.warn(formWarningLabel);
-    console.warn(formWarning);
-    if (!formWarning) {
-      console.warn(`[SignupFormView]
-        appendWarning call while SignupForm was not rendered`);
-    }
-    formWarningLabel.style.display = 'block';
-    formWarning.style.display = 'block';
-    formWarning.textContent = msg;
-  };
 }

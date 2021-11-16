@@ -6,11 +6,17 @@ const InitialEditorState = {
   // 0: {
   //   title: string,
   //   text: string,
+  //   tags: [string],
+  //   category: string,
+  //   img: string,
   // }
   // Изменение статьи
   // id: {
   //   title: string,
   //   text: string,
+  //   tags: [string...],
+  //   category: string,
+  //   img: string
   // }
 };
 
@@ -27,6 +33,9 @@ export default function editorReducer(state = InitialEditorState, action) {
         [action.payload.id]: {
           title: action.payload.title,
           text: action.payload.text,
+          tags: action.payload.tags,
+          category: action.payload.category,
+          img: action.payload.img,
         },
         currentId: action.payload.id,
       };
@@ -37,6 +46,9 @@ export default function editorReducer(state = InitialEditorState, action) {
         [action.payload.id]: {
           title: '',
           text: '',
+          tags: [],
+          category: '',
+          img: '',
         },
       };
 
@@ -55,6 +67,9 @@ export default function editorReducer(state = InitialEditorState, action) {
         stateCopy[0] = {
           title: '',
           text: '',
+          tags: [],
+          category: '',
+          img: '',
         };
       }
       stateCopy.currentId = 0;
@@ -66,6 +81,9 @@ export default function editorReducer(state = InitialEditorState, action) {
         [action.payload.id]: {
           title: action.payload.title,
           text: action.payload.text,
+          tags: action.payload.tags,
+          category: action.payload.category,
+          img: action.payload.img,
         },
       };
     case editorTypes.PUBLISH_ARTICLE:
@@ -76,6 +94,9 @@ export default function editorReducer(state = InitialEditorState, action) {
         0: {
           title: '',
           text: '',
+          tags: [],
+          category: '',
+          img: '',
         },
         currentId: 0,
       };

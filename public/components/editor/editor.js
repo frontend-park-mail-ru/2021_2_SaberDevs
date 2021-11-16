@@ -88,11 +88,14 @@ export default class Editor extends BaseComponent {
     // //////////////////////////////////
 
     // кнопка добавления тега
+    const tagInput = this.root.querySelector('input.article-create__input-tag');
     this.root.querySelector('.article-create__add-tag').addEventListener(
         'click',
         (e) => {
           e.preventDefault();
           // TODO: теги
+          const tag = tagInput.value.trim();
+          tag.replace(/\s+/, '_');
         },
     );
 

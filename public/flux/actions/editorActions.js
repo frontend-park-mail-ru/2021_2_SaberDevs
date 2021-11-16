@@ -34,13 +34,15 @@ function createArticle() {
 }
 
 /**
- * Перерисовать главную страницу
+ * img кладешь опционально, если менял картинку.
  * @param {number} id
  * @param {Object?} article
  * @property {string} title
  * @property {string} text
- * @property {Array<string>?} tags
- * @property {number?} time
+ * @property {Array<string>} tags
+ * @property {string}  category
+ * @property {string}  img
+ * @property {string?} dateTime
  * @property {string?} author
  * @property {number?} likes
  * @property {number?} comments
@@ -52,6 +54,7 @@ function editArticle(id, article) {
     payload: {
       id,
       ...article,
+      tags: Array.isArray(article.tags) ? article.tags : [],
     },
   };
 }
@@ -79,14 +82,15 @@ function deleteArticle(id) {
 }
 
 /**
- * Перерисовать главную страницу
  * @param {number} id - id, полученный с сервера,
  *                      либо 0, если запись только создается
  * @param {Object?} article
  * @property {string} title
  * @property {string} text
  * @property {Array<string>?} tags
- * @property {number?} time
+ * @property {number?} dateTime
+ * @property {string}  category
+ * @property {string}  img
  * @property {string?} author
  * @property {number?} likes
  * @property {number?} comments
@@ -99,7 +103,32 @@ function saveArticle(id, article) {
       id,
       title: article.title,
       text: article.text,
+      tags: Array.isArray(article.tags) ? article.tags : [],
+      img: article.img || '',
+      category: article.category,
     },
+  };
+}
+
+/**
+ * @param {string} tag
+ * @return {Action}
+ */
+function removeTag(tag) {
+  return {
+    type: editorTypes.REMOVE_TAG,
+    payload: tag,
+  };
+}
+
+/**
+ * @param {string} tag
+ * @return {Action}
+ */
+function appendTag(tag) {
+  return {
+    type: editorTypes.APPEND_TAG,
+    payload: tag,
   };
 }
 
@@ -110,6 +139,8 @@ const editorActions = {
   publishArticle,
   saveArticle,
   deleteArticle,
+  appendTag,
+  removeTag,
 };
 
 export default editorActions;
