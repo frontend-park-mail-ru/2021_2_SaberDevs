@@ -49,6 +49,22 @@ export function showModalWarn(header, content, onConfirm = () => {}) {
  * @param {string} header
  * @param {string | HTMLElement} content
  * @param {function} onConfirm
+ */
+export function modalTest(header, content, onConfirm = () => {}) {
+  Modal.setTitle(header);
+  Modal.setContent(content);
+  Modal.enableOkBtn();
+  Modal.changeBtnOkSign('Понятно');
+  Modal.setOkBtnAction(onConfirm);
+  Modal.disableCancelBtn();
+  Modal.open(true);
+}
+
+/**
+ * Информационное окно, требующее подтверждения
+ * @param {string} header
+ * @param {string | HTMLElement} content
+ * @param {function} onConfirm
  * @param {function} onDecline
  */
 export function showModalConfirm(

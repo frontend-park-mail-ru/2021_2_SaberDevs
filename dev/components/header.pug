@@ -3,12 +3,12 @@
     .header__title(data-router='ignore') SaberNews
   .header__content
     .header__nav-items
-      a(href="/").header__nav-item Популярное
-      a(href="/").header__nav-item Новое
-      a(href="/").header__nav-item Подписки
-      a(href="/").header__nav-item Мероприятия
-      a(href="/").header__nav-item Группы
-      a(href="/").header__nav-item Трансляции
+      a(data-test='test1').header__nav-item Популярное
+      a(data-test='test2').header__nav-item Новое
+      a.header__nav-item Подписки
+      a.header__nav-item Мероприятия
+      a.header__nav-item Группы
+      a.header__nav-item Трансляции
     .search
       input(type='text' placeholder='Найти' style='transition: all 0.5s;').search__input.search__input_close
       button.search__button.search__button_search-icon

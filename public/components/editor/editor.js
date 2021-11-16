@@ -115,8 +115,8 @@ export default class Editor extends BaseComponent {
         (e) => {
           e.preventDefault();
           ModalTemplates.confirm(
-              'Вы собираетесь очистить то, что написали',
-              'Продолжив, вы сотрете все',
+              'Вы собираетесь очистить всё',
+              'Продолжив, Вы безвозвратно сотрете то, что написали',
               () => {
                 this.clear();
               });

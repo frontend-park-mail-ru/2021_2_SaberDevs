@@ -12,8 +12,8 @@ let isDestroyed = false;
 let okBtnDispay = true;
 let cancelBtnDispay = true;
 let docTitle = '';
-let clearOkListener = () => console.warn('[Modal] clearOkListener initial');
-let clearCancelListener=()=>console.warn('[Modal] clearCancelListener initial');
+let clearOkListener = () => {};
+let clearCancelListener= () => {};
 
 /**
  * @param {object} props
@@ -61,23 +61,30 @@ function _createModal(props) {
   const okBtn = modalDiv.querySelector('#modal__btn-ok');
   const activeOkEventListener = (e) => {
     e.preventDefault();
-    props.onConfirm ? props.onConfirm() : console.log('Modal: confirm');
+    if (typeof props.onConfirm === 'function') {
+      props.onConfirm();
+    } else {
+      console.log('[Modal] confirm');
+    }
   };
-  okBtn.addEventListener('click', {activeOkEventListener});
+
+  okBtn.addEventListener('click', activeOkEventListener);
   clearOkListener = () => {
-    console.warn('[Modal] clear Ok Listener', {activeOkEventListener});
-    removeEventListener('click', {activeOkEventListener});
+    okBtn.removeEventListener('click', activeOkEventListener);
   };
 
   const cancelBtn = modalDiv.querySelector('#modal__btn-cancel');
   const activeCancelEventListener = (e) => {
     e.preventDefault();
-    props.onDecline ? props.onDecline() : console.log('Modal: decline');
+    if (typeof props.onDecline === 'function') {
+      props.onDecline();
+    } else {
+      console.log('[Modal] decline');
+    }
   };
-  cancelBtn.addEventListener('click', {activeCancelEventListener});
+  cancelBtn.addEventListener('click', activeCancelEventListener);
   clearCancelListener = () => {
-    console.warn('[Modal] clear Cancel Listener', {activeCancelEventListener});
-    removeEventListener('click', {activeCancelEventListener});
+    cancelBtn.removeEventListener('click', activeCancelEventListener);
   };
 
   store.subscribe(modalTypes.MODAL_CLOSE, () => {
@@ -239,24 +246,31 @@ const Modal = {
     const okBtn = modalDiv.querySelector('#modal__btn-ok');
     const activeOkEventListener = (e) => {
       e.preventDefault();
-      props.onConfirm ? props.onConfirm() : console.log('Modal: confirm');
+      if (typeof props.onConfirm === 'function') {
+        props.onConfirm();
+      } else {
+        console.log('[Modal] confirm');
+      }
     };
-    console.warn('[Modal] set OkListener', {activeOkEventListener});
-    okBtn.addEventListener('click', {activeOkEventListener});
+
+    okBtn.addEventListener('click', activeOkEventListener);
     clearOkListener = () => {
-      console.warn('[Modal] clear Ok Listener', {activeOkEventListener});
-      removeEventListener('click', {activeOkEventListener});
+      okBtn.removeEventListener('click', activeOkEventListener);
     };
     const cancelBtn = modalDiv.querySelector('#modal__btn-cancel');
     const activeCancelEventListener = (e) => {
       e.preventDefault();
-      props.onDecline ? props.onDecline() : console.log('Modal: decline');
+      if (typeof props.onDecline === 'function') {
+        props.onDecline();
+      } else {
+        console.log('[Modal] decline');
+      }
     };
-    cancelBtn.addEventListener('click', {activeCancelEventListener});
-    console.warn('[Modal] set Cancel Listener', {activeCancelEventListener});
+    cancelBtn.addEventListener('click', activeCancelEventListener);
+
     clearCancelListener = () => {
       console.log('[Modal] clear Cancel Listener', {activeCancelEventListener});
-      removeEventListener('click', {activeCancelEventListener});
+      cancelBtn.removeEventListener('click', activeCancelEventListener);
     };
 
     if (!props.isEnteractive) {
@@ -307,13 +321,16 @@ const Modal = {
     const okBtn = modalDiv.querySelector('#modal__btn-ok');
     const activeOkEventListener = (e) => {
       e.preventDefault();
-      onConfirm ? onConfirm() : console.log('Modal: confirm');
+      if (typeof onConfirm === 'function') {
+        onConfirm();
+      } else {
+        console.log('[Modal] confirm');
+      }
     };
-    console.warn('[Modal] set Ok Listener', {activeOkEventListener});
-    okBtn.addEventListener('click', {activeOkEventListener});
+
+    okBtn.addEventListener('click', activeOkEventListener);
     clearOkListener = () => {
-      console.warn('[Modal] clear Ok Listener', {activeOkEventListener});
-      removeEventListener('click', {activeOkEventListener});
+      okBtn.removeEventListener('click', activeOkEventListener);
     };
   },
 
@@ -322,13 +339,16 @@ const Modal = {
     const cancelBtn = modalDiv.querySelector('#modal__btn-cancel');
     const activeCancelEventListener = (e) => {
       e.preventDefault();
-      onDecline ? onDecline() : console.log('Modal: confirm');
+      if (typeof onDecline === 'function') {
+        onDecline();
+      } else {
+        console.log('[Modal] confirm');
+      }
     };
-    cancelBtn.addEventListener('click', {activeCancelEventListener});
-    console.warn('[Modal] set Cancel Listener', {activeCancelEventListener});
+    cancelBtn.addEventListener('click', activeCancelEventListener);
+
     clearCancelListener = () => {
-      console.warn('[Modal]clear Cancel Listener', {activeCancelEventListener});
-      removeEventListener('click', {activeCancelEventListener});
+      cancelBtn.removeEventListener('click', activeCancelEventListener);
     };
   },
 };

@@ -3,6 +3,7 @@ import ReaderView from './articleReaderView.js';
 
 import store from '../flux/store.js';
 import readerActions from '../flux/actions/readerActions.js';
+import {changePageActions} from '../flux/actions.js';
 
 import Ajax from '../modules/ajax.js';
 import {showModalNetOrServerError} from '../components/modal/modalTemplates.js';
@@ -25,6 +26,12 @@ export default class ReaderPage extends BasePageMV {
    */
   show() {
     super.show();
+    store.dispatch(
+        changePageActions.changePage(
+            'reader',
+            `SaberProject | Article View`,
+        ),
+    );
     // берем id из урла
     const idUrlParam = document.URL.slice(document.URL.indexOf('article/') + 8);
     console.warn('[ArticleReaderPage] id from Url ', document.URL, idUrlParam);

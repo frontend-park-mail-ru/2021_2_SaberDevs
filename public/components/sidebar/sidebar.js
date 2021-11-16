@@ -52,12 +52,10 @@ export default class Sidebar extends BaseComponent {
     let topBlockContent = '';
     if (!state.isAuthenticated) {
       topBlockContent += buttonNavComponent({
-        href: '',
         data_section: 'loginModal',
         name: 'Логин',
       });
       topBlockContent += buttonNavComponent({
-        href: '',
         data_section: 'signupModal',
         name: 'Регистрация',
       });
@@ -89,12 +87,10 @@ export default class Sidebar extends BaseComponent {
    */
   setSidebarSignupButtons() {
     let topBlockContent = buttonNavComponent({
-      href: '',
       data_section: 'loginModal',
       name: 'Логин',
     });
     topBlockContent += buttonNavComponent({
-      href: '',
       data_section: 'signupModal',
       name: 'Регистрация',
     });

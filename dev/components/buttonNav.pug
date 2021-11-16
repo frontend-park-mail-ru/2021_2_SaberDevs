@@ -1,1 +1,6 @@
-a(href=`${href}` data-section=`${data_section}`).sidebar__nav-item #{name}
+if (href != undefined && data-section != undefined)
+  a(href=`${href}` data-section=`${data_section}`).sidebar__nav-item #{name}
+if (href == undefined && data-section != undefined)
+  a(data-section=`${data_section}`).sidebar__nav-item #{name}
+if (href != undefined && data-section == undefined)
+  a(href=`${href}`).sidebar__nav-item #{name}
