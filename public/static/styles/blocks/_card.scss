@@ -58,9 +58,20 @@ $tag-margin-right: 5px;
     height: 50px;
   }
 
+  &__time-category {
+    display: flex;
+  }
+
   &__time {
     margin-bottom: 5px;
     font-size: $font-size-normal;
+  }
+
+  &__category {
+    margin-left: 20px;
+    font-weight: $font-thick;
+    font-size: $font-size-normal;
+    text-shadow: 0 0 10px $color-elements;
   }
 
   &:hover {

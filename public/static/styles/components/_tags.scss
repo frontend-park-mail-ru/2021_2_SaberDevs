@@ -4,48 +4,48 @@
   justify-content: flex-start;
   margin-bottom: $tags-margin-bottom;
 
+  &__tag-content {
+    position: relative;
+    display: flex;
+
+    // отступ справа + снизу, чтобы много тегов разбивались по строкам
+    margin: $tag-margin;
+    border-radius: $border-radius;
+  }
+
   &__tag {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-
-    // отступ справа + снизу, чтобы много тегов разбивались по строкам
-    margin: $tag-margin;
     border: 2px solid transparent;
     border-radius: $border-radius;
     padding: $tag-padding;
     font-size: $font-size-normal;
     background: $color-sidebar;
 
-    &__content {
-      display: flex;
+    &_clicked {
+      border: 2px solid $color-elements;
     }
 
     &__del-btn {
-      display: flex;
-      margin-left: 3px;
-      border: 2px solid transparent;
-      width: $font-size-normal;
-      height: $font-size-normal;
-
-      // $img-icon-trash-hover
-
-      background-image: $img-icon-close;
-      background-size: cover;
-      background-repeat: no-repeat;
-
-      &:hover {
-        border: 2px solid $color-elements;
-      }
-    }
-
-    &_clicked {
-      border: 2px solid $color-elements;
+      position: relative;
+      border-radius: 0 $border-radius $border-radius 0;
+      width: 40px;
+      height: 100%;
+      background-color: $color-elements;
     }
 
     &:hover {
       border: 2px solid $color-elements;
       cursor: pointer;
+    }
+  }
+
+  &_with-cross {
+    border-radius: $border-radius 0 0 $border-radius;
+
+    &:hover {
+      border: 2px solid transparent;
     }
   }
 }
