@@ -97,18 +97,6 @@ $article-create-trash-height: 40px;
     margin: 10px 0;
   }
 
-  &__tag::before {
-    content: "";
-    position: absolute;
-    width: 100%;
-    height: $article-create-trash-height;
-    background: $img-icon-trash no-repeat;
-
-    &:hover {
-      background: $img-icon-trash-hover no-repeat;
-    }
-  }
-
   &__right {
     @include right;
   }

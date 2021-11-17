@@ -6,6 +6,8 @@ const pug = require('pug');
 //
 //   Сохранить <pugFileName>.pug
 //   в components/<somewhere>/<pugFileName>.pug.js
+//   Если не нужно, чтобы шаблон был сохранен,
+//   ставим ''s
 //
 //   Синтаксис: <pugFileName>: <somewhere>
 //   default: <pugFileName>: <pugFileName>
@@ -25,6 +27,8 @@ const saveTo = {
   articleReader: 'reader',
   comment: 'reader',
   categories: 'categoryChoiceBar',
+  tag: 'editor',
+  tagMixin: '',  // будет игнорирован
 };
 
 const correctLaunchDir = '2021_2_SaberDevs';
@@ -80,6 +84,9 @@ fs.readdir(devRoot + templatesDir, (err, files) => {
     let componentDir = functionName;
     if (functionName in saveTo) {
       componentDir = saveTo[functionName];
+    }
+    if (componentDir === '') {
+      console.warn(`Шаблон ${filename} игнорируется`);
     }
     const JSFilename = outDir + componentDir + '/' + filename + '.js';
 

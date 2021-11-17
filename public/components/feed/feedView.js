@@ -1,6 +1,7 @@
 import BaseComponentView from '../_basic/baseComponentView.js';
 import cardComponent from './card.pug.js';
 import feedComponent from './feed.pug.js';
+import {genRanHexColor} from '../../common/utils.js';
 
 /**
  * Описание сущности карточки в новостной ленте
@@ -27,6 +28,12 @@ import feedComponent from './feed.pug.js';
 function composeCards(root, cards) {
   cards.forEach((element) => {
     const cardWrapper = document.createElement('div');
+    element.tags = element.tags.map((tag) => {
+      return {
+        content: tag,
+        color: genRanHexColor(),
+      };
+    });
     cardWrapper.innerHTML = cardComponent(element);
     root.appendChild(cardWrapper.firstChild);
   });

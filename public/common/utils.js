@@ -37,9 +37,11 @@ export function htmlToString(el) {
  * @param {number} size
  * @return {string}
  */
-export function genRanHex(size = 6) {
-  return [...Array(size)].map(
-      () => Math.floor(Math.random() * 16).toString(16),
+export function genRanHexColor(size = 6) {
+  return '#' + [...Array(size)].map(
+      // 79.79.79 = 4F4F4F - темно-серый цвет
+      // 220.220.220 = DCDCDC - белый цвет
+      () => Math.floor(Math.random(0, 220) * 16).toString(16),
   ).join('');
 }
 
@@ -159,7 +161,7 @@ const Utils = {
   getCurrentPageYPos,
   redirect,
   htmlToString,
-  genRanHex,
+  genRanHexColor,
 };
 
 export default Utils;

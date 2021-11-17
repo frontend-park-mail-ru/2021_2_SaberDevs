@@ -7,8 +7,6 @@ import {authorizationActions} from '../../flux/actions.js';
 import {editorTypes} from '../../flux/types.js';
 
 import Ajax from '../../modules/ajax.js';
-import {redirect, genRanHex} from '../../common/utils.js';
-
 import ModalTemplates from '../modal/modalTemplates.js';
 
 /**
@@ -81,6 +79,13 @@ export default class Editor extends BaseComponent {
       this.changeToCreate();
     }
 
+    state[state.currentId].tags.forEach((tag) =>{
+      this.view.appendTag(
+          tag,
+          () => store.dispatch(editorActions.removeTag(tag)),
+      );
+    });
+
     // //////////////////////////////////
     //
     //          Обработчики
@@ -89,7 +94,6 @@ export default class Editor extends BaseComponent {
 
     // кнопка добавления тега
     const tagInput = this.root.querySelector('input.article-create__input-tag');
-    const tagsBox = this.root.querySelector('.article-create__tags');
     this.root.querySelector('.article-create__add-tag').addEventListener(
         'click',
         (e) => {
@@ -98,15 +102,14 @@ export default class Editor extends BaseComponent {
           const tag = tagInput.value.trim().replace(/\s+/g, '_');
           // Проверка, а есть ли уже такой тег?
           const state = store.getState().editor;
-          if (state[state.currentId].tags.includes(tag)) {
+          if (tag === '' || state[state.currentId].tags.includes(tag)) {
             return;
           }
           store.dispatch(editorActions.appendTag(tag));
-          const tagBox = document.createElement('div');
-          tagBox.className = 'tags__tag article-create__tag';
-          tagBox.innerHTML = tag;
-          tagBox.style.backgroundColor = '#' + genRanHex();
-          tagsBox.appendChild(tagBox);
+          this.view.appendTag(
+              tag,
+              () => store.dispatch(editorActions.removeTag(tag)),
+          );
         },
     );
 

@@ -4,7 +4,8 @@ import formArticleEditorTextareaComponent from
   '../editor/formArticleEditorTextarea.pug.js';
 import formArticleEditorRowComponent from
   '../editor/formArticleEditorRow.pug.js';
-// import {genRanHex} from '../../common/utils.js';
+import tagComponent from './tag.pug.js';
+import {genRanHexColor} from '../../common/utils.js';
 
 /**
  * @class EditorView
@@ -15,6 +16,7 @@ export default class EditorView extends BaseComponentView {
    */
   constructor() {
     super();
+    this.tagBox = document.createElement('div');
   }
 
   /**
@@ -40,6 +42,37 @@ export default class EditorView extends BaseComponentView {
       buttonAction: 'clear',
       form_rows: articleRows,
     });
+
+    this.tagBox = editor.firstChild.querySelector('.article-create__tags');
     return editor.firstChild;
+  }
+
+  /**
+   * Добавляет тег вниз страницы
+   * @param {string} tag
+   * @param {function} deleteAction
+   */
+  appendTag(tag, deleteAction) {
+    const wrapper = document.createElement('div');
+    wrapper.innerHTML = tagComponent({
+      content: tag,
+      color: genRanHexColor(),
+      cross: true,
+    });
+    const tagDiv = wrapper.firstChild;
+    tagDiv.querySelector('.tags__tag__del-btn').addEventListener(
+        'click',
+        (e) => {
+          deleteAction();
+          tagDiv.remove();
+        });
+    this.tagBox.appendChild(tagDiv);
+  }
+
+  /**
+   * Стираем все выбранные теги со страницы
+   */
+  clearTags() {
+    this.tagBox.innerHTML = '';
   }
 }

@@ -1,6 +1,6 @@
 import BaseComponentView from '../_basic/baseComponentView.js';
 
-import {genRanHex} from '../../../common/utils.js';
+import {genRanHexColor} from '../../../common/utils.js';
 
 const tags = [
   'personal',
@@ -26,7 +26,7 @@ export default class CatergoryChoiceBarView extends BaseComponentView {
       tagDiv.className = 'tags__tag';
       tagDiv.classList.add('categories__tag');
       tagDiv.innerHTML = tag;
-      tagDiv.style.backgroundColor = '#' + genRanHex();
+      tagDiv.style.backgroundColor = genRanHexColor();
       barDiv.appendChild(tagDiv);
     });
     return barDiv;

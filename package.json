@@ -4,7 +4,7 @@
   "description": "vc.ru alike web-spa",
   "main": "index.js",
   "scripts": {
-    "lint": "npx eslint . && npx stylelint **/*.scss",
+    "lint": "npx eslint . && npx stylelint --fix **/*.scss",
     "build-stylelint": "npm run lint && node ./dev/compileTemplates.js && node ./dev/createCachedList && npm run start",
     "build": "npm run lint && node ./dev/compileTemplates.js && node ./dev/createCachedList && npm run start",
     "build-static": "npm run lint && node ./dev/compileTemplates.js && node ./dev/createCachedList && npm run start-static",

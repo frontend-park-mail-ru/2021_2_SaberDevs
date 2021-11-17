@@ -2,7 +2,7 @@ import BasePageView from './basePageView.js';
 import createPage from './_createPage.js';
 
 import Editor from '../components/editor/editor.js';
-// import {genRanHex} from '../common/utils.js';
+// import {genRanHexColor} from '../common/utils.js';
 
 // ///////////////////////////////// //
 //
@@ -37,7 +37,7 @@ export default class EditorView extends BasePageView {
     //   tagDiv.className = 'tags__tag';
     //   tagDiv.innerHTML = tag;
     //   tagDiv.style.color = 'white';
-    //   tagDiv.style.backgroundColor = '#' + genRanHex();
+    //   tagDiv.style.backgroundColor = genRanHexColor();
     //   tagsBox.appendChild(tagDiv);
     // });
     // const addTag = editor.getElementsByClassName('article__add-tag')[0];
@@ -51,7 +51,7 @@ export default class EditorView extends BasePageView {
     //   tagDiv.className = 'tags__tag';
     //   tagDiv.innerHTML = inputTag.value;
     //   tagDiv.style.color = 'white';
-    //   tagDiv.style.backgroundColor = '#' + genRanHex();
+    //   tagDiv.style.backgroundColor = genRanHexColor();
     //   tags.appendChild(tagDiv);
     // });
     this.root.appendChild(createPage(

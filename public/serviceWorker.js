@@ -169,6 +169,7 @@ const cacheUrls = [
   './components/editor/editorView.js',
   './components/editor/formArticleEditorRow.pug.js',
   './components/editor/formArticleEditorTextarea.pug.js',
+  './components/editor/tag.pug.js',
   './components/categoryChoiceBar/categories.pug.js',
   './components/categoryChoiceBar/categoryChoiceBar.js',
   './components/categoryChoiceBar/categoryChoiceBarView.js',
