@@ -12,7 +12,7 @@ import {authorizationTypes} from '../flux/types.js';
 
 import Ajax from '../modules/ajax.js';
 import {redirect} from '../common/utils.js';
-
+import regexp from '../common/regexp.js';
 
 // ///////////////////////////////// //
 //
@@ -57,6 +57,27 @@ export default class ProfileSettingsPage extends BasePageMV {
       // const password = form.querySelector('input[name="password"]');
       const firstName = form.querySelector('input[name="username"]')?.value;
       const lastName = form.querySelector('input[name="surname"]')?.value;
+      if (!regexp.firstName.test(firstName)) {
+        this.view.pageComponents.settingsForm.appendWarning(
+            'Такое имя выбрать нельзя',
+        );
+        return;
+      }
+
+      if (!regexp.lastName.test(lastName)) {
+        this.view.pageComponents.settingsForm.appendWarning(
+            'Такую фамилию выбрать нельзя',
+        );
+        return;
+      }
+
+      // если пароли не совпадают
+      if (showRegister && passwordRepeated !== password) {
+        formWarning.style.display = 'block';
+        formWarningLabel.style.display = 'block';
+        formWarning.textContent = 'Удостоверьтесь, что пароли совпадают';
+        return;
+      }
       Ajax.post({
         url: '/user/profile/update',
         body: {

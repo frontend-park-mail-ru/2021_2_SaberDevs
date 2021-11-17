@@ -23,7 +23,9 @@ $window-filter: drop-shadow(0 0 10px rgba(0, 0, 0, 0.5));
   }
 
   &__window {
+    @include col;
     position: absolute;
+    justify-content: space-around;    
     left: 50%;
     top: 50%;
     z-index: 5;

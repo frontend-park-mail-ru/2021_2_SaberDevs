@@ -100,6 +100,21 @@ export default function editorReducer(state = InitialEditorState, action) {
         },
         currentId: 0,
       };
+    case editorTypes.APPEND_TAG:
+      const currentIdStateCopy =  Object.assign({}, state[state.currentId]);
+      currentIdStateCopy.tags.push(action.payload);
+      return {
+        ...state,
+        [state.currentId]: currentIdStateCopy,
+      };
+    case editorTypes.REMOVE_TAG:
+      const currentStateCopyRemove =  Object.assign({}, state[state.currentId]);
+      currentStateCopyRemove.tags =
+          currentStateCopyRemove.tags.filter((el) => el != action.payload);
+      return {
+        ...state,
+        [state.currentId]: currentStateCopyRemove,
+      };
   }
   return state;
 }
