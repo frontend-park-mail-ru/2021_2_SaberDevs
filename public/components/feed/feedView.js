@@ -28,13 +28,11 @@ import {genRanHexColor} from '../../common/utils.js';
 function composeCards(root, cards) {
   cards.forEach((element) => {
     const cardWrapper = document.createElement('div');
-    element.tags = element.tags.map((tag) => {
-      return {
-        content: tag,
-        color: genRanHexColor(),
-      };
-    });
-    cardWrapper.innerHTML = cardComponent(element);
+    const tags = element.tags.map((tag) => ({
+      content: tag,
+      color: genRanHexColor(),
+    }));
+    cardWrapper.innerHTML = cardComponent({...element, tags});
     root.appendChild(cardWrapper.firstChild);
   });
 }

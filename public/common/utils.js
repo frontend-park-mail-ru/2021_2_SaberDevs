@@ -37,12 +37,30 @@ export function htmlToString(el) {
  * @param {number} size
  * @return {string}
  */
-export function genRanHexColor(size = 6) {
-  return '#' + [...Array(size)].map(
-      // 79.79.79 = 4F4F4F - темно-серый цвет
-      // 220.220.220 = DCDCDC - белый цвет
-      () => Math.floor(Math.random(0, 220) * 16).toString(16),
+export function genRanHex(size = 6) {
+  return [...Array(size)].map(
+      () => Math.floor(Math.random() * 16).toString(16),
   ).join('');
+}
+
+/**
+ * генерирует рандомный цвет
+ * @param {number} size
+ * @return {string}
+ */
+export function genRanHexColor() {
+  // https://stackoverflow.com/questions/12043187/how-to-check-if-hex-color-is-too-black
+  // функция из PHP
+  // цвет считается ярким, если яркость больше 155, тусклым, если < 40
+  while (true) {
+    const red = Math.floor(Math.random() * 255);
+    const green = Math.floor(Math.random() * 255);
+    const blue = Math.floor(Math.random() * 255);
+    const brightness = ((red * 299) + (green * 587) + (blue * 114)) / 1000;
+    if (brightness < 155 && brightness > 40) {
+      return '#' + red.toString(16) + green.toString(16) + blue.toString(16);
+    }
+  }
 }
 
 /**
