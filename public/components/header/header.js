@@ -62,8 +62,8 @@ export default class Header extends BaseComponent {
     const searchInput = this.root.querySelector('.search__input');
     console.log('{Header} searchField close');
     navItems.style.pointerEvents = 'all';
-    searchBtn.classList.add('search__button_search-icon');
-    searchBtn.classList.remove('search__button_cross-icon');
+    searchBtn.classList.add('search-icon');
+    searchBtn.classList.remove('cross-icon');
     searchInput.classList.add('search__input_close');
     searchInput.classList.remove('search__input_open');
     this.isOpen = false;
@@ -78,8 +78,8 @@ export default class Header extends BaseComponent {
     const searchInput = this.root.querySelector('.search__input');
     console.log('{Header} searchField open');
     navItems.style.pointerEvents = 'none';
-    searchBtn.classList.remove('search__button_search-icon');
-    searchBtn.classList.add('search__button_cross-icon');
+    searchBtn.classList.remove('search-icon');
+    searchBtn.classList.add('cross-icon');
     searchInput.classList.remove('search__input_close');
     searchInput.classList.add('search__input_open');
     searchInput.focus();

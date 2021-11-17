@@ -4,7 +4,9 @@ mixin tagMixin(content, color, cross=false)
 background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url(${previewUrl}); background-size: cover; background-repeat: no-repeat;`)
   .card__top
     .card__top-left
-      .card__time #{datetime}
+      .card__time-category
+        .card__time #{datetime}
+        .card__category #{category}
       .tags
         if Array.isArray(tags)
           each tag in tags.length ? tags : []
@@ -22,7 +24,7 @@ background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url(${previ
     .action-btns
       .icon.action-btns_m-right
         .icon__text #{likes}
-          button.action-btns__likes-icon.icon__img
+        button.action-btns__likes-icon.icon__img
       .icon
         .icon__text #{comments}
         button.action-btns__comments-icon.icon__img
