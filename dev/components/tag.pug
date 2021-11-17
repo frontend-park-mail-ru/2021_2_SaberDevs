@@ -1,6 +1,6 @@
-.tags__tag-content
+.tags__tag-content(style = `background-color: ${color}`) 
   if (cross)
-    .tags__tag.tags_with-cross(style = `background-color: ${color}`) !{content}
-    .tags__tag__del-btn.cross-icon
+    .tags__tag.tags_with-cross !{content}
+    .tags__tag__del-btn.cross-icon.cross-icon_white(style = `background-color: ${color}`)
   else
-    .tags__tag(style = `background-color: ${color}`) !{content}
+    .tags__tag !{content}

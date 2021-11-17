@@ -62,4 +62,14 @@
     background: $color-primary;
     transform: rotate(-45deg);
   }
+
+  &_white {
+    &::before {
+      background-color: $color-elements;
+    }
+
+    &::after {
+      background-color: $color-elements;
+    }
+  }
 }

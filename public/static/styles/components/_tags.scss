@@ -11,6 +11,7 @@
     // отступ справа + снизу, чтобы много тегов разбивались по строкам
     margin: $tag-margin;
     border-radius: $border-radius;
+    background: $color-sidebar;
   }
 
   &__tag {
@@ -21,7 +22,6 @@
     border-radius: $border-radius;
     padding: $tag-padding;
     font-size: $font-size-normal;
-    background: $color-sidebar;
 
     &_clicked {
       border: 2px solid $color-elements;
@@ -29,10 +29,16 @@
 
     &__del-btn {
       position: relative;
+      border-color: 2px solid transparent;
       border-radius: 0 $border-radius $border-radius 0;
       width: 40px;
       height: 100%;
+      box-sizing: border-box;
       background-color: $color-elements;
+
+      &:hover {
+        border: 2px solid $color-elements;
+      }
     }
 
     &:hover {

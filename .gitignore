@@ -7,3 +7,5 @@ public/components/*/*/*.pug.js
 public/components/feed/previews/*.pug.js
 public/components/_template/
 public/flux/reducers/template.js
+
+static/style/css/style.css

@@ -1108,6 +1108,14 @@ body,
           transform: rotate(-45deg);
 }
 
+.cross-icon_white::before {
+  background-color: #dee4ea;
+}
+
+.cross-icon_white::after {
+  background-color: #dee4ea;
+}
+
 .search {
   position: absolute;
   right: 10px;
@@ -1409,6 +1417,7 @@ body,
   display: flex;
   margin: 0 10px 10px 0;
   border-radius: 5px;
+  background: #313030;
 }
 
 .tags__tag {
@@ -1426,7 +1435,6 @@ body,
   border-radius: 5px;
   padding: 5px;
   font-size: 1.5rem;
-  background: #313030;
 }
 
 .tags__tag_clicked {
@@ -1435,10 +1443,17 @@ body,
 
 .tags__tag__del-btn {
   position: relative;
+  border-color: 2px solid transparent;
   border-radius: 0 5px 5px 0;
   width: 40px;
   height: 100%;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
   background-color: #dee4ea;
+}
+
+.tags__tag__del-btn:hover {
+  border: 2px solid #dee4ea;
 }
 
 .tags__tag:hover {
