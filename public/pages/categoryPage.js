@@ -109,10 +109,19 @@ export default class CategoryPage extends BasePageMV {
     // /////////////////////////////////
 
     // обновить ленту в соответствии с фильтром
-    store.subscribe(categoryPageTypes.SELECT_CATEGORY, () => {
+    store.subscribe(categoryPageTypes.SELECT_CATEGORY, (category) => {
       store.dispatch(categoryPageActions.clearCategoryArticles());
       store.dispatch(categoryPageActions.allowCategoryArticlesLoading());
       uploadCategoryCards();
+      history.pushState(null, '', '/categories/' + category);
+      // меняем и тайтл
+      store.dispatch(
+          changePageActions.changePage(
+              'categories',
+              `SaberProject |
+              ${category.charAt(0).toUpperCase() + category.slice(1)} category`,
+          ),
+      );
     });
 
     // Обновить ленту, если есть изменения в статье или пользователь
@@ -135,7 +144,7 @@ export default class CategoryPage extends BasePageMV {
       console.warn('[CategoryPage] category from Url:', categoryUrlParam);
       store.dispatch(categoryPageActions.selectCategory(categoryUrlParam));
     } else {
-      // Если была выбрана категориф, но юзер перешел по урлу на categories/
+      // Если была выбрана категория, но юзер перешел по урлу на categories
       store.dispatch(categoryPageActions.clearSelectedCategory());
     }
 
@@ -178,5 +187,25 @@ export default class CategoryPage extends BasePageMV {
           newsFeedEndReachEventAction,
       );
     }
+  }
+
+  /**
+   * true - эдемент активен, его нежелательно перетирать
+   * @return {boolean}
+   */
+  isActive() {
+    const isActive = super.isActive();
+    // проверяем, изменилась ли категория в URL'e
+    const idx = document.URL.indexOf('categories/');
+    if (idx !== -1) {
+      const categoryUrlParam = document.URL.slice(idx + 11);
+      console.warn('[CategoryPage] category from Url:', categoryUrlParam,
+          '(isActive check)');
+      // не обновлям ленту, если уже были на этой странице перед переходом
+      if (categoryUrlParam !== store.getState().categoryPage.currentCategory) {
+        store.dispatch(categoryPageActions.selectCategory(categoryUrlParam));
+      }
+    }
+    return isActive;
   }
 }

@@ -1,34 +1,32 @@
 import BaseComponentView from '../_basic/baseComponentView.js';
-
+import categoryChoiceBarComponent from './categoryChoiceBar.pug.js';
 import {genRanHexColor} from '../../../common/utils.js';
-
-const tags = [
-  'personal',
-  'marketing',
-  'finance',
-  'design',
-  'career',
-  'technical',
-];
 
 /**
  * @class CatergoryChooseBarView
  */
-export default class CatergoryChoiceBarView extends BaseComponentView {
+export default class CategoryChoiceBarView extends BaseComponentView {
   /**
-    * @return {HTMLElement}
-    */
-  render() {
+   * @param {Array<string>} categories
+   * @return {HTMLElement}
+   */
+  render(categories) {
     const barDiv = document.createElement('div');
-    barDiv.className = 'categories__choose-bar';
-    tags.forEach((tag) => {
-      const tagDiv = document.createElement('div');
-      tagDiv.className = 'tags__tag';
-      tagDiv.classList.add('categories__tag');
-      tagDiv.innerHTML = tag;
-      tagDiv.style.backgroundColor = genRanHexColor();
-      barDiv.appendChild(tagDiv);
+    barDiv.innerHTML = categoryChoiceBarComponent({
+      categories: categories.map((c)=>({content: c, color: genRanHexColor()})),
     });
-    return barDiv;
+    // barDiv.className = 'tags';
+    // categories.forEach((tag) => {
+    //   const tagContentDiv = document.createElement('div');
+    //   tagContentDiv.className = 'tags__tag-content';
+    //   tagContentDiv.style.backgroundColor =  genRanHexColor();
+    //   const tagDiv = document.createElement('div');
+    //   tagDiv.className = 'tags__tag';
+    //   // tagDiv.classList.add('categories__tag');
+    //   tagDiv.innerHTML = tag;
+    //   tagContentDiv.appendChild(tagDiv);
+    //   barDiv.appendChild(tagContentDiv);
+    // });
+    return barDiv.firstChild;
   }
 }

@@ -1,5 +1,7 @@
 @import "variables";
 
+$plate-padding: 30px;
+
 html,
 body,
 .background,
@@ -93,4 +95,17 @@ body,
 
 .hide {
   display: none;
+}
+
+.plate {
+  display: flex;
+  flex-flow: nowrap;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border: $border;
+  padding: $plate-padding;
+  width: 100%;
+  box-sizing: border-box;
+  background-color: $color-sidebar;
 }

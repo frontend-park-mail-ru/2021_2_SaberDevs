@@ -1,0 +1,13 @@
+mixin tagMixin(content, color, cross=false)
+  include tag.pug
+
+.plate
+  .categories__title Поиск по категориям
+  .categories__search-block
+    .categories__search
+      input(type='text' id='categories-search' placeholder='поиск').categories__search-input
+      //- button.action-btns__search-icon.icon__img
+  .tags
+    if Array.isArray(categories)
+      each category in categories
+        +tagMixin(category.content, category.color)

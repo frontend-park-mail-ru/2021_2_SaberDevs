@@ -39,6 +39,7 @@ const subDomains = [
   '/user/',
   '/article/',
   '/profile/',
+  '/categories/',
 ];
 
 // ///////////////////////////////// //

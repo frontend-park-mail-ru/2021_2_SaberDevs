@@ -57,7 +57,10 @@ export function genRanHexColor() {
     const green = Math.floor(Math.random() * 255);
     const blue = Math.floor(Math.random() * 255);
     const brightness = ((red * 299) + (green * 587) + (blue * 114)) / 1000;
-    if (brightness < 155 && brightness > 40) {
+    // Самый светлый черный в проекте #313030.
+    // пусть цвета тусклее #404040 (40h = 64) не пропускаются
+    if (brightness < 155 && brightness > 40 &&
+          (red > 64 && green > 40 && blue > 64)) {
       return '#' + red.toString(16) + green.toString(16) + blue.toString(16);
     }
   }

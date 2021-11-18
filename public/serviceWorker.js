@@ -171,6 +171,7 @@ const cacheUrls = [
   './components/editor/tag.pug.js',
   './components/categoryChoiceBar/categories.pug.js',
   './components/categoryChoiceBar/categoryChoiceBar.js',
+  './components/categoryChoiceBar/categoryChoiceBar.pug.js',
   './components/categoryChoiceBar/categoryChoiceBarView.js',
   './common/regexp.js',
   './common/regexpString.js',

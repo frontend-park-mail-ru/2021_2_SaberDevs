@@ -10,7 +10,9 @@
 
     // отступ справа + снизу, чтобы много тегов разбивались по строкам
     margin: $tag-margin;
+    border: 2px solid transparent;
     border-radius: $border-radius;
+    box-sizing: border-box;
     background: $color-sidebar;
   }
 
@@ -21,6 +23,7 @@
     border: 2px solid transparent;
     border-radius: $border-radius;
     padding: $tag-padding;
+    box-sizing: border-box;
     font-size: $font-size-normal;
 
     &_clicked {
