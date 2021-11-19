@@ -173,6 +173,7 @@ const cacheUrls = [
   './components/categoryChoiceBar/categoryChoiceBar.js',
   './components/categoryChoiceBar/categoryChoiceBar.pug.js',
   './components/categoryChoiceBar/categoryChoiceBarView.js',
+  './common/categoriesList.js',
   './common/regexp.js',
   './common/regexpString.js',
 ];

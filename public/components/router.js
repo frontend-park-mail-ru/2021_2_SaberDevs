@@ -13,6 +13,11 @@ export default class Router {
     this.routes = {};
     this.routesPatterned = [];
     this.root = root;
+    // this.routes.filter = (predicate) =>
+    //   Object.keys(this.routes)
+    //       .filter( (key) => predicate(this.routes[key]) )
+    //       .reduce( (res, key) => (res[key] = this.routes[key], res), {} );
+    // this.pageInstances = [];
   }
 
   /**
@@ -21,6 +26,17 @@ export default class Router {
    * @return {Router}
    */
   register(path, PageClass) {
+    for (const registredPath in this.routes) {
+      // Этот инстанс уже был зарегистрирован по другим путем
+      if (this.routes[registredPath].PageClass === PageClass) {
+        console.warn(`[ROUTER] paths ${registredPath} and ${path} point to ` +
+            `the same ${PageClass.name}`);
+        // чтобы объект по path и registredPath был одним и тем же
+        this.routes[path] = this.routes[registredPath];
+        return this;
+      }
+    }
+
     this.routes[path] = {
       PageClass,
       page: null,
@@ -41,6 +57,18 @@ export default class Router {
   registerPattern(path, PageClass) {
     path = path.slice(0, path.indexOf('<'));
     this.routesPatterned.push(path);
+
+    for (const registredPath in this.routes) {
+      // Этот инстанс уже был зарегистрирован по другим путем
+      if (this.routes[registredPath].PageClass === PageClass) {
+        console.warn(`[ROUTER] paths ${registredPath} and ${path} point to ` +
+            `the same ${PageClass.name}`);
+        // чтобы объект по path и registredPath был одним и тем же
+        this.routes[path] = this.routes[registredPath];
+        return this;
+      }
+    }
+
     this.routes[path] = {
       PageClass,
       page: null,
@@ -111,7 +139,11 @@ export default class Router {
       page.show();
     }
 
-    this.routes[path] = {PageClass, page, root};
+    // сохраняем изменения в объекте не разрушая объекте
+    // это важно для сохранения ссылок нескольких
+    // путей на одну страницу
+    this.routes[path].page = page;
+    this.routes[path].root = root;
   }
 
   /**

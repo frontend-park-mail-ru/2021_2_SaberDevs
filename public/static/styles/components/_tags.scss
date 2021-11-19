@@ -14,6 +14,11 @@
     border-radius: $border-radius;
     box-sizing: border-box;
     background: $color-sidebar;
+
+    &:hover {
+      border: 2px solid $color-elements;
+      cursor: pointer;
+    }
   }
 
   &__tag {
@@ -42,11 +47,6 @@
       &:hover {
         border: 2px solid $color-elements;
       }
-    }
-
-    &:hover {
-      border: 2px solid $color-elements;
-      cursor: pointer;
     }
   }
 

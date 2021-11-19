@@ -15,11 +15,17 @@ export default class SidebarView extends BaseComponentView {
 
   /**
     * @param {string} topBlockContent - вид верхнего блока
+    * @param {string} categoriesList
+    * @param {string} limit
     * @return {HTMLElement}
     */
-  render(topBlockContent) {
+  render(topBlockContent, categoriesList, limit) {
     const wrapper = document.createElement('div');
-    wrapper.innerHTML = sidebarComponent({topBlockContent});
+    wrapper.innerHTML = sidebarComponent({
+      topBlockContent,
+      categoriesList,
+      limit,
+    });
     this.root = wrapper.firstChild;
     return this.root;
   }

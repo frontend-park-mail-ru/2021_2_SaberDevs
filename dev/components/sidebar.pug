@@ -8,21 +8,14 @@
   .sidebar__content
       .sidebar__categories
           .sidebar__categories-title.sidebar__item
-            a(href='/categories') Категории
-          .sidebar__categories-item.sidebar__item
-            a(href='/categories') IT-Новости
-          .sidebar__categories-item.sidebar__item
-            a(href='/categories') UX-Дизайн
-          .sidebar__categories-item.sidebar__item
-            a(href='/categories') Разработка
-          .sidebar__categories-item.sidebar__item
-            a(href='/categories') Менеджмент
-          .sidebar__categories-item.sidebar__item
-            a(href='/categories') Наука
-          .sidebar__categories-item.sidebar__item
-             a(href='/categories') Маркетинг
-          .sidebar__categories-item.sidebar__item
-             a(href='/categories') Администрирование
+            a(href='/categories/') Категории
+          if Array.isArray(categoriesList)
+            each category, idx in categoriesList
+              if (idx > limit)
+                .sidebar__categories-item.sidebar__item
+              else
+                .sidebar__categories-item.sidebar__item(display: 'none')
+                  a(href=`/categories/${category}`) #{category}
       .sidebar-bottom_right
           .contacts
               .contacts__title Contacts

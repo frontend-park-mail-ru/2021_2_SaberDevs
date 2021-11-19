@@ -1447,6 +1447,11 @@ body,
   background: #313030;
 }
 
+.tags__tag-content:hover {
+  border: 2px solid #dee4ea;
+  cursor: pointer;
+}
+
 .tags__tag {
   display: -webkit-box;
   display: -ms-flexbox;
@@ -1483,11 +1488,6 @@ body,
 
 .tags__tag__del-btn:hover {
   border: 2px solid #dee4ea;
-}
-
-.tags__tag:hover {
-  border: 2px solid #dee4ea;
-  cursor: pointer;
 }
 
 .tags_with-cross {

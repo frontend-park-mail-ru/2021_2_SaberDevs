@@ -3,15 +3,9 @@ import CategoryChoiceBarView from './categoryChoiceBarView.js';
 
 import store from '../../flux/store.js';
 import categoryPageActions from '../../flux/actions/categoryPageActions.js';
+import {categoryPageTypes} from '../../flux/types.js';
 
-const categoriesList = [
-  'personal',
-  'marketing',
-  'finance',
-  'design',
-  'career',
-  'technical',
-];
+import categoriesList from '../../common/categoriesList.js';
 
 /**
  * ViewModel-компонент соответсвующего View
@@ -35,6 +29,15 @@ export default class CategoryChoiceBar extends BaseComponent {
     this.root = this.view.render(categoriesList);
     const categoriesBox = this.root.querySelector('div.tags');
 
+    store.subscribe(categoryPageTypes.SELECT_CATEGORY, (currentCategory) => {
+      categoriesBox.childNodes.forEach((categoryDiv) => {
+        categoryDiv.classList.remove('categories__choosen');
+        if (categoryDiv.innerText === currentCategory) {
+          categoryDiv.classList.add('categories__choosen');
+        }
+      });
+    });
+
     this.root.querySelectorAll('div.tags__tag-content').forEach((category) => {
       category.addEventListener('click', ({target}) => {
         const choosenCategory = store.getState().categoryPage.currentCategory;
@@ -43,16 +46,9 @@ export default class CategoryChoiceBar extends BaseComponent {
         } else {
           store.dispatch(categoryPageActions.selectCategory(target.innerHTML));
         }
-        categoriesBox.childNodes.forEach((categoryDiv) => {
-          categoryDiv.classList.remove('categories__choosen');
-          if (categoryDiv.innerText ===
-                store.getState().categoryPage.currentCategory) {
-            categoryDiv.classList.add('categories__choosen');
-          }
-        });
       });
       if (category.textContent.trim() ===
-        store.getState().categoryPage.currentCategory) {
+          store.getState().categoryPage.currentCategory) {
         category.classList.add('categories__choosen');
       }
     });
@@ -68,7 +64,7 @@ export default class CategoryChoiceBar extends BaseComponent {
           if (value != '') {
             categoriesBox.childNodes.forEach((content) => {
               const elem = content.lastChild;
-              const pos = elem.textContent.indexOf(value);
+              const pos = elem.textContent.toLocaleLowerCase().indexOf(value);
               if (pos == -1) {
                 elem.parentElement.style.display = 'none';
                 elem.innerHTML = elem.textContent;

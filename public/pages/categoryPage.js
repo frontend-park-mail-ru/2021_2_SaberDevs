@@ -137,31 +137,6 @@ export default class CategoryPage extends BasePageMV {
   show() {
     super.show();
 
-    let categoryUrlParam = '';
-    const idx = document.URL.indexOf('categories/');
-    if (idx !== -1) {
-      categoryUrlParam = document.URL.slice(idx + 11);
-      console.warn('[CategoryPage] category from Url:', categoryUrlParam);
-      store.dispatch(categoryPageActions.selectCategory(categoryUrlParam));
-    } else {
-      // Если была выбрана категория, но юзер перешел по урлу на categories
-      store.dispatch(categoryPageActions.clearSelectedCategory());
-    }
-
-    store.dispatch(
-        changePageActions.changePage(
-            'categories',
-            `SaberProject | Categories`,
-        ),
-    );
-
-    // Чтобы спрятать анимацию загрузки, пока Category не выбранa
-    // TODO: проверка массива
-    if (store.getState().categoryPage.currentCategory === '') {
-      store.dispatch(categoryPageActions.forbidCategoryArticlesLoading());
-    }
-
-
     const scrollable = document.querySelector('.content');
     if (!scrollable) {
       console.warn('[Category Page] нет дивака .content');
@@ -194,18 +169,35 @@ export default class CategoryPage extends BasePageMV {
    * @return {boolean}
    */
   isActive() {
-    const isActive = super.isActive();
-    // проверяем, изменилась ли категория в URL'e
+    let category = '';
     const idx = document.URL.indexOf('categories/');
     if (idx !== -1) {
-      const categoryUrlParam = document.URL.slice(idx + 11);
-      console.warn('[CategoryPage] category from Url:', categoryUrlParam,
-          '(isActive check)');
-      // не обновлям ленту, если уже были на этой странице перед переходом
-      if (categoryUrlParam !== store.getState().categoryPage.currentCategory) {
-        store.dispatch(categoryPageActions.selectCategory(categoryUrlParam));
+      try {
+        category = decodeURI(document.URL.slice(idx + 11));
+      } catch (e) {
+        console.error(e);
       }
+      console.log('[CategoryPage] (isActive) category from Url:',
+          category);
+      store.dispatch(categoryPageActions.selectCategory(category));
+    } else if (document.URL.indexOf('categories') !== -1) {
+      // Если была выбрана категория, но юзер перешел по урлу на categories
+      store.dispatch(categoryPageActions.clearSelectedCategory());
     }
-    return isActive;
+
+    store.dispatch(
+        changePageActions.changePage(
+            'categories',
+            `SaberProject |
+            ${category.charAt(0).toUpperCase() + category.slice(1)} category`,
+        ),
+    );
+
+    // Чтобы спрятать анимацию загрузки, пока Category не выбранa
+    if (store.getState().categoryPage.currentCategory === '') {
+      store.dispatch(categoryPageActions.forbidCategoryArticlesLoading());
+    }
+
+    return super.isActive();
   }
 }

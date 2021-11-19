@@ -9,6 +9,10 @@ import {mainPageActions} from '../../flux/actions.js';
 import {authorizationTypes} from '../../flux/types.js';
 import editorActions from '../../flux/actions/editorActions.js';
 
+import categoriesList from '../../common/categoriesList.js';
+
+const displayedDefaultLimit = 6;
+
 /**
  * ViewModel-компонент соответсвующего View
  * @class Sidebar
@@ -65,7 +69,11 @@ export default class Sidebar extends BaseComponent {
         avatarUrl: state.avatarUrl,
       });
     }
-    this.root = this.view.render(topBlockContent);
+    this.root = this.view.render(
+        topBlockContent,
+        categoriesList,
+        displayedDefaultLimit,
+    );
     this.view.root.querySelector('a.sidebar__nav-item').addEventListener(
         'click',
         () => store.dispatch(editorActions.createArticle()),

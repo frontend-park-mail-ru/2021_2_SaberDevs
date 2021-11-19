@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "lint": "npx eslint . && npx stylelint --fix **/*.scss",
-    "build-stylelint": "npm run lint && node ./dev/compileTemplates.js && node ./dev/createCachedList && npm run start",
+    "fast": "node ./dev/compileTemplates.js && npm run start-static",
     "build": "npm run lint && node ./dev/compileTemplates.js && node ./dev/createCachedList && npm run start",
     "build-static": "npm run lint && node ./dev/compileTemplates.js && node ./dev/createCachedList && npm run start-static",
     "start": "concurrently --kill-others \"npm run start-static\" \"npm run start-api\"",

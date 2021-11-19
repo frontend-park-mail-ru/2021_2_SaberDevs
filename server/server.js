@@ -30,9 +30,10 @@ const appPages = [
 ];
 
 const appPagesPatterned = [
-  /^\/user\/(\w+)$/,
-  /^\/article\/(\w+)$/,
-  /^\/categories\/(\w+)$/,
+  // \w0-9_\-%&=\?\+ некоторые (не все) символы из спеков URL
+  /^\/user\/([\w0-9_\-%&=\?\+]+)$/,
+  /^\/article\/([\w0-9_\-%&=\?\+]+)$/,
+  /^\/categories\/([\w0-9_\-%&=\?\+]+)$/,
 ];
 
 const subDomains = [
@@ -90,7 +91,7 @@ const server = http.createServer((req, res) => {
     }
 
     console.log(
-        'requested: ',
+        'given: ',
         path,
         '| ext: ',
         path.slice(path.lastIndexOf('.') + 1),
