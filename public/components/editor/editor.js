@@ -8,7 +8,10 @@ import {editorTypes} from '../../flux/types.js';
 
 import Ajax from '../../modules/ajax.js';
 import ModalTemplates from '../modal/modalTemplates.js';
-import {getFileBrowserStorageUrl} from '../../common/utils.js';
+import {
+  getFileBrowserStorageUrl,
+  recoverBlobWithUrl,
+} from '../../common/utils.js';
 
 const PREVIEW_TEXT_LIMIT = 350;
 
@@ -33,7 +36,10 @@ export default class Editor extends BaseComponent {
   constructor() {
     super();
     this.view = new EditorView(
-        ()=>store.getState().editor[store.getState().editor.currentId].category,
+        () => {
+          const state = store.getState().editor;
+          return state[state.currentId]?.category || '';
+        },
         editorActions.saveCategory,
         editorActions.clearCategory,
         editorTypes.SAVE_CATEGORY,
@@ -44,6 +50,7 @@ export default class Editor extends BaseComponent {
     //        Communication
     //
     // /////////////////////////////////
+
     this.unsubscribes.push(
         store.subscribe(editorTypes.CLEAR_ARTICLE, () => {
           this.clear();
@@ -222,42 +229,60 @@ export default class Editor extends BaseComponent {
       const body = {
         title,
         text,
-        category: '',
-        img: '',
-        tags: state.tags,
+        category: state[state.currentId].category,
+        // img: 'добавляем ниже',
+        tags: state[state.currentId].tags,
       };
       if (isUpdate) {
         Object.assign(body, {id: state.currentId});
       }
 
-      Ajax.post({
-        url: `/articles/${isUpdate ? 'update' : 'create'}`,
-        body,
-      }).then(({status, response}) => {
-        if (status === Ajax.STATUS.ok) {
-          store.dispatch(editorActions.publishArticle(response.data));
-          ModalTemplates.informativeMsg(
-              'Успех!', `Статья успешно ${isUpdate?'изменена' : 'создана'}`,
-          );
-          redirect(`/article/${isUpdate ? state.currentId : response.data}`);
-          return;
-        }
-        if (status === Ajax.STATUS.invalidSession) {
-          store.dispatch(authorizationActions.logout());
-          ModalTemplates.signup(false);
-          return;
-        }
-
-        // В случае ошибки
-        ModalTemplates.netOrServerError(status, response.msg);
-      });
+      recoverBlobWithUrl(state.img)
+          .then((blob) => Ajax.postFile({url: '/img/upload', body: blob}))
+          .then(({status, response}) => new Promise((resolve, reject) => {
+            if (status === Ajax.STATUS.ok) {
+              if (ajaxDebug) {
+                console.warn({imgId: response.data.imgId});
+              }
+              resolve(response.data.imgId);
+            } else {
+              // eslint-disable-next-line prefer-promise-reject-errors
+              reject({status, msg: response.msg});
+            }
+          }))
+          .then((img) => Ajax.post({
+            url: `/articles/${isUpdate ? 'update' : 'create'}`,
+            body: {...body, img},
+          }))
+          .then(({status, response}) => new Promise((resolve, reject) => {
+            if (status === Ajax.STATUS.ok) {
+              resolve(response.data);
+            } else {
+              // eslint-disable-next-line prefer-promise-reject-errors
+              reject({status, msg: response.msg});
+            }
+          }))
+          .then((articleId) => {
+            store.dispatch(editorActions.publishArticle(articleId));
+            ModalTemplates.informativeMsg(
+                'Успех!', `Статья успешно ${isUpdate?'изменена' : 'создана'}`,
+            );
+            redirect(`/article/${isUpdate ? state.currentId : articleId}`);
+          })
+          .catch(({status, msg})=> {
+            if (status === Ajax.STATUS.invalidSession) {
+              store.dispatch(authorizationActions.logout());
+              ModalTemplates.signup(false);
+              return;
+            }
+            ModalTemplates.netOrServerError(status, msg);
+          });
     });
 
     // Загрузка превьюхи
     this.root.querySelector('input[name="photo"]').addEventListener(
         'change',
         (e) => {
-          const formData = new FormData();
           const file = e.currentTarget.files[0];
 
           if (!file.type.startsWith('image/')) {
@@ -268,20 +293,6 @@ export default class Editor extends BaseComponent {
             this.view.changePreviewImage(imgUrl);
             store.dispatch(editorActions.saveImg(imgUrl));
           });
-
-          formData.append('file', file); // Один первый файл
-          // TODO: перенести на сабмит
-          // TODO: свериться по апи
-          Ajax.postFile({url: 'photo', body: formData})
-              .then(({status, response}) => {
-                if (status === Ajax.STATUS.ok) {
-                  // TODO: сохраняем айди
-                  // TODO: что-то диспатчим
-                  return;
-                }
-                // В случае ошибки
-                ModalTemplates.netOrServerError(status, response.msg);
-              });
         });
 
     // удаление фото с превью

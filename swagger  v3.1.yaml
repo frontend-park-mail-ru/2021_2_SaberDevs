@@ -18,6 +18,8 @@ tags:
   description: операции над пользователями и их сессиями
 - name: comment
   description: комментарий и все. Че тут описывать
+- name: search
+  description: апишка для поиска
 paths:
   /api/v1/user/login:
     post:
@@ -334,16 +336,6 @@ paths:
           description: Нет прав на изменение статьи
         404:
           description: Статья не найдена
-  /api/v1/articles/photos/upload:
-    post:
-      tags:
-      - article
-      summary: '< TODO: проработать'
-      responses:
-        200:
-          description: ОК
-        401:
-          description: Не авторизован
           
   /api/v1/img/upload:
     post:
@@ -450,6 +442,76 @@ paths:
           description: ОК
         401:
           description: Не имеешь право, чтобы что-то менять
+
+  /api/v1/search/articles:
+    get:
+      tags:
+      - search
+      description: поиск по содержанию статей
+      parameters:
+      - name: q
+        in: query
+        description: строка
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: ОК
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ArticlePreview'
+        404:
+          description: Пользователь не найден или Статья не найдена
+  /api/v1/search/author:
+    get:
+      tags:
+      - search
+      description: поиск по авторам
+      parameters:
+      - name: q
+        in: query
+        description: имя / фамилия / логин
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: ОК
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/UserProfile'
+        404:
+          description: Пользователь не найден или Статья не найдена
+  /api/v1/search/tags:
+    get:
+      tags:
+      - search
+      description: поиск статей по тегам
+      parameters:
+      - name: q
+        in: query
+        description: строка
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: ОК
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ArticlePreview'
+        404:
+          description: Пользователь не найден или Статья не найдена
 
 components:
   schemas:

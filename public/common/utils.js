@@ -5,6 +5,14 @@
 // ///////////////////////////////// //
 
 /**
+ * @param {BlobURL} url
+ * @return {Promise<Blob>}
+ */
+export function recoverBlobWithUrl(url) {
+  return fetch(url).then((res) => res.blob());
+}
+
+/**
  * @param {string} file
  * @return {Promise}
  */
@@ -196,6 +204,7 @@ const Utils = {
   htmlToString,
   genRanHexColor,
   getFileBrowserStorageUrl,
+  recoverBlobWithUrl,
 };
 
 export default Utils;

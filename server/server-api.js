@@ -759,7 +759,7 @@ const server = http.createServer((req, res) => {
   if (req.method === 'OPTIONS') {
     // CORS
     // Должна быть одна строка без пробелов и \n. Слова отделяются запятыми
-    res.setHeader('Access-Control-Allow-Headers',
+    res.setHeader(
         'Access-Control-Allow-Headers,' +
         'Origin,' +
         'Accept,' +
