@@ -237,7 +237,7 @@ export default class Editor extends BaseComponent {
         Object.assign(body, {id: state.currentId});
       }
 
-      recoverBlobWithUrl(state.img)
+      recoverBlobWithUrl(state[state.currentId].img)
           .then((blob) => Ajax.postFile({url: '/img/upload', body: blob}))
           .then(({status, response}) => new Promise((resolve, reject) => {
             if (status === Ajax.STATUS.ok) {

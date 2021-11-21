@@ -36,16 +36,18 @@ export default function combineReducers(reducers) {
           }
           if (reducer === 'editor') {
             printState = {};
-            Object.assign(printState, state[reducer]);
-            for (const id in printState) {
+            for (const id in state[reducer]) {
+              printState[id] = {};
+              Object.assign(printState[id], state[reducer][id]);
               if (printState[id].img && printState[id].img !== '') {
                 printState[id].img =
                     'data:image/png;base64,(контент картинки)';
               }
             }
             printNewState = {};
-            Object.assign(printNewState, newState);
-            for (const id in printNewState) {
+            for (const id in newState) {
+              printNewState[id] = {};
+              Object.assign(printNewState[id], newState[id]);
               if (printNewState[id].img && printNewState[id].img !== '') {
                 printNewState[id].img =
                     'data:image/png;base64,(контент картинки)';

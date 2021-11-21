@@ -7,6 +7,7 @@
     "lint": "npx eslint . && npx stylelint --fix **/*.scss",
     "fast": "node ./dev/compileTemplates.js && npm run start-static",
     "build": "npm run lint && node ./dev/compileTemplates.js && node ./dev/createCachedList && npm run start-static",
+    "nohup": "npm run lint && node ./dev/compileTemplates.js && node ./dev/createCachedList && nohup node server/server.js",
     "start": "concurrently --kill-others \"npm run start-static\" \"npm run start-api\"",
     "start-static": "node server/server.js",
     "start-api": "node server/server-api.js"
