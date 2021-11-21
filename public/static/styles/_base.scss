@@ -56,7 +56,16 @@ body,
 .page {
   @include col;
 
+  // отступ, чтобы интерфейс винды не перекрывал низ страницы
+  margin-bottom: 2%;
   width: 100%;
+}
+
+.page_title {
+  @include col;
+
+  width: 100%;
+  font-size: $font-size-large;
 }
 
 .content {

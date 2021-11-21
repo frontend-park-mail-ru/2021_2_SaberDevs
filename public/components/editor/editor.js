@@ -8,6 +8,9 @@ import {editorTypes} from '../../flux/types.js';
 
 import Ajax from '../../modules/ajax.js';
 import ModalTemplates from '../modal/modalTemplates.js';
+import {getFileBrowserStorageUrl} from '../../common/utils.js';
+
+const PREVIEW_TEXT_LIMIT = 350;
 
 /**
    * Проверяет состояние editor
@@ -29,7 +32,12 @@ export default class Editor extends BaseComponent {
    */
   constructor() {
     super();
-    this.view = new EditorView();
+    this.view = new EditorView(
+        ()=>store.getState().editor[store.getState().editor.currentId].category,
+        editorActions.saveCategory,
+        editorActions.clearCategory,
+        editorTypes.SAVE_CATEGORY,
+    );
 
     // /////////////////////////////////
     //
@@ -51,6 +59,9 @@ export default class Editor extends BaseComponent {
           this.changeToUpdate();
           this.setContent(store.getState().editor[id]);
         }),
+        store.subscribe(editorTypes.SAVE_CATEGORY, (category) => {
+          this.view.changePreviewCategory(category);
+        }),
     );
   }
 
@@ -61,7 +72,7 @@ export default class Editor extends BaseComponent {
    */
   render() {
     super.render();
-    this.root = this.view.render();
+    this.root = this.view.render(store.getState().authorization);
 
     // Проверяем, было ли вызвано событие EDIT_EXISTING_ARTICLE
     // до рендера. Если было, то в сторе есть изменения.
@@ -98,7 +109,6 @@ export default class Editor extends BaseComponent {
         'click',
         (e) => {
           e.preventDefault();
-          // TODO: теги
           const tag = tagInput.value.trim().replace(/\s+/g, '_');
           // Проверка, а есть ли уже такой тег?
           const state = store.getState().editor;
@@ -110,20 +120,41 @@ export default class Editor extends BaseComponent {
               tag,
               () => store.dispatch(editorActions.removeTag(tag)),
           );
+          tagInput.value = '';
         },
     );
 
+    const textareaInput = this.root.querySelector('textarea');
+    const titleInput = this.root.querySelector('input[name="title"]');
+
     // Сохранение введенного пользователем текста onChange
-    // TODO: проверить, рейзится ли евент, если textValue меняется программой
-    this.root.querySelector('textarea').addEventListener('change', (e) => {
-      const title = this.root.querySelector('input[name="title"]').value;
-      const text = this.root.querySelector('textarea').value;
+    // Этот евент не рейзится, если textValue меняется программой
+    const textInputChangeListener = (e) => {
+      const title = titleInput.value;
+      const text = textareaInput.value;
       store.dispatch(editorActions.saveArticle(
           store.getState().editor.currentId, {title, text},
       ));
+    };
+    textareaInput.addEventListener('change', textInputChangeListener);
+    titleInput.addEventListener('change', textInputChangeListener);
+
+    // Дублирование измененного текста на превью
+    textareaInput.addEventListener('input', (e) => {
+      let text = textareaInput.value.slice(0, PREVIEW_TEXT_LIMIT);
+      const lastPos = text.lastIndexOf(' ');
+      if (lastPos !== -1) {
+        text = text.slice(0, lastPos);
+      }
+      this.view.changePreviewText(text);
     });
 
-    // удаление статьи
+    titleInput.addEventListener('input', (e) => {
+      const title = titleInput.value;
+      this.view.changePreviewTitle(title);
+    });
+
+    // сброс полей статьи
     this.root.querySelector('.article-create__clear-btn').addEventListener(
         'click',
         (e) => {
@@ -221,6 +252,47 @@ export default class Editor extends BaseComponent {
         ModalTemplates.netOrServerError(status, response.msg);
       });
     });
+
+    // Загрузка превьюхи
+    this.root.querySelector('input[name="photo"]').addEventListener(
+        'change',
+        (e) => {
+          const formData = new FormData();
+          const file = e.currentTarget.files[0];
+
+          if (!file.type.startsWith('image/')) {
+            ModalTemplates.warn('Ошибка', 'Выберите изображение');
+            return;
+          }
+          getFileBrowserStorageUrl(file).then((imgUrl) => {
+            this.view.changePreviewImage(imgUrl);
+            store.dispatch(editorActions.saveImg(imgUrl));
+          });
+
+          formData.append('file', file); // Один первый файл
+          // TODO: перенести на сабмит
+          // TODO: свериться по апи
+          Ajax.postFile({url: 'photo', body: formData})
+              .then(({status, response}) => {
+                if (status === Ajax.STATUS.ok) {
+                  // TODO: сохраняем айди
+                  // TODO: что-то диспатчим
+                  return;
+                }
+                // В случае ошибки
+                ModalTemplates.netOrServerError(status, response.msg);
+              });
+        });
+
+    // удаление фото с превью
+    this.root.querySelector('input[name="clear-photo"]').addEventListener(
+        'click',
+        (e) => {
+          e.preventDefault();
+          this.view.clearPreviewImage();
+          store.dispatch(editorActions.clearImg());
+        },
+    );
     return this.root;
   }
 
@@ -235,20 +307,20 @@ export default class Editor extends BaseComponent {
     * @property {number?} likes
     * @property {number?} comments
     */
-  setContent({title, text}) {
+  setContent({title, text, img, category}) {
     if (title || text) {
       console.log('{EDITOR} set content');
     }
-    const textarea = this.root.querySelector('textarea');
-    const titleInput = this.root.querySelector('input[name="title"]');
-    if (textarea === null || titleInput === null) {
-      console.warn(
-          '{Editor} can\'t use setContent: component hasn\'t been rendered yet',
-      );
+    this.view.setContent(title, text);
+    this.view.changePreviewCategory(category);
+    if (!img) {
       return;
     }
-    textarea.value = text;
-    titleInput.value = title;
+    if (img !== '') {
+      this.view.changePreviewImage(img);
+    } else {
+      this.view.clearPreviewImage();
+    }
   }
 
   /**
@@ -259,6 +331,8 @@ export default class Editor extends BaseComponent {
     this.setContent({
       title: '',
       text: '',
+      img: '',
+      category: '',
     });
   }
 

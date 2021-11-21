@@ -1,16 +1,23 @@
 .article-create
-  .article-create__title #{pageName}
-  .article-create__right
-    button.btn_color-elementary.article-create__del-btn Удалить
-    button.btn_color-elementary.article-create__clear-btn Очистить
+  .article-create__title Создание статьи
   form.article-create__form
+    .article-create__category_selector
+    .article-create__right
+      button.btn_color-elementary.article-create__del-btn Удалить
+      button.btn_color-elementary.article-create__clear-btn Очистить
     .article-create__rows !{form_rows}
-    .article-create__row
-      .article-create__label Теги
-      .article-create__tags-actions
+      .article-create__row
+        .article-create__label Теги
+        .article-create__tags-actions
           input.article-create__input-tag(type="text" name="tag" maxlength=20)
           button.article-create__add-tag +
-          //- button.action-btns__trash-icon.icon__img
-      .article-create__tags !{tags}
+        .article-create__tags !{tags}
     .article-create__right
-        input.btn_color-elementary(type='submit' name='btn-submit' value='Создать')
+      input.btn_color-elementary(type='file' name='photo' value='Заставка')
+      input.btn_color-elementary(type='button' name='clear-photo' value='Удалить картинку')
+    .article-create__preview
+      .article-create__preview__title Предпросмотр:
+      .article-create__preview__content
+      .article-create__tags-actions
+    .article-create__right
+      input.btn_color-elementary(type='submit' name='btn-submit' value='Создать')

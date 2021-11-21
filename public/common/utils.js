@@ -5,6 +5,18 @@
 // ///////////////////////////////// //
 
 /**
+ * @param {string} file
+ * @return {Promise}
+ */
+export function getFileBrowserStorageUrl(file) {
+  return new Promise((r) => {
+    const reader = new FileReader();
+    reader.onload = (e) => r(e.target.result);
+    reader.readAsDataURL(file);
+  });
+}
+
+/**
  * Вызов Router.open(to) через имитацию клика
  * Обязательно наличие элемента #root в DOM
  * @param {string} to
@@ -183,6 +195,7 @@ const Utils = {
   redirect,
   htmlToString,
   genRanHexColor,
+  getFileBrowserStorageUrl,
 };
 
 export default Utils;

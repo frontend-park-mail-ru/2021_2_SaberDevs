@@ -9,10 +9,11 @@ let sidebar = null;
 /**
   * Генерирует HTML-страницу проекта
   * Заполняет блок .content элементами elements в порядке следования
+  * @param  {string} title
   * @param  {...BaseComponent} elements
   * @return {HTMLElement}
   */
-export default function createPage(...elements) {
+export default function createPage(title, ...elements) {
   if (header === null || sidebar === null) {
     header = new Header();
     sidebar = new Sidebar();
@@ -23,6 +24,9 @@ export default function createPage(...elements) {
   screenDiv.className = 'screen';
   const pageDiv = document.createElement('div');
   pageDiv.className = 'page';
+  const pageTitleDiv = document.createElement('div');
+  pageTitleDiv.className = 'page_title';
+  pageTitleDiv.textContent = title;
   const contentDiv = document.createElement('div');
   contentDiv.className = 'content';
 
@@ -37,6 +41,7 @@ export default function createPage(...elements) {
   });
 
   pageDiv.appendChild(header.render());
+  pageDiv.appendChild(pageTitleDiv);
   pageDiv.appendChild(contentDiv);
   screenDiv.appendChild(pageDiv);
   screenDiv.appendChild(sidebar.render());

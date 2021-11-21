@@ -2,8 +2,6 @@ import BaseComponent from '../_basic/baseComponent.js';
 import CategoryChoiceBarView from './categoryChoiceBarView.js';
 
 import store from '../../flux/store.js';
-import categoryPageActions from '../../flux/actions/categoryPageActions.js';
-import {categoryPageTypes} from '../../flux/types.js';
 
 import categoriesList from '../../common/categoriesList.js';
 
@@ -14,10 +12,32 @@ import categoriesList from '../../common/categoriesList.js';
 export default class CategoryChoiceBar extends BaseComponent {
   /**
    * Универсальный компонент заголовка для страницы с категориями
+   * @param {Action<string>} getCurrentSelection
+   * @param {Action<string>} setSelection
+   * @param {Action} clearSelection
+   * @param {Type} SELECT_CATEGORY_TYPE
    */
-  constructor() {
+  constructor(getCurrentSelection, setSelection,
+      clearSelection, SELECT_CATEGORY_TYPE,
+  ) {
     super();
     this.view = new CategoryChoiceBarView();
+    this.setSelection = setSelection;
+    this.clearSelection = clearSelection;
+    this.getCurrentSelection = getCurrentSelection;
+
+    // /////////////////////////////////
+    //
+    //        Communication
+    //
+    // /////////////////////////////////
+
+    this.unsubscribes.push(
+        // Выделить выбранную категорию
+        store.subscribe(SELECT_CATEGORY_TYPE, (category) => {
+          this.markSelectedCategory(category);
+        }),
+    );
   }
 
   /**
@@ -29,26 +49,17 @@ export default class CategoryChoiceBar extends BaseComponent {
     this.root = this.view.render(categoriesList);
     const categoriesBox = this.root.querySelector('div.tags');
 
-    store.subscribe(categoryPageTypes.SELECT_CATEGORY, (currentCategory) => {
-      categoriesBox.childNodes.forEach((categoryDiv) => {
-        categoryDiv.classList.remove('categories__choosen');
-        if (categoryDiv.innerText === currentCategory) {
-          categoryDiv.classList.add('categories__choosen');
-        }
-      });
-    });
-
     this.root.querySelectorAll('div.tags__tag-content').forEach((category) => {
       category.addEventListener('click', ({target}) => {
-        const choosenCategory = store.getState().categoryPage.currentCategory;
+        const choosenCategory = this.getCurrentSelection();
         if (target.innerHTML === choosenCategory) {
-          store.dispatch(categoryPageActions.clearSelectedCategory());
+          store.dispatch(this.clearSelection());
         } else {
-          store.dispatch(categoryPageActions.selectCategory(target.innerHTML));
+          store.dispatch(this.setSelection(target.innerHTML));
         }
       });
       if (category.textContent.trim() ===
-          store.getState().categoryPage.currentCategory) {
+          this.getCurrentSelection()) {
         category.classList.add('categories__choosen');
       }
     });
@@ -83,5 +94,23 @@ export default class CategoryChoiceBar extends BaseComponent {
         };
 
     return this.root;
+  }
+
+  /**
+   * пройтись по всем сущностям и выделить выбранный
+   * @param {string} currentCategory
+   */
+  markSelectedCategory(currentCategory) {
+    const categoriesBox = this.root.querySelector('div.tags');
+    if (!categoriesBox) {
+      console.warn('{CategoryChoiceBar} component hasn\'t been rendered yet');
+      return;
+    }
+    categoriesBox.childNodes.forEach((categoryDiv) => {
+      categoryDiv.classList.remove('categories__choosen');
+      if (categoryDiv.innerText === currentCategory) {
+        categoryDiv.classList.add('categories__choosen');
+      }
+    });
   }
 }

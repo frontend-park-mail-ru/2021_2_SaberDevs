@@ -8,7 +8,7 @@
   .sidebar__content
       .sidebar__categories
           .sidebar__categories-title.sidebar__item
-            a(href='/categories/') Категории
+            a(href='/categories') Категории
           if Array.isArray(categoriesList)
             each category, idx in categoriesList
               if (idx > limit)

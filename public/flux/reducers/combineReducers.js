@@ -34,6 +34,24 @@ export default function combineReducers(reducers) {
             Object.assign(printNewState, newState);
             delete printNewState.cards;
           }
+          if (reducer === 'editor') {
+            printState = {};
+            Object.assign(printState, state[reducer]);
+            for (const id in printState) {
+              if (printState[id].img && printState[id].img !== '') {
+                printState[id].img =
+                    'data:image/png;base64,(контент картинки)';
+              }
+            }
+            printNewState = {};
+            Object.assign(printNewState, newState);
+            for (const id in printNewState) {
+              if (printNewState[id].img && printNewState[id].img !== '') {
+                printNewState[id].img =
+                    'data:image/png;base64,(контент картинки)';
+              }
+            }
+          }
           console.log(`${reducer} | action: , ${action.type}
           \t| prev state:\n${JSON.stringify(printState)}
           \t| new state:\n${JSON.stringify(printNewState)}

@@ -46,6 +46,6 @@ export default class MainPageView extends BasePageView {
     */
   render() {
     super.render();
-    this.root.appendChild(createPage(this.pageComponents.feed));
+    this.root.appendChild(createPage('', this.pageComponents.feed));
   }
 }

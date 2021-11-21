@@ -5,7 +5,34 @@ import formArticleEditorTextareaComponent from
 import formArticleEditorRowComponent from
   '../editor/formArticleEditorRow.pug.js';
 import tagComponent from './tag.pug.js';
+import cardComponent from '../feed/card.pug.js';
+
+import CategoryChoiceBar from '../categoryChoiceBar/categoryChoiceBar.js';
+
 import {genRanHexColor} from '../../common/utils.js';
+
+/**
+ * @param {Date} d
+ * @return {string} hh:mm dd.mm.yyyy
+ */
+function convertDate(d = new Date()) {
+  const pad = (s) => (s < 10) ? '0' + s : s;
+  return [pad(d.getHours()), pad(d.getMinutes())].join(':') + ' ' +
+  [pad(d.getDate()), pad(d.getMonth()+1), d.getFullYear()].join('/');
+}
+
+/**
+ * @param {string} url
+ * @return {string}
+ */
+function fillCardImgStyle(url) {
+  return `background: -webkit-gradient(linear, left top, left bottom,` +
+  `from(rgba(0, 0, 0, 0.7)), to(rgba(0, 0, 0, 0.7))), url(${url});`+
+  `background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)),` +
+  `url(${url});
+  background-size: cover;
+  background-repeat: no-repeat;`;
+}
 
 /**
  * @class EditorView
@@ -13,16 +40,29 @@ import {genRanHexColor} from '../../common/utils.js';
 export default class EditorView extends BaseComponentView {
   /**
    * Компонент редактора
+   * @param {Action<string>} getCurrentSelection
+   * @param {Action<string>} setSelection
+   * @param {Action} clearSelection
+   * @param {Type} SELECT_TYPE
    */
-  constructor() {
+  constructor(getCurrentSelection, setSelection, clearSelection, SELECT_TYPE) {
     super();
-    this.tagBox = document.createElement('div');
+    this.innerComponents = {
+      categoryChoiceBar: new CategoryChoiceBar(
+          getCurrentSelection, setSelection, clearSelection, SELECT_TYPE,
+      ),
+    };
+    this.tagBox = null;
+    this.previewBox = null;
+    this.textAreaInput = null;
+    this.titleInput = null;
   }
 
   /**
+   * @param {object} author
    * @return {HTMLElement}
    */
-  render() {
+  render(author) {
     let articleRows = '';
     const title = formArticleEditorRowComponent({
       label: 'Заголовок',
@@ -38,12 +78,30 @@ export default class EditorView extends BaseComponentView {
 
     const editor = document.createElement('div');
     editor.innerHTML = articleEditorComponent({
-      pageName: 'Создание статьи',
       buttonAction: 'clear',
       form_rows: articleRows,
     });
 
-    this.tagBox = editor.firstChild.querySelector('.article-create__tags');
+    editor.firstChild.querySelector('.article-create__category_selector')
+        .appendChild(this.innerComponents.categoryChoiceBar.render());
+    // немного другие стили
+    editor.firstChild.querySelector('.plate').className = '';
+
+    this.previewBox =
+        editor.firstChild.querySelector('.article-create__preview__content');
+    this.previewBox.innerHTML = cardComponent({
+      id: '-preview',
+      datetime: convertDate(),
+      category: 'категория не выбрана',
+      author,
+    })
+        .replace('card', 'article-create__preview__card')
+        .replace(/style=".*\n.*\n.*\n.*;"/, '');
+
+    this.tagBox = this.previewBox.querySelector('.tags');
+    this.textAreaInput = editor.firstChild.querySelector('textarea');
+    this.titleInput = editor.firstChild.querySelector('input[name="title"]');
+
     return editor.firstChild;
   }
 
@@ -53,6 +111,12 @@ export default class EditorView extends BaseComponentView {
    * @param {function} deleteAction
    */
   appendTag(tag, deleteAction) {
+    if (this.tagBox === null ) {
+      console.warn(
+          '{Editor} component hasn\'t been rendered yet',
+      );
+      return;
+    }
     const wrapper = document.createElement('div');
     wrapper.innerHTML = tagComponent({
       content: tag,
@@ -73,6 +137,96 @@ export default class EditorView extends BaseComponentView {
    * Стираем все выбранные теги со страницы
    */
   clearTags() {
+    if (this.tagBox === null ) {
+      console.warn(
+          '{Editor} component hasn\'t been rendered yet',
+      );
+      return;
+    }
     this.tagBox.innerHTML = '';
+  }
+
+  /**
+   * @param {string} url
+   */
+  changePreviewImage(url) {
+    if (this.previewBox === null ) {
+      console.warn(
+          '{Editor} component hasn\'t been rendered yet',
+      );
+      return;
+    }
+
+    this.previewBox.querySelector('.article-create__preview__card')
+        .style.cssText = fillCardImgStyle(url);
+  }
+
+  /**
+   * сброс фотографии
+   */
+  clearPreviewImage() {
+    this.previewBox.querySelector('.article-create__preview__card')
+        .style.cssText = '';
+  }
+
+  /**
+   * @param {string} text
+   */
+  changePreviewText(text) {
+    if (this.previewBox === null ) {
+      console.warn(
+          '{Editor} component hasn\'t been rendered yet',
+      );
+      return;
+    }
+    this.previewBox.querySelector('.card__description').textContent = text;
+  }
+
+  /**
+   * @param {string} text
+   */
+  changePreviewTitle(text) {
+    if (this.previewBox === null ) {
+      console.warn(
+          '{Editor} component hasn\'t been rendered yet',
+      );
+      return;
+    }
+    this.previewBox.querySelector('.preview__title').textContent = text;
+  }
+
+  /**
+   * @param {string} text
+   */
+  changePreviewCategory(text) {
+    if (this.previewBox === null ) {
+      console.warn(
+          '{Editor} component hasn\'t been rendered yet',
+      );
+      return;
+    }
+    if (text === '') {
+      this.previewBox.querySelector('.card__category').textContent =
+        'категория не выбрана';
+    } else {
+      this.previewBox.querySelector('.card__category').textContent = text;
+    }
+  }
+
+  /**
+   * @param {string} title
+   * @param {string} text
+   */
+  setContent(title, text) {
+    if (this.textarea === null || this.titleInput === null) {
+      console.warn(
+          '{Editor} can\'t use setContent: component hasn\'t been rendered yet',
+      );
+      return;
+    }
+    this.textAreaInput.value = text;
+    this.titleInput.value = title;
+    this.changePreviewText(text);
+    this.changePreviewTitle(title);
   }
 }

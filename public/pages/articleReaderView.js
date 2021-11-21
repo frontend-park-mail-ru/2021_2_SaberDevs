@@ -30,6 +30,7 @@ export default class ReaderView extends BasePageView {
   render() {
     super.render();
     this.root.appendChild(createPage(
+        '',
         this.pageComponents.reader,
         // TODO: comments component
     ));

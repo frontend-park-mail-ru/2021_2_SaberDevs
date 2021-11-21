@@ -1,6 +1,4 @@
-$article-create-title-font-size: 36px;
 $article-create-add-tag-font-size: 48px;
-$article-create-title-margin: 30px 0;
 $article-create-tag-font-size: 16px;
 $article-create-tag-margin-left: 10px;
 $article-create-label-margin-right: 10px;
@@ -11,11 +9,11 @@ $article-create-trash-height: 40px;
 .article-create {
   @include col;
 
-  width: 80%;
+  padding: 0 10%;
+  width: stretch;
 
   &__title {
-    margin: $article-create-title-margin;
-    font-size: $article-create-title-font-size;
+    font-size: $font-size-large;
   }
 
   &__form {
@@ -71,8 +69,8 @@ $article-create-trash-height: 40px;
   &__input {
     border: $border;
     border-radius: $border-radius;
-    padding: 10px;
-    width: 100%;
+    padding: 10px 5px;
+    width: stretch;
     font-size: 18px;
     color: $color-primary;
     background-color: $color-elements;
@@ -99,5 +97,25 @@ $article-create-trash-height: 40px;
 
   &__right {
     @include right;
+  }
+
+  &__preview {
+    width: 100%;
+
+    &__title {
+      margin: 10px 0;
+      font-size: $font-size-normal;
+    }
+
+    &__card {
+      @include col;
+
+      flex-grow: 1;
+      justify-content: space-between;
+      border: $border;
+      padding: $card-padding;
+      min-height: $card-min-height;
+      background-color: $color-sidebar;
+    }
   }
 }

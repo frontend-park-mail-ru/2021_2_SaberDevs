@@ -77,12 +77,58 @@ function ajax(requestParams) {
       });
 }
 
+/**
+ * Выполняет отправку фото на сервер. При успешном выполнении вызывает callback
+ * @param {Object} requestParams
+ * @property {Url} [url = '/']
+ * @property {any} body
+ * @return {Promise}
+ */
+function postFile(requestParams) {
+  const url = APIurl + (requestParams.url || '/');
+  const fetchParams = {
+    body: requestParams.body,
+    mode: 'cors',
+    credentials: 'include',
+    headers: {
+      'Content-Type': 'multipart',
+    },
+    method: ajaxMethods.post,
+  };
+
+  if (ajaxDebug) {
+    console.log('ajax file post request', {url},
+        ': ' + JSON.stringify(fetchParams));
+  }
+
+  let status = 0;
+  return fetch(url, fetchParams)
+      .then((response) => {
+        status = response.status;
+        return response.json();
+      })
+      .then((response) => {
+        if (ajaxDebug) {
+          console.log('ajax resolved ' + status + ': ');
+          console.log(response);
+        }
+        return {
+          status,
+          response,
+        };
+      })
+      .catch((error) => {
+        console.warn(error);
+      });
+}
+
 // Плагин для общения с API
 const Ajax = {
   AJAX_METHODS: ajaxMethods,
   STATUS: ajaxStatuses,
   get: (requestParams) => ajax({method: ajaxMethods.get, ...requestParams}),
   post: (requestParams) => ajax({method: ajaxMethods.post, ...requestParams}),
+  postFile,
 };
 
 export default Ajax;

@@ -27,6 +27,13 @@ export default class EditorPage extends BasePageMV {
   constructor(root) {
     super(root);
     this.view = new EditorView(root);
+
+    // /////////////////////////////////
+    //
+    //        Communication
+    //
+    // /////////////////////////////////
+
     store.subscribe(authorizationTypes.LOGOUT, () => {
       console.log('[ArticleEditorPage] Logout reaction');
       if (this.isActive()) {

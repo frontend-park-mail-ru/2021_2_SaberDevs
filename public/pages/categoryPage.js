@@ -110,16 +110,24 @@ export default class CategoryPage extends BasePageMV {
 
     // обновить ленту в соответствии с фильтром
     store.subscribe(categoryPageTypes.SELECT_CATEGORY, (category) => {
-      store.dispatch(categoryPageActions.clearCategoryArticles());
-      store.dispatch(categoryPageActions.allowCategoryArticlesLoading());
-      uploadCategoryCards();
-      history.pushState(null, '', '/categories/' + category);
+      if (category !== '') {
+        store.dispatch(categoryPageActions.clearCategoryArticles());
+        store.dispatch(categoryPageActions.allowCategoryArticlesLoading());
+        uploadCategoryCards();
+      }
+      history.pushState(
+          null,
+          '',
+          '/categories' + (category !== '' ? '/' + category : ''),
+      );
       // меняем и тайтл
       store.dispatch(
           changePageActions.changePage(
               'categories',
               `SaberProject |
-              ${category.charAt(0).toUpperCase() + category.slice(1)} category`,
+              ${category !== '' ?
+              (category.charAt(0).toUpperCase() + category.slice(1)) :
+              'Categories'}`,
           ),
       );
     });
@@ -184,14 +192,6 @@ export default class CategoryPage extends BasePageMV {
       // Если была выбрана категория, но юзер перешел по урлу на categories
       store.dispatch(categoryPageActions.clearSelectedCategory());
     }
-
-    store.dispatch(
-        changePageActions.changePage(
-            'categories',
-            `SaberProject |
-            ${category.charAt(0).toUpperCase() + category.slice(1)} category`,
-        ),
-    );
 
     // Чтобы спрятать анимацию загрузки, пока Category не выбранa
     if (store.getState().categoryPage.currentCategory === '') {

@@ -117,6 +117,24 @@ body,
       -ms-flex-align: center;
           align-items: center;
   width: 100%;
+  margin-bottom: 2%;
+}
+
+.page_title {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-flow: nowrap;
+      flex-flow: nowrap;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  width: 100%;
+  font-size: 2.5rem;
 }
 
 .content {
@@ -1317,6 +1335,8 @@ body,
   border-radius: 5px;
   padding: 10px;
   width: -webkit-fill-available;
+  width: -moz-available;
+  width: stretch;
   font-size: 24px;
   color: #151414;
   background-color: #dee4ea;
@@ -1351,7 +1371,7 @@ body,
   padding: 10px;
   width: -webkit-fill-available;
   width: -moz-available;
-  width: fill-available;
+  width: stretch;
   -webkit-box-shadow: 0 0 25px #bb1717;
           box-shadow: 0 0 25px #bb1717;
   font-size: 24px;
@@ -1673,12 +1693,14 @@ body,
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
-  width: 80%;
+  padding: 0 10%;
+  width: -webkit-fill-available;
+  width: -moz-available;
+  width: stretch;
 }
 
 .article-create__title {
-  margin: 30px 0;
-  font-size: 36px;
+  font-size: 2.5rem;
 }
 
 .article-create__form {
@@ -1775,8 +1797,10 @@ body,
 .article-create__input {
   border: 2px solid #151414;
   border-radius: 5px;
-  padding: 10px;
-  width: 100%;
+  padding: 10px 5px;
+  width: -webkit-fill-available;
+  width: -moz-available;
+  width: stretch;
   font-size: 18px;
   color: #151414;
   background-color: #dee4ea;
@@ -1820,6 +1844,40 @@ body,
       -ms-flex-pack: end;
           justify-content: end;
   width: 100%;
+}
+
+.article-create__preview {
+  width: 100%;
+}
+
+.article-create__preview__title {
+  margin: 10px 0;
+  font-size: 1.5rem;
+}
+
+.article-create__preview__card {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-flow: nowrap;
+      flex-flow: nowrap;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-flex: 1;
+      -ms-flex-positive: 1;
+          flex-grow: 1;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  border: 2px solid #151414;
+  padding: 30px;
+  min-height: 300px;
+  background-color: #313030;
 }
 
 .article-view {

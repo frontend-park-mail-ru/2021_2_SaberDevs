@@ -29,6 +29,9 @@ export default class ProfileSettingsPageView extends BasePageView {
     */
   render() {
     super.render();
-    this.root.appendChild(createPage(this.pageComponents.settingsForm));
+    this.root.appendChild(createPage(
+        'Настройки пользователя',
+        this.pageComponents.settingsForm,
+    ));
   }
 }

@@ -39,6 +39,7 @@ export default class ProfilePageView extends BasePageView {
   render() {
     super.render();
     this.root.appendChild(createPage(
+        '',
         this.pageComponents.profileCard,
         this.pageComponents.feed,
     ));

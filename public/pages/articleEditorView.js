@@ -30,31 +30,8 @@ export default class EditorView extends BasePageView {
    */
   render() {
     super.render();
-    // TODO: tag selector component
-    // const tagsBox = document.createElement('div');
-    // existingArticle.tags.forEach((tag) => {
-    //   const tagDiv = document.createElement('div');
-    //   tagDiv.className = 'tags__tag';
-    //   tagDiv.innerHTML = tag;
-    //   tagDiv.style.color = 'white';
-    //   tagDiv.style.backgroundColor = genRanHexColor();
-    //   tagsBox.appendChild(tagDiv);
-    // });
-    // const addTag = editor.getElementsByClassName('article__add-tag')[0];
-    // console.log('add tag: ', addTag);
-    // addTag.addEventListener('click', (e) => {
-    //   e.preventDefault();
-    //   const tags = document.getElementsByClassName('article__tags')[0];
-    //   const inputTag =
-    // document.getElementsByClassName('article__input-tag')[0];
-    //   const tagDiv = document.createElement('div');
-    //   tagDiv.className = 'tags__tag';
-    //   tagDiv.innerHTML = inputTag.value;
-    //   tagDiv.style.color = 'white';
-    //   tagDiv.style.backgroundColor = genRanHexColor();
-    //   tags.appendChild(tagDiv);
-    // });
     this.root.appendChild(createPage(
+        '',
         this.pageComponents.editor,
     ));
   }

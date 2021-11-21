@@ -71,48 +71,6 @@ function askNewCategoryArticles() {
 }
 
 /**
- * @param {string} tag
- * @return {Action}
- */
-function addTag(tag) {
-  return {
-    type: categoryPageTypes.ADD_TAG,
-    payload: tag,
-  };
-}
-
-/**
- * @param {string} tag
- * @return {Action}
- */
-function removeTag() {
-  return {
-    type: categoryPageTypes.REMOVE_TAG,
-    payload: tag,
-  };
-}
-
-/**
- * @return {Action}
- */
-function clearTags() {
-  return {
-    type: categoryPageTypes.CLEAR_TAGS,
-  };
-}
-
-/**
- * @param {Object<Array<string>>} categories
- * @return {Action}
- */
-function loadTags(categories) {
-  return {
-    type: categoryPageTypes.LOAD_TAGS,
-    payload: categories,
-  };
-}
-
-/**
  * @param {string} category
  * @return {Action}
  */
@@ -128,7 +86,8 @@ function selectCategory(category) {
  */
 function clearSelectedCategory() {
   return {
-    type: categoryPageTypes.CLEAR_CATEGORY,
+    type: categoryPageTypes.SELECT_CATEGORY,
+    payload: '',
   };
 }
 
@@ -140,10 +99,6 @@ const categoryPageActions = {
   askNewCategoryArticles,
   saveNewCategoryArticles,
   clearCategoryArticles,
-  addTag,
-  removeTag,
-  clearTags,
-  loadTags,
   selectCategory,
   clearSelectedCategory,
 };

@@ -15,18 +15,6 @@ export default class CategoryChoiceBarView extends BaseComponentView {
     barDiv.innerHTML = categoryChoiceBarComponent({
       categories: categories.map((c)=>({content: c, color: genRanHexColor()})),
     });
-    // barDiv.className = 'tags';
-    // categories.forEach((tag) => {
-    //   const tagContentDiv = document.createElement('div');
-    //   tagContentDiv.className = 'tags__tag-content';
-    //   tagContentDiv.style.backgroundColor =  genRanHexColor();
-    //   const tagDiv = document.createElement('div');
-    //   tagDiv.className = 'tags__tag';
-    //   // tagDiv.classList.add('categories__tag');
-    //   tagDiv.innerHTML = tag;
-    //   tagContentDiv.appendChild(tagDiv);
-    //   barDiv.appendChild(tagContentDiv);
-    // });
     return barDiv.firstChild;
   }
 }
