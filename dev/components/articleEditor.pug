@@ -2,10 +2,20 @@
   .article-create__title Создание статьи
   form.article-create__form
     .article-create__category_selector
+      .article-create__row
+        .article-create__label Выберете категорию
     .article-create__right
       button.btn_color-elementary.article-create__del-btn Удалить
       button.btn_color-elementary.article-create__clear-btn Очистить
-    .article-create__rows !{form_rows}
+    .article-create__rows
+      .article-create__row
+        .article-create__label Заголовок
+        .article-create__field
+          input(type="text" name="title").article-create__input
+      .article-create__row
+        .article-create__label Текст статьи
+        .article-create__field
+          textarea(name="text").article-create__input.article-create__text
       .article-create__row
         .article-create__label Теги
         .article-create__tags-actions

@@ -13,8 +13,6 @@ import {
   recoverBlobWithUrl,
 } from '../../common/utils.js';
 
-const PREVIEW_TEXT_LIMIT = 350;
-
 /**
    * Проверяет состояние editor
    * @return {boolean}
@@ -144,16 +142,11 @@ export default class Editor extends BaseComponent {
       ));
     };
     textareaInput.addEventListener('change', textInputChangeListener);
-    titleInput.addEventListener('change', textInputChangeListener);
+    titleInput.addEventListener('input', textInputChangeListener);
 
     // Дублирование измененного текста на превью
     textareaInput.addEventListener('input', (e) => {
-      let text = textareaInput.value.slice(0, PREVIEW_TEXT_LIMIT);
-      const lastPos = text.lastIndexOf(' ');
-      if (lastPos !== -1) {
-        text = text.slice(0, lastPos);
-      }
-      this.view.changePreviewText(text);
+      this.view.changePreviewText(textareaInput.value);
     });
 
     titleInput.addEventListener('input', (e) => {
@@ -366,6 +359,7 @@ export default class Editor extends BaseComponent {
     this.root.querySelector('.article-create__title').textContent =
       'Создание статьи';
     this.root.querySelector('.article-create__del-btn').style.display = 'none';
+    this.view.category.style.display = 'flex';
   }
 
   /**
@@ -384,5 +378,7 @@ export default class Editor extends BaseComponent {
     this.root.querySelector('.article-create__title').textContent =
       'Изменение статьи';
     this.root.querySelector('.article-create__del-btn').style.display = 'flex';
+    // запрещаем менять категории при редактировании
+    this.view.category.style.display = 'none';
   }
 }

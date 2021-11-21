@@ -1,15 +1,13 @@
 import BaseComponentView from '../_basic/baseComponentView.js';
 import articleEditorComponent from '../editor/articleEditor.pug.js';
-import formArticleEditorTextareaComponent from
-  '../editor/formArticleEditorTextarea.pug.js';
-import formArticleEditorRowComponent from
-  '../editor/formArticleEditorRow.pug.js';
 import tagComponent from './tag.pug.js';
 import cardComponent from '../feed/card.pug.js';
 
 import CategoryChoiceBar from '../categoryChoiceBar/categoryChoiceBar.js';
 
 import {genRanHexColor} from '../../common/utils.js';
+
+const PREVIEW_TEXT_LIMIT = 350;
 
 /**
  * @param {Date} d
@@ -56,6 +54,7 @@ export default class EditorView extends BaseComponentView {
     this.previewBox = null;
     this.textAreaInput = null;
     this.titleInput = null;
+    this.category = null;
   }
 
   /**
@@ -63,29 +62,16 @@ export default class EditorView extends BaseComponentView {
    * @return {HTMLElement}
    */
   render(author) {
-    let articleRows = '';
-    const title = formArticleEditorRowComponent({
-      label: 'Заголовок',
-      type: 'text',
-      name: 'title',
-    });
-    articleRows += title;
-    const text = formArticleEditorTextareaComponent({
-      label: 'Текст статьи',
-      name: 'text',
-    });
-    articleRows += text;
-
     const editor = document.createElement('div');
-    editor.innerHTML = articleEditorComponent({
-      buttonAction: 'clear',
-      form_rows: articleRows,
-    });
+    editor.innerHTML = articleEditorComponent();
 
-    editor.firstChild.querySelector('.article-create__category_selector')
+    this.category =
+        editor.firstChild.querySelector('.article-create__category_selector');
+    this.category.querySelector('.article-create__row')
         .appendChild(this.innerComponents.categoryChoiceBar.render());
     // немного другие стили
-    editor.firstChild.querySelector('.plate').className = '';
+    editor.firstChild.querySelector('.plate')
+        .className = 'article-create__category_selector';
 
     this.previewBox =
         editor.firstChild.querySelector('.article-create__preview__content');
@@ -94,6 +80,8 @@ export default class EditorView extends BaseComponentView {
       datetime: convertDate(),
       category: 'категория не выбрана',
       author,
+      comments: '',
+      likes: '',
     })
         .replace('card', 'article-create__preview__card')
         .replace(/style=".*\n.*\n.*\n.*;"/, '');
@@ -179,6 +167,7 @@ export default class EditorView extends BaseComponentView {
       );
       return;
     }
+    text = text.slice(0, PREVIEW_TEXT_LIMIT);
     this.previewBox.querySelector('.card__description').textContent = text;
   }
 

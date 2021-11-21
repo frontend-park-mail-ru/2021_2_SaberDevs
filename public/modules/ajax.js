@@ -87,14 +87,15 @@ function ajax(requestParams) {
 function postFile(requestParams) {
   const url = APIurl + (requestParams.url || '/');
   const formData = new FormData();
-  formData.append('userFile', requestParams.body);
+  formData.append('img', requestParams.body);
   const fetchParams = {
     body: formData,
     mode: 'cors',
     credentials: 'include',
-    headers: {
-      'Content-Type': 'multipart',
-    },
+    // https://muffinman.io/blog/uploading-files-using-fetch-multipart-form-data/
+    // headers: {
+    //   'Content-Type': 'multipart/form-data',
+    // },
     method: ajaxMethods.post,
   };
 

@@ -1,7 +1,7 @@
 $article-create-add-tag-font-size: 48px;
 $article-create-tag-font-size: 16px;
 $article-create-tag-margin-left: 10px;
-$article-create-label-margin-right: 10px;
+$article-create-label-margin-top: 10px;
 $article-create-label-font-size: 24px;
 $article-create-input-padding: 10px;
 $article-create-trash-height: 40px;
@@ -67,19 +67,23 @@ $article-create-trash-height: 40px;
   }
 
   &__input {
+    margin-top: $article-create-label-margin-top;
     border: $border;
     border-radius: $border-radius;
     padding: 10px 5px;
     width: stretch;
-    font-size: 18px;
+    font-size: $font-size-normal;
     color: $color-primary;
     background-color: $color-elements;
   }
 
+  &__text {
+    min-height: 24rem;
+  }
+
   &__label {
     justify-content: end;
-    margin-right: $article-create-label-margin-right;
-    width: 20%;
+    width: 100%;
     font-size: $article-create-label-font-size;
   }
 
@@ -92,11 +96,17 @@ $article-create-trash-height: 40px;
   &__tags-actions {
     display: flex;
     align-items: center;
-    margin: 10px 0;
+    margin-top: $article-create-label-margin-top;
   }
 
   &__right {
     @include right;
+  }
+
+  &__category_selector {
+    @include col;
+
+    width: 100%;
   }
 
   &__preview {
