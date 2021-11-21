@@ -9,7 +9,15 @@
  * @return {Promise<Blob>}
  */
 export function recoverBlobWithUrl(url) {
-  return fetch(url).then((res) => res.blob());
+  return new Promise((resolve, reject) => {
+    if (typeof url !== 'string' || url === '') {
+      reject(new Error('Не удалось восстановить файл url: ' + url));
+    } else {
+      resolve();
+    }
+  })
+      .then(() => fetch(url))
+      .then((res) => res.blob());
 }
 
 /**

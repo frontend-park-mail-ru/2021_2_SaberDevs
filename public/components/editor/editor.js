@@ -237,29 +237,31 @@ export default class Editor extends BaseComponent {
         Object.assign(body, {id: state.currentId});
       }
 
+      let status = 200;
       recoverBlobWithUrl(state[state.currentId].img)
           .then((blob) => Ajax.postFile({url: '/img/upload', body: blob}))
-          .then(({status, response}) => new Promise((resolve, reject) => {
+          .then(({sts, response}) => new Promise((resolve, reject) => {
             if (status === Ajax.STATUS.ok) {
               if (ajaxDebug) {
                 console.warn({imgId: response.data.imgId});
               }
               resolve(response.data.imgId);
             } else {
-              // eslint-disable-next-line prefer-promise-reject-errors
-              reject({status, msg: response.msg});
+              status = sts;
+              // TODO: сделать ветку с игнором фотографии
+              reject(new Error(response.msg));
             }
           }))
           .then((img) => Ajax.post({
             url: `/articles/${isUpdate ? 'update' : 'create'}`,
             body: {...body, img},
           }))
-          .then(({status, response}) => new Promise((resolve, reject) => {
+          .then(({sts, response}) => new Promise((resolve, reject) => {
             if (status === Ajax.STATUS.ok) {
               resolve(response.data);
             } else {
-              // eslint-disable-next-line prefer-promise-reject-errors
-              reject({status, msg: response.msg});
+              status = sts;
+              reject(new Error(response.msg));
             }
           }))
           .then((articleId) => {
@@ -269,13 +271,14 @@ export default class Editor extends BaseComponent {
             );
             redirect(`/article/${isUpdate ? state.currentId : articleId}`);
           })
-          .catch(({status, msg})=> {
+          .catch(({message}) => {
             if (status === Ajax.STATUS.invalidSession) {
               store.dispatch(authorizationActions.logout());
               ModalTemplates.signup(false);
               return;
             }
-            ModalTemplates.netOrServerError(status, msg);
+            console.warn({message});
+            ModalTemplates.netOrServerError(status, message);
           });
     });
 

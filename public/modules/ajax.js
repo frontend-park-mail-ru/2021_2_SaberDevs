@@ -86,8 +86,10 @@ function ajax(requestParams) {
  */
 function postFile(requestParams) {
   const url = APIurl + (requestParams.url || '/');
+  const formData = new FormData();
+  formData.append('userFile', requestParams.body);
   const fetchParams = {
-    body: requestParams.body,
+    body: formData,
     mode: 'cors',
     credentials: 'include',
     headers: {
