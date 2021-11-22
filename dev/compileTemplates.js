@@ -21,6 +21,7 @@ const saveTo = {
   formSettingsTextarea: 'settings',
   buttonNav: 'sidebar',
   userPreview: 'sidebar',
+  streamComment: 'sidebar',
   articleEditor: 'editor',
   formArticleEditorRow: 'editor',
   formArticleEditorTextarea: 'editor',

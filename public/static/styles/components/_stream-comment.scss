@@ -1,0 +1,27 @@
+.stream-comment {
+  @include col;
+
+  align-items: flex-start;
+  margin-top: 10px;
+
+  &__author {
+    @include row;
+  }
+
+  &__author-photo {
+    border: $border;
+    border-radius: $border-radius;
+    width: 40px;
+    height: 40px;
+  }
+
+  &__author-name {
+    margin-left: 10px;
+    font-size: $font-size-normal;
+  }
+
+  &__text {
+    margin-top: 5px;
+    font-size: $font-size-small;
+  }
+}
