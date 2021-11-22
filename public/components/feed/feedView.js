@@ -28,6 +28,7 @@ import {appendApiImg, genRanHexColor} from '../../common/utils.js';
 function composeCards(root, cards) {
   cards.forEach((element) => {
     appendApiImg(element);
+    appendApiImg(element.author);
     const cardWrapper = document.createElement('div');
     const tags = element.tags.map((tag) => ({
       content: tag,

@@ -39,6 +39,8 @@ export default class Header extends BaseComponent {
         .forEach((group) => group.addEventListener(
             'click',
             (e) => {
+              groupOptions.querySelector('.search__row_group_bar').value =
+                  e.target.textContent;
               store.dispatch(searchActions.setSearchGroup(
                   e.target.dataset.search,
               ));

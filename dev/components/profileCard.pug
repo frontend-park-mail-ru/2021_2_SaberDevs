@@ -2,6 +2,8 @@
   .profile__info
     img.profile__photo(src=`${avatarUrl || 'static/img/users/user_icon_loading.svg'}`)
     .profile__description
-      .profile__username #{firstName} #{lastName} (#{login}) 
-      .profile__aboutme #{aboutme}
+      .profile__username #{firstName} #{lastName} (#{login})
+      .profile__aboutme Обо мне:
+      | #{description}
+      
   .profile__articles-title Статьи

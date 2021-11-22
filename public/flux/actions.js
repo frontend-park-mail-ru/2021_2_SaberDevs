@@ -7,7 +7,7 @@ import {authorizationTypes,
   profilePageTypes,
 } from './types.js';
 
-import {appentApiImg} from '../common/utils.js';
+import {appendApiImg} from '../common/utils.js';
 
 // ////////////////
 // authorizationActions
@@ -18,7 +18,7 @@ import {appentApiImg} from '../common/utils.js';
  * @return {Action}
  */
 function login(userData) {
-  appentApiImg(userData);
+  appendApiImg(userData);
   return {
     type: authorizationTypes.LOGIN,
     payload: userData,
@@ -147,8 +147,8 @@ export const modalActions = {
  */
 function saveNewCards(idLastLoaded, cards) {
   cards.forEach((card) => {
-    appentApiImg(card);
-    appentApiImg(card.author);
+    appendApiImg(card);
+    appendApiImg(card.author);
   });
   return {
     type: mainPageTypes.SAVE_NEW_CARDS,
@@ -247,8 +247,8 @@ export const mainPageActions = {
  */
 function saveNewArticles(idLastLoaded, cards) {
   cards.forEach((card) => {
-    appentApiImg(card);
-    appentApiImg(card.author);
+    appendApiImg(card);
+    appendApiImg(card.author);
   });
   return {
     type: profilePageTypes.SAVE_NEW_USER_ARTICLES,
@@ -343,7 +343,7 @@ function setUserLoading(user) {
  * @return {Action}
  */
 function setUserInfo(user) {
-  appentApiImg(user);
+  appendApiImg(user);
   return {
     type: profilePageTypes.SET_USER_INFO,
     payload: user,
@@ -412,7 +412,7 @@ function removeTag() {
  * @return {Action}
  */
 function editExistingArticle(article) {
-  appentApiImg(article.author);
+  appendApiImg(article.author);
   return {
     type: articleEditTypes.EDIT_EXISTING_ARTICLE,
     payload: article,

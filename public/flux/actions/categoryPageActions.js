@@ -1,5 +1,5 @@
 import {categoryPageTypes} from '../types.js';
-import {appentApiImg} from '../common/utils.js';
+import {appendApiImg} from '../../common/utils.js';
 
 // ////////////////
 //  CategoryPageActions
@@ -12,8 +12,8 @@ import {appentApiImg} from '../common/utils.js';
  */
 function saveNewCategoryArticles(idLastLoaded, cards) {
   cards.forEach((card) => {
-    appentApiImg(card);
-    appentApiImg(card.author);
+    appendApiImg(card);
+    appendApiImg(card.author);
   });
   return {
     type: categoryPageTypes.SAVE_NEW_CATEGORY_ARTICLES,

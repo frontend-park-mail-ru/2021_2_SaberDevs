@@ -27,11 +27,11 @@ export function recoverBlobWithUrl(url) {
 /**
  * @param {object} obj
  */
-export function appentApiImg(obj) {
-  if (avatarUrl in obj && !obj.avatarUrl.startsWith(Ajax.APIurl)) {
+export function appendApiImg(obj) {
+  if ('avatarUrl' in obj && !obj.avatarUrl.startsWith(Ajax.APIurl)) {
     obj.avatarUrl = Ajax.APIurl + '/img/' + obj.avatarUrl;
   }
-  if (previewUrl in obj && !obj.previewUrl.startsWith(Ajax.APIurl)) {
+  if ('previewUrl' in obj && !obj.previewUrl.startsWith(Ajax.APIurl)) {
     obj.previewUrl = Ajax.APIurl + '/img/' + obj.previewUrl;
   }
 };
@@ -229,7 +229,7 @@ const Utils = {
   genRanHexColor,
   getFileBrowserStorageUrl,
   recoverBlobWithUrl,
-  appentApiImg,
+  appendApiImg,
 };
 
 export default Utils;

@@ -1,5 +1,5 @@
 import {readerTypes} from '../types.js';
-import {appentApiImg} from '../common/utils.js';
+import {appendApiImg} from '../../common/utils.js';
 
 // ////////////////
 //  ReaderActions
@@ -19,8 +19,8 @@ import {appentApiImg} from '../common/utils.js';
  * @return {Action}
  */
 function saveArticle(article) {
-  appentApiImg(article);
-  appentApiImg(article.author);
+  appendApiImg(article);
+  appendApiImg(article.author);
   return {
     type: readerTypes.SAVE_ARTICLE,
     payload: article,
@@ -40,8 +40,10 @@ function saveArticle(article) {
  * @return {Action}
  */
 function setArticleLoading(article) {
-  appentApiImg(article);
-  appentApiImg(article.author);
+  appendApiImg(article);
+  if ('avatar' in article) {
+    appendApiImg(article.author);
+  }
   return {
     type: readerTypes.SET_ARTICLE_LOADING,
     payload: article,
