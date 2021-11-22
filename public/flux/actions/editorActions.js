@@ -1,4 +1,5 @@
 import {editorTypes} from '../types.js';
+import {appentApiImg} from '../common/utils.js';
 
 // ////////////////
 //  EditorActions
@@ -49,6 +50,8 @@ function createArticle() {
  * @return {Action}
  */
 function editArticle(id, article) {
+  appentApiImg(article);
+  appentApiImg(article.author);
   return {
     type: editorTypes.EDIT_EXISTING_ARTICLE,
     payload: {
@@ -97,6 +100,7 @@ function deleteArticle(id) {
  * @return {Action}
  */
 function saveArticle(id, article) {
+  appentApiImg(article);
   return {
     type: editorTypes.SAVE_ARTICLE,
     payload: {

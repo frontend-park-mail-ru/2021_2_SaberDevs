@@ -1,8 +1,7 @@
 import BaseComponentView from '../_basic/baseComponentView.js';
 import cardComponent from './card.pug.js';
 import feedComponent from './feed.pug.js';
-import {genRanHexColor} from '../../common/utils.js';
-import Ajax from '../../modules/ajax.js';
+import {appendApiImg, genRanHexColor} from '../../common/utils.js';
 
 /**
  * Описание сущности карточки в новостной ленте
@@ -28,6 +27,7 @@ import Ajax from '../../modules/ajax.js';
  */
 function composeCards(root, cards) {
   cards.forEach((element) => {
+    appendApiImg(element);
     const cardWrapper = document.createElement('div');
     const tags = element.tags.map((tag) => ({
       content: tag,
@@ -36,7 +36,6 @@ function composeCards(root, cards) {
     cardWrapper.innerHTML = cardComponent({
       ...element,
       tags,
-      previewUrl: Ajax.APIurl + '/img/' + element.previewUrl,
     });
     root.appendChild(cardWrapper.firstChild);
   });

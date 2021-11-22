@@ -1,10 +1,9 @@
-import Ajax from '../../modules/ajax.js';
 import {authorizationTypes} from '../types.js';
 
 const InitialUserState = {
   isAuthenticated: false,
   login: '',
-  avatarUrl: Ajax.APIurl + '/img/',
+  avatarUrl: ``,
   firstName: 'UNAUTHORIZED',
   lastName: 'UNAUTHORIZED',
   email: 'UNAUTHORIZED',
@@ -26,7 +25,6 @@ export default function authorizeReducer(state = InitialUserState, action) {
       return {
         ...state,
         ...action.payload,
-        avatarUrl: Ajax.APIurl + '/img/' + action.payload.avatarUrl,
         isAuthenticated: true,
       };
     case authorizationTypes.LOGOUT:

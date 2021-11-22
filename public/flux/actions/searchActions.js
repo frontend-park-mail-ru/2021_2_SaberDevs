@@ -1,4 +1,5 @@
 import {searchTypes} from '../types.js';
+import {appentApiImg} from '../common/utils.js';
 
 // ////////////////
 // searchPageActions
@@ -10,6 +11,10 @@ import {searchTypes} from '../types.js';
  * @return {Action}
  */
 function saveNewCards(idLastLoaded, cards) {
+  cards.forEach((card) => {
+    appentApiImg(card);
+    appentApiImg(card.author);
+  });
   return {
     type: searchTypes.SAVE_NEW_CARDS,
     payload: {idLastLoaded, cards},

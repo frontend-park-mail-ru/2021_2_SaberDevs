@@ -1,4 +1,3 @@
-import Ajax from '../../modules/ajax.js';
 import {profilePageTypes} from '../types.js';
 
 const endOfFeedMarkerID = 'end';
@@ -83,10 +82,7 @@ export default function profilePageReducer(
     case profilePageTypes.SET_USER_INFO: // смена пользователя
       return {
         ...state,
-        user: {
-          ...action.payload,
-          avatarUrl: Ajax.APIurl + '/img/' + action.payload.avatarUrl,
-        },
+        user: action.payload,
         // Сброс загруженных карточек
         // TODO: сделать кеширование для кажлого юзера
         isLoading: false,
@@ -97,10 +93,7 @@ export default function profilePageReducer(
     case profilePageTypes.SET_USER_LOADING: // смена пользователя
       return {
         ...state,
-        user: {
-          ...action.payload,
-          avatarUrl: Ajax.APIurl + '/img/' + action.payload.avatarUrl,
-        },
+        user: action.payload,
         isLoading: false,
         idLastLoaded: '',
         cards: [],
