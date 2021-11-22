@@ -132,6 +132,7 @@ const Ajax = {
   get: (requestParams) => ajax({method: ajaxMethods.get, ...requestParams}),
   post: (requestParams) => ajax({method: ajaxMethods.post, ...requestParams}),
   postFile,
+  APIurl,
 };
 
 export default Ajax;

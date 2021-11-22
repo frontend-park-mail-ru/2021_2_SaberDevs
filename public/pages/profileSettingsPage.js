@@ -138,7 +138,7 @@ export default class ProfileSettingsPage extends BasePageMV {
           }))
           .then((userData) => {
             if (avatarHash !== '') {
-              userData.avatarUrl = avatarHash;
+              userData.avatarUrl = Ajax.APIurl + '/img/' + avatarHash;
             }
             store.dispatch(authorizationActions.login(userData));
             ModalTemplates.informativeMsg('Успех!', 'Профиль обновлен');
