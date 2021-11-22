@@ -171,6 +171,11 @@ body,
   display: none;
 }
 
+.rotate-180 {
+  -webkit-transform: rotate(180deg);
+          transform: rotate(180deg);
+}
+
 @-webkit-keyframes do-levitation {
   0% {
     -webkit-transform: translate(0, 0);
