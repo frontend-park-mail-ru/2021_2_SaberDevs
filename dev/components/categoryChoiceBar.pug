@@ -4,9 +4,7 @@ mixin tagMixin(content, color, cross=false)
 .plate
   .categories__search-block
     .categories__search
-      input(type='text' id='categories-search' placeholder='поиск').categories__search-input
-      //- button.action-btns__search-icon.icon__img
-  .tags
+      input(type='text' id='categories-search' placeholder='фильтр').categories__search-input
     if Array.isArray(categories)
       each category in categories
         +tagMixin(category.content, category.color)

@@ -76,13 +76,26 @@ export default function editorReducer(state = InitialEditorState, action) {
       return stateCopy;
 
     case editorTypes.SAVE_ARTICLE:
+      let currentStateCopySaveArticle = {};
+      if (action.payload.id in state) {
+        Object.assign(currentStateCopySaveArticle, state[action.payload.id]);
+      } else {
+        currentStateCopySaveArticle = {
+          title: '',
+          text: '',
+          tags: [],
+          category: '',
+          img: '',
+        };
+      }
+      currentStateCopySaveArticle = {
+        ...currentStateCopySaveArticle,
+        ...action.payload,
+      };
+      delete currentStateCopySaveArticle.id;
       return {
         ...state,
-        [action.payload.id]: {
-          title: action.payload.title,
-          text: action.payload.text,
-          tags: action.payload.tags,
-        },
+        [action.payload.id]: currentStateCopySaveArticle,
       };
     case editorTypes.PUBLISH_ARTICLE:
       return {

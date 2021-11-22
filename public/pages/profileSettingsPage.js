@@ -55,60 +55,108 @@ export default class ProfileSettingsPage extends BasePageMV {
       e.preventDefault();
       // TODO: смена пароля
       // const password = form.querySelector('input[name="password"]');
-      const firstName = form.querySelector('input[name="username"]')?.value;
-      const lastName = form.querySelector('input[name="surname"]')?.value;
-      if (!regexp.firstName.test(firstName)) {
+      const firstName =
+          form.querySelector('input[name="username"]')?.value.trim();
+      const lastName =
+          form.querySelector('input[name="surname"]')?.value.trim();
+      const img = form.querySelector('input[type="file"]')?.files[0];
+
+      if (firstName !== '' && !regexp.firstName.test(firstName)) {
         this.view.pageComponents.settingsForm.appendWarning(
             'Такое имя выбрать нельзя',
         );
         return;
       }
 
-      if (!regexp.lastName.test(lastName)) {
+      if (lastName !== '' && !regexp.lastName.test(lastName)) {
         this.view.pageComponents.settingsForm.appendWarning(
             'Такую фамилию выбрать нельзя',
         );
         return;
       }
 
-      // если пароли не совпадают
-      if (showRegister && passwordRepeated !== password) {
-        formWarning.style.display = 'block';
-        formWarningLabel.style.display = 'block';
-        formWarning.textContent = 'Удостоверьтесь, что пароли совпадают';
+      if (img && !img.type.startsWith('image/')) {
+        ModalTemplates.warn('Ошибка', 'Выберите изображение');
         return;
       }
-      Ajax.post({
-        url: '/user/profile/update',
-        body: {
-          // password,
-          firstName,
-          lastName,
-        },
+
+      // если пароли не совпадают TODO:
+      // if (showRegister && passwordRepeated !== password) {
+      //   formWarning.style.display = 'block';
+      //   formWarningLabel.style.display = 'block';
+      //   formWarning.textContent = 'Удостоверьтесь, что пароли совпадают';
+      //   return;
+      // }
+
+      let responseStatus = 0;
+      new Promise((resolve, reject) => {
+        if (img) {
+          resolve(img);
+        } else {
+          reject(new Error('Картинка не прекреплена'));
+        }
       })
-          .then(
-              ({status, response}) => {
-                if (status === Ajax.STATUS.ok) {
-                  store.dispatch(authorizationActions.login(response.data));
-                  redirect('/profile');
-                  return;
-                }
-                if (status === Ajax.STATUS.invalidSession) {
-                  store.dispatch(authorizationActions.logout());
-                  ModalTemplates.informativeMsg(
-                      'Сессия устарела', 'Пройдите авторизацию',
-                  );
-                }
-                const msg = response.msg;
-                // В случае ошибки сервера
-                if ((status + '')[0] === '5') {
-                  ModalTemplates.netOrServerError(status, msg);
-                  return;
-                }
-                // в случае провала валидации формы
-                this.view.pageComponents.settingsForm.appendWarning(msg);
-              },
-          ).catch((error) => console.warn(error));
+          .then(() => Ajax.postFile({url: '/img/upload', body: img}))
+          .then(({status, response}) => new Promise((resolve, reject) => {
+            if (status === Ajax.STATUS.ok) {
+              resolve(response.data.imgId);
+            } else {
+              responseStatus = status;
+              reject(new Error(response.msg));
+            }
+          }))
+          // Падает, если не прикреплена картинка - надо восстановить цепочку,
+          // а если Ajax, то перейти в конец
+          .catch((err) => new Promise((resolve, reject) => {
+            if (responseStatus === 0) {
+              resolve('');
+            } else {
+              reject(err);
+            }
+          }))
+          .then((avatar) => Ajax.post({
+            url: '/user/profile/update',
+            body: {
+              // password,
+              firstName,
+              lastName,
+              avatar,
+            },
+          }))
+          .then(({status, response}) => new Promise((resolve, reject) => {
+            if (status === Ajax.STATUS.ok) {
+              resolve(response.data);
+            } else {
+              responseStatus = status;
+              reject(new Error(response.msg));
+            }
+          }))
+          .then((userData) => {
+            store.dispatch(authorizationActions.login(userData));
+            ModalTemplates.informativeMsg('Успех!', 'Профиль обновлен');
+            redirect('/profile');
+            return;
+          })
+          .catch(({message}) => {
+            if (responseStatus === Ajax.STATUS.invalidSession) {
+              store.dispatch(authorizationActions.logout());
+              ModalTemplates.informativeMsg(
+                  'Сессия устарела', 'Пройдите авторизацию',
+              );
+              redirect('/login');
+              return;
+            }
+            if (ajaxDebug) {
+              console.warn(message);
+            }
+            // В случае ошибки сервера
+            if ((responseStatus + '')[0] === '5') {
+              ModalTemplates.netOrServerError(responseStatus, message);
+              return;
+            }
+            // в случае провала валидации формы
+            this.view.pageComponents.settingsForm.appendWarning(msg);
+          });
     });
 
     store.dispatch(

@@ -105,7 +105,7 @@ function saveArticle(id, article) {
       text: article.text,
       tags: Array.isArray(article.tags) ? article.tags : [],
       img: article.img || '',
-      category: article.category,
+      category: article.category || '',
     },
   };
 }

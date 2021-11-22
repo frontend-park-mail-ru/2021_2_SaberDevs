@@ -230,30 +230,36 @@ export default class Editor extends BaseComponent {
         Object.assign(body, {id: state.currentId});
       }
 
-      let status = 200;
+      let responseStatus = 0;
       recoverBlobWithUrl(state[state.currentId].img)
           .then((blob) => Ajax.postFile({url: '/img/upload', body: blob}))
-          .then(({sts, response}) => new Promise((resolve, reject) => {
+          .then(({status, response}) => new Promise((resolve, reject) => {
             if (status === Ajax.STATUS.ok) {
-              if (ajaxDebug) {
-                console.warn({imgId: response.data.imgId});
-              }
               resolve(response.data.imgId);
             } else {
-              status = sts;
-              // TODO: сделать ветку с игнором фотографии
+              responseStatus = status;
               reject(new Error(response.msg));
+            }
+          }))
+          // Если падает Blob то надо восстановить цепочку,
+          // а если Ajax, то перейти в конец
+          .catch((err) => new Promise((resolve, reject) => {
+            // упал Blob, а не сеть -> продолжить без картинки
+            if (responseStatus === 0) {
+              resolve('');
+            } else {
+              reject(err);
             }
           }))
           .then((img) => Ajax.post({
             url: `/articles/${isUpdate ? 'update' : 'create'}`,
             body: {...body, img},
           }))
-          .then(({sts, response}) => new Promise((resolve, reject) => {
+          .then(({status, response}) => new Promise((resolve, reject) => {
             if (status === Ajax.STATUS.ok) {
               resolve(response.data);
             } else {
-              status = sts;
+              responseStatus = status;
               reject(new Error(response.msg));
             }
           }))
@@ -265,13 +271,15 @@ export default class Editor extends BaseComponent {
             redirect(`/article/${isUpdate ? state.currentId : articleId}`);
           })
           .catch(({message}) => {
-            if (status === Ajax.STATUS.invalidSession) {
+            if (responseStatus === Ajax.STATUS.invalidSession) {
               store.dispatch(authorizationActions.logout());
               ModalTemplates.signup(false);
               return;
             }
-            console.warn({message});
-            ModalTemplates.netOrServerError(status, message);
+            if (ajaxDebug) {
+              console.warn(message);
+            }
+            ModalTemplates.netOrServerError(responseStatus, message);
           });
     });
 
@@ -300,6 +308,7 @@ export default class Editor extends BaseComponent {
           store.dispatch(editorActions.clearImg());
         },
     );
+
     return this.root;
   }
 

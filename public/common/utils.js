@@ -10,8 +10,11 @@
  */
 export function recoverBlobWithUrl(url) {
   return new Promise((resolve, reject) => {
-    if (typeof url !== 'string' || url === '') {
-      reject(new Error('Не удалось восстановить файл url: ' + url));
+    if (typeof url !== 'string') {
+      reject(new Error('Передай мне строку, а не url: ' + url));
+    }
+    if (url === '') {
+      reject(new Error('Картинку не отправляем'));
     } else {
       resolve();
     }
