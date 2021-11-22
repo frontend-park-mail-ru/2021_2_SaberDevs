@@ -32,3 +32,7 @@ progress.progress__loading::-moz-progress-bar {
   background-image: linear-gradient(green, lime);
   background-color: green;
 }
+
+.search__row_group_dropdown:hover .search__row_group_dropdown-content {
+  display: block;
+}

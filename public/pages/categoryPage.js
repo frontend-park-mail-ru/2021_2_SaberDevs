@@ -69,8 +69,8 @@ async function uploadCategoryCards() {
   store.dispatch(categoryPageActions.setCategoryArticlesLoadingFlag());
 
   await Ajax.get({
-    url: `/articles/tags?idLastLoaded=${state.idLastLoaded}` +
-        `&tag=${state.currentCategory}`,
+    url: `/articles/category?idLastLoaded=${state.idLastLoaded}` +
+        `&category=${state.currentCategory}`,
   })
       .then(({status, response}) => {
         if (status === Ajax.STATUS.ok) {

@@ -19,7 +19,7 @@ $loading-page-title-font-size: 96px;
   border-radius: 50%;
   width: 80px;
   height: 80px;
-  box-shadow: 0 -2px 2px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 -2px 2px $color-selection;
   animation: loader 3s linear infinite;
 
   &::before {
@@ -32,7 +32,7 @@ $loading-page-title-font-size: 96px;
     border: 2px solid $color-elements;
     border-bottom: 2px solid $color-secondary;
     border-radius: 50%;
-    box-shadow: 0 -2px 2px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 -2px 2px $color-selection;
     animation: loader 2s linear infinite;
   }
 
@@ -46,7 +46,7 @@ $loading-page-title-font-size: 96px;
     border: 2px solid $color-elements;
     border-bottom: 2px solid $color-secondary;
     border-radius: 50%;
-    box-shadow: 0 -2px 2px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 -2px 2px $color-selection;
     animation: loader 1s linear infinite;
   }
 }

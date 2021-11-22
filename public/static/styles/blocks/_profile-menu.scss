@@ -1,7 +1,7 @@
 $profile-menu-item-padding: 10px;
 $profile-menu-box-shadow: -10px 10px 10px rgba(0, 0, 0, 0.25);
 $profile-menu-padding: 5px;
-$profile-menu-bg-hover: rgba(0, 0, 0, 0.2);
+$profile-menu-bg-hover: $color-selection;
 $profile-menu-user-img-margin: 5px;
 $profile-menu-min-width: 180px;
 
@@ -44,12 +44,14 @@ $profile-menu-min-width: 180px;
 
   &__item {
     padding: $profile-menu-item-padding;
-    font-size: $profile-menu-items;
+    width: stretch;
+    font-size: $font-size-normal;
     color: $color-primary;
     cursor: pointer;
 
     &:hover {
-      color: $color-secondary;
+      color: $color-primary;
+      background-color: $color-selection;
     }
 
     &:active {

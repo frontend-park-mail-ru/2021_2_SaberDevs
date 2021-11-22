@@ -52,7 +52,18 @@
   }
 
   &__nav-item {
-    @include nav-item;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    height: stretch;
+    font-size: $font-size-normal;
+    text-align: center;
+
+    &:hover {
+      background-color: $color-selection;
+      cursor: pointer;
+    }
   }
 
   &__nav-buttons {

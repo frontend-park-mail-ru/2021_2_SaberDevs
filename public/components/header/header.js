@@ -26,6 +26,29 @@ export default class Header extends BaseComponent {
 
     const searchBtn = this.root.querySelector('.search__button');
     const searchInput = this.root.querySelector('.search__input');
+    const searchRow = this.root.querySelector('.search__row');
+    const groupOptions = this.root.querySelector(
+        '.search__row_group_dropdown',
+    );
+
+    groupOptions.querySelector('.search__row_group_dropdown-content').childNodes
+        .forEach((group) => group.addEventListener(
+            'click',
+            (e) => {
+              groupOptions.firstChild.value = e.target.textContent;
+              // восстанавливаем потерянный при клике фокус
+              searchInput.focus();
+            }),
+        );
+
+    groupOptions.addEventListener(
+        'mouseover',
+        (e) => searchInput.removeEventListener('focusout', focusOutListener),
+    );
+    groupOptions.addEventListener(
+        'mouseout',
+        (e) => searchInput.addEventListener('focusout', focusOutListener),
+    );
 
     searchBtn.addEventListener('click', (e) => {
       e.preventDefault();
@@ -42,13 +65,14 @@ export default class Header extends BaseComponent {
       }
     });
 
-    searchInput.addEventListener('focusout', (e) => {
+    const focusOutListener = (e) => {
       console.log('{Header} searchField lost focus');
       this.closeSearchField();
       this.isBlur = true;
-      const delay = parseFloat(searchInput.style.transitionDuration) * 1000;
+      const delay = parseFloat(searchRow.style.transitionDuration) * 1000;
       setTimeout(() => this.isBlur=false, delay);
-    });
+    };
+    searchInput.addEventListener('focusout', focusOutListener);
 
     return this.root;
   }
@@ -59,13 +83,13 @@ export default class Header extends BaseComponent {
   closeSearchField() {
     const searchBtn = this.root.querySelector('.search__button');
     const navItems = this.root.querySelector('.header__nav-items');
-    const searchInput = this.root.querySelector('.search__input');
+    const searchRow = this.root.querySelector('.search__row');
     console.log('{Header} searchField close');
     navItems.style.pointerEvents = 'all';
     searchBtn.classList.add('search-icon');
     searchBtn.classList.remove('cross-icon');
-    searchInput.classList.add('search__input_close');
-    searchInput.classList.remove('search__input_open');
+    searchRow.classList.add('search__row_close');
+    searchRow.classList.remove('search__row_open');
     this.isOpen = false;
   };
 
@@ -75,13 +99,15 @@ export default class Header extends BaseComponent {
   openSearchField() {
     const searchBtn = this.root.querySelector('.search__button');
     const navItems = this.root.querySelector('.header__nav-items');
+    const searchRow = this.root.querySelector('.search__row');
+    console.log({searchRow});
     const searchInput = this.root.querySelector('.search__input');
     console.log('{Header} searchField open');
     navItems.style.pointerEvents = 'none';
     searchBtn.classList.remove('search-icon');
     searchBtn.classList.add('cross-icon');
-    searchInput.classList.remove('search__input_close');
-    searchInput.classList.add('search__input_open');
+    searchRow.classList.remove('search__row_close');
+    searchRow.classList.add('search__row_open');
     searchInput.focus();
     searchInput.select();
     this.isOpen = true;
