@@ -5,6 +5,7 @@ mixin tagMixin(content, color, cross=false)
   .categories__search-block
     .categories__search
       input(type='text' id='categories-search' placeholder='фильтр').categories__search-input
+  .tags
     if Array.isArray(categories)
       each category in categories
         +tagMixin(category.content, category.color)

@@ -89,6 +89,7 @@ export default class ProfileSettingsPage extends BasePageMV {
       // }
 
       let responseStatus = 0;
+      let avatarHash = '';
       new Promise((resolve, reject) => {
         if (img) {
           resolve(img);
@@ -114,15 +115,19 @@ export default class ProfileSettingsPage extends BasePageMV {
               reject(err);
             }
           }))
-          .then((avatar) => Ajax.post({
-            url: '/user/profile/update',
-            body: {
-              // password,
-              firstName,
-              lastName,
-              avatar,
-            },
-          }))
+          .then((avatarUrl) => {
+            // прокидываем картинку в юзердату
+            avatarHash = avatarUrl;
+            return Ajax.post({
+              url: '/user/profile/update',
+              body: {
+                // password,
+                firstName,
+                lastName,
+                avatarUrl,
+              },
+            });
+          })
           .then(({status, response}) => new Promise((resolve, reject) => {
             if (status === Ajax.STATUS.ok) {
               resolve(response.data);
@@ -132,6 +137,9 @@ export default class ProfileSettingsPage extends BasePageMV {
             }
           }))
           .then((userData) => {
+            if (avatarHash !== '') {
+              userData.avatarUrl = avatarHash;
+            }
             store.dispatch(authorizationActions.login(userData));
             ModalTemplates.informativeMsg('Успех!', 'Профиль обновлен');
             redirect('/profile');
