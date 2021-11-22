@@ -59,6 +59,8 @@ export default class ProfileSettingsPage extends BasePageMV {
           form.querySelector('input[name="username"]')?.value.trim();
       const lastName =
           form.querySelector('input[name="surname"]')?.value.trim();
+      const description =
+          form.querySelector('textarea[name="description"]')?.value.trim();
       const img = form.querySelector('input[type="file"]')?.files[0];
 
       if (firstName !== '' && !regexp.firstName.test(firstName)) {
@@ -125,6 +127,7 @@ export default class ProfileSettingsPage extends BasePageMV {
                 firstName,
                 lastName,
                 avatarUrl,
+                description,
               },
             });
           })

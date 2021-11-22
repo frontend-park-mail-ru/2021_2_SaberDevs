@@ -1,6 +1,6 @@
 import BaseComponentView from '../_basic/baseComponentView.js';
 import settingsComponent from './settings.pug.js';
-// import formSettingsTextareaComponent from './formSettingsTextarea.pug.js';
+import formSettingsTextareaComponent from './formSettingsTextarea.pug.js';
 import formSettingsRowComponent from './formSettingsRow.pug.js';
 
 /**
@@ -24,11 +24,11 @@ export default class SettingsFormView extends BaseComponentView {
       name: 'surname',
     });
     settingsRows += surname;
-    // const description = formSettingsTextareaComponent({
-    //   label: 'О себе',
-    //   name: 'description',
-    // });
-    // settingsRows += description;
+    const description = formSettingsTextareaComponent({
+      label: 'О себе',
+      name: 'description',
+    });
+    settingsRows += description;
     const photo = formSettingsRowComponent({
       label: 'Фото',
       type: 'file',
