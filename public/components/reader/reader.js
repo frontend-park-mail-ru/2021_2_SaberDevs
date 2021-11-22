@@ -1,5 +1,7 @@
 import BaseComponent from '../_basic/baseComponent.js';
 import ReaderView from './readerView.js';
+import commentComponent from './comment.pug.js';
+import articleAddCommentComponent from './articleAddComment.pug.js';
 
 import store from '../../flux/store.js';
 import {readerTypes, authorizationTypes} from '../../flux/types.js';
@@ -76,6 +78,17 @@ export default class Reader extends BaseComponent {
     this.root.querySelectorAll('.article-view__tag').forEach((tag) => {
       tag.href = '/categories';
     });
+
+    // обработчик добавления комментария
+    const commentBtn = this.root
+        .querySelector('.article-view__send-comment-btn');
+    commentBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      commentAdd();
+    });
+
+    addEventListenersToReader(this.root);
+
     // пока контент статьи не прогрузился, изменять статью не даем
     return this.root;
   }
@@ -96,6 +109,9 @@ export default class Reader extends BaseComponent {
     this.view.render(article).childNodes.forEach((node) => {
       this.root.appendChild(node.cloneNode(true));
     });
+
+    addEventListenersToReader(this.root);
+
     this.root.querySelector('#article-change-btn').href =
       '/user/' + article.author.login;
     this.root.querySelectorAll('.article-view__tag').forEach((tag) => {
@@ -109,4 +125,116 @@ export default class Reader extends BaseComponent {
       articleChangeBtn.addEventListener('click', changeBtnClickListener);
     }
   }
+}
+
+/**
+ * Добавление обработчиков
+ * @param {HTMLDivElement} root
+ */
+function addEventListenersToReader(root) {
+  // обработчик: добавление комментария
+  const commentBtn = root
+      .querySelector('.article-view__send-comment-btn');
+  commentBtn.addEventListener('click', (e) => {
+    e.preventDefault();
+    const comments = document.querySelector('#comments');
+    const commentDiv = commentAdd(comments);
+    answerOnComment(commentDiv);
+  });
+
+  // обработчик: показать комментарии
+  const btnShow = root
+      .querySelector('.comments-show');
+  btnShow.addEventListener('click', (e) => {
+    e.preventDefault();
+    commentsShow();
+  });
+
+  // обработчик: ответить на комментарий
+  const comments = root
+      .querySelectorAll('.comments__comment');
+  for (const comment of comments) {
+    answerOnComment(comment);
+  }
+}
+
+/**
+ * Добавление комментария
+ * @param {Element} parent
+ * @return {HTMLDivElement}
+ */
+function commentAdd(parent) {
+  const input = document.querySelector('.article-view__comment-input');
+  if (input.value != '') {
+    // пример добавления комментария
+    const comment = commentComponent({
+      avatarUrl: '../../static/img/users/user.jpg',
+      firstName: 'Мое имя',
+      likes: 0,
+      text: input.value,
+      datetime: '2021/11/22 12:36',
+    });
+    const commentDiv = document.createElement('div');
+    commentDiv.className = 'comments__comment';
+    commentDiv.classList.add('comment');
+    commentDiv.innerHTML = comment;
+    parent.appendChild(commentDiv);
+
+    return commentDiv;
+  }
+
+  return '';
+}
+
+/**
+ * Показать комментарии
+ */
+function commentsShow() {
+  let hide = true;
+  const comments = document.querySelector('.comments');
+  const showBtnText = document.querySelector('.comments-show__text');
+  const arrow = document.querySelector('.comments-show__btn');
+
+  if (arrow.classList.contains('rotate-180')) {
+    showBtnText.innerText = 'Показать комментарии';
+    arrow.classList.remove('rotate-180');
+    hide = true;
+  } else {
+    showBtnText.innerText = 'Скрыть комментарии';
+    arrow.classList.add('rotate-180');
+    hide = false;
+  }
+
+  if (hide) {
+    comments.classList.add('hide');
+  } else {
+    comments.classList.remove('hide');
+  }
+}
+
+/**
+ * Ответить на комментарий
+ * @param {string} comment
+ */
+function answerOnComment(comment) {
+  const answerBtn = comment.querySelector('.comment__answer-btn');
+  answerBtn.addEventListener('click', (e) => {
+    e.preventDefault();
+    const answerFieldExist = comment
+        .querySelector('.article-view__add-comment');
+
+    if (!answerFieldExist) {
+      const answerField = document.createElement('div');
+      answerField.innerHTML = articleAddCommentComponent({});
+      const answerBtn = answerField
+          .querySelector('.article-view__send-comment-btn');
+      answerBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        const answers = document.querySelector('.comment__answers');
+        commentAdd(answers);
+      });
+
+      comment.appendChild(answerField);
+    }
+  });
 }

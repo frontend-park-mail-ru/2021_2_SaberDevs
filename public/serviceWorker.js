@@ -142,6 +142,7 @@ const cacheUrls = [
   './components/settings/settings.pug.js',
   './components/settings/settingsForm.js',
   './components/settings/settingsFormView.js',
+  './components/reader/articleAddComment.pug.js',
   './components/reader/articleReader.pug.js',
   './components/reader/comment.pug.js',
   './components/reader/reader.js',

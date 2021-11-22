@@ -27,6 +27,7 @@ const saveTo = {
   formArticleEditorTextarea: 'editor',
   articleReader: 'reader',
   comment: 'reader',
+  articleAddComment: 'reader',
   categories: 'categoryChoiceBar',
   tag: 'editor',
   tagMixin: '',  // будет игнорирован
