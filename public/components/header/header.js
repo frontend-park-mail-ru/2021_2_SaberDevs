@@ -1,6 +1,10 @@
 import BaseComponent from '../_basic/baseComponent.js';
 import HeaderView from './headerView.js';
 
+import store from '../../flux/store.js';
+import searchActions from '../../flux/actions/searchActions.js';
+
+import {redirect} from '../../common/utils.js';
 /**
  * ViewModel-компонент соответсвующего View
  * @class Header
@@ -35,7 +39,9 @@ export default class Header extends BaseComponent {
         .forEach((group) => group.addEventListener(
             'click',
             (e) => {
-              groupOptions.firstChild.value = e.target.textContent;
+              store.dispatch(searchActions.setSearchGroup(
+                  e.target.dataset.search,
+              ));
               // восстанавливаем потерянный при клике фокус
               searchInput.focus();
             }),
@@ -60,6 +66,8 @@ export default class Header extends BaseComponent {
     searchInput.addEventListener('keydown', ({keyCode, target}) => {
       if (keyCode === 13) {
         console.log('{Header} searchField enter (идем искать)', target.value);
+        store.dispatch(searchActions.setSearchValue(searchInput.value));
+        redirect('/search');
         this.closeSearchField();
         setTimeout(() => console.log('{Header} searchField вот тут редирект'));
       }

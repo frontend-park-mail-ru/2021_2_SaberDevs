@@ -9,6 +9,7 @@ import EditorPage from './pages/articleEditorPage.js';
 import ReaderPage from './pages/articleReaderPage.js';
 import CategoryPage from './pages/categoryPage.js';
 import SignupPage from './pages/signupPage.js';
+import SearchPage from './pages/searchPage.js';
 
 // Controllers
 import LinksController from './components/linksController.js';
@@ -86,7 +87,8 @@ router
     .register('/editor', EditorPage)
     .registerPattern('/categories/<сategory>', CategoryPage)
     .register('/categories', CategoryPage)
-    .register('/login', SignupPage);
+    .register('/login', SignupPage)
+    .register('/search', SearchPage);
 
 linksController
     .register(

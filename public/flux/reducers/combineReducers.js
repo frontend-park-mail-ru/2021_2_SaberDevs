@@ -26,6 +26,7 @@ export default function combineReducers(reducers) {
         if (fluxDebug) {
           if (reducer === 'mainPage' ||
               reducer === 'profilePage' ||
+              reducer === 'search' ||
               reducer === 'categoryPage') {
             printState = {};
             Object.assign(printState, state[reducer]);

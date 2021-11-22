@@ -27,6 +27,7 @@ const appPages = [
   '/profile/settings',
   '/editor',
   '/login',
+  '/search',
 ];
 
 const appPagesPatterned = [

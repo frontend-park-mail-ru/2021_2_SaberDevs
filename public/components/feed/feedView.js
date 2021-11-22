@@ -2,6 +2,7 @@ import BaseComponentView from '../_basic/baseComponentView.js';
 import cardComponent from './card.pug.js';
 import feedComponent from './feed.pug.js';
 import {genRanHexColor} from '../../common/utils.js';
+import Ajax from '../../modules/ajax.js';
 
 /**
  * Описание сущности карточки в новостной ленте
@@ -32,7 +33,11 @@ function composeCards(root, cards) {
       content: tag,
       color: genRanHexColor(),
     }));
-    cardWrapper.innerHTML = cardComponent({...element, tags});
+    cardWrapper.innerHTML = cardComponent({
+      ...element,
+      tags,
+      previewUrl: Ajax.APIurl + '/img/' + element.previewUrl,
+    });
     root.appendChild(cardWrapper.firstChild);
   });
 }
