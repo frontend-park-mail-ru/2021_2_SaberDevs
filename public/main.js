@@ -1,5 +1,8 @@
 'use strict';
 
+// eslint-disable-next-line no-unused-vars
+import webSocket from './modules/webSocket.js';
+
 // pages
 import MainPage from './pages/mainPage.js';
 import ProfilePage from './pages/profilePage.js';

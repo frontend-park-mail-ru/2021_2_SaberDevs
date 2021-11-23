@@ -98,6 +98,7 @@ const cacheUrls = [
   './pages/_createPage.js',
   './modules/ajax.js',
   './modules/ajaxRequests.js',
+  './modules/webSocket.js',
   './flux/actions.js',
   './flux/applyMiddleware.js',
   './flux/createStore.js',
