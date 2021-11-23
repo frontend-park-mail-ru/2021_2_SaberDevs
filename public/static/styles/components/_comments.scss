@@ -17,6 +17,19 @@ $comment-description-margin-left: 20px;
   }
 }
 
+.comments-show {
+  @include row;
+
+  justify-content: center;
+  margin-top: 1em;
+  cursor: pointer;
+
+  &__text {
+    margin-left: 0.3em;
+    font-size: $font-size-normal;
+  }
+}
+
 .comment {
   &__content {
     display: flex;
@@ -51,11 +64,16 @@ $comment-description-margin-left: 20px;
 
   &__answer-btn {
     font-size: $comment-action-btns-font-size;
+    color: $color-elements;
     cursor: pointer;
 
     &:hover {
       color: $color-secondary;
     }
+  }
+
+  &__answers {
+    margin-left: 20px;
   }
 
   &__time {

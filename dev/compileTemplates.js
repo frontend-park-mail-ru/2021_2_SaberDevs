@@ -21,9 +21,11 @@ const saveTo = {
   formSettingsTextarea: 'settings',
   buttonNav: 'sidebar',
   userPreview: 'sidebar',
+  streamComment: 'sidebar',
   articleEditor: 'editor',
   articleReader: 'reader',
   comment: 'reader',
+  articleAddComment: 'reader',
   tag: 'editor',
   tagMixin: '',  // будет игнорирован
 };

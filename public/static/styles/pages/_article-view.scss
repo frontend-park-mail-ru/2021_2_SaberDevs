@@ -16,7 +16,7 @@ $photo-size: 50px;
   @include col;
 
   justify-content: space-between;
-  margin-top: $article-top;
+  padding-top: $article-top;
   width: 100%;
   min-height: 450px;
   font-weight: $font-thin;

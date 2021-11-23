@@ -18,7 +18,6 @@
 
   &__item {
     padding-top: $sidebar-item-padding-top;
-    padding-left: $sidebar-item-padding-side;
     cursor: default;
   }
 
@@ -39,8 +38,23 @@
   }
 
   &__categories-item {
-    font-size: $sidebar-items-font-size;
+    font-size: $font-size-normal;
     cursor: pointer;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
+  &__categories-more {
+    @include row;
+
+    font-size: $font-size-small;
+    cursor: pointer;
+  }
+
+  &__categories-more-text {
+    margin-right: 5px;
 
     &:hover {
       text-decoration: underline;
@@ -72,6 +86,19 @@
     height: 100%;
   }
 
+  &__streams {
+    display: flex;
+    flex-direction: column;
+    overflow-y: scroll;
+    margin-top: 10px;
+    margin-bottom: 30px;
+    height: 25rem;
+
+    &::-webkit-scrollbar {
+      width: 0;
+    }
+  }
+
   &__bottom {
     position: relative;
     bottom: 100px;
@@ -83,7 +110,13 @@
     @include col;
 
     justify-content: space-between;
-    height: 100%;
+    overflow-y: scroll;
+    width: min-content;
+    height: 100vh;
+
+    &::-webkit-scrollbar {
+      width: 0;
+    }
   }
 }
 

@@ -50,6 +50,11 @@
     }
   }
 
+  &__arrow-icon {
+    background: $img-icon-arrow;
+    background-size: cover;
+  }
+
   &__send-icon {
     background: $img-icon-send;
     background-size: cover;

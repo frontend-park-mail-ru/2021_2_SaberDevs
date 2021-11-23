@@ -78,6 +78,22 @@ export default class Sidebar extends BaseComponent {
         'click',
         () => store.dispatch(editorActions.createArticle()),
     );
+
+    const categoryItems = this.view.root
+        .querySelectorAll('.sidebar__categories-item');
+    const categoryMore = this.view.root
+        .querySelector('.sidebar__categories-more-btn');
+    const moreText = this.view.root
+        .querySelector('.sidebar__categories-more-text');
+
+    categoriesMore(categoryItems, categoryMore, moreText);
+
+    this.view.root.querySelector('.sidebar__categories-more')
+        .addEventListener('click', (e) => {
+          e.preventDefault();
+          categoriesMore(categoryItems, categoryMore, moreText);
+        });
+
     return this.root;
   }
 
@@ -103,5 +119,33 @@ export default class Sidebar extends BaseComponent {
       name: 'Регистрация',
     });
     this.view.setTopBlockContent(topBlockContent);
+  }
+}
+
+/**
+ * Показать больше категорий
+ * @param {string} categoryItems
+ * @param {string} arrow
+ * @param {string} moreBtn
+ */
+function categoriesMore(categoryItems, arrow, moreBtn) {
+  let hide = true;
+
+  if (arrow.classList.contains('rotate-180')) {
+    moreBtn.innerText = 'Показать ещё';
+    arrow.classList.remove('rotate-180');
+    hide = true;
+  } else {
+    moreBtn.innerText = 'Скрыть';
+    arrow.classList.add('rotate-180');
+    hide = false;
+  }
+
+  for (let i = displayedDefaultLimit; i < categoryItems.length; ++i) {
+    if (!hide) {
+      categoryItems[i].style.display = 'block';
+    } else {
+      categoryItems[i].style.display = 'none';
+    }
   }
 }

@@ -118,3 +118,9 @@ body,
   box-sizing: border-box;
   background-color: $color-sidebar;
 }
+
+.rotate {
+  &-180 {
+    transform: rotate(180deg);
+  }
+}

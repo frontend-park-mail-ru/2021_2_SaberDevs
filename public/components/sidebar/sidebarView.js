@@ -1,5 +1,6 @@
 import BaseComponentView from '../_basic/baseComponentView.js';
 import sidebarComponent from './sidebar.pug.js';
+import streamCommentComponent from './streamComment.pug.js';
 
 /**
  * @class sidebarView
@@ -20,12 +21,31 @@ export default class SidebarView extends BaseComponentView {
     * @return {HTMLElement}
     */
   render(topBlockContent, categoriesList, limit) {
+    // пример подключения стрим-комментария
+    let streams = '';
+    const streamComment = streamCommentComponent({
+      avatarUrl: '../../static/img/users/user.jpg',
+      firstName: 'Sveta',
+      text: 'Текст стрим-комментария',
+    });
+    streams += streamComment;
+    streams += streamComment;
+    streams += streamComment;
+    streams += streamComment;
+    streams += streamComment;
+    streams += streamComment;
+    streams += streamComment;
+    streams += streamComment;
+    streams += streamComment;
+
     const wrapper = document.createElement('div');
     wrapper.innerHTML = sidebarComponent({
       topBlockContent,
       categoriesList,
       limit,
+      streams,
     });
+
     this.root = wrapper.firstChild;
     return this.root;
   }

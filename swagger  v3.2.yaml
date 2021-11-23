@@ -455,6 +455,12 @@ paths:
         required: true
         schema:
           type: string
+      - name: idLastLoaded
+        in: query
+        description: start point in news feed
+        required: true
+        schema:
+          type: string
       responses:
         200:
           description: ОК
@@ -478,6 +484,12 @@ paths:
         required: true
         schema:
           type: string
+      - name: idLastLoaded
+        in: query
+        description: start point in news feed
+        required: true
+        schema:
+          type: string
       responses:
         200:
           description: ОК
@@ -498,6 +510,12 @@ paths:
       - name: q
         in: query
         description: строка
+        required: true
+        schema:
+          type: string
+      - name: idLastLoaded
+        in: query
+        description: start point in news feed
         required: true
         schema:
           type: string
