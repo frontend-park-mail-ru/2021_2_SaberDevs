@@ -10,6 +10,7 @@ const InitialSearchState = {
   isEndFound: false,
   value: '',
   group: 'articles',
+  description: 'Статьи',
 };
 
 /**
@@ -22,7 +23,8 @@ export default function searchPageReducer(state = InitialSearchState, action) {
     case searchTypes.SET_SEARCH_GROUP:
       return {
         ...state,
-        group: action.payload,
+        group: action.payload.group,
+        description: action.payload.description,
       };
     case searchTypes.SET_LOADING_FLAG:
       return {

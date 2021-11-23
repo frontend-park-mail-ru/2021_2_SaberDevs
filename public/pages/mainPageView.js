@@ -2,6 +2,7 @@ import BasePageView from './basePageView.js';
 import createPage from './_createPage.js';
 
 import Feed from '../components/feed/feed.js';
+import composeCards from '../components/feed/composeCardStandart.js';
 import MainPagePreviewBar from
   '../components/feed/previews/mainPagePreviewBar.js';
 
@@ -29,6 +30,7 @@ export default class MainPageView extends BasePageView {
     this.pageComponents = {
       feedPreview,
       feed: new Feed(
+          composeCards,
           'mainPage',
           mainPageTypes.SAVE_NEW_CARDS,
           mainPageTypes.CLEAR_CARDS,

@@ -2,6 +2,7 @@ import BasePageView from './basePageView.js';
 import createPage from './_createPage.js';
 
 import Feed from '../components/feed/feed.js';
+import composeCards from '../components/feed/composeCardStandart.js';
 import ProfileCard from '../components/profileCard/profileCard.js';
 
 import {profilePageTypes} from '../flux/types.js';
@@ -19,6 +20,7 @@ export default class ProfilePageView extends BasePageView {
     this.pageComponents = {
       profileCard: new ProfileCard(),
       feed: new Feed(
+          composeCards,
           'profilePage',
           profilePageTypes.SAVE_NEW_USER_ARTICLES,
           profilePageTypes.CLEAR_USER_ARTICLES,

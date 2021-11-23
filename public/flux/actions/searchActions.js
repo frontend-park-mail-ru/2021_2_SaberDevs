@@ -12,8 +12,11 @@ import {appendApiImg} from '../../common/utils.js';
  */
 function saveNewCards(idLastLoaded, cards) {
   cards.forEach((card) => {
+    // только для статей
+    if (!'login' in card) {
+      appendApiImg(card.author);
+    }
     appendApiImg(card);
-    appendApiImg(card.author);
   });
   return {
     type: searchTypes.SAVE_NEW_CARDS,
@@ -23,12 +26,13 @@ function saveNewCards(idLastLoaded, cards) {
 
 /**
  * @param {string} group
+ * @param {string} description
  * @return {Action}
  */
-function setSearchGroup(group) {
+function setSearchGroup(group, description = '') {
   return {
     type: searchTypes.SET_SEARCH_GROUP,
-    payload: group,
+    payload: {group, description},
   };
 }
 

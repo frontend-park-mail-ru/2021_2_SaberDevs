@@ -2,6 +2,7 @@ import BasePageView from './basePageView.js';
 import createPage from './_createPage.js';
 
 import Feed from '../components/feed/feed.js';
+import composeCards from '../components/feed/composeCardStandart.js';
 import CategoryChoiceBar from
   '../components/categoryChoiceBar/categoryChoiceBar.js';
 
@@ -35,6 +36,7 @@ export default class CategoryPageView extends BasePageView {
           categoryPageTypes.SELECT_CATEGORY,
       ),
       feed: new Feed(
+          composeCards,
           'categoryPage',
           categoryPageTypes.SAVE_NEW_CATEGORY_ARTICLES,
           categoryPageTypes.CLEAR_CATEGORY_ARTICLES,

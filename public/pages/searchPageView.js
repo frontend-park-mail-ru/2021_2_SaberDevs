@@ -2,6 +2,7 @@ import BasePageView from './basePageView.js';
 import createPage from './_createPage.js';
 
 import Feed from '../components/feed/feed.js';
+import composeUsers from '../components/feed/composeUsers.js';
 
 import {searchTypes} from '../flux/types.js';
 import searchActions from '../flux/actions/searchActions.js';
@@ -25,6 +26,7 @@ export default class SearchPageView extends BasePageView {
     super(root);
     this.pageComponents = {
       feed: new Feed(
+          composeUsers,
           'search',
           searchTypes.SAVE_NEW_CARDS,
           searchTypes.CLEAR_CARDS,

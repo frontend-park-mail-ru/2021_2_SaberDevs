@@ -165,6 +165,8 @@ const cacheUrls = [
   './components/header/header.pug.js',
   './components/header/headerView.js',
   './components/feed/card.pug.js',
+  './components/feed/composeCardStandart.js',
+  './components/feed/composeUsers.js',
   './components/feed/feed.js',
   './components/feed/feed.pug.js',
   './components/feed/feedView.js',

@@ -163,7 +163,8 @@ export default class Router {
       // data=router='ignore'
       // Нет гарантии, что сработает раньше: linkController или Router
       if (!(target instanceof HTMLAnchorElement ||
-          target.dataset.router === 'ignore')) {
+          target.dataset.router === 'ignore') ||
+          target.dataset.router === 'outer') {
         return;
       }
       if (routerDebug) {

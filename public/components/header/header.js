@@ -43,6 +43,7 @@ export default class Header extends BaseComponent {
                   e.target.textContent;
               store.dispatch(searchActions.setSearchGroup(
                   e.target.dataset.search,
+                  e.target.textContent,
               ));
               // восстанавливаем потерянный при клике фокус
               searchInput.focus();
@@ -67,11 +68,14 @@ export default class Header extends BaseComponent {
 
     searchInput.addEventListener('keydown', ({keyCode, target}) => {
       if (keyCode === 13) {
-        console.log('{Header} searchField enter (идем искать)', target.value);
         store.dispatch(searchActions.setSearchValue(searchInput.value));
+        searchInput.blur();
         redirect('/search');
-        this.closeSearchField();
-        setTimeout(() => console.log('{Header} searchField вот тут редирект'));
+        // явно записываем группу поиска в строку,
+        // а то мало ли что там в редьюсере
+        // Обязательно селектор т.к. хедер перендерится при переходе
+        this.root.querySelector('.search__row_group_bar').value =
+            store.getState().search.description;
       }
     });
 
@@ -110,7 +114,6 @@ export default class Header extends BaseComponent {
     const searchBtn = this.root.querySelector('.search__button');
     const navItems = this.root.querySelector('.header__nav-items');
     const searchRow = this.root.querySelector('.search__row');
-    console.log({searchRow});
     const searchInput = this.root.querySelector('.search__input');
     console.log('{Header} searchField open');
     navItems.style.pointerEvents = 'none';

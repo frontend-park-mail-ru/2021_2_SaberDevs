@@ -4,6 +4,7 @@ import SearchPageView from './searchPageView.js';
 import store from '../flux/store.js';
 import {changePageActions} from '../flux/actions.js';
 import searchActions from '../flux/actions/searchActions.js';
+import {searchTypes} from '../flux/types.js';
 
 import Modal from '../components/modal/modal.js';
 
@@ -59,9 +60,18 @@ async function uploadNextCards() {
       console.log('[Search Page] more news loaded!');
     }
 
+    // модифицируем в случае с юзером для интеграции в ленту
+    cards.forEach((card) => {
+      if ('login' in card) {
+        card.id = card.login;
+      }
+    });
+
     store.dispatch(
         searchActions.saveNewCards(
-            cards.length ? cards[cards.length - 1].id : state.idLastLoaded,
+            // TODO:
+            // cards.length ? cards[cards.length - 1].id : state.idLastLoaded,
+            '',
             cards,
         ),
     );
@@ -109,6 +119,34 @@ export default class SearchPage extends BasePageMV {
     //        Communication
     //
     // /////////////////////////////////
+
+    // обновить ленту если параметры поиска изменились
+    const updateFeed = (category) => {
+      if (category !== '') {
+        store.dispatch(searchActions.clearCards());
+        store.dispatch(searchActions.allowCardsLoading());
+        uploadNextCards();
+      }
+      // TODO: параметры поиска в url
+      // history.pushState(
+      //     null,
+      //     '',
+      //     '/search' + (category !== '' ? '/' + category : ''),
+      // );
+      // меняем и тайтл
+      // store.dispatch(
+      //     changePageActions.changePage(
+      //         'categories',
+      //         `SaberProject |
+      //         ${category !== '' ?
+      //         (category.charAt(0).toUpperCase() + category.slice(1)) :
+      //         'Categories'}`,
+      //     ),
+      // );
+    };
+
+    store.subscribe(searchTypes.SET_SEARCH_VALUE, updateFeed);
+    store.subscribe(searchTypes.SET_SEARCH_GROUP, updateFeed);
   }
 
   /**
@@ -152,5 +190,36 @@ export default class SearchPage extends BasePageMV {
           newsFeedEndReachEventAction,
       );
     }
+  }
+
+  /**
+   * true - эдемент активен, его нежелательно перетирать
+   * @return {boolean}
+   */
+  isActive() {
+    // TODO: получить параметры из поиска
+    // let group = '';
+    // let value = '';
+    // const idx = document.URL.indexOf('search/');
+    // if (idx !== -1) {
+    //   try {
+    //     category = decodeURI(document.URL.slice(idx + ));
+    //   } catch (e) {
+    //     console.error(e);
+    //   }
+    //   console.log('[CategoryPage] (isActive) category from Url:',
+    //       category);
+    //   store.dispatch(categoryPageActions.selectCategory(category));
+    // } else if (document.URL.indexOf('categories') !== -1) {
+    //   // Если была выбрана категория, но юзер перешел по урлу на categories
+    //   store.dispatch(categoryPageActions.clearSelectedCategory());
+    // }
+
+    // // Чтобы спрятать анимацию загрузки, пока Category не выбранa
+    // if (store.getState().categoryPage.currentCategory === '') {
+    //   store.dispatch(categoryPageActions.forbidCategoryArticlesLoading());
+    // }
+
+    return super.isActive();
   }
 }

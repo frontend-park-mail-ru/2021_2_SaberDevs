@@ -28,6 +28,10 @@ const configuration = {};
 function linksControllerClickHandler(event) {
   const {target} = event;
 
+  if (target.dataset.router === 'outer') {
+    return;
+  }
+
   // ставим preventDefault, чтобы предотварить переход по ссылкам,
   // в которых есть вложенные элементы, ведь их href равен href'у ссылки
   // на всех вложенных элементах такой ссылки должен быть указан

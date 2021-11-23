@@ -75,6 +75,8 @@ function addClickListenersOnCards(where, cards) {
 export default class Feed extends BaseComponent {
   /**
    * Универсальный компонент ленты
+   * @param {function} composeCards принимает root - HTMLElement, к которому
+   * аппендятся карточки и массив данных, по которому строятся шаблоны
    * @param {string} storeName - имя редьюсера
    * @param {Type} SAVE_NEW_CARDS_ACTION - событие, на которое
    * в ленту добавляются карточки
@@ -94,6 +96,7 @@ export default class Feed extends BaseComponent {
    * который будет вложен в .feed__preview в ленте
    */
   constructor(
+      composeCards,
       storeName,
       SAVE_NEW_CARDS_ACTION,
       CLEAR_CARDS_ACTION,
@@ -113,7 +116,11 @@ export default class Feed extends BaseComponent {
     this.innerComponent = previewComponent;
     this.storeName = storeName;
     const cards = store.getState()[storeName].cards;
-    this.view = new FeedView(previewComponent.render().outerHTML, cards);
+    this.view = new FeedView(
+        composeCards,
+        previewComponent.render().outerHTML,
+        cards,
+    );
 
     // /////////////////////////////////
     //

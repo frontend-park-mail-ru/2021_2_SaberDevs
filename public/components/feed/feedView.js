@@ -1,7 +1,5 @@
 import BaseComponentView from '../_basic/baseComponentView.js';
-import cardComponent from './card.pug.js';
 import feedComponent from './feed.pug.js';
-import {appendApiImg, genRanHexColor} from '../../common/utils.js';
 
 /**
  * Описание сущности карточки в новостной ленте
@@ -21,38 +19,19 @@ import {appendApiImg, genRanHexColor} from '../../common/utils.js';
  */
 
 /**
- * Добавить карточки в root-HTMLElement, навесить нужные обработчики
- * @param {HTMLElement} root - элемент, куда будут вставлены карточки
- * @param {Array<Card>} cards - Массив карточек
- */
-function composeCards(root, cards) {
-  cards.forEach((element) => {
-    appendApiImg(element);
-    appendApiImg(element.author);
-    const cardWrapper = document.createElement('div');
-    const tags = element.tags.map((tag) => ({
-      content: tag,
-      color: genRanHexColor(),
-    }));
-    cardWrapper.innerHTML = cardComponent({
-      ...element,
-      tags,
-    });
-    root.appendChild(cardWrapper.firstChild);
-  });
-}
-
-/**
  * @class FeedView
  */
 export default class FeedView extends BaseComponentView {
   /**
    * Хранит состояние - текущие загруженные карточки
+   * @param {function} composeCards принимает root - HTMLElement, к которому
+   * аппендятся карточки и массив данных, по которому строятся шаблоны
    * @param {string} preview
    * @param {Array.Card} cards массив карточек (может быть пустым)
    */
-  constructor(preview, cards) {
+  constructor(composeCards, preview, cards) {
     super();
+    this.composeCards = composeCards;
     this.root = this.render(preview, cards);
   }
 
@@ -65,10 +44,9 @@ export default class FeedView extends BaseComponentView {
     const wrapper = document.createElement('div');
     wrapper.innerHTML = feedComponent({
       preview,
-      cards: '',
     });
     const feed = wrapper.firstChild;
-    composeCards(feed.querySelector(`.feed__cards`), cards);
+    this.composeCards(feed.querySelector(`.feed__cards`), cards);
 
     this.root = feed;
     return feed;
@@ -85,7 +63,7 @@ export default class FeedView extends BaseComponentView {
       console.warn('cannot append cards till Feed is not rendered');
       return;
     }
-    composeCards(cardsDiv, cards);
+    this.composeCards(cardsDiv, cards);
     this.showLoadingAnimation();
   }
 
