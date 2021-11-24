@@ -1,6 +1,7 @@
 import BaseComponentView from '../_basic/baseComponentView.js';
 import sidebarComponent from './sidebar.pug.js';
 import streamCommentComponent from './streamComment.pug.js';
+// import webSocket from '../../modules/webSocket.js';
 
 /**
  * @class sidebarView
