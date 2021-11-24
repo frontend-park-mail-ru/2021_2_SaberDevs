@@ -1,7 +1,10 @@
 import streamCommentComponent from
   '../components/sidebar/streamComment.pug.js';
 
-const APIurl = 'ws://localhost:8082';
+// Тачка Дорофеева
+const APIurl = 'ws://89.208.197.247:8080/api/v1';
+// Локальная разработка (Запусти node server/serverWs.js)
+// const APIurl = 'ws://localhost:8082';
 
 const webSocket = new WebSocket(APIurl);
 
@@ -16,6 +19,7 @@ webSocket.onmessage = function(event) {
   try {
     data = JSON.parse(event.data);
   } catch (e) {
+    console.warn(e.message);
     return;
   }
 

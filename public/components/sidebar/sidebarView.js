@@ -26,17 +26,9 @@ export default class SidebarView extends BaseComponentView {
     let streams = '';
     const streamComment = streamCommentComponent({
       avatarUrl: '../../static/img/users/user.jpg',
-      firstName: 'Sveta',
-      text: 'Текст стрим-комментария',
+      firstName: 'Это константный комментрий для теста',
+      text: 'Лбим хардкод, да',
     });
-    streams += streamComment;
-    streams += streamComment;
-    streams += streamComment;
-    streams += streamComment;
-    streams += streamComment;
-    streams += streamComment;
-    streams += streamComment;
-    streams += streamComment;
     streams += streamComment;
 
     const wrapper = document.createElement('div');

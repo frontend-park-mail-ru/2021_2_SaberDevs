@@ -61,10 +61,31 @@ function openArticle(id) {
   };
 }
 
+/**
+ * @param {number} id - id, присвоенный записи на сервере
+ * @param {Array<Comment>} comments
+ * @return {Action}
+ */
+function saveArticleComments(id, comments) {
+  if (!Array.isArray(comments)) {
+    console.warn('API error. Server returned ', typeof comments,
+        'instead of comments');
+    comments = [];
+  }
+  if (!comments) {
+    comments = [];
+  }
+  return {
+    type: readerTypes.SAVE_ARTICLE_COMMENTS,
+    payload: {id, comments},
+  };
+}
+
 const readerActions = {
   saveArticle,
   openArticle,
   setArticleLoading,
+  saveArticleComments,
 };
 
 export default readerActions;

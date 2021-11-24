@@ -1,14 +1,18 @@
-.comment__content
-    img.comment__author-photo(src=`${avatarUrl}`)
+.comment
+  .comment__content
+    img.comment__author-photo(src=`${author.avatarUrl}`)
     .comment__description
-        .comment__author-name #{firstName}
-        .comment__text #{text}
-.comment__bottom
+      .comment__author-name #{author.lastName} #{author.firstName}
+      .comment__text #{text}
+  .comment__bottom
     .action-btns
-        .icon-small.action-btns_m-right
-            .icon-small__text #{likes}
-            .action-btns__likes-icon.icon-small__img
-        .action-btns_m-right
-            button.comment__answer-btn Ответить
+      if isEdited
+        .comment__time изменено #{datetime}
+      else
         .comment__time #{datetime}
-.comment__answers !{answers}
+      //- .action-btns_m-right
+      button.comment__answer-btn Ответить
+      .icon-small.action-btns_m-right
+        .icon-small__text #{likes}
+        .action-btns__likes-icon.icon-small__img
+  .comment__answers !{answers}

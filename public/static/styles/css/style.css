@@ -1839,7 +1839,7 @@ body,
 }
 
 .comment__text {
-  font-size: 18px;
+  font-size: 1.5rem;
 }
 
 .comment__bottom {
@@ -1853,7 +1853,7 @@ body,
 }
 
 .comment__answer-btn {
-  font-size: 18px;
+  font-size: 1rem;
   color: #dee4ea;
   cursor: pointer;
 }
@@ -1867,7 +1867,7 @@ body,
 }
 
 .comment__time {
-  font-size: 18px;
+  font-size: 1rem;
 }
 
 .stream-comment {

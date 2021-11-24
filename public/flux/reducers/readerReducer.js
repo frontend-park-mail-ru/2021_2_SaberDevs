@@ -21,8 +21,40 @@ const InitialReaderState = {
   //   "tags": [
   //     "string"
   //   ]
+  //   commentsContent: "nul" || [
+  //     {
+  //       answers: [
+  //         Comment,
+  //         ...
+  //       ],
+  //       "text": "string",
+  //       "articleId": number,
+  //       "parentId": number,
+  //       "id": number,
+  //       "datetime": string,
+  //       "datetimeMS": number,
+  //        "isEdited": true,
+  //         "author": {
+  //            "login": "string",
+  //            "firstName": "string",
+  //            "lastName": "string",
+  //            "avatarUrl": "string",
+  //            "score": 0
+  //        }
+  //      }
+  //   ]
   // }
 };
+
+/**
+ * @typedef {Object} Comment
+ * @property {string} text
+ * @property {string} articleId
+ * @property {string} id
+ * @property {string} dateTime
+ * @property {boolean} isEdited
+ * @property {User} author
+ */
 
 /**
  * @param {Object} state
@@ -69,6 +101,7 @@ export default function readerReducer(state = InitialReaderState, action) {
           },
           likes: 0,
           comments: 0,
+          commentsContent: null,
           previewUrl: '',
           ...action.payload,
           text: 'Загрузка...',
@@ -80,6 +113,19 @@ export default function readerReducer(state = InitialReaderState, action) {
         ...state,
         currentId: action.payload,
       };
+
+    case readerTypes.SAVE_ARTICLE_COMMENTS:
+      if (action.payload.id in state) {
+        return {
+          ...state,
+          [action.payload.id]: {
+            ...state[action.payload.id],
+            commentsContent: action.payload.comments,
+          },
+        };
+      } else {
+        return state;
+      }
   }
   return state;
 }

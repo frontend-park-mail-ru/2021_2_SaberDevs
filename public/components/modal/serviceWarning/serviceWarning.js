@@ -47,7 +47,6 @@ export default class ServiceWarning extends BaseComponent {
     if (msg) {
       this.root.innerHTML = msg;
     }
-    console.warn(this.root);
   }
 
   /**

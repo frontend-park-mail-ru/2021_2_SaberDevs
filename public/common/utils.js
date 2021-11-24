@@ -7,6 +7,35 @@
 import Ajax from '../modules/ajax.js';
 
 /**
+ * @param {number} time
+ * @return {string}
+ */
+export function getRusDateTime(time) {
+  const options = {
+    year: 'numeric',
+    month: 'numeric',
+    day: 'numeric',
+    hour: 'numeric',
+    minute: 'numeric',
+    timezone: 'Russia/Moscow',
+  };
+
+  return new Date(time).toLocaleString('ru', options);
+}
+
+/**
+ * @param {string} datetime
+ * @return {number}
+ */
+export function translateServerDateToMS(datetime) {
+  // привожу 2021/11/23 13:13 к ISO 8601
+  // https://ru.wikipedia.org/wiki/ISO_8601
+  return Date.parse(
+      datetime.replaceAll('/', '-').replace(' ', 'T') + ':00',
+  );
+}
+
+/**
  * @param {BlobURL} url
  * @return {Promise<Blob>}
  */
@@ -230,6 +259,8 @@ const Utils = {
   getFileBrowserStorageUrl,
   recoverBlobWithUrl,
   appendApiImg,
+  getRusDateTime,
+  translateServerDateToMS,
 };
 
 export default Utils;

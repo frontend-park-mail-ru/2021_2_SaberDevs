@@ -1,6 +1,5 @@
 const http = require('http'); // для работы с http
 const fs = require('fs'); // для работы с файловой системой
-
 const mime = require('mime/lite');
 
 // ///////////////////////////////// //
@@ -14,9 +13,9 @@ const port = 8080;
 
 // Поменять тут, в public/modules/ajax.js, server/server-api.js (не забыть CORS)
 // тачка Дмитрия Дорофеева
-// const ip = '192.168.0.31';
+const ip = '192.168.0.31';
 // локальная разработка
-const ip = 'localhost';
+// const ip = 'localhost';
 
 const page404 = fs.readFileSync('./public/404.html');
 const CORS = '*';

@@ -13,7 +13,7 @@ import Reader from '../components/reader/reader.js';
  * Страница содержит главный компонент - HTML-контент статьи.
  * @class ReaderView
  */
-export default class ReaderView extends BasePageView {
+export default class ReaderPageView extends BasePageView {
   /**
    * @param {HTMLElement} root
    */
@@ -32,7 +32,6 @@ export default class ReaderView extends BasePageView {
     this.root.appendChild(createPage(
         '',
         this.pageComponents.reader,
-        // TODO: comments component
     ));
   }
 }

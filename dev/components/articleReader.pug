@@ -6,7 +6,7 @@
     .article-view__author-time
       if typeof author === "object"
         .article-view__author 
-          a(href=`/user/${author.login}`) #{author.login}
+          a(href=`/user/${author.avatarUrl}`) #{author.login}
       else
         .article-view__author Ошибка
       .article-view__time #{datetime}

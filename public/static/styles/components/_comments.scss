@@ -5,8 +5,6 @@ $comment-margin-top: 25px;
 $comment-photo-size: 60px;
 $comment-photo-border: 1px solid $color-elements;
 $comment-author-name-font-size: 24px;
-$comment-text-font-size: 18px;
-$comment-action-btns-font-size: 18px;
 $comment-description-margin-left: 20px;
 
 .comments {
@@ -55,7 +53,7 @@ $comment-description-margin-left: 20px;
   }
 
   &__text {
-    font-size: $comment-text-font-size;
+    font-size: $font-size-normal;
   }
 
   &__bottom {
@@ -63,7 +61,7 @@ $comment-description-margin-left: 20px;
   }
 
   &__answer-btn {
-    font-size: $comment-action-btns-font-size;
+    font-size: $font-size-small;
     color: $color-elements;
     cursor: pointer;
 
@@ -77,6 +75,6 @@ $comment-description-margin-left: 20px;
   }
 
   &__time {
-    font-size: $comment-action-btns-font-size;
+    font-size: $font-size-small;
   }
 }

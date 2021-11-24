@@ -3,9 +3,15 @@ import ReaderView from './readerView.js';
 import commentComponent from './comment.pug.js';
 import articleAddCommentComponent from './articleAddComment.pug.js';
 
+import ModalTemplates from '../../components/modal/modalTemplates.js';
+
+import Ajax from '../../modules/ajax.js';
+
 import store from '../../flux/store.js';
 import {readerTypes, authorizationTypes} from '../../flux/types.js';
 import editorActions from '../../flux/actions/editorActions.js';
+
+import {getRusDateTime} from '../../common/utils.js';
 
 const changeBtnClickListener = (e) => {
   e.preventDefault();
@@ -32,10 +38,19 @@ export default class Reader extends BaseComponent {
     //
     // /////////////////////////////////
     this.unsubscribes.push(
-        store.subscribe(readerTypes.OPEN_ARTICLE, () => {
+        store.subscribe(readerTypes.OPEN_ARTICLE, (id) => {
           const state = store.getState().reader;
-          this.openArticle(state[state.currentId]);
+          this.openArticle(state[id]);
         }),
+
+        // Если подгрузили комментарии к текущей статье - отрисовать
+        store.subscribe(readerTypes.SAVE_ARTICLE_COMMENTS, ({id, comments}) => {
+          if (store.getState().reader.currentId === id) {
+            this.setComments(comments);
+          }
+        }),
+
+        // даем возможность редактирования если статья принадлежит пользователю
         store.subscribe(authorizationTypes.LOGIN, () => {
           const articleChangeBtn =
             this.root.querySelector('#article-change-btn');
@@ -52,6 +67,8 @@ export default class Reader extends BaseComponent {
             articleChangeBtn.addEventListener('click', changeBtnClickListener);
           }
         }),
+
+        // забираем возможность изменения статьи, если пропадает авторизация
         store.subscribe(authorizationTypes.LOGOUT, () => {
           const articleChangeBtn =
             this.root.querySelector('#article-change-btn');
@@ -77,14 +94,6 @@ export default class Reader extends BaseComponent {
     this.root = this.view.render(state[state.currentId]);
     this.root.querySelectorAll('.article-view__tag').forEach((tag) => {
       tag.href = '/categories';
-    });
-
-    // обработчик добавления комментария
-    const commentBtn = this.root
-        .querySelector('.article-view__send-comment-btn');
-    commentBtn.addEventListener('click', (e) => {
-      e.preventDefault();
-      commentAdd();
     });
 
     addEventListenersToReader(this.root);
@@ -125,8 +134,31 @@ export default class Reader extends BaseComponent {
       articleChangeBtn.addEventListener('click', changeBtnClickListener);
     }
   }
+
+  /**
+   * @typedef {Object} Comment
+   * @property {string} text
+   * @property {string} articleId
+   * @property {string} id
+   * @property {string} dateTime
+   * @property {boolean} isEdited
+   * @property {User} author
+   */
+
+  /**
+   * @param {Array<Comment>} comments
+   */
+  setComments(comments) {
+    const commentsDiv = this.root.querySelector('#comments');
+    comments.forEach((comment) => {
+      const commentWrapper = document.createElement('div');
+      commentWrapper.innerHTML = commentComponent(comment);
+      commentsDiv.appendChild(commentWrapper.firstChild);
+    });
+  }
 }
 
+// TODO: вынести сетевые обработчики на страницу
 /**
  * Добавление обработчиков
  * @param {HTMLDivElement} root
@@ -137,9 +169,8 @@ function addEventListenersToReader(root) {
       .querySelector('.article-view__send-comment-btn');
   commentBtn.addEventListener('click', (e) => {
     e.preventDefault();
-    const comments = document.querySelector('#comments');
-    const commentDiv = commentAdd(comments);
-    answerOnComment(commentDiv);
+    const comments = root.querySelector('#comments');
+    commentAdd(comments);
   });
 
   // обработчик: показать комментарии
@@ -161,29 +192,55 @@ function addEventListenersToReader(root) {
 /**
  * Добавление комментария
  * @param {Element} parent
- * @return {HTMLDivElement}
  */
 function commentAdd(parent) {
-  const input = document.querySelector('.article-view__comment-input');
-  if (input.value != '') {
-    // пример добавления комментария
-    const comment = commentComponent({
-      avatarUrl: '../../static/img/users/user.jpg',
-      firstName: 'Мое имя',
-      likes: 0,
-      text: input.value,
-      datetime: '2021/11/22 12:36',
-    });
-    const commentDiv = document.createElement('div');
-    commentDiv.className = 'comments__comment';
-    commentDiv.classList.add('comment');
-    commentDiv.innerHTML = comment;
-    parent.appendChild(commentDiv);
-
-    return commentDiv;
+  if (!store.getState().authorization.isAuthenticated) {
+    ModalTemplates.warn(
+        'Сначала авторизируйтесь',
+        'Чтобы оставить комментарий, выполните вход',
+    );
+    return;
   }
 
-  return '';
+  const input = document.querySelector('.article-view__comment-input');
+  if (input.value != '') {
+    let responseStatus = 0;
+    Ajax.post({url: '/comments/create', body: {
+      articleId: store.getState().reader.currentId,
+      parentId: 0,
+      text: input.value,
+    }})
+        .then(({status, response}) => new Promise((resolve, reject) => {
+          if (status === Ajax.STATUS.ok) {
+            resolve(response.data);
+          } else {
+            responseStatus = status;
+            reject(new Error(response.msg));
+          }
+        }))
+        .then((newComment) => {
+          const comment = commentComponent({
+            ...newComment,
+            author: store.getState().authorization,
+            datetime: getRusDateTime(
+                translateServerDateToMS(newComment.dateTime),
+            ),
+          });
+          const commentDiv = document.createElement('div');
+          commentDiv.className = 'comments__comment';
+          commentDiv.classList.add('comment');
+          commentDiv.innerHTML = comment;
+          answerOnComment(commentDiv);
+          parent.appendChild(commentDiv);
+        })
+        .catch((err) => {
+          if (responseStatus !== 0) {
+            ModalTemplates.netOrServerError(responseStatus, err.message);
+          } else {
+            console.warn(err.message);
+          }
+        });
+  }
 }
 
 /**
