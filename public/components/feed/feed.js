@@ -108,10 +108,7 @@ export default class Feed extends BaseComponent {
   ) {
     console.log('{FEED} creation with params:');
     console.log({storeName});
-    console.log({SAVE_NEW_CARDS_ACTION});
-    console.log({CLEAR_CARDS_ACTION});
-    console.log({forbidCardsUploading});
-    console.log({previewComponent});
+
     super();
     this.innerComponent = previewComponent;
     this.storeName = storeName;

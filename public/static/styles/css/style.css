@@ -1862,6 +1862,16 @@ body,
   color: #354580;
 }
 
+.comment__edit-btn {
+  font-size: 1rem;
+  color: #dee4ea;
+  cursor: pointer;
+}
+
+.comment__edit-btn:hover {
+  color: #354580;
+}
+
 .comment__answers {
   margin-left: 20px;
 }

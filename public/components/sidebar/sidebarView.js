@@ -1,7 +1,6 @@
 import BaseComponentView from '../_basic/baseComponentView.js';
 import sidebarComponent from './sidebar.pug.js';
 import streamCommentComponent from './streamComment.pug.js';
-// import webSocket from '../../modules/webSocket.js';
 
 /**
  * @class sidebarView
@@ -19,17 +18,15 @@ export default class SidebarView extends BaseComponentView {
     * @param {string} topBlockContent - вид верхнего блока
     * @param {string} categoriesList
     * @param {string} limit
+    * @param {Array<Comment>} comments
     * @return {HTMLElement}
     */
-  render(topBlockContent, categoriesList, limit) {
-    // пример подключения стрим-комментария
+  render(topBlockContent, categoriesList, limit, comments) {
     let streams = '';
-    const streamComment = streamCommentComponent({
-      avatarUrl: '../../static/img/users/user.jpg',
-      firstName: 'Это константный комментрий для теста',
-      text: 'Лбим хардкод, да',
+    comments.forEach((element) => {
+      const streamComment = streamCommentComponent(element);
+      streams += streamComment;
     });
-    streams += streamComment;
 
     const wrapper = document.createElement('div');
     wrapper.innerHTML = sidebarComponent({
@@ -54,5 +51,16 @@ export default class SidebarView extends BaseComponentView {
     } else {
       this.render(topBlockContent);
     }
+  }
+
+  /**
+   * @param {Array<Comment>} comments
+   */
+  addComments(comments) {
+    const streamComments = this.root.querySelector('.sidebar__streams');
+    comments.forEach((element) => {
+      const streamComment = streamCommentComponent(element);
+      streamComments.insertAdjacentHTML('afterbegin', streamComment);
+    });
   }
 }

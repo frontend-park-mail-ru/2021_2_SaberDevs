@@ -1,7 +1,7 @@
-import streamCommentComponent from
-  '../components/sidebar/streamComment.pug.js';
-
 import {appendApiImg} from '../common/utils.js';
+
+import store from '../flux/store.js';
+import streamActions from '../flux/actions/streamActions.js';
 
 // Тачка Дорофеева
 const APIurl = 'ws://89.208.197.247:8081/api/v1/ws';
@@ -48,20 +48,22 @@ webSocket.onerror = function(error) {
  * @param {Object} data
  */
 function addStreamComment(data) {
+  appendApiImg(data.author);
   // TODO: убрать костыль. Страница не успевает рендерится
-  setTimeout(() => {
-    const streamComments = document.querySelector('.sidebar__streams');
-    appendApiImg(data.author);
-    const streamComment = streamCommentComponent({
-      id: data.id,
-      avatarUrl: data.author.avatarUrl,
-      firstName: data.author.firstName,
-      lastName: data.author.lastName,
-      text: data.text,
-    });
+  // setTimeout(() => {
+  //   const streamComments = document.querySelector('.sidebar__streams');
+  //   appendApiImg(data.author);
+  //   const streamComment = streamCommentComponent({
+  //     id: data.id,
+  //     avatarUrl: data.author.avatarUrl,
+  //     firstName: data.author.firstName,
+  //     lastName: data.author.lastName,
+  //     text: data.text,
+  //   });
 
-    streamComments.insertAdjacentHTML('afterbegin', streamComment);
-  }, 1500);
+  //   streamComments.insertAdjacentHTML('afterbegin', streamComment);
+  // }, 1500);
+  store.dispatch(streamActions.saveNewComments([data]));
 }
 
 export default webSocket;

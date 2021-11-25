@@ -6,7 +6,7 @@ import buttonNavComponent from './buttonNav.pug.js';
 
 import store from '../../flux/store.js';
 import {mainPageActions} from '../../flux/actions.js';
-import {authorizationTypes} from '../../flux/types.js';
+import {authorizationTypes, streamTypes} from '../../flux/types.js';
 import editorActions from '../../flux/actions/editorActions.js';
 
 import categoriesList from '../../common/categoriesList.js';
@@ -31,18 +31,25 @@ export default class Sidebar extends BaseComponent {
     //
     // /////////////////////////////////
 
-    this.unsubscribes.push(store.subscribe(authorizationTypes.LOGIN, () => {
-      store.dispatch(
-          (dispatch, getState) => dispatch(
-              mainPageActions.toggleLogin(true, getState().authorization.login),
-          ));
-      this.setSidebarUserPreview();
-    }));
+    this.unsubscribes.push(
+        store.subscribe(authorizationTypes.LOGIN, () => {
+          store.dispatch(
+              (dispatch, getState) => dispatch(
+                  mainPageActions.toggleLogin(true,
+                      getState().authorization.login),
+              ));
+          this.setSidebarUserPreview();
+        }),
+        store.subscribe(authorizationTypes.LOGOUT, () => {
+          store.dispatch(mainPageActions.toggleLogin(false, ''));
+          this.setSidebarSignupButtons();
+        }));
 
-    this.unsubscribes.push(store.subscribe(authorizationTypes.LOGOUT, () => {
-      store.dispatch(mainPageActions.toggleLogin(false, ''));
-      this.setSidebarSignupButtons();
-    }));
+    this.unsubscribes.push(
+        store.subscribe(streamTypes.SAVE_NEW_COMMENTS, (comments) => {
+          this.addComments(comments);
+        }),
+    );
   }
 
   /**
@@ -69,10 +76,12 @@ export default class Sidebar extends BaseComponent {
         avatarUrl: state.avatarUrl,
       });
     }
+    const comments = [...store.getState().stream.comments].reverse();
     this.root = this.view.render(
         topBlockContent,
         categoriesList,
         displayedDefaultLimit,
+        comments,
     );
     this.view.root.querySelector('a.sidebar__nav-item').addEventListener(
         'click',
@@ -119,6 +128,13 @@ export default class Sidebar extends BaseComponent {
       name: 'Регистрация',
     });
     this.view.setTopBlockContent(topBlockContent);
+  }
+
+  /**
+   * @param {Array<Comment>} comments
+   */
+  addComments(comments) {
+    this.view.addComments(comments);
   }
 }
 

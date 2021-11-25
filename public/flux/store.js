@@ -10,6 +10,7 @@ import apiReducer from './reducers/apiReducer.js';
 import editorReducer from './reducers/editorReducer.js';
 import readerReducer from './reducers/readerReducer.js';
 import routerReducer from './reducers/routerReducer.js';
+import streamReducer from './reducers/streamReducer.js';
 import searchPageReducer from './reducers/searchPageReducer.js';
 import combineReducers from './reducers/combineReducers.js';
 
@@ -30,6 +31,7 @@ const store = createStore(combineReducers({
   api: apiReducer,
   editor: editorReducer,
   reader: readerReducer,
+  stream: streamReducer,
 }), {}, thunk);
 
 export default store;

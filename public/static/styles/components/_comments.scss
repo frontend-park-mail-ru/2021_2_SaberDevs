@@ -70,6 +70,16 @@ $comment-description-margin-left: 20px;
     }
   }
 
+  &__edit-btn {
+    font-size: $font-size-small;
+    color: $color-elements;
+    cursor: pointer;
+
+    &:hover {
+      color: $color-secondary;
+    }
+  }
+
   &__answers {
     margin-left: 20px;
   }
