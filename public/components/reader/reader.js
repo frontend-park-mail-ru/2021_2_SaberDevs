@@ -11,7 +11,7 @@ import store from '../../flux/store.js';
 import {readerTypes, authorizationTypes} from '../../flux/types.js';
 import editorActions from '../../flux/actions/editorActions.js';
 
-import {getRusDateTime} from '../../common/utils.js';
+import {getRusDateTime, translateServerDateToMS} from '../../common/utils.js';
 
 const changeBtnClickListener = (e) => {
   e.preventDefault();
@@ -206,7 +206,8 @@ function commentAdd(parent) {
   if (input.value != '') {
     let responseStatus = 0;
     Ajax.post({url: '/comments/create', body: {
-      articleId: store.getState().reader.currentId,
+      // TODO: поправить чтобы апи возвращал строку
+      articleId: parseInt(store.getState().reader.currentId, 10),
       parentId: 0,
       text: input.value,
     }})

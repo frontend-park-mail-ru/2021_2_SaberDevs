@@ -721,7 +721,6 @@ components:
           type: boolean
         author:
           $ref: '#/components/schemas/UserProfile'
-          
     CommentCreate:
       type: object
       properties:
@@ -732,10 +731,6 @@ components:
         parentId:
           type: string
           description: 0, если нет родителя
-        login:
-          type: string
-          description: логин автора
-          
     CommentUpdate:
       type: object
       properties:
