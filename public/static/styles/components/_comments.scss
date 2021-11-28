@@ -28,7 +28,17 @@ $comment-description-margin-left: 20px;
   }
 }
 
+.inner-comment {
+  margin-left: 4rem;
+}
+
+.comment-answer-input {
+  margin-bottom: 2.5rem;
+}
+
 .comment {
+  margin-bottom: 1rem;
+
   &__content {
     display: flex;
   }

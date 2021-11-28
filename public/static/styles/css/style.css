@@ -1801,6 +1801,18 @@ body,
   font-size: 1.5rem;
 }
 
+.inner-comment {
+  margin-left: 4rem;
+}
+
+.comment-answer-input {
+  margin-bottom: 2.5rem;
+}
+
+.comment {
+  margin-bottom: 1rem;
+}
+
 .comment__content {
   display: -webkit-box;
   display: -ms-flexbox;

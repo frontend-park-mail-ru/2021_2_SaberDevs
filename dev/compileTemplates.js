@@ -52,6 +52,9 @@ if (currentDir !== correctLaunchDir) {
   );
 }
 
+// чтение параметра командной строки
+const debug = process.argv[2] || false;
+
 fs.readdir(devRoot + templatesDir, (err, files) => {
   if (err) {
     return console.log(err);
@@ -77,6 +80,7 @@ fs.readdir(devRoot + templatesDir, (err, files) => {
         {
           name: `x(){};\n\nexport default function 
             ${functionName + componentSuffix}`,
+          compileDebug: debug? true : false,
         },
     );
 

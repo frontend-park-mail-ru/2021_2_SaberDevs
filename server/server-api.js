@@ -9,7 +9,7 @@ const http = require('http'); // для работы с http
 
 const port = 8081; // не забудь про CORS
 // Поменять тут, в server/server.js, public/modules/ajax.js
-// Сервер апускается у Алексея
+// Сервер zапускается у Алексея
 // const ip = '192.168.0.104';
 
 // У Дмитрия Дорофеева
@@ -758,8 +758,7 @@ const server = http.createServer((req, res) => {
 
   if (req.method === 'OPTIONS') {
     // CORS
-    // Должна быть одна строка без пробелов и \n. Слова отделяются запятыми
-    res.setHeader(
+    res.setHeader('Access-Control-Allow-Headers',
         'Access-Control-Allow-Headers,' +
         'Origin,' +
         'Accept,' +

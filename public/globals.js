@@ -14,6 +14,7 @@ const routerDebug = true;
 const linkControllerDebug = true;
 const viewsDebug = true;
 const pageDebug = true;
+const wsDebug = true;
 
 // const ajaxDebug = false;
 // const modalsDebug = false;
@@ -22,3 +23,4 @@ const pageDebug = true;
 // const linkControllerDebug = false;
 // const viewsDebug = false;
 // const pageDebug = false;
+// const wsDebug = false;

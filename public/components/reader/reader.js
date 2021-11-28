@@ -1,8 +1,7 @@
 import BaseComponent from '../_basic/baseComponent.js';
 import ReaderView from './readerView.js';
 import commentComponent from './comment.pug.js';
-// TODO:
-// import articleAddCommentComponent from './articleAddComment.pug.js';
+import articleAddCommentComponent from './articleAddComment.pug.js';
 
 import ModalTemplates from '../../components/modal/modalTemplates.js';
 
@@ -14,12 +13,182 @@ import editorActions from '../../flux/actions/editorActions.js';
 
 import {getRusDateTime, translateServerDateToMS} from '../../common/utils.js';
 
-const changeBtnClickListener = (e) => {
-  e.preventDefault();
-  const state = store.getState().reader;
-  const article = state[state.currentId];
-  store.dispatch(editorActions.editArticle(article.id, article));
-};
+/**
+ * навесить обработчик на кнопку "изменить" комментарий
+ *  сделать кнопку видиой
+ * @param {HTMLElement} commentDiv
+ * @param {Comment} comment
+ */
+function createCommentChangeListener(commentDiv, comment) {
+  const changeBtn = commentDiv.querySelector('.comment__edit-btn');
+  changeBtn.style.display = 'block';
+  changeBtn.addEventListener('click', (e) => {
+    e.preventDefault();
+    // рисуем текстовое поле
+    appendTextField(
+        commentDiv,
+        'изменение комментария',
+        comment,
+        false,
+        (value) => {
+          let responseStatus = 0;
+          Ajax.post({url: '/comments/update', body: {
+            text: value,
+            // TODO: проверить совместимость типа с сервером
+            id: comment.id,  // number
+          }})
+              .then(({status, response}) => new Promise((resolve, reject) => {
+                if (status === Ajax.STATUS.ok) {
+                  resolve(response.data);
+                } else {
+                  responseStatus = status;
+                  reject(new Error(response.msg));
+                }
+              }))
+              .then((newComment) => {
+                commentDiv.innerHTML = commentComponent({
+                  ...newComment,
+                  author: store.getState().authorization,
+                  datetime: getRusDateTime(
+                      translateServerDateToMS(newComment.dateTime),
+                  ),
+                });
+                // TODO: сохранить в сторе
+              })
+              .catch((err) => {
+                if (responseStatus !== 0) {
+                  ModalTemplates
+                      .netOrServerError(responseStatus, err.message);
+                } else {
+                  console.warn(err.message);
+                }
+              });
+          // TODO: перейти на якорь добавленного коммента
+        });
+  });
+}
+
+/**
+ * навесить обработчик на кнопку "ответить" комментария
+ * @param {HTMLElement} root
+ * @param {number | string} articleId
+ * @param {Comment} comment
+ */
+function createCommentAnswerListener(root, articleId, comment) {
+  const answerBtn = root.querySelector('.comment__answer-btn');
+  answerBtn.addEventListener('click', (e) => {
+    e.preventDefault();
+    // рисуем чистое текстовое поле
+    appendTextField(root, 'ответ на комментарий', comment, true, (value) => {
+      let responseStatus = 0;
+      Ajax.post({url: '/comments/create', body: {
+        text: value,
+        // TODO: проверить совместимость типа с сервером
+        parrentId: comment.id,  // number
+        articleId,
+      }})
+          .then(({status, response}) => new Promise((resolve, reject) => {
+            if (status === Ajax.STATUS.ok) {
+              resolve(response.data);
+            } else {
+              responseStatus = status;
+              reject(new Error(response.msg));
+            }
+          }))
+          .then((answer) => {
+            const answerDiv = document.createElement('div');
+            answer.innerHTML = commentComponent({
+              ...answer,
+              author: store.getState().authorization,
+              datetime: getRusDateTime(
+                  translateServerDateToMS(answer.dateTime),
+              ),
+            });
+            // отступ только если ответ на другой комменатарий
+            answerDiv.className = 'comment inner-comment';
+            root.appendChild(answerDiv);
+            // TODO: сохранить в сторе
+          })
+          .catch((err) => {
+            if (responseStatus !== 0) {
+              ModalTemplates
+                  .netOrServerError(responseStatus, err.message);
+            } else {
+              console.warn(err.message);
+            }
+          });
+    });
+  });
+}
+
+/**
+ * Отрисовать текстовое поле с обработчиком
+ * @param {HTMLElement} root вниз будет вставлен инпут со стрелочкой
+ * @param {string} message
+ * @param {object} comment
+ * @param {boolean} isFieldClear
+ * @param {function} onClick
+ */
+function appendTextField(root, message, comment, isFieldClear, onClick) {
+  const answerFieldWrapper = document.createElement('div');
+  answerFieldWrapper.innerHTML = articleAddCommentComponent({message});
+  const answerField = answerFieldWrapper.firstChild;
+  answerField.classList.add('comment-answer-input');
+  const input = answerField.querySelector('input');
+  if (!isFieldClear) {
+    input.value = comment.text;
+  }
+
+  const submitAction = () => {
+    const value = input.value.trim();
+    // Если изменений нет или строка пустая
+    if (value === comment.text || value === '') {
+      return;
+    }
+    onClick(value);
+    // мог быть уже убран если сработал focusout
+    // focusout отключен, если нажимается кнопка
+    try {
+      root.removeChild(answerField);
+    } catch {
+      // пофиг если често
+    }
+  };
+
+  const sendBtn = answerField.querySelector('.article-view__send-comment-btn');
+
+  sendBtn.addEventListener('click', (e) => {
+    e.preventDefault();
+    submitAction();
+  });
+  root.appendChild(answerField);
+
+  // даем фокус. при сбросе фокуса, удаляем поле. Но
+  // поле не удаляется раньше,
+  const focusOutListener = (e) => {
+    root.removeChild(answerField);
+  };
+
+  input.addEventListener('focusout', focusOutListener);
+
+  sendBtn.addEventListener(
+      'mouseover',
+      (e) => input.removeEventListener('focusout', focusOutListener),
+  );
+  sendBtn.addEventListener(
+      'mouseout',
+      (e) => input.addEventListener('focusout', focusOutListener),
+  );
+
+  // сабмит нажатием enter
+  input.addEventListener('keydown', ({keyCode, target}) => {
+    if (keyCode === 13) {
+      submitAction();
+    }
+  });
+
+  input.focus();
+}
 
 /**
  * Компонент для чтения статей
@@ -52,6 +221,7 @@ export default class Reader extends BaseComponent {
         }),
 
         // даем возможность редактирования если статья принадлежит пользователю
+        // и комментов
         store.subscribe(authorizationTypes.LOGIN, () => {
           const articleChangeBtn =
             this.root.querySelector('#article-change-btn');
@@ -65,8 +235,12 @@ export default class Reader extends BaseComponent {
           if (author === store.getState().authorization.login) {
             articleChangeBtn.style.display = 'block';
             articleChangeBtn.href = '/editor';
-            articleChangeBtn.addEventListener('click', changeBtnClickListener);
+            articleChangeBtn.addEventListener('click', editArticleAction);
           }
+
+          // ререндерим комментари чтобы получить обработчики кнопок изменить
+          const state = store.getState().reader;
+          this.setComments(state[state.currentId].commentsContent);
         }),
 
         // забираем возможность изменения статьи, если пропадает авторизация
@@ -79,7 +253,7 @@ export default class Reader extends BaseComponent {
           }
           articleChangeBtn.style.display = 'none';
           articleChangeBtn.href = undefined;
-          articleChangeBtn.removeEventListener('click', changeBtnClickListener);
+          articleChangeBtn.removeEventListener('click', editArticleAction);
         }),
     );
   }
@@ -120,8 +294,6 @@ export default class Reader extends BaseComponent {
       this.root.appendChild(node.cloneNode(true));
     });
 
-    addEventListenersToReader(this.root);
-
     this.root.querySelector('#article-change-btn').href =
       '/user/' + article.author.login;
     this.root.querySelectorAll('.article-view__tag').forEach((tag) => {
@@ -132,7 +304,7 @@ export default class Reader extends BaseComponent {
       const articleChangeBtn = this.root.querySelector('#article-change-btn');
       articleChangeBtn.style.display = 'block';
       articleChangeBtn.href = '/editor';
-      articleChangeBtn.addEventListener('click', changeBtnClickListener);
+      // articleChangeBtn.addEventListener('click', editArticleAction);
     }
   }
 
@@ -151,77 +323,31 @@ export default class Reader extends BaseComponent {
    */
   setComments(comments) {
     const commentsDiv = this.root.querySelector('#comments');
+    commentsDiv.innerHTML = '';
+
     comments.forEach((comment) => {
       const commentWrapper = document.createElement('div');
       commentWrapper.innerHTML = commentComponent(comment);
       const commentDiv = commentWrapper.firstChild;
-      commentsDiv.appendChild(commentDiv);
+
+      // активируем кнопку "ответить"
+      createCommentAnswerListener(
+          commentDiv,
+          store.getState().reader.currentId,
+          comment,
+      );
 
       // активируем кнопку изменения у комментариев, принадлежащих
       // текущему юзеру});
       if (store.getState().authorization.login === comment.author.login) {
-        const changeBtn = commentDiv.querySelector('.comment__edit-btn');
-        changeBtn.style.display = 'block';
-        changeBtn.addEventListener('click', (e) => {
-          e.preventDefault();
-          // рисуем текстовое поле
-          const textarea = document.createElement('textarea');
-          // TODO: class
-          textarea.value = comment.text;
-          const changeConfirmBtn = document.createElement('button');
-          changeConfirmBtn.textContent = 'Сохранить';
-
-          changeConfirmBtn.addEventListener('click', (e) => {
-            if (textarea.value.trim() === comment.text ||
-                textarea.value.trim() === '') {
-              return;
-            }
-            const body = {
-              text: textarea.value.trim(),
-              // TODO: проверить совместимость типа с сервером
-              id: comment.id,  // number
-            };
-
-            let responseStatus = 0;
-            Ajax.post({url: '/comments/update', body})
-                .then(({status, response}) => new Promise((resolve, reject) => {
-                  if (status === Ajax.STATUS.ok) {
-                    resolve(response.data);
-                  } else {
-                    responseStatus = status;
-                    reject(new Error(response.msg));
-                  }
-                }))
-                .then((newComment) => {
-                  commentDiv.innerHTML = commentComponent({
-                    ...newComment,
-                    author: store.getState().authorization,
-                    datetime: getRusDateTime(
-                        translateServerDateToMS(newComment.dateTime),
-                    ),
-                  });
-                  commentDiv.removeChild(textarea);
-                  commentDiv.removeChild(changeConfirmBtn);
-                })
-                .catch((err) => {
-                  if (responseStatus !== 0) {
-                    ModalTemplates
-                        .netOrServerError(responseStatus, err.message);
-                  } else {
-                    console.warn(err.message);
-                  }
-                });
-          });
-
-          commentDiv.appendChild(textarea);
-          commentDiv.appendChild(changeConfirmBtn);
-        });
+        createCommentChangeListener(commentDiv, comment);
       }
+
+      commentsDiv.appendChild(commentDiv);
     });
   }
 }
 
-// TODO: вынести сетевые обработчики на страницу
 /**
  * Добавление обработчиков
  * @param {HTMLDivElement} root
@@ -233,7 +359,7 @@ function addEventListenersToReader(root) {
   commentBtn.addEventListener('click', (e) => {
     e.preventDefault();
     const comments = root.querySelector('#comments');
-    commentAdd(comments);
+    addCommentAction(comments);
   });
 
   // обработчик: показать комментарии
@@ -241,7 +367,7 @@ function addEventListenersToReader(root) {
       .querySelector('.comments-show');
   btnShow.addEventListener('click', (e) => {
     e.preventDefault();
-    commentsShow();
+    commentsShowAction();
   });
 
   // обработчик: ответить на комментарий
@@ -252,11 +378,18 @@ function addEventListenersToReader(root) {
   }
 }
 
+const editArticleAction = (e) => {
+  e.preventDefault();
+  const state = store.getState().reader;
+  const article = state[state.currentId];
+  store.dispatch(editorActions.editArticle(article.id, article));
+};
+
 /**
  * Добавление комментария
- * @param {Element} parent
+ * @param {Element} root
  */
-function commentAdd(parent) {
+function addCommentAction(root) {
   if (!store.getState().authorization.isAuthenticated) {
     ModalTemplates.warn(
         'Сначала авторизируйтесь',
@@ -265,13 +398,13 @@ function commentAdd(parent) {
     return;
   }
 
-  const input = document.querySelector('.article-view__comment-input');
+  const input = root.querySelector('.article-view__comment-input');
   if (input.value.trim() != '') {
     let responseStatus = 0;
     Ajax.post({url: '/comments/create', body: {
       // TODO: поправить чтобы апи возвращал строку
       articleId: parseInt(store.getState().reader.currentId, 10),
-      parentId: 0,
+      rootId: 0,
       text: input.value.trim(),
     }})
         .then(({status, response}) => new Promise((resolve, reject) => {
@@ -294,8 +427,8 @@ function commentAdd(parent) {
           commentDiv.className = 'comments__comment';
           commentDiv.classList.add('comment');
           commentDiv.innerHTML = comment;
-          answerOnComment(commentDiv);
-          parent.appendChild(commentDiv);
+          // TODO: навеситть обработчик на кнопку ответить
+          root.appendChild(commentDiv);
         })
         .catch((err) => {
           if (responseStatus !== 0) {
@@ -310,7 +443,7 @@ function commentAdd(parent) {
 /**
  * Показать комментарии
  */
-function commentsShow() {
+function commentsShowAction() {
   let hide = true;
   const comments = document.querySelector('.comments');
   const showBtnText = document.querySelector('.comments-show__text');
@@ -331,33 +464,4 @@ function commentsShow() {
   } else {
     comments.classList.remove('hide');
   }
-}
-
-
-// TODO:
-/**
- * Ответить на комментарий
- * @param {string} comment
- */
-function answerOnComment(comment) {
-  // const answerBtn = comment.querySelector('.comment__answer-btn');
-  // answerBtn.addEventListener('click', (e) => {
-  //   e.preventDefault();
-  //   const answerFieldExist = comment
-  //       .querySelector('.article-view__add-comment');
-
-  //   if (!answerFieldExist) {
-  //     const answerField = document.createElement('div');
-  //     answerField.innerHTML = articleAddCommentComponent({});
-  //     const answerBtn = answerField
-  //         .querySelector('.article-view__send-comment-btn');
-  //     answerBtn.addEventListener('click', (e) => {
-  //       e.preventDefault();
-  //       const answers = document.querySelector('.comment__answers');
-  //       commentAdd(answers);
-  //     });
-
-  //     comment.appendChild(answerField);
-  //   }
-  // });
 }
