@@ -1,6 +1,6 @@
 import BaseComponentView from '../_basic/baseComponentView.js';
 import categoryChoiceBarComponent from './categoryChoiceBar.pug.js';
-import {genRanHexColor} from '../../../common/utils.js';
+import {genRanHexColor} from '../../common/utils.js';
 
 /**
  * @class CatergoryChooseBarView

@@ -6,6 +6,7 @@ import {redirect} from '../../common/utils.js';
 import store from '../../flux/store.js';
 import {profilePageActions} from '../../flux/actions.js';
 import readerActions from '../../flux/actions/readerActions.js';
+import {ajaxDebug} from '../../globals.js';
 
 /**
  * @typedef {Object} Card

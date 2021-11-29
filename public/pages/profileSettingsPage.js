@@ -13,6 +13,7 @@ import {authorizationTypes} from '../flux/types.js';
 import Ajax from '../modules/ajax.js';
 import {redirect} from '../common/utils.js';
 import regexp from '../common/regexp.js';
+import {ajaxDebug} from '../globals.js';
 
 // ///////////////////////////////// //
 //

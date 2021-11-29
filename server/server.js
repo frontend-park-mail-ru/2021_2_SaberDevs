@@ -13,9 +13,9 @@ const port = 8080;
 
 // Поменять тут, в public/modules/ajax.js, server/server-api.js (не забыть CORS)
 // тачка Дмитрия Дорофеева
-const ip = '192.168.0.31';
+// const ip = '192.168.0.31';
 // локальная разработка
-// const ip = 'localhost';
+const ip = 'localhost';
 
 const page404 = fs.readFileSync('./public/404.html');
 const CORS = '*';
@@ -85,7 +85,7 @@ const server = http.createServer((req, res) => {
   }
 
   // обработка апи. Если урл есть в массиве APIUrls, то это апи
-  fs.readFile(`./public/${path}`, (err, data) => {
+  fs.readFile(`./dist/${path}`, (err, data) => {
     if (err) {
       // вот тут отдать страничку 404
       data = page404;

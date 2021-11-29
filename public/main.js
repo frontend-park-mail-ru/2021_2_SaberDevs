@@ -1,5 +1,7 @@
 'use strict';
 
+import {disableSW} from './globals.js';
+
 // pages
 import MainPage from './pages/mainPage.js';
 import ProfilePage from './pages/profilePage.js';

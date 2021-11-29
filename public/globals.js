@@ -14,6 +14,9 @@ const routerDebug = true;
 const linkControllerDebug = true;
 const viewsDebug = true;
 const pageDebug = true;
+const wsDebug = true;
+
+export {disableSW, ajaxDebug, modalsDebug, fluxDebug, routerDebug, linkControllerDebug, viewsDebug, pageDebug, wsDebug};
 
 // const ajaxDebug = false;
 // const modalsDebug = false;
@@ -22,3 +25,4 @@ const pageDebug = true;
 // const linkControllerDebug = false;
 // const viewsDebug = false;
 // const pageDebug = false;
+// const wsDebug = false;

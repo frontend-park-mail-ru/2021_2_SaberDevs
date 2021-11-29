@@ -3,6 +3,7 @@ import Ajax from './ajax.js';
 import store from '../flux/store.js';
 import {authorizationActions} from '../flux/actions.js';
 import {apiActions} from '../flux/actions.js';
+import {ajaxDebug} from '../globals.js';
 
 const RETRY_DELAY = 30000;
 /**

@@ -77,6 +77,7 @@ fs.readdir(devRoot + templatesDir, (err, files) => {
         {
           name: `x(){};\n\nexport default function 
             ${functionName + componentSuffix}`,
+          compileDebug: false,
         },
     );
 

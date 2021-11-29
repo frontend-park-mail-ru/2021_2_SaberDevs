@@ -1,5 +1,6 @@
 import store from '../flux/store.js';
 import {routerTypes} from '../flux/types.js';
+import {routerDebug} from '../globals.js';
 
 /**
  * @class Router
