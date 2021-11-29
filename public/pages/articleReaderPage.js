@@ -95,7 +95,7 @@ export default class ReaderPage extends BasePageMV {
             // });
           });
           store.dispatch(
-              readerActions.saveArticleComments(idUrlParam, comments),
+              readerActions.saveArticleComments(idUrlParam, baseComments),
           );
         })
         // не удалось загрузить статью или произошла другая ошибка

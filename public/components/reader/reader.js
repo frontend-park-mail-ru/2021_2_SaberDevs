@@ -75,17 +75,18 @@ function createCommentChangeListener(commentDiv, comment) {
  * @param {Comment} comment
  */
 function createCommentAnswerListener(root, articleId, comment) {
-  const answerBtn = root.querySelector('.comment__answer-btn');
-  answerBtn.addEventListener('click', (e) => {
+  // вешаем на кнопку "ответить" для самого комментария, и на всех его детей
+  const answerBtns = root.querySelectorAll('.comment__answer-btn');
+  answerBtns.forEach((el) => el.addEventListener('click', (e) => {
     e.preventDefault();
     // рисуем чистое текстовое поле
-    appendTextField(root, 'ответ на комментарий', comment, true, (value) => {
+    appendTextField(el, 'ответ на комментарий', comment, true, (value) => {
       let responseStatus = 0;
       Ajax.post({url: '/comments/create', body: {
         text: value,
         // TODO: проверить совместимость типа с сервером
         parrentId: comment.id,  // number
-        articleId,
+        articleId: parseInt(articleId, 10),
       }})
           .then(({status, response}) => new Promise((resolve, reject) => {
             if (status === Ajax.STATUS.ok) {
@@ -105,8 +106,10 @@ function createCommentAnswerListener(root, articleId, comment) {
               ),
             });
             // отступ только если ответ на другой комменатарий
-            answerDiv.className = 'comment inner-comment';
-            root.appendChild(answerDiv);
+            // answerDiv.className = 'comment inner-comment';
+            // аппендим с отступом относительно исходного комментария
+            // чтобы все выравнивалось в одну колонку
+            root.querySelector('.comment__answers').appendChild(answerDiv);
             // TODO: сохранить в сторе
           })
           .catch((err) => {
@@ -118,7 +121,7 @@ function createCommentAnswerListener(root, articleId, comment) {
             }
           });
     });
-  });
+  }));
 }
 
 /**
@@ -327,7 +330,19 @@ export default class Reader extends BaseComponent {
 
     comments.forEach((comment) => {
       const commentWrapper = document.createElement('div');
-      commentWrapper.innerHTML = commentComponent(comment);
+      const answers = '';
+
+      comment.answers.forEach((element) => {
+        if ('answers' in element) {
+          delete element.answers;
+        }
+        answers += commentComponent(element);
+      });
+
+      commentWrapper.innerHTML = commentComponent({
+        ...comment,
+        answers,
+      });
       const commentDiv = commentWrapper.firstChild;
 
       // активируем кнопку "ответить"
