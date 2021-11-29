@@ -186,11 +186,11 @@ body,
 }
 
 .hide {
-  -webkit-transition: 0.5s;
-  transition: 0.5s;
+  position: absolute;
   opacity: 0;
   visibility: hidden;
-  position: absolute;
+  -webkit-transition: 0.5s;
+  transition: 0.5s;
 }
 
 .plate {
@@ -2191,6 +2191,7 @@ body,
 }
 
 .article-view__content {
+  width: 90%;
   padding-bottom: 5%;
 }
 

@@ -443,7 +443,7 @@ function addCommentAction(root) {
     Ajax.post({url: '/comments/create', body: {
       // number
       articleId: parseInt(articleId, 10),
-      rootId: 0,
+      parrentId: 0,
       text: input.value.trim(),
     }})
         .then(({status, response}) => new Promise((resolve, reject) => {
