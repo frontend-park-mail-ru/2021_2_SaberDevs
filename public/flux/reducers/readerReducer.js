@@ -8,6 +8,7 @@ const InitialReaderState = {
   //   "previewUrl": "string",
   //   "title": "string",
   //   "text": "string",
+  //   category: "string",
   //   "author": {
   //     "login": "string",
   //     "firstName": "string",
@@ -21,7 +22,7 @@ const InitialReaderState = {
   //   "tags": [
   //     "string"
   //   ]
-  //   commentsContent: "nul" || [
+  //   commentsContent: [] || [
   //     {
   //       answers: [
   //         Comment,
@@ -67,15 +68,8 @@ export default function readerReducer(state = InitialReaderState, action) {
       return {
         ...state,
         [action.payload.id]: {
-          id: action.payload.id,
-          title: action.payload.title,
-          text: action.payload.text,
-          tags: action.payload.tags,
-          datetime: action.payload.datetime,
-          author: action.payload.author,
-          likes: action.payload.likes,
-          comments: action.payload.comments,
-          previewUrl: action.payload.previewUrl,
+          ...action.payload,
+          commentsContent: [],
         },
       };
 
@@ -92,6 +86,7 @@ export default function readerReducer(state = InitialReaderState, action) {
           title: 'Загрузка',
           tags: [],
           datetime: '',
+          category: '',
           author: {
             login: '',
             avatarUrl: '',
@@ -101,7 +96,7 @@ export default function readerReducer(state = InitialReaderState, action) {
           },
           likes: 0,
           comments: 0,
-          commentsContent: null,
+          commentsContent: [],
           previewUrl: '',
           ...action.payload,
           text: 'Загрузка...',
@@ -145,7 +140,7 @@ export default function readerReducer(state = InitialReaderState, action) {
           return {
             ...state,
             [state.currentId]: {
-              ...[state.currentId],
+              ...state[state.currentId],
               commentsContent: commentsDeepCopy,
             },
           };

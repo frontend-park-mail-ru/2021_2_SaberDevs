@@ -22,7 +22,12 @@ export function showModalNetOrServerError(status, msg) {
     Modal.setTitle(`Сервис временно не доступен: ${status}`);
   }
   if ((status / 100 + '')[0] === '4') {
-    Modal.setTitle(/* пользовательская */`Ошибка ${status}`);
+    if (status === 401) {
+      Modal.setTitle(/* пользовательская */`Внимание`);
+      msg = 'Для этого действия необходима авторизация';
+    } else {
+      Modal.setTitle(/* пользовательская */`Ошибка ${status}`);
+    }
   }
   Modal.setContent(msg);
   Modal.open(false);

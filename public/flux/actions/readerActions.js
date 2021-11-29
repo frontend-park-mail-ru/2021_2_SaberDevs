@@ -94,14 +94,14 @@ function editArticleComment(id, text) {
 }
 
 /**
- * @param {number} parrentId - id, присвоенный записи на сервере
+ * @param {number} parentId - id, присвоенный записи на сервере
  * @param {Comment} answer
  * @return {Action}
  */
-function addAnswer(parrentId, answer) {
+function addAnswer(parentId, answer) {
   return {
     type: readerTypes.ADD_COMMENT_ANSWER,
-    payload: {parrentId, answer},
+    payload: {parentId, answer},
   };
 }
 

@@ -19,10 +19,9 @@ export default function combineReducers(reducers) {
 
     for (const reducer in reducers) {
       const newState = reducers[reducer](state[reducer], action);
-      if (newState !== state[reducer]) {
+      if (JSON.stringify(newState) !== JSON.stringify(state[reducer])) {
         let printState = state[reducer];
         let printNewState = newState;
-        // Игнор логов поля cards в этих редьюсерах
         if (fluxDebug) {
           if (reducer === 'mainPage' ||
               reducer === 'profilePage' ||
@@ -55,10 +54,26 @@ export default function combineReducers(reducers) {
               }
             }
           }
-          console.log(`${reducer} | action: , ${action.type}
-          \t| prev state:\n${JSON.stringify(printState)}
-          \t| new state:\n${JSON.stringify(printNewState)}
-          `);
+          if (reducer === 'reader' && action.type !== '__INIT__') {
+            // изи создание глубокой копии
+            // внимание на '__INIT__' - там пустой объект. его нельзя запарсить
+            printState = JSON.parse(JSON.stringify(state[reducer]));
+            printNewState = JSON.parse(JSON.stringify(newState));
+            for (const articleID in printState) {
+              if (typeof printState[articleID] === 'object') {
+                printState[articleID].text = 'текст вырезан в combinereducers';
+              }
+            }
+            for (const articleID in printNewState) {
+              if (typeof printState[articleID] === 'object') {
+                printNewState[articleID].text='текст вырезан в combinereducers';
+              }
+            }
+          }
+          console.log(`${reducer} | action: ${action.type}`,
+              '\n\t| prev state:\n', {...printState},
+              '\n\t| new state:\n', {...printNewState},
+          );
         }
         state[reducer] = newState;
       }

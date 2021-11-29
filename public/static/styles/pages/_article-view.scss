@@ -1,11 +1,4 @@
 $article-top: 25px;
-$article-title-font-size: 48px;
-$article-text-font-size: 18px;
-$article-back-btn-font-size: 18px;
-$article-time-font-size: 18px;
-$article-tag-font-size: 24px;
-$article-author-font-size: 18px;
-$article-author-margin-right: 15px;
 $article-title-margin-bottom: 15px;
 $article-text-margin-bottom: 20px;
 $article-main-picture-margin: 15px 0;
@@ -31,7 +24,7 @@ $photo-size: 50px;
 
   &__back-btn {
     margin-left: 5px;
-    font-size: $article-back-btn-font-size;
+    font-size: $font-size-normal;
     cursor: pointer;
 
     &:hover {
@@ -44,7 +37,7 @@ $photo-size: 50px;
   &__title {
     margin-bottom: $article-title-margin-bottom;
     font-weight: $font-thick;
-    font-size: $article-title-font-size;
+    font-size: $font-size-large;
   }
 
   &__info {
@@ -60,7 +53,7 @@ $photo-size: 50px;
 
   &__text {
     margin-bottom: $article-text-margin-bottom;
-    font-size: $article-text-font-size;
+    font-size: $font-size-normal;
   }
 
   &__tags {
@@ -69,7 +62,7 @@ $photo-size: 50px;
 
   &__tag {
     margin-right: $article-tag-margin-right;
-    font-size: $article-tag-font-size;
+    font-size: $font-size-normal;
 
     &:hover {
       text-decoration: underline;
@@ -83,8 +76,7 @@ $photo-size: 50px;
   }
 
   &__author {
-    margin-right: $article-author-margin-right;
-    font-size: $article-author-font-size;
+    font-size: $font-size-normal;
 
     &:hover {
       text-decoration: underline;
@@ -94,7 +86,16 @@ $photo-size: 50px;
   }
 
   &__time {
-    font-size: $article-time-font-size;
+    margin: 0 19px;
+    font-size: $font-size-normal;
+  }
+
+  &__category {
+    margin: 0 10px;
+
+    // font-weight: 200;
+
+    font-size: $font-size-normal;
   }
 
   &__add-comment {
@@ -117,7 +118,7 @@ $photo-size: 50px;
     border-radius: $border-radius;
     padding: 15px;
     width: 100%;
-    font-size: $comments-input-font-size;
+    font-size: $font-size-normal;
     background-color: $color-elements;
 
     &:hover {

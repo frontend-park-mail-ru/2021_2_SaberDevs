@@ -14,10 +14,9 @@ import editorActions from '../../flux/actions/editorActions.js';
 
 import {translateServerComment} from '../../common/transformApi.js';
 
-// TODO: убрать для прода
 // true - поля ответа и изменения не убираются,
 // игнорируется авторизация для комментариев
-const layoutDebug = true;
+const layoutDebug = false;
 
 /**
  * навесить обработчик на кнопку "изменить" комментарий
@@ -92,7 +91,7 @@ function createCommentAnswerListener(root, articleId, comment) {
       Ajax.post({url: '/comments/create', body: {
         text: value,
         // TODO: проверить совместимость типа с сервером
-        parrentId: comment.id,  // number
+        parentId: comment.id,  // number
         articleId: parseInt(articleId, 10),
       }})
           .then(({status, response}) => new Promise((resolve, reject) => {
@@ -105,17 +104,14 @@ function createCommentAnswerListener(root, articleId, comment) {
           }))
           .then((answer) => {
             const answerDiv = document.createElement('div');
-            answer = translateServerComment(
-                answer,
-                store.getState().authorization,
-            );
-            answer.innerHTML = commentComponent(answer);
-            // отступ только если ответ на другой комменатарий
-            // answerDiv.className = 'comment inner-comment';
-            // аппендим с отступом относительно исходного комментария
-            // чтобы все выравнивалось в одну колонку
+            answer = translateServerComment(answer);
+            answerDiv.innerHTML = commentComponent(answer);
+
+            // вешаем обработчики на только что созданный комментарий (ответ)
+            createCommentChangeListener(answerDiv, answer);
+            createCommentAnswerListener(answerDiv, articleId, answer);
+
             root.querySelector('.comment__answers').appendChild(answerDiv);
-            // TODO: сохранить в сторе
             store.dispatch(
                 readerActions.addAnswer(comment.id, answer),
             );
@@ -282,10 +278,6 @@ export default class Reader extends BaseComponent {
 
     const state = store.getState().reader;
     this.root = this.view.render(state[state.currentId]);
-    this.root.querySelectorAll('.article-view__tag').forEach((tag) => {
-      tag.href = '/categories';
-    });
-
     addEventListenersToReader(this.root);
 
     // пока контент статьи не прогрузился, изменять статью не даем
@@ -308,17 +300,14 @@ export default class Reader extends BaseComponent {
     this.view.render(article).childNodes.forEach((node) => {
       this.root.appendChild(node.cloneNode(true));
     });
+    addEventListenersToReader(this.root);
 
-    this.root.querySelector('#article-change-btn').href =
-      '/user/' + article.author.login;
-    this.root.querySelectorAll('.article-view__tag').forEach((tag) => {
-      tag.href = '/categories';
-    });
     const authLogin = store.getState().authorization.login;
     if (article.author.login === authLogin) {
       const articleChangeBtn = this.root.querySelector('#article-change-btn');
       articleChangeBtn.style.display = 'block';
       articleChangeBtn.href = '/editor';
+      // TODO: проверить
       // articleChangeBtn.addEventListener('click', editArticleAction);
     }
   }
@@ -342,7 +331,7 @@ export default class Reader extends BaseComponent {
 
     comments.forEach((comment) => {
       const commentWrapper = document.createElement('div');
-      const answers = '';
+      let answers = '';
 
       // подготовка ответов на комментарий
       comment.answers.forEach((element) => {
@@ -392,6 +381,20 @@ export default class Reader extends BaseComponent {
  * @param {HTMLDivElement} root
  */
 function addEventListenersToReader(root) {
+  // переход на тег
+  // TODO: красивые теги / сейчас ссылка в шаблоне
+  // root.querySelectorAll('.article-view__tag').forEach((tag) => {
+  //   // TODO: search parameters from url
+  //   tag.href = '/categories';
+  // });
+
+  // переход на категорию
+  // TODO: красивые категории / сейчас ссылка в шаблоне
+  // root.querySelectorAll('.article-view__tag').forEach((tag) => {
+  //   // TODO: search parameters from url
+  //   tag.href = '/categories';
+  // });
+
   // обработчик: добавление комментария
   const commentBtn = root
       .querySelector('.article-view__send-comment-btn');
@@ -406,7 +409,7 @@ function addEventListenersToReader(root) {
       .querySelector('.comments-show');
   btnShow.addEventListener('click', (e) => {
     e.preventDefault();
-    commentsShowAction();
+    commentsShowAction(root);
   });
 
   // обработчик: ответить на комментарий
@@ -481,12 +484,13 @@ function addCommentAction(root) {
 
 /**
  * Показать комментарии
+ * @param {Element} root
  */
-function commentsShowAction() {
+function commentsShowAction(root) {
   let hide = true;
-  const comments = document.querySelector('.comments');
-  const showBtnText = document.querySelector('.comments-show__text');
-  const arrow = document.querySelector('.comments-show__btn');
+  const comments = root.querySelector('.comments');
+  const showBtnText = root.querySelector('.comments-show__text');
+  const arrow = root.querySelector('.comments-show__btn');
 
   if (arrow.classList.contains('rotate-180')) {
     showBtnText.innerText = 'Показать комментарии';

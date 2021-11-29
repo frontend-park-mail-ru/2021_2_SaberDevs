@@ -43,7 +43,6 @@ function addClickListenersOnCards(where, cards) {
     cardDiv.addEventListener('click', (e) => {
       e.preventDefault();
       const currentTarget = e.currentTarget;
-      console.warn(currentTarget.id);
       store.dispatch(readerActions.setArticleLoading(card));
       redirect('/article/' + currentTarget.id.replace('card', ''));
     });
@@ -64,6 +63,8 @@ function addClickListenersOnCards(where, cards) {
           e.preventDefault();
           e.stopPropagation();
           console.warn('TODO: клик по тегу', e.currentTarget.textContent);
+          // TODO: редирект на страницу с тегами
+          // TODO: то же с категориями
         },
     ));
   });

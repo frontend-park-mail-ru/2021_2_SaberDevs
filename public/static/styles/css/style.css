@@ -2201,7 +2201,7 @@ body,
 
 .article-view__back-btn {
   margin-left: 5px;
-  font-size: 18px;
+  font-size: 1.5rem;
   cursor: pointer;
 }
 
@@ -2214,7 +2214,7 @@ body,
 .article-view__title {
   margin-bottom: 15px;
   font-weight: 400;
-  font-size: 48px;
+  font-size: 2.5rem;
 }
 
 .article-view__info {
@@ -2242,7 +2242,7 @@ body,
 
 .article-view__text {
   margin-bottom: 20px;
-  font-size: 18px;
+  font-size: 1.5rem;
 }
 
 .article-view__tags {
@@ -2253,7 +2253,7 @@ body,
 
 .article-view__tag {
   margin-right: 15px;
-  font-size: 24px;
+  font-size: 1.5rem;
 }
 
 .article-view__tag:hover {
@@ -2269,8 +2269,7 @@ body,
 }
 
 .article-view__author {
-  margin-right: 15px;
-  font-size: 18px;
+  font-size: 1.5rem;
 }
 
 .article-view__author:hover {
@@ -2280,7 +2279,13 @@ body,
 }
 
 .article-view__time {
-  font-size: 18px;
+  margin: 0 19px;
+  font-size: 1.5rem;
+}
+
+.article-view__category {
+  margin: 0 10px;
+  font-size: 1.5rem;
 }
 
 .article-view__add-comment {
@@ -2314,7 +2319,7 @@ body,
   border-radius: 5px;
   padding: 15px;
   width: 100%;
-  font-size: 24px;
+  font-size: 1.5rem;
   background-color: #dee4ea;
 }
 

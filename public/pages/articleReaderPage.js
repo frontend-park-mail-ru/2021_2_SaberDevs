@@ -68,7 +68,8 @@ export default class ReaderPage extends BasePageMV {
         .then((comments) => {
           // TODO: приходят не строки. Хорошо бы, чтоы Леша пофиксил
           // здесь можно преобразовать типы при необходимости.
-          comments.forEach((element) => translateServerComment(element));
+          comments = comments
+              .map((element) => translateServerComment(element));
           const baseComments = comments.filter((el) => el.parentId === 0);
           baseComments.forEach((baseComment) => {
             baseComment.answers = comments
