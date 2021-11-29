@@ -17,7 +17,7 @@ const port = 8080;
 // локальная разработка
 const ip = 'localhost';
 
-const page404 = fs.readFileSync('./public/404.html');
+const page404 = fs.readFileSync('./dist/404.html');
 const CORS = '*';
 
 const appPages = [
