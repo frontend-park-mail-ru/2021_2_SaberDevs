@@ -109,6 +109,17 @@ export default function readerReducer(state = InitialReaderState, action) {
         currentId: action.payload,
       };
 
+    case readerTypes.ADD_NEW_COMMENT:
+      const addCommentsCopy = [...state[state.currentId].commentsContent];
+      addCommentsCopy.push(action.payload);
+      return {
+        ...state,
+        [state.currentId]: {
+          ...state[state.currentId],
+          commentsContent: addCommentsCopy,
+        },
+      };
+
     case readerTypes.SAVE_ARTICLE_COMMENTS:
       if (action.payload.id in state) {
         return {

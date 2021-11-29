@@ -1,4 +1,3 @@
-$comments-margin-bottom: 100px;
 $comments-input-font-size: 24px;
 $comments-input-padding: 5px 10px;
 $comment-margin-top: 25px;
@@ -8,7 +7,7 @@ $comment-author-name-font-size: 24px;
 $comment-description-margin-left: 20px;
 
 .comments {
-  margin-bottom: $comments-margin-bottom;
+  transition: 0.5s;
 
   &__comment {
     margin-top: $comment-margin-top;

@@ -103,7 +103,10 @@ body,
 }
 
 .hide {
-  display: none;
+  position: absolute;
+  opacity: 0;
+  visibility: hidden;
+  transition: 0.5s;
 }
 
 .plate {

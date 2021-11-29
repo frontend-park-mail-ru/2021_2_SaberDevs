@@ -39,7 +39,6 @@ function createCommentChangeListener(commentDiv, comment) {
           let responseStatus = 0;
           Ajax.post({url: '/comments/update', body: {
             text: value,
-            // TODO: проверить совместимость типа с сервером
             id: comment.id,  // number
           }})
               .then(({status, response}) => new Promise((resolve, reject) => {
@@ -56,7 +55,6 @@ function createCommentChangeListener(commentDiv, comment) {
                     store.getState().authorization,
                 );
                 commentDiv.innerHTML = commentComponent(newComment);
-                // TODO: сохранить в сторе
                 store.dispatch(readerActions
                     .editArticleComment(comment.id, newComment.text),
                 );
@@ -90,7 +88,6 @@ function createCommentAnswerListener(root, articleId, comment) {
       let responseStatus = 0;
       Ajax.post({url: '/comments/create', body: {
         text: value,
-        // TODO: проверить совместимость типа с сервером
         parentId: comment.id,  // number
         articleId: parseInt(articleId, 10),
       }})
@@ -400,8 +397,7 @@ function addEventListenersToReader(root) {
       .querySelector('.article-view__send-comment-btn');
   commentBtn.addEventListener('click', (e) => {
     e.preventDefault();
-    const comments = root.querySelector('#comments');
-    addCommentAction(comments);
+    addCommentAction(root);
   });
 
   // обработчик: показать комментарии
@@ -440,12 +436,13 @@ function addCommentAction(root) {
     return;
   }
 
-  const input = root.querySelector('.article-view__comment-input');
+  const input = root.querySelector('input.article-view__comment-input');
   if (input.value.trim() != '') {
     let responseStatus = 0;
+    const articleId = store.getState().reader.currentId;
     Ajax.post({url: '/comments/create', body: {
-      // TODO: поправить чтобы апи возвращал строку
-      articleId: parseInt(store.getState().reader.currentId, 10),
+      // number
+      articleId: parseInt(articleId, 10),
       rootId: 0,
       text: input.value.trim(),
     }})
@@ -458,18 +455,18 @@ function addCommentAction(root) {
           }
         }))
         .then((newComment) => {
-          const comment = commentComponent({
-            ...newComment,
-            author: store.getState().authorization,
-            datetime: getRusDateTime(
-                translateServerDateToMS(newComment.dateTime),
-            ),
-          });
+          newComment = translateServerComment(newComment);
+
           const commentDiv = document.createElement('div');
-          commentDiv.className = 'comments__comment';
-          commentDiv.classList.add('comment');
-          commentDiv.innerHTML = comment;
-          // TODO: навеситть обработчик на кнопку ответить
+          commentDiv.innerHTML = commentComponent(newComment);
+          // обработчики
+          createCommentAnswerListener(commentDiv, articleId, newComment);
+          createCommentChangeListener(commentDiv, newComment);
+
+          store.dispatch(
+              readerActions.addComment(newComment),
+          );
+
           root.appendChild(commentDiv);
         })
         .catch((err) => {

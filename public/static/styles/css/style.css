@@ -186,7 +186,11 @@ body,
 }
 
 .hide {
-  display: none;
+  -webkit-transition: 0.5s;
+  transition: 0.5s;
+  opacity: 0;
+  visibility: hidden;
+  position: absolute;
 }
 
 .plate {
@@ -1769,7 +1773,8 @@ body,
 }
 
 .comments {
-  margin-bottom: 100px;
+  -webkit-transition: 0.5s;
+  transition: 0.5s;
 }
 
 .comments__comment {
@@ -2186,7 +2191,7 @@ body,
 }
 
 .article-view__content {
-  width: 90%;
+  padding-bottom: 5%;
 }
 
 .article-view__top {

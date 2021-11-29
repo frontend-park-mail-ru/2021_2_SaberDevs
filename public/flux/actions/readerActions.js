@@ -105,6 +105,17 @@ function addAnswer(parentId, answer) {
   };
 }
 
+/**
+ * @param {Comment} comment
+ * @return {Action}
+ */
+function addComment(comment) {
+  return {
+    type: readerTypes.ADD_NEW_COMMENT,
+    payload: comment,
+  };
+}
+
 const readerActions = {
   saveArticle,
   openArticle,
@@ -112,6 +123,7 @@ const readerActions = {
   saveArticleComments,
   editArticleComment,
   addAnswer,
+  addComment,
 };
 
 export default readerActions;
