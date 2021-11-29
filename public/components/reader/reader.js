@@ -457,8 +457,8 @@ function addCommentAction(root) {
         .then((newComment) => {
           newComment = translateServerComment(newComment);
 
-          const commentDivWrapper = document.createElement('div');
-          commentDivWrapper.innerHTML = commentComponent(newComment);
+          const commentWrapper = document.createElement('div');
+          commentWrapper.innerHTML = commentComponent(newComment);
           const commentDiv = commentWrapper.firstChild;
           // обработчики
           createCommentAnswerListener(commentDiv, articleId, newComment);

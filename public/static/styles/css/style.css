@@ -1969,6 +1969,7 @@ body,
 
 .article-create__title {
   font-size: 2.5rem;
+  margin-bottom: 10px;
 }
 
 .article-create__form {
@@ -2191,8 +2192,8 @@ body,
 }
 
 .article-view__content {
-  width: 90%;
   padding-bottom: 5%;
+  width: 90%;
 }
 
 .article-view__top {

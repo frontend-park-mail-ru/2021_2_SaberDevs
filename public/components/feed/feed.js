@@ -145,7 +145,7 @@ export default class Feed extends BaseComponent {
           const endFound = store.getState()[storeName].isEndFound;
           if (endFound) {
             if (ajaxDebug) {
-              console.log(`{${storeName}FEED}
+              console.log(`{${storeName}FEED}\
               'end' found. isEndFound flag is true`);
             }
             this.view.hideLoadingAnimation();

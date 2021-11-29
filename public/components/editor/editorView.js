@@ -50,6 +50,7 @@ export default class EditorView extends BaseComponentView {
           getCurrentSelection, setSelection, clearSelection, SELECT_TYPE,
       ),
     };
+    this.root = null;
     this.tagBox = null;
     this.previewBox = null;
     this.textAreaInput = null;
@@ -89,6 +90,7 @@ export default class EditorView extends BaseComponentView {
     this.tagBox = this.previewBox.querySelector('.tags');
     this.textAreaInput = editor.firstChild.querySelector('textarea');
     this.titleInput = editor.firstChild.querySelector('input[name="title"]');
+    this.root = editor.firstChild;
 
     return editor.firstChild;
   }
@@ -188,7 +190,7 @@ export default class EditorView extends BaseComponentView {
    * @param {string} text
    */
   changePreviewCategory(text) {
-    if (this.previewBox === null ) {
+    if (this.previewBox === null || this.root === null) {
       console.warn(
           '{Editor} component hasn\'t been rendered yet',
       );
@@ -197,8 +199,12 @@ export default class EditorView extends BaseComponentView {
     if (text === '') {
       this.previewBox.querySelector('.card__category').textContent =
         'категория не выбрана';
+      this.root.querySelector('.article-create__label').innerHTML =
+        'Выберите категорию | <strong>категория не выбрана</strong>';
     } else {
       this.previewBox.querySelector('.card__category').textContent = text;
+      this.root.querySelector('.article-create__label').innerHTML =
+        `Выберите категорию | <strong>${text}</strong>`;
     }
   }
 

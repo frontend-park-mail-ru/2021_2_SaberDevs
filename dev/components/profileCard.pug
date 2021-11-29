@@ -5,5 +5,5 @@
       .profile__username #{firstName} #{lastName} (#{login})
       .profile__aboutme Обо мне:
       | #{description}
-      
-  .profile__articles-title Статьи
+  if (!disableArticles)   
+    .profile__articles-title Статьи

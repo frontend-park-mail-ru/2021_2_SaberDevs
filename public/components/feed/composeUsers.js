@@ -36,7 +36,10 @@ export default function composeUsers(root, cards) {
       appendApiImg(element);
       const cardWrapper = document.createElement('div');
 
-      cardWrapper.innerHTML = profileCardComponent(element);
+      cardWrapper.innerHTML = profileCardComponent({
+        ...element,
+        disableArticles: true,
+      });
       root.appendChild(cardWrapper.firstChild);
     });
   } else {

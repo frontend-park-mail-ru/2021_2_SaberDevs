@@ -55,7 +55,7 @@ export default class CategoryChoiceBar extends BaseComponent {
         if (target.innerHTML === choosenCategory) {
           store.dispatch(this.clearSelection());
         } else {
-          store.dispatch(this.setSelection(target.innerHTML));
+          store.dispatch(this.setSelection(target.textContent));
         }
       });
       if (category.textContent.trim() ===
@@ -71,7 +71,7 @@ export default class CategoryChoiceBar extends BaseComponent {
 
     this.root.querySelector('input.categories__search-input')
         .oninput = (e) => {
-          const value = e.target.value;
+          const value = e.target.value.trim().toLocaleLowerCase();
           if (value != '') {
             categoriesBox.childNodes.forEach((content) => {
               const elem = content.lastChild;

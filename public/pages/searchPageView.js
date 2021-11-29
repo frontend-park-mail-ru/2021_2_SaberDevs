@@ -33,7 +33,10 @@ export default class SearchPageView extends BasePageView {
           searchTypes.FORBID_CARDS_UPLOADING,
           searchTypes.ALLOW_CARDS_UPLOADING,
           searchActions.forbidCardsLoading,
-          searchActions.allowCardsLoading,
+          () => {
+            console.log('{SearchPage feed} isEndFound is not been reset');
+            return {type: '__EMPTY__'};
+          },
       ),
     };
   }
