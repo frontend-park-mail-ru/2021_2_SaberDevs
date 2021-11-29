@@ -219,10 +219,19 @@ export default class Editor extends BaseComponent {
       const state = store.getState().editor;
       const isUpdate = isUpdateFromState();
 
+      const category = state[state.currentId].category;
+      if (state[state.currentId].category === '') {
+        ModalTemplates.informativeMsg(
+            'Ошибка', 'Не забудьте указать одну из категорий, наиболее ' +
+            'точно описывающую Вашу статью',
+        );
+        return;
+      }
+
       const body = {
         title,
         text,
-        category: state[state.currentId].category,
+        category,
         // img: 'добавляем ниже',
         tags: state[state.currentId].tags,
       };
