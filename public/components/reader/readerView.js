@@ -27,6 +27,7 @@ export default class ReaderView extends BaseComponentView {
   render(article) {
     const reader = document.createElement('div');
     reader.innerHTML = articleReaderComponent(article);
+    // TODO: рисовать комментарии из стора
 
     return reader.firstChild;
   }

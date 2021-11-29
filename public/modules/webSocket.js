@@ -1,4 +1,4 @@
-import {appendApiImg} from '../common/utils.js';
+import {appendApiImg} from '../common/transformApi.js';
 
 import store from '../flux/store.js';
 import streamActions from '../flux/actions/streamActions.js';

@@ -1,5 +1,5 @@
 import {readerTypes} from '../types.js';
-import {appendApiImg} from '../../common/utils.js';
+import {appendApiImg} from '../../common/transformApi.js';
 
 // ////////////////
 //  ReaderActions
@@ -81,11 +81,37 @@ function saveArticleComments(id, comments) {
   };
 }
 
+/**
+ * @param {number} id - id, присвоенный записи на сервере
+ * @param {string} text
+ * @return {Action}
+ */
+function editArticleComment(id, text) {
+  return {
+    type: readerTypes.EDIT_ARTICLE_COMMENT,
+    payload: {id, text},
+  };
+}
+
+/**
+ * @param {number} parrentId - id, присвоенный записи на сервере
+ * @param {Comment} answer
+ * @return {Action}
+ */
+function addAnswer(parrentId, answer) {
+  return {
+    type: readerTypes.ADD_COMMENT_ANSWER,
+    payload: {parrentId, answer},
+  };
+}
+
 const readerActions = {
   saveArticle,
   openArticle,
   setArticleLoading,
   saveArticleComments,
+  editArticleComment,
+  addAnswer,
 };
 
 export default readerActions;

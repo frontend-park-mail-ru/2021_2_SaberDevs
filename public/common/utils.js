@@ -4,8 +4,6 @@
 //
 // ///////////////////////////////// //
 
-import Ajax from '../modules/ajax.js';
-
 /**
  * @param {number} time
  * @return {string}
@@ -21,18 +19,6 @@ export function getRusDateTime(time) {
   };
 
   return new Date(time).toLocaleString('ru', options);
-}
-
-/**
- * @param {string} datetime
- * @return {number}
- */
-export function translateServerDateToMS(datetime) {
-  // привожу 2021/11/23 13:13 к ISO 8601
-  // https://ru.wikipedia.org/wiki/ISO_8601
-  return Date.parse(
-      datetime.replaceAll('/', '-').replace(' ', 'T') + ':00',
-  );
 }
 
 /**
@@ -53,17 +39,6 @@ export function recoverBlobWithUrl(url) {
       .then(() => fetch(url))
       .then((res) => res.blob());
 }
-/**
- * @param {object} obj
- */
-export function appendApiImg(obj) {
-  if ('avatarUrl' in obj && !obj.avatarUrl.startsWith(Ajax.APIurl)) {
-    obj.avatarUrl = Ajax.APIurl + '/img/' + obj.avatarUrl;
-  }
-  if ('previewUrl' in obj && !obj.previewUrl.startsWith(Ajax.APIurl)) {
-    obj.previewUrl = Ajax.APIurl + '/img/' + obj.previewUrl;
-  }
-};
 
 /**
  * @param {string} file
@@ -258,9 +233,7 @@ const Utils = {
   genRanHexColor,
   getFileBrowserStorageUrl,
   recoverBlobWithUrl,
-  appendApiImg,
   getRusDateTime,
-  translateServerDateToMS,
 };
 
 export default Utils;

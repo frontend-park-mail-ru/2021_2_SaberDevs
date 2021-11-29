@@ -7,7 +7,7 @@ import {authorizationTypes,
   profilePageTypes,
 } from './types.js';
 
-import {appendApiImg} from '../common/utils.js';
+import {appendApiImg} from '../common/transformApi.js';
 
 // ////////////////
 // authorizationActions

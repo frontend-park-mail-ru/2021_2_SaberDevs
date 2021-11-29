@@ -126,6 +126,73 @@ export default function readerReducer(state = InitialReaderState, action) {
       } else {
         return state;
       }
+    case readerTypes.ADD_COMMENT_ANSWER:
+      const thisComments2 = state[state.currentId].commentsContent;
+      if (action.payload.parentId === 0) {
+        return {
+          ...state,
+          [state.currentId]: {
+            ...[state.currentId],
+            commentsContent: [...thisComments2, action.payload.comment],
+          },
+        };
+      } else {
+        const commentsIdx = thisComments2
+            .findIndex(({id}) => id === action.payload.parentId);
+        if (commentsIdx !== -1) {
+          const commentsDeepCopy = JSON.parse(JSON.stringify(thisComments2));
+          commentsDeepCopy[commentsIdx].answers.push(action.payload.answer);
+          return {
+            ...state,
+            [state.currentId]: {
+              ...[state.currentId],
+              commentsContent: commentsDeepCopy,
+            },
+          };
+        } else {
+          console.warn('коментарий с таким айди',
+              action.payload.parentId, 'не найден');
+        }
+      }
+      return state;
+
+    case readerTypes.EDIT_ARTICLE_COMMENT:
+      let answerIdx = -1;
+      const thisComments = state[state.currentId].commentsContent;
+      // поиск по комментам нулевого уровня
+      let commentsIdx = thisComments
+          .findIndex(({id}) => id === action.payload.id);
+      if (commentsIdx === -1) {
+        // поиск по комментам первого уровня
+        commentsIdx = thisComments.findIndex(({answers}, idx) => {
+          answerIdx = answers.findIndex(({id}) => id === action.payload.id);
+          if (answerIdx !== -1) {
+            commentsIdx = idx;
+          }
+        });
+      }
+      // поиск по комментариям 0 уровня или по ответам удался
+      if (commentsIdx !== -1) {
+        console.warn('коментарий с айди найден', {commentsIdx, answerIdx});
+        // глубокая копия комментариев к текущей статье
+        const commentsDeepCopy =
+            JSON.parse(JSON.stringify(state[state.currentId].commentsContent));
+        if (answerIdx !== -1) {
+          commentsDeepCopy[commentsIdx][answerIdx].text = action.payload.text;
+        } else {
+          commentsDeepCopy[commentsIdx].text = action.payload.text;
+        }
+        return {
+          ...state,
+          [state.currentId]: {
+            ...[state.currentId],
+            commentsContent: commentsDeepCopy,
+          },
+        };
+      } else {
+        console.warn('коментарий с таким айди', action.payload.id, 'не найден');
+        return state;
+      }
   }
   return state;
 }

@@ -189,6 +189,7 @@ const cacheUrls = [
   './common/categoriesList.js',
   './common/regexp.js',
   './common/regexpString.js',
+  './common/transformApi.js',
 ];
 
 // наименование для нашего хранилища кэша

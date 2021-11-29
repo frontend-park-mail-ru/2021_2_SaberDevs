@@ -9,9 +9,15 @@ import Ajax from '../../modules/ajax.js';
 
 import store from '../../flux/store.js';
 import {readerTypes, authorizationTypes} from '../../flux/types.js';
+import readerActions from '../../flux/actions/readerActions.js';
 import editorActions from '../../flux/actions/editorActions.js';
 
-import {getRusDateTime, translateServerDateToMS} from '../../common/utils.js';
+import {translateServerComment} from '../../common/transformApi.js';
+
+// TODO: убрать для прода
+// true - поля ответа и изменения не убираются,
+// игнорируется авторизация для комментариев
+const layoutDebug = true;
 
 /**
  * навесить обработчик на кнопку "изменить" комментарий
@@ -46,14 +52,15 @@ function createCommentChangeListener(commentDiv, comment) {
                 }
               }))
               .then((newComment) => {
-                commentDiv.innerHTML = commentComponent({
-                  ...newComment,
-                  author: store.getState().authorization,
-                  datetime: getRusDateTime(
-                      translateServerDateToMS(newComment.dateTime),
-                  ),
-                });
+                newComment = translateServerComment(
+                    newComment,
+                    store.getState().authorization,
+                );
+                commentDiv.innerHTML = commentComponent(newComment);
                 // TODO: сохранить в сторе
+                store.dispatch(readerActions
+                    .editArticleComment(comment.id, newComment.text),
+                );
               })
               .catch((err) => {
                 if (responseStatus !== 0) {
@@ -80,7 +87,7 @@ function createCommentAnswerListener(root, articleId, comment) {
   answerBtns.forEach((el) => el.addEventListener('click', (e) => {
     e.preventDefault();
     // рисуем чистое текстовое поле
-    appendTextField(el, 'ответ на комментарий', comment, true, (value) => {
+    appendTextField(root, 'ответ на комментарий', comment, true, (value) => {
       let responseStatus = 0;
       Ajax.post({url: '/comments/create', body: {
         text: value,
@@ -98,19 +105,20 @@ function createCommentAnswerListener(root, articleId, comment) {
           }))
           .then((answer) => {
             const answerDiv = document.createElement('div');
-            answer.innerHTML = commentComponent({
-              ...answer,
-              author: store.getState().authorization,
-              datetime: getRusDateTime(
-                  translateServerDateToMS(answer.dateTime),
-              ),
-            });
+            answer = translateServerComment(
+                answer,
+                store.getState().authorization,
+            );
+            answer.innerHTML = commentComponent(answer);
             // отступ только если ответ на другой комменатарий
             // answerDiv.className = 'comment inner-comment';
             // аппендим с отступом относительно исходного комментария
             // чтобы все выравнивалось в одну колонку
             root.querySelector('.comment__answers').appendChild(answerDiv);
             // TODO: сохранить в сторе
+            store.dispatch(
+                readerActions.addAnswer(comment.id, answer),
+            );
           })
           .catch((err) => {
             if (responseStatus !== 0) {
@@ -152,7 +160,9 @@ function appendTextField(root, message, comment, isFieldClear, onClick) {
     // мог быть уже убран если сработал focusout
     // focusout отключен, если нажимается кнопка
     try {
-      root.removeChild(answerField);
+      if (!layoutDebug) {
+        root.removeChild(answerField);
+      }
     } catch {
       // пофиг если често
     }
@@ -169,7 +179,9 @@ function appendTextField(root, message, comment, isFieldClear, onClick) {
   // даем фокус. при сбросе фокуса, удаляем поле. Но
   // поле не удаляется раньше,
   const focusOutListener = (e) => {
-    root.removeChild(answerField);
+    if (!layoutDebug) {
+      root.removeChild(answerField);
+    }
   };
 
   input.addEventListener('focusout', focusOutListener);
@@ -332,13 +344,16 @@ export default class Reader extends BaseComponent {
       const commentWrapper = document.createElement('div');
       const answers = '';
 
+      // подготовка ответов на комментарий
       comment.answers.forEach((element) => {
         if ('answers' in element) {
+          console.warn('Не должно быть вложенности более 1');
           delete element.answers;
         }
         answers += commentComponent(element);
       });
 
+      // отрисовка
       commentWrapper.innerHTML = commentComponent({
         ...comment,
         answers,
@@ -354,10 +369,19 @@ export default class Reader extends BaseComponent {
 
       // активируем кнопку изменения у комментариев, принадлежащих
       // текущему юзеру});
-      if (store.getState().authorization.login === comment.author.login) {
+      const authLogin = store.getState().authorization.login;
+      if (authLogin === comment.author.login || layoutDebug) {
         createCommentChangeListener(commentDiv, comment);
       }
-
+      // то же с ответами
+      commentDiv.querySelector('.comment__answers')
+          .querySelectorAll(layoutDebug ? '.comment' :
+              `div[data-author="${authLogin}"]`)
+          .forEach((element) => {
+            const elementComment =
+                comment.answers.filter((el) => (el.id + '') === element.id)[0];
+            createCommentChangeListener(element, elementComment);
+          });
       commentsDiv.appendChild(commentDiv);
     });
   }

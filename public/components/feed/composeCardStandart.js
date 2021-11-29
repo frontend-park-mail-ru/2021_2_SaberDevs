@@ -1,5 +1,7 @@
 import cardComponent from './card.pug.js';
-import {appendApiImg, genRanHexColor} from '../../common/utils.js';
+import {genRanHexColor} from '../../common/utils.js';
+import {appendApiImg} from '../../common/transformApi.js';
+
 /**
  * Описание сущности карточки в новостной ленте
  * @typedef {Object} Card

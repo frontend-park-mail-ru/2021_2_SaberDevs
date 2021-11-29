@@ -1,5 +1,5 @@
 import {categoryPageTypes} from '../types.js';
-import {appendApiImg} from '../../common/utils.js';
+import {appendApiImg} from '../../common/transformApi.js';
 
 // ////////////////
 //  CategoryPageActions

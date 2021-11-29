@@ -8,11 +8,7 @@ import {changePageActions} from '../flux/actions.js';
 import Ajax from '../modules/ajax.js';
 import {showModalNetOrServerError} from '../components/modal/modalTemplates.js';
 
-import {
-  appendApiImg,
-  getRusDateTime,
-  translateServerDateToMS,
-} from '../common/utils.js';
+import {translateServerComment} from '../common/transformApi.js';
 
 /**
  * @class ReaderPage
@@ -72,14 +68,7 @@ export default class ReaderPage extends BasePageMV {
         .then((comments) => {
           // TODO: приходят не строки. Хорошо бы, чтоы Леша пофиксил
           // здесь можно преобразовать типы при необходимости.
-          comments.forEach((element) => {
-            appendApiImg(element.author);
-            // привожу 2021/11/23 13:13 к ISO 8601
-            // https://ru.wikipedia.org/wiki/ISO_8601
-            element.datetimeMS = translateServerDateToMS(element.dateTime);
-            delete element.dateTime;
-            element.datetime = getRusDateTime(element.datetimeMS);
-          });
+          comments.forEach((element) => translateServerComment(element));
           const baseComments = comments.filter((el) => el.parentId === 0);
           baseComments.forEach((baseComment) => {
             baseComment.answers = comments

@@ -1,7 +1,7 @@
 import profileCardComponent from '../profileCard/profileCard.pug.js';
 import composeCards from './composeCardStandart.js';
 
-import {appendApiImg} from '../../common/utils.js';
+import {appendApiImg} from '../../common/transformApi.js';
 /**
  * Описание сущности карточки в новостной ленте
  * @typedef {Object} Card
