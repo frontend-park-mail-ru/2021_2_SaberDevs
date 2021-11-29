@@ -443,7 +443,7 @@ function addCommentAction(root) {
     Ajax.post({url: '/comments/create', body: {
       // number
       articleId: parseInt(articleId, 10),
-      parrentId: 0,
+      parentId: 0,
       text: input.value.trim(),
     }})
         .then(({status, response}) => new Promise((resolve, reject) => {
@@ -457,8 +457,9 @@ function addCommentAction(root) {
         .then((newComment) => {
           newComment = translateServerComment(newComment);
 
-          const commentDiv = document.createElement('div');
-          commentDiv.innerHTML = commentComponent(newComment);
+          const commentDivWrapper = document.createElement('div');
+          commentDivWrapper.innerHTML = commentComponent(newComment);
+          const commentDiv = commentWrapper.firstChild;
           // обработчики
           createCommentAnswerListener(commentDiv, articleId, newComment);
           createCommentChangeListener(commentDiv, newComment);
@@ -467,7 +468,7 @@ function addCommentAction(root) {
               readerActions.addComment(newComment),
           );
 
-          root.appendChild(commentDiv);
+          root.querySelector('.comments').appendChild(commentDiv);
         })
         .catch((err) => {
           if (responseStatus !== 0) {
