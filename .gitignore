@@ -8,4 +8,6 @@ public/components/feed/previews/*.pug.js
 public/components/_template/
 public/flux/reducers/template.js
 
+dist/
+
 static/style/css/style.css
