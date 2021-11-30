@@ -20,6 +20,8 @@ const configuration = {};
 //
 // ///////////////////////////////// //
 
+import {linkControllerDebug} from '../globals.js';
+
 /**
  * Общий глобальный обработчик. Действует только на ссылки.
  * Здесь можно задать любое поведение при клике на HTMLAnchorElement

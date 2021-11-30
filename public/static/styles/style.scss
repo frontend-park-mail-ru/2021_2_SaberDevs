@@ -1,5 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Lora:wght@400;500&display=swap");
-@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400&display=swap");
+@import "fonts/fonts";
 @import "variables";
 @import "layout";
 @import "normilize";
@@ -27,3 +26,4 @@
 @import "pages/profile";
 @import "pages/not-found";
 @import "pages/categories";
+@import "pages/loading-page";

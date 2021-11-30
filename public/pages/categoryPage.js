@@ -10,6 +10,7 @@ import Modal from '../components/modal/modal.js';
 
 import Ajax from '../modules/ajax.js';
 import {getUserWindowHeight} from '../common/utils.js';
+import {ajaxDebug} from '../globals.js';
 
 // ///////////////////////////////// //
 //

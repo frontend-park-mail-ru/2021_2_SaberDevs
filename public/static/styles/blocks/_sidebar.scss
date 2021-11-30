@@ -70,7 +70,7 @@
     align-items: center;
     justify-content: center;
     padding: 10px;
-    height: stretch;
+    height: -webkit-fill-available;
     font-size: $font-size-normal;
     text-align: center;
 
@@ -111,7 +111,7 @@
 
     justify-content: space-between;
     overflow-y: scroll;
-    width: min-content;
+    width: 90%;
     height: 100vh;
 
     &::-webkit-scrollbar {

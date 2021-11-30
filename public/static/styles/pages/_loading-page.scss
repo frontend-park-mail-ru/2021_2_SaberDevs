@@ -29,8 +29,8 @@ progress.progress__loading::-webkit-progress-value {
 
 /* для нехромоподобных браузеров */
 progress.progress__loading::-moz-progress-bar {
-  background-image: linear-gradient(green, lime);
-  background-color: green;
+  background-image: linear-gradient(rgb(6, 117, 6), rgb(8, 252, 8));
+  background-color: rgb(21, 116, 21);
 }
 
 .search__row_group_dropdown:hover .search__row_group_dropdown-content {

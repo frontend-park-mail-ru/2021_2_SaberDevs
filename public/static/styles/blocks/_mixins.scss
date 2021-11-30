@@ -3,7 +3,7 @@
   font-size: $links-font-size;
   text-align: center;
 
-  // height: stretch;
+  // height: -webkit-fill-available;
 }
 
 @mixin background-img($img-href) {

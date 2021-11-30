@@ -1,4 +1,6 @@
 import BaseComponentView from './baseComponentView.js';
+import {viewsDebug} from '../../globals.js';
+
 /**
  * [Интерфейс] ViewModel для View
  * @class BaseComponent

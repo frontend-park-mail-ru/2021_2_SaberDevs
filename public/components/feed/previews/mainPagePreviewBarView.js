@@ -1,6 +1,7 @@
 import BaseComponentView from '../../_basic/baseComponentView.js';
 import mainPagePreviewBarComponent from './mainPagePreviewBar.pug.js';
 
+// захочешь вернуть, глянь шаблон. Там другие поля
 const loadingCard = {
   id: 'loading-card',
   previewUrl: 'static/img/loader-1-HorizontalBalls.gif',

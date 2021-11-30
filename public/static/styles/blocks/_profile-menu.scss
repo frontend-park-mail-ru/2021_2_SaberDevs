@@ -44,7 +44,7 @@ $profile-menu-min-width: 180px;
 
   &__item {
     padding: $profile-menu-item-padding;
-    width: stretch;
+    width: -webkit-fill-available;
     font-size: $font-size-normal;
     color: $color-primary;
     cursor: pointer;

@@ -12,6 +12,7 @@ import {
   getFileBrowserStorageUrl,
   recoverBlobWithUrl,
 } from '../../common/utils.js';
+import {ajaxDebug} from '../../globals.js';
 
 /**
    * Проверяет состояние editor

@@ -1,5 +1,6 @@
 import {SYSTYPES} from './types.js';
 import applyMiddleware from './applyMiddleware.js';
+import {fluxDebug} from '../globals.js';
 
 /**
  * @param {function(StateObject, Action)} rootReducer

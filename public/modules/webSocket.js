@@ -3,6 +3,7 @@ import {appendApiImg} from '../common/transformApi.js';
 import store from '../flux/store.js';
 import streamActions from '../flux/actions/streamActions.js';
 
+import {wsDebug} from '../globals.js';
 // Тачка Дорофеева
 const APIurl = 'ws://89.208.197.247:8081/api/v1/ws';
 // Локальная разработка (Запусти node server/serverWs.js)

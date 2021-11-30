@@ -10,7 +10,7 @@ $article-create-trash-height: 40px;
   @include col;
 
   padding: 0 10%;
-  width: stretch;
+  width: -webkit-fill-available;
 
   &__title {
     margin-bottom: 10px;
@@ -72,7 +72,7 @@ $article-create-trash-height: 40px;
     border: $border;
     border-radius: $border-radius;
     padding: 10px 5px;
-    width: stretch;
+    width: -webkit-fill-available;
     font-size: $font-size-normal;
     color: $color-primary;
     background-color: $color-elements;

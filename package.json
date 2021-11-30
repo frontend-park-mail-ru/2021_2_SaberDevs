@@ -6,7 +6,8 @@
   "scripts": {
     "lint": "npx eslint . && npx stylelint --fix **/*.scss",
     "fast": "node ./dev/compileTemplates.js debug && npm run start-static",
-    "build": "npm run lint && node ./dev/compileTemplates.js && node ./dev/createCachedList && npm run start-static",
+    "build": "npm run lint && node ./dev/compileTemplates.js && node ./dev/createCachedList && npx webpack && npm run start-static",
+    "webpack": "npx webpack --mode development",
     "nohup": "npm run lint && node ./dev/compileTemplates.js && node ./dev/createCachedList && nohup node server/server.js",
     "start": "concurrently --kill-others \"npm run start-static\" \"npm run start-api\"",
     "start-static": "node server/server.js",
@@ -21,17 +22,30 @@
     "walk": "^2.3.15"
   },
   "devDependencies": {
+    "babel-loader": "^8.2.3",
+    "clean-webpack-plugin": "^4.0.0",
     "concurrently": "^6.3.0",
+    "css-loader": "^6.5.1",
     "eslint": "^7.32.0",
     "eslint-config-google": "^0.14.0",
     "eslint-plugin-import": "^2.24.2",
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-promise": "^5.1.0",
+    "file-loader": "^6.2.0",
+    "html-loader": "^3.0.1",
+    "html-webpack-plugin": "^5.5.0",
+    "mini-css-extract-plugin": "^2.4.5",
+    "sass": "^1.43.5",
+    "sass-loader": "^12.3.0",
+    "style-loader": "^3.3.1",
     "stylelint": "^13.13.1",
     "stylelint-config-standard": "^22.0.0",
     "stylelint-declaration-block-no-ignored-properties": "^2.4.0",
     "stylelint-order": "^4.1.0",
     "stylelint-scss": "^3.21.0",
+    "url-loader": "^4.1.1",
+    "webpack": "^5.64.4",
+    "webpack-cli": "^4.9.1",
     "ws": "^8.3.0"
   }
 }

@@ -69,8 +69,8 @@
 
     &_group_bar {
       padding-left: 10px;
-      width: stretch;
-      height: stretch;
+      width: -webkit-fill-available;
+      height: -webkit-fill-available;
       font-family: $font-secondary;
       font-weight: 200;
       font-size: $font-size-normal;
@@ -83,14 +83,14 @@
       position: relative;
       display: inline-block;
       width: 25%;
-      height: stretch;
+      height: -webkit-fill-available;
       font-size: $font-size-normal;
       color: $color-primary;
     }
 
     &_group_dropdown-item {
       padding: 10px;
-      width: stretch;
+      width: -webkit-fill-available;
 
       &:hover {
         background-color: $color-selection;
@@ -102,7 +102,7 @@
       z-index: 1;
       display: none;
       padding: 0;
-      width: stretch;
+      width: -webkit-fill-available;
       box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
       box-sizing: border-box;
       background-color: $color-elements;
@@ -127,7 +127,7 @@
     border-bottom-left-radius: $border-radius;
     padding-left: 10px;
     width: calc(75% - 55px);
-    height: stretch;
+    height: -webkit-fill-available;
     font-family: $font-secondary;
     font-weight: 200;
     font-size: $font-size-normal;

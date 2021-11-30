@@ -5,7 +5,6 @@
 
   &__preview {
     @include col;
-    @include background-img($img-preview);
 
     width: 100%;
   }
@@ -13,7 +12,7 @@
   &__cards {
     display: flex;
     flex-wrap: wrap;
-    align-items: stretch;
+    align-items: -webkit-fill-available;
     width: 100%;
   }
 

@@ -3,8 +3,8 @@ import createPage from './_createPage.js';
 
 import Feed from '../components/feed/feed.js';
 import composeCards from '../components/feed/composeCardStandart.js';
-import MainPagePreviewBar from
-  '../components/feed/previews/mainPagePreviewBar.js';
+// import MainPagePreviewBar from
+//   '../components/feed/previews/mainPagePreviewBar.js';
 
 import {mainPageTypes} from '../flux/types.js';
 import {mainPageActions} from '../flux/actions.js';
@@ -26,9 +26,7 @@ export default class MainPageView extends BasePageView {
   constructor(root) {
     // root не трогать
     super(root);
-    const feedPreview = new MainPagePreviewBar();
     this.pageComponents = {
-      feedPreview,
       feed: new Feed(
           composeCards,
           'mainPage',
@@ -38,7 +36,6 @@ export default class MainPageView extends BasePageView {
           mainPageTypes.ALLOW_CARDS_UPLOADING,
           mainPageActions.forbidCardsLoading,
           mainPageActions.allowCardsLoading,
-          feedPreview,
       ),
     };
   }

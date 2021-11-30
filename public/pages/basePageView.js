@@ -1,3 +1,5 @@
+import {pageDebug} from '../globals.js';
+
 /**
  * View для соответсвующих страниц
  * @class BasePageView

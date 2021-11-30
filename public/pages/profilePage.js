@@ -9,6 +9,7 @@ import {showModalNetOrServerError} from '../components/modal/modalTemplates.js';
 
 import Ajax from '../modules/ajax.js';
 import Utils from '../common/utils.js';
+import {ajaxDebug} from '../globals.js';
 
 // ///////////////////////////////// //
 //

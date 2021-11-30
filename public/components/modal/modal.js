@@ -3,6 +3,7 @@ import modalComponent from './modal.pug.js';
 import store from '../../flux/store.js';
 import {modalTypes} from '../../flux/types.js';
 import {modalActions} from '../../flux/actions.js';
+import {modalsDebug} from '../../globals.js';
 
 const animationTime = 200;
 const informationWindowOpenTime = 2000;
