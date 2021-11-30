@@ -1,0 +1,33 @@
+@media (max-width: 1200px) {
+  .header__nav-items {
+    display: none;
+  }
+
+  .sidebar__nav-items {
+    display: flex;
+  }
+
+  .header__nav-item {
+    margin: 10px 0;
+    font-size: $font-size-big;
+
+    &:hover {
+      text-decoration: underline;
+      background-color: $color-sidebar;
+    }
+  }
+}
+
+@media (max-width: 900px) {
+  .sidebar {
+    display: none;
+  }
+
+  .action-btns__menu-icon {
+    display: block;
+  }
+
+  .search__button {
+    right: 50px;
+  }
+}

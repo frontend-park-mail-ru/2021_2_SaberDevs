@@ -16,6 +16,14 @@
     background-color: $color-secondary;
   }
 
+  &__nav-items {
+    @include col;
+
+    display: none;
+    align-items: flex-start;
+    margin-top: 10px;
+  }
+
   &__item {
     padding-top: $sidebar-item-padding-top;
     cursor: default;

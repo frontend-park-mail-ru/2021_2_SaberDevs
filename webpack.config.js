@@ -67,4 +67,5 @@ module.exports = {
       Static: path.resolve(__dirname, 'public/static/'),
     },
   },
+  watch: true,
 };

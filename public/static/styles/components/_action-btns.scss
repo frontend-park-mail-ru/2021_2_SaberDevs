@@ -50,6 +50,21 @@
     }
   }
 
+  &__menu-icon {
+    display: none;
+    background: $img-icon-menu;
+    background-size: cover;
+    position: absolute;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    z-index: 4;
+    margin: auto;
+    border-radius: $border-radius;
+    width: 50px;
+    height: 50px;
+  }
+
   &__arrow-icon {
     background: $img-icon-arrow;
     background-size: cover;
