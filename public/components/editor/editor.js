@@ -274,12 +274,14 @@ export default class Editor extends BaseComponent {
               reject(new Error(response.msg));
             }
           }))
-          .then((articleId) => {
-            store.dispatch(editorActions.publishArticle(articleId));
+          .then((data) => {
+            // TODO: пофиксте API
+            const id = data.match(/\d/);
+            store.dispatch(editorActions.publishArticle(id));
             ModalTemplates.informativeMsg(
                 'Успех!', `Статья успешно ${isUpdate?'изменена' : 'создана'}`,
             );
-            redirect(`/article/${isUpdate ? state.currentId : articleId}`);
+            redirect(`/article/${isUpdate ? state.currentId : id}`);
           })
           .catch(({message}) => {
             if (responseStatus === Ajax.STATUS.invalidSession) {
