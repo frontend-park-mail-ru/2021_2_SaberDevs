@@ -12,7 +12,7 @@ module.exports = {
     filename: '[name].bandle.js',
     path: path.resolve(__dirname, 'dist'),
     clean: true,
-    assetModuleFilename: 'img/[name][ext][query]',
+    assetModuleFilename: 'static/[name][ext][query]',
   },
   plugins: [
     new HTMLWebpackPlugin({
@@ -40,16 +40,17 @@ module.exports = {
       },
       {
         test: /\.(jpe?g|png|gif|svg|ico)$/i,
-        type: 'asset/resource',
+        type: 'asset',
+        generator: {
+          filename: 'img/[hash][ext][query]',
+        },
       },
       {
         test: /\.(ttf|woff|woff2|eot)$/,
-        use: [{
-          loader: 'file-loader',
-          options: {
-            name: 'fonts/[name].[ext]',
-          },
-        }],
+        type: 'asset',
+        generator: {
+          filename: 'fonts/[hash][ext][query]',
+        },
       },
       {
         test: /\.(js)$/,
