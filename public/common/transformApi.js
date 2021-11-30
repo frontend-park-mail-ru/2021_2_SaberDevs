@@ -6,7 +6,7 @@ import Ajax from '../modules/ajax.js';
  */
 export function appendApiImg(obj) {
   if ('avatarUrl' in obj && !obj.avatarUrl.startsWith(Ajax.APIurl)) {
-    obj.avatarUrl = Ajax.APIurl + '/img/' + obj.avatarUrl;
+    obj.avatarUrl = Ajax.APIurl + '/img/' + obj.avatarUrl+'fuck';
   }
   if ('previewUrl' in obj && !obj.previewUrl.startsWith(Ajax.APIurl)) {
     obj.previewUrl = Ajax.APIurl + '/img/' + obj.previewUrl;

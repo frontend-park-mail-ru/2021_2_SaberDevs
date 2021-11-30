@@ -15,7 +15,7 @@ background-repeat: no-repeat;`)
           each tag in tags
             +tagMixin(tag.content, tag.color)
     .card__author
-      +avatar.card__author-photo(src=`${author.avatarUrl}`)
+      +avatarMixin.card__author-photo(src=`${author.avatarUrl}`)
       .author-name
         if typeof author === 'object'
           .author-name__login #{author.login}

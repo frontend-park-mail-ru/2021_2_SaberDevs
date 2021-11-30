@@ -1,7 +1,7 @@
 include _onAvatarErrorMixin
 .profile
   .profile__info
-    +avatar.profile__photo(src=`${avatarUrl}`)
+    +avatarMixin.profile__photo(src=`${avatarUrl}`)
     .profile__description
       .profile__username #{firstName} #{lastName} (#{login})
       .profile__aboutme Обо мне:

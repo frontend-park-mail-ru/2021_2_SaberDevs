@@ -1,6 +1,6 @@
 include _onAvatarErrorMixin
 .stream-comment(id=`${id}`)
     .stream-comment__author
-        +avatar.stream-comment__author-photo(src=`${author.avatarUrl}`)
+        +avatarMixin.stream-comment__author-photo(src=`${author.avatarUrl}`)
         .stream-comment__author-name #{author.firstName} #{author.lastName}
     .stream-comment__text #{text}

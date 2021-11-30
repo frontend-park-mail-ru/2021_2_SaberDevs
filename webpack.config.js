@@ -2,6 +2,7 @@ const path = require('path');
 const HTMLWebpackPlugin = require('html-webpack-plugin');
 const {CleanWebpackPlugin} = require('clean-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const CopyPlugin = require('copy-webpack-plugin');
 
 module.exports = {
   mode: 'production',
@@ -15,6 +16,14 @@ module.exports = {
     assetModuleFilename: 'static/[name][ext][query]',
   },
   plugins: [
+    new CopyPlugin({
+      patterns: [
+        {
+          from: './public/static/img/user_icon_loading.svg',
+          to: 'img/',
+        },
+      ],
+    }),
     new HTMLWebpackPlugin({
       filename: 'index.html',
       template: path.resolve(__dirname, './public/index.html'),

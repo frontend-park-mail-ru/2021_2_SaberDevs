@@ -53,6 +53,7 @@ ImgPreloader.upload([
   'static/img/icons/search.svg',
   'static/img/icons/search_hover.svg',
   'static/img/icons/send.svg',
+  'static/img/icons/send.svg',
 ]);
 
 

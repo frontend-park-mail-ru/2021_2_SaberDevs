@@ -1,2 +1,8 @@
-mixin avatar()
-  img(onerror="console.warn(`не удалось загрузить аватар ${this.src}`);this.src='/static/img/user_icon_loading.svg';this.onerror = undefined;")&attributes(attributes)
+mixin avatarMixin()
+  //- img(onerror="console.warn(`не удалось загрузить аватар ${this.src}`);this.src='/static/img/user_icon_loading.svg';this.onerror = undefined;")&attributes(attributes)
+  img(onerror=`
+const img = document.querySelector('img[src="${attributes.src}"]');
+console.warn('не удалось загрузить аватар', {img}, img.src);
+img.src="img/user_icon_loading.svg";
+img.onerror = undefined;
+  `)&attributes(attributes)
