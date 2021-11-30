@@ -39,7 +39,6 @@ const cacheUrls = [
   './static/styles/fonts/Vollkorn/static/Vollkorn-SemiBoldItalic.ttf',
   './static/styles/fonts/Russo_One/RussoOne-Regular.ttf',
   './static/styles/fonts/Roboto/LICENSE.txt',
-  './static/styles/fonts/Roboto/Roboto-Black.ttf',
   './static/styles/fonts/Roboto/Roboto-BlackItalic.ttf',
   './static/styles/fonts/Roboto/Roboto-Bold.ttf',
   './static/styles/fonts/Roboto/Roboto-BoldItalic.ttf',
