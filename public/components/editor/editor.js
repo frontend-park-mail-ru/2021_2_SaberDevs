@@ -9,6 +9,7 @@ import {editorTypes} from '../../flux/types.js';
 import Ajax from '../../modules/ajax.js';
 import ModalTemplates from '../modal/modalTemplates.js';
 import {
+  redirect,
   getFileBrowserStorageUrl,
   recoverBlobWithUrl,
 } from '../../common/utils.js';

@@ -61,6 +61,13 @@ async function uploadNextCards() {
       console.log('[Main Page] more news loaded!');
     }
 
+    // TODO: починить на беке
+    cards.forEach((element) => {
+      if (!element.tags) {
+        element.tags = [];
+      }
+    });
+
     store.dispatch(
         mainPageActions.saveNewCards(
             cards.length ? cards[cards.length - 1].id : state.idLastLoaded,
