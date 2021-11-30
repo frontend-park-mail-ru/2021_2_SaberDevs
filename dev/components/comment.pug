@@ -1,6 +1,7 @@
+include _onAvatarErrorMixin
 .comment(id=`${id}` data-author=`${author.login}`)
   .comment__content
-    img.comment__author-photo(src=`${author.avatarUrl}`)
+    +avatar.comment__author-photo(src=`${author.avatarUrl}`)
     .comment__description
       .comment__author-name #{author.lastName} #{author.firstName}
       .comment__text #{text}

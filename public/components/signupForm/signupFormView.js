@@ -116,7 +116,7 @@ export default class SignupFormView extends BaseComponentView {
       if (!regexp.login.test(login)) {
         formWarning.style.display = 'block';
         formWarningLabel.style.display = 'block';
-        formWarning.textContent = 'Логин - это латинские буквы, цифры и' +
+        formWarning.textContent = 'Логин - это латинские буквы, цифры и ' +
             'нижнее подчеркивание (_). Длина логина - от 4 до 20 символов';
         return;
       }

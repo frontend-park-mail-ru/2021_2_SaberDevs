@@ -146,6 +146,7 @@ const cacheUrls = [
   './components/router.js',
   './components/_template/serviceWarning.js',
   './components/_template/serviceWarningView.js',
+  './components/_onAvatarErrorMixin/_onAvatarErrorMixin.pug.js',
   './components/_basic/baseComponent.js',
   './components/_basic/baseComponentView.js',
   './components/signupForm/formRow.pug.js',

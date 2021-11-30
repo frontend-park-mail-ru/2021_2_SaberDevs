@@ -1,6 +1,7 @@
+include _onAvatarErrorMixin
 .profile
   .profile__info
-    img.profile__photo(src=`${avatarUrl || 'static/img/users/user_icon_loading.svg'}`)
+    +avatar.profile__photo(src=`${avatarUrl}`)
     .profile__description
       .profile__username #{firstName} #{lastName} (#{login})
       .profile__aboutme Обо мне:

@@ -1,0 +1,2 @@
+mixin avatar()
+  img(onerror="console.warn(`не удалось загрузить аватар ${this.src}`);this.src='/static/img/user_icon_loading.svg';this.onerror = undefined;")&attributes(attributes)

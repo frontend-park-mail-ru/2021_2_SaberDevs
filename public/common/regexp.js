@@ -1,5 +1,5 @@
 // Только буквенные латинские символы и _ числом от 4 до 20
-export const login = /^[a-zA-Z][a-zA-Z0-9_]{4,20}$/;
+export const login = /^[a-zA-Z0-9_]{4,20}$/;
 
 // Любые символы числом от 8 до 256
 export const password = /^\S{8,40}$/;
