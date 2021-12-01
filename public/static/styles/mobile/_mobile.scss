@@ -1,4 +1,4 @@
-@media (max-width: 1200px) {
+@media (max-width: 1400px) {
   .header__nav-items {
     display: none;
   }
@@ -21,6 +21,8 @@
 @media (max-width: 900px) {
   .sidebar {
     display: none;
+    position: absolute;
+    right: 0;
   }
 
   .action-btns__menu-icon {
@@ -29,5 +31,15 @@
 
   .search__button {
     right: 50px;
+  }
+
+  .background {
+    padding-top: 0;
+  }
+}
+
+@media (min-width: 900px) {
+  .sidebar {
+    display: flex;
   }
 }

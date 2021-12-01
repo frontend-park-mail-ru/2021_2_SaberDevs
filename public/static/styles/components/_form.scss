@@ -30,7 +30,7 @@ $form-padding: 70px;
     border-radius: $border-radius;
     padding: $input-padding;
     width: -webkit-fill-available;
-    font-size: $input-font-size;
+    font-size: $font-size-normal;
     color: $color-primary;
     background-color: $color-elements;
 
@@ -62,7 +62,7 @@ $form-padding: 70px;
     padding: $input-padding;
     width: -webkit-fill-available;
     box-shadow: 0 0 25px $color-warning;
-    font-size: $input-font-size;
+    font-size: $font-size-normal;
     hyphens: auto;
     color: $color-warning;
     background-color: $color-elements;
@@ -73,7 +73,7 @@ $form-padding: 70px;
   }
 
   &__title {
-    font-size: $form-title-font-size;
+    font-size: $font-size-large;
   }
 
   &__page {

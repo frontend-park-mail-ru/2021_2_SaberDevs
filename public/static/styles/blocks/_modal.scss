@@ -85,7 +85,7 @@ $window-filter: drop-shadow(0 0 10px rgba(0, 0, 0, 0.5));
     border: $border;
     border-radius: $border-radius;
     padding: 10px;
-    font-size: 24px;
+    font-size: $font-size-normal;
     color: $color-elements;
     background-color: $color-secondary;
 

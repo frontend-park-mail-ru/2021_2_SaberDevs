@@ -29,6 +29,7 @@ export default class Header extends BaseComponent {
     this.root = this.view.render();
 
     const searchBtn = this.root.querySelector('.search__button');
+    const menuBtn = this.root.querySelector('.action-btns__menu-icon');
     const searchInput = this.root.querySelector('.search__input');
     const searchRow = this.root.querySelector('.search__row');
     const groupOptions = this.root.querySelector(
@@ -88,6 +89,36 @@ export default class Header extends BaseComponent {
     };
     searchInput.addEventListener('focusout', focusOutListener);
 
+    menuBtn?.addEventListener('click', (e) => {
+      e.preventDefault();
+
+      const sidebar = document.querySelector('.sidebar');
+      const searchBtn = document.querySelector('.search__button');
+      const menuBtnThis = document.querySelector('.action-btns__menu-icon');
+      const overlay = document.querySelector('.modal__overlay');
+
+      if (!searchBtn.classList.contains('hide')) {
+        searchBtn.classList.add('hide');
+        menuBtnThis.classList.add('hide');
+        overlay.style.opacity = '1';
+        overlay.style.visibility = 'visible';
+
+        sidebar.style.display = 'flex';
+        overlay.appendChild(sidebar);
+
+        overlay.addEventListener('click', (e) => {
+          e.preventDefault();
+          hideSidebar();
+        });
+
+        const widthMatch = window.matchMedia('(min-width: 900px)');
+        widthMatch.addEventListener('change', (e) => {
+          e.preventDefault();
+          hideSidebar();
+        });
+      }
+    });
+
     return this.root;
   }
 
@@ -125,4 +156,25 @@ export default class Header extends BaseComponent {
     searchInput.select();
     this.isOpen = true;
   };
+}
+
+/**
+ * Прячет сайдбар
+ */
+function hideSidebar() {
+  const searchBtn = document.querySelector('.search__button');
+  const menuBtnThis = document.querySelector('.action-btns__menu-icon');
+  const overlay = document.querySelector('.modal__overlay');
+  const screen = document.querySelector('.screen');
+  const sidebar = document.querySelector('.sidebar');
+
+  searchBtn.classList.remove('hide');
+  menuBtnThis.classList.remove('hide');
+  overlay.style.opacity = '0';
+  overlay.style.visibility = 'hidden';
+
+  if (sidebar) {
+    screen.appendChild(sidebar);
+  }
+  overlay.innerHTML = overlay.innerHTML;
 }

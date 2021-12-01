@@ -26,13 +26,14 @@ $tag-margin-right: 5px;
 
   &__title {
     margin-bottom: $card-title-margin-bottom;
-    font-size: $title-font-size;
+    font-size: $font-size-large;
     text-align: center;
   }
 
   &__description {
     font-weight: $font-thin;
     font-size: $font-size-normal;
+    margin-top: 15px;
   }
 
   &__content {
