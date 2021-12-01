@@ -18,7 +18,7 @@ $settings-row-margin-bottom: 20px;
   &__title {
     margin-top: $settings-title-margin-top;
     margin-bottom: $settings-title-margin-bottom;
-    font-size: $settings-title-font-size;
+    font-size: $font-size-large;
   }
 
   &__links {
@@ -27,7 +27,7 @@ $settings-row-margin-bottom: 20px;
 
   &__other-page {
     margin-bottom: $settings-other-page-margin-bottom;
-    font-size: $settings-other-page-font-size;
+    font-size: $font-size-normal;
 
     &:hover {
       text-decoration: underline;
@@ -41,7 +41,7 @@ $settings-row-margin-bottom: 20px;
     padding: $settings-input-padding;
     width: 100%;
     box-shadow: 0 0 25px $color-warning;
-    font-size: $settings-input-font-size;
+    font-size: $font-size-normal;
     hyphens: auto;
     color: $color-warning;
     background-color: $color-elements;
@@ -81,7 +81,7 @@ $settings-row-margin-bottom: 20px;
     justify-content: end;
     margin-right: $settings-label-margin-right;
     width: 20%;
-    font-size: $settings-label-font-size;
+    font-size: $font-size-normal;
   }
 
   &__input {
@@ -89,7 +89,7 @@ $settings-row-margin-bottom: 20px;
     border-radius: $border-radius;
     padding: $settings-input-padding;
     width: 100%;
-    font-size: $settings-input-font-size;
+    font-size: $font-size-normal;
     color: $color-primary;
     background-color: $color-elements;
 

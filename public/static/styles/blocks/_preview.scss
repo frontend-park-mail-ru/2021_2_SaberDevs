@@ -22,7 +22,7 @@ $preview-tags-font-size: 14px;
   &__title {
     margin-bottom: $card-title-margin-bottom;
     font-weight: $font-thick;
-    font-size: $preview-title-font-size;
+    font-size: $font-size-large;
   }
 
   &__content {
@@ -30,15 +30,16 @@ $preview-tags-font-size: 14px;
   }
 
   &__description {
-    font-size: $text-font-size;
+    font-size: $font-size-normal;
+    margin-top: 15px;
   }
 
   &__tag {
-    font-size: $preview-tags-font-size;
+    font-size: $font-size-normal;
     cursor: pointer;
   }
 
   &__time {
-    font-size: $text-font-size;
+    font-size: $font-size-normal;
   }
 }

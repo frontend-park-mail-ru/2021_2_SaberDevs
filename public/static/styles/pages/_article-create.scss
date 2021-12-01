@@ -39,7 +39,7 @@ $article-create-trash-height: 40px;
 
   &__add-tag {
     margin-left: $article-create-tag-margin-left;
-    font-size: $article-create-add-tag-font-size;
+    font-size: $font-size-large;
     color: $color-elements;
     background-color: transparent;
     cursor: pointer;
@@ -49,7 +49,7 @@ $article-create-trash-height: 40px;
     border: $border;
     border-radius: $border-radius;
     padding: $article-create-input-padding;
-    font-size: $article-create-tag-font-size;
+    font-size: $font-size-normal;
     color: $color-primary;
     background-color: $color-elements;
   }
@@ -85,7 +85,7 @@ $article-create-trash-height: 40px;
   &__label {
     justify-content: end;
     width: 100%;
-    font-size: $article-create-label-font-size;
+    font-size: $font-size-normal;
   }
 
   &__tags {

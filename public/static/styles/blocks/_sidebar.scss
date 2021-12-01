@@ -12,8 +12,17 @@
 
     height: $header-size;
     font-family: $font-primary;
-    font-size: $links-font-size;
+    font-size: $font-size-normal;
     background-color: $color-secondary;
+    width: 100%;
+  }
+
+  &__nav-items {
+    @include col;
+
+    display: none;
+    align-items: flex-start;
+    margin-top: 10px;
   }
 
   &__item {
@@ -29,7 +38,7 @@
 
   &__categories-title {
     margin-right: 5px;
-    font-size: $title-font-size;
+    font-size: $font-size-large;
 
     &:hover {
       text-decoration: underline;
@@ -134,12 +143,12 @@
   align-items: flex-end;
 
   &__title {
-    font-size: $title-font-size;
+    font-size: $font-size-large;
     cursor: default;
   }
 
   &__developer {
-    font-size: $links-font-size;
+    font-size: $font-size-normal;
     cursor: pointer;
 
     &:hover {

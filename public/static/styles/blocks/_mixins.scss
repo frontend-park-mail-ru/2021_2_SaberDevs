@@ -1,9 +1,7 @@
 @mixin nav-item() {
-  padding: calc((#{$header-size} - #{$links-font-size} - 5px) / 2) $padding-nav-item;
-  font-size: $links-font-size;
+  margin: auto 10px;
+  font-size: $font-size-normal;
   text-align: center;
-
-  // height: -webkit-fill-available;
 }
 
 @mixin background-img($img-href) {

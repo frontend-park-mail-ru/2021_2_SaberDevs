@@ -3,7 +3,7 @@ $btn-padding: 10px 20px;
 
 .btn-more {
   font-weight: $font-thin;
-  font-size: $button-font-size;
+  font-size: $font-size-normal;
   cursor: pointer;
 
   &:hover {
@@ -16,7 +16,7 @@ $btn-padding: 10px 20px;
     border-radius: $border-radius;
     padding: $btn-padding;
     box-shadow: $box-shadow;
-    font-size: $btn-font-size;
+    font-size: $font-size-normal;
     color: $color-elements;
     background-color: $color-secondary;
     cursor: pointer;
