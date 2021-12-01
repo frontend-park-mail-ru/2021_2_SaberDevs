@@ -1,0 +1,60 @@
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  margin-bottom: $tags-margin-bottom;
+
+  &__tag-content {
+    position: relative;
+    display: flex;
+
+    // отступ справа + снизу, чтобы много тегов разбивались по строкам
+    margin: $tag-margin;
+    border: 2px solid transparent;
+    border-radius: $border-radius;
+    box-sizing: border-box;
+    background: $color-sidebar;
+
+    &:hover {
+      border: 2px solid $color-elements;
+      cursor: pointer;
+    }
+  }
+
+  &__tag {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    border: 2px solid transparent;
+    border-radius: $border-radius;
+    padding: $tag-padding;
+    box-sizing: border-box;
+    font-size: $font-size-normal;
+
+    &_clicked {
+      border: 2px solid $color-elements;
+    }
+
+    &__del-btn {
+      position: relative;
+      border-color: 2px solid transparent;
+      border-radius: 0 $border-radius $border-radius 0;
+      width: 40px;
+      height: 100%;
+      box-sizing: border-box;
+      background-color: $color-elements;
+
+      &:hover {
+        border: 2px solid $color-elements;
+      }
+    }
+  }
+
+  &_with-cross {
+    border-radius: $border-radius 0 0 $border-radius;
+
+    &:hover {
+      border: 2px solid transparent;
+    }
+  }
+}

@@ -1,0 +1,99 @@
+$page-404-title-font-size: 360px;
+$page-404-message-font-size: 48px;
+$page-404-message-margin-bottom: 100px;
+$page-404-back-btn-padding: 20px 60px;
+$page-404-back-btn-font-size: 28px;
+
+.page-404 {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+
+  &__title {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    font-family: "Russo One", sans-serif;
+    font-weight: 700;
+    font-size: $page-404-title-font-size;
+    color: $color-elements;
+    opacity: 0;
+    transform: translate(-50%, -50%);
+    animation: fadein 0.8s ease-out 1.5s forwards;
+  }
+
+  &__content {
+    @include col;
+
+    z-index: 2;
+  }
+
+  &__message {
+    margin-bottom: $page-404-message-margin-bottom;
+    font-family: "Vollkorn", serif;
+    font-weight: $font-thick;
+    font-size: $font-size-large;
+    color: $color-elements;
+    opacity: 0;
+    transform: translateY(-200px);
+    animation: slidedown 1s ease-out 0.5s forwards;
+  }
+
+  &__back-btn {
+    display: inline-block;
+    margin-top: 0;
+    border-radius: 50px;
+    padding: $page-404-back-btn-padding;
+    font-family: "Vollkorn", serif;
+    font-size: $font-size-normal;
+    color: $color-primary;
+    background-color: $color-elements;
+    opacity: 0;
+    transform: translateY(0);
+    transition: 0.4s ease-out;
+    animation: slideup 1s ease-out 0.5s forwards;
+    cursor: pointer;
+
+    &:hover {
+      margin-top: -20px;
+      box-shadow: $box-shadow;
+      color: $color-secondary;
+    }
+  }
+}
+
+@keyframes fadein {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 0.2;
+  }
+}
+
+@keyframes slidedown {
+  0% {
+    opacity: 0;
+    transform: translateY(-200px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideup {
+  0% {
+    opacity: 0;
+    transform: translateY(200px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

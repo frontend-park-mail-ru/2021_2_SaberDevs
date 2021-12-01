@@ -1,0 +1,20 @@
+include _onAvatarErrorMixin
+
+.comment(id=`${id}` data-author=`${author.login}`)
+  .comment__content
+    +avatarMixin.comment__author-photo(src=`${author.avatarUrl}`)
+    .comment__description
+      .comment__author-name #{author.lastName} #{author.firstName}
+      .comment__text #{text}
+  .comment__bottom
+    .action-btns
+      if isEdited
+        .comment__time изменено #{datetime}
+      else
+        .comment__time #{datetime}
+      button.comment__edit-btn(style='display: none') Изменить
+      button.comment__answer-btn Ответить
+      .icon-small.action-btns_m-right
+        .icon-small__text #{likes}
+        .action-btns__likes-icon.icon-small__img
+  .comment__answers !{answers}

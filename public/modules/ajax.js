@@ -1,6 +1,12 @@
-// TODO: fetch API
-// const APIurl = 'http://87.228.2.178:8081';
-const APIurl = 'http://localhost:8080';
+import {ajaxDebug} from '../globals.js';
+
+// Поменять тут, в server/server.js, server/server-api.js (не забыть CORS)
+// Тачка Алексея
+// const APIurl = 'http://87.228.2.178:8081/api/v1';
+// Тачка Дорофеева
+const APIurl = 'http://89.208.197.247:8081/api/v1';
+// Локальная разработка
+// const APIurl = 'http://localhost:8081/api/v1';
 
 /**
  * Поддерживаемые методы: GET и POST
@@ -25,23 +31,16 @@ const ajaxStatuses = {
   notFound: 404,
   // redirect: 303,
   badRequest: 400,
+  invalidSession: 424,
 };
-
-/**
- * Выполняется, если запрос прошел успешно
- * @callback requestCallback
- * @param {number} responseCode
- * @param {Object} responseMessage
- */
 
 /**
  * Выполняет ajax-запрос на сервер. При успешном выполнении вызывает callback
  * @param {Object} requestParams
  * @property {AjaxMethod} [method = "GET"]
  * @property {Url} [url = '/']
- * @property {?Object} [body = null]
- * @property {requestCallback} [callback = () => {}]
- * @return {void}
+ * @property {any} body
+ * @return {Promise}
  */
 function ajax(requestParams) {
   const url = APIurl + (requestParams.url || '/');
@@ -49,28 +48,82 @@ function ajax(requestParams) {
     body: JSON.stringify(requestParams.body),
     mode: 'cors',
     credentials: 'include',
+    headers: {
+      'Content-Type': 'application/json',
+    },
     method: requestParams.method,
   };
 
   if (ajaxDebug) {
-    console.log('ajax request: ' + JSON.stringify(fetchParams));
+    console.log('ajax request', {url}, ': ' + JSON.stringify(fetchParams));
   }
 
-  let status = '';
-  fetch(url, fetchParams)
+  let status = 0;
+  return fetch(url, fetchParams)
       .then((response) => {
         status = response.status;
-        return response.text();
+        return response.json();
       })
       .then((response) => {
-        // console.log('ajax resolved ' + status+': '+JSON.stringify(response));
-        console.log('ajax resolved ' + status +': ' + response);
-        requestParams.callback(status, response);
+        if (ajaxDebug) {
+          console.log('ajax resolved ' + status + ': ');
+          console.log(response);
+        }
+        return {
+          status,
+          response,
+        };
       })
       .catch((error) => {
         console.warn(error);
-        requestParams.callback(status, response);
-        return;
+      });
+}
+
+/**
+ * Выполняет отправку фото на сервер. При успешном выполнении вызывает callback
+ * @param {Object} requestParams
+ * @property {Url} [url = '/']
+ * @property {any} body
+ * @return {Promise}
+ */
+function postFile(requestParams) {
+  const url = APIurl + (requestParams.url || '/');
+  const formData = new FormData();
+  formData.append('img', requestParams.body);
+  const fetchParams = {
+    body: formData,
+    mode: 'cors',
+    credentials: 'include',
+    // https://muffinman.io/blog/uploading-files-using-fetch-multipart-form-data/
+    // headers: {
+    //   'Content-Type': 'multipart/form-data',
+    // },
+    method: ajaxMethods.post,
+  };
+
+  if (ajaxDebug) {
+    console.log('ajax file post request', {url},
+        ': ' + JSON.stringify(fetchParams));
+  }
+
+  let status = 0;
+  return fetch(url, fetchParams)
+      .then((response) => {
+        status = response.status;
+        return response.json();
+      })
+      .then((response) => {
+        if (ajaxDebug) {
+          console.log('ajax resolved ' + status + ': ');
+          console.log(response);
+        }
+        return {
+          status,
+          response,
+        };
+      })
+      .catch((error) => {
+        console.warn(error);
       });
 }
 
@@ -80,6 +133,8 @@ const Ajax = {
   STATUS: ajaxStatuses,
   get: (requestParams) => ajax({method: ajaxMethods.get, ...requestParams}),
   post: (requestParams) => ajax({method: ajaxMethods.post, ...requestParams}),
+  postFile,
+  APIurl,
 };
 
 export default Ajax;

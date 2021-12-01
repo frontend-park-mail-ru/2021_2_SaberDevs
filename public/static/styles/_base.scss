@@ -1,0 +1,130 @@
+@import "variables";
+
+$plate-padding: 30px;
+
+html,
+body,
+.background,
+.background-space,
+#root,
+.view {
+  overflow-y: hidden;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100vh;
+  font-family: $font-primary;
+  color: $color-elements;
+  cursor: default;
+}
+
+.background {
+  padding-top: $page-top;
+  background: $img-bg bottom;
+  background-size: 100%;
+}
+
+.background-space {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding-top: $page-top;
+  background: $img-bg-space bottom;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+.screen {
+  display: flex;
+  justify-content: space-between;
+  margin-right: auto;
+  margin-left: auto;
+  height: 100%;
+  max-width: $screen-width;
+  box-shadow: 20px 20px 20px rgba(0, 0, 0, 0.25);
+  background-color: $color-primary;
+}
+
+.link {
+  &:hover {
+    text-decoration: underline;
+    cursor: pointer;
+  }
+}
+
+.page {
+  @include col;
+
+  // отступ, чтобы интерфейс винды не перекрывал низ страницы
+  margin-bottom: 2%;
+  width: 100%;
+}
+
+.page_title {
+  @include col;
+
+  width: 100%;
+  font-size: $font-size-large;
+  margin-bottom: 15px;
+}
+
+.content {
+  @include col;
+
+  overflow-y: scroll;
+  width: 100%;
+  height: 100%;
+  background-color: $color-primary;
+
+  &::-webkit-scrollbar {
+    width: 0;
+  }
+}
+
+.page-space {
+  position: fixed;
+  display: flex;
+  height: 100%;
+  max-width: $screen-width;
+  font-family: "Roboto", sans-serif;
+  backdrop-filter: blur(5px);
+}
+
+.content-space {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  padding: 1.5%;
+  min-width: 15%;
+  min-height: 20%;
+  max-width: 55%;
+  max-height: 50%;
+  transform: translate(-50%, -50%) scale(1);
+}
+
+.hide {
+  position: absolute;
+  opacity: 0;
+  visibility: hidden;
+  transition: 0.5s;
+}
+
+.plate {
+  display: flex;
+  flex-flow: nowrap;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border: $border;
+  padding: $plate-padding;
+  width: 100%;
+  box-sizing: border-box;
+  background-color: $color-sidebar;
+}
+
+.rotate {
+  &-180 {
+    transform: rotate(180deg);
+  }
+}

@@ -11,21 +11,24 @@
         "ecmaVersion": 12,
         "sourceType": "module"
     },
-    "ignorePatterns": ["public/components/*.pug.js", "globals.js"],
+    "ignorePatterns": [
+      "*.pug.js",
+      "globals.js",
+      "public/components/_template/*.js",
+      "public/flux/reducers/template.js",
+      "dist/*.js"
+    ],
     "rules": {
     },
     "overrides": [
         {
           "files": [
-            "dev/*.js",
-            "public/*.js",
-            "public/modules/*.js",
-            "public/components/*.js",
-            "public/pages/*.js",
-            "server/*.js"],
+            "*.js"
+          ],
           "rules": {
             "linebreak-style": "off",
-            "no-multi-spaces": "off"
+            "no-multi-spaces": "off",
+            "guard-for-in": "off"
           }
         }
     ]

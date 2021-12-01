@@ -1,0 +1,129 @@
+$article-top: 25px;
+$article-title-margin-bottom: 15px;
+$article-text-margin-bottom: 20px;
+$article-main-picture-margin: 15px 0;
+$article-tag-margin-right: 15px;
+$photo-size: 50px;
+
+.article-view {
+  @include col;
+
+  justify-content: space-between;
+  padding-top: $article-top;
+  width: 100%;
+  min-height: 450px;
+  font-weight: $font-thin;
+
+  &__content {
+    padding-bottom: 5%;
+    width: 90%;
+  }
+
+  &__top {
+    @include right;
+  }
+
+  &__back-btn {
+    margin-left: 5px;
+    font-size: $font-size-normal;
+    cursor: pointer;
+
+    &:hover {
+      text-decoration: underline;
+      color: $color-secondary;
+      cursor: pointer;
+    }
+  }
+
+  &__title {
+    margin-bottom: $article-title-margin-bottom;
+    font-weight: $font-thick;
+    font-size: $font-size-large;
+  }
+
+  &__info {
+    @include row;
+
+    justify-content: space-between;
+  }
+
+  &__main-picture {
+    margin: $article-main-picture-margin;
+    width: 100%;
+  }
+
+  &__text {
+    margin-bottom: $article-text-margin-bottom;
+    font-size: $font-size-normal;
+  }
+
+  &__tags {
+    display: flex;
+  }
+
+  &__tag {
+    margin-right: $article-tag-margin-right;
+    font-size: $font-size-normal;
+
+    &:hover {
+      text-decoration: underline;
+      color: $color-secondary;
+      cursor: pointer;
+    }
+  }
+
+  &__author-time {
+    display: flex;
+  }
+
+  &__author {
+    font-size: $font-size-normal;
+
+    &:hover {
+      text-decoration: underline;
+      color: $color-secondary;
+      cursor: pointer;
+    }
+  }
+
+  &__time {
+    margin: 0 19px;
+    font-size: $font-size-normal;
+  }
+
+  &__category {
+    margin: 0 10px;
+
+    // font-weight: 200;
+
+    font-size: $font-size-normal;
+  }
+
+  &__add-comment {
+    @include row;
+  }
+
+  &__author-photo {
+    margin-right: 15px;
+    width: $photo-size;
+    height: $photo-size;
+  }
+
+  &__send-comment-btn {
+    width: 80px;
+    height: 80px;
+  }
+
+  &__comment-input {
+    border: 3px solid $color-elements;
+    border-radius: $border-radius;
+    padding: 15px;
+    width: 100%;
+    font-size: $font-size-normal;
+    background-color: $color-elements;
+
+    &:hover {
+      border: 3px solid $color-secondary;
+    }
+  }
+}

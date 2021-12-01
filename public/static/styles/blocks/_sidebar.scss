@@ -1,0 +1,158 @@
+@import "mixins";
+
+.sidebar {
+  @include col;
+
+  z-index: 1;
+  font-family: $font-secondary;
+  background-color: $color-sidebar;
+
+  &__nav-links {
+    @include row;
+
+    height: $header-size;
+    font-family: $font-primary;
+    font-size: $font-size-normal;
+    background-color: $color-secondary;
+    width: 100%;
+  }
+
+  &__nav-items {
+    @include col;
+
+    display: none;
+    align-items: flex-start;
+    margin-top: 10px;
+  }
+
+  &__item {
+    padding-top: $sidebar-item-padding-top;
+    cursor: default;
+  }
+
+  &__categories {
+    @include col;
+
+    align-items: flex-start;
+  }
+
+  &__categories-title {
+    margin-right: 5px;
+    font-size: $font-size-large;
+
+    &:hover {
+      text-decoration: underline;
+      cursor: pointer;
+    }
+  }
+
+  &__categories-item {
+    font-size: $font-size-normal;
+    cursor: pointer;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
+  &__categories-more {
+    @include row;
+
+    font-size: $font-size-small;
+    cursor: pointer;
+  }
+
+  &__categories-more-text {
+    margin-right: 5px;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
+  &__categories-search {
+    @include row;
+  }
+
+  &__nav-item {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    height: -webkit-fill-available;
+    font-size: $font-size-normal;
+    text-align: center;
+
+    &:hover {
+      background-color: $color-selection;
+      cursor: pointer;
+    }
+  }
+
+  &__nav-buttons {
+    display: flex;
+    align-items: center;
+    height: 100%;
+  }
+
+  &__streams {
+    display: flex;
+    flex-direction: column;
+    overflow-y: scroll;
+    margin-top: 10px;
+    margin-bottom: 30px;
+    height: 25rem;
+
+    &::-webkit-scrollbar {
+      width: 0;
+    }
+  }
+
+  &__bottom {
+    position: relative;
+    bottom: 100px;
+    display: flex;
+    align-items: flex-end;
+  }
+
+  &__content {
+    @include col;
+
+    justify-content: space-between;
+    overflow-y: scroll;
+    width: 90%;
+    height: 100vh;
+
+    &::-webkit-scrollbar {
+      width: 0;
+    }
+  }
+}
+
+.sidebar-bottom {
+  &_right {
+    @include right;
+
+    margin-bottom: $sidebar-margin-bottom;
+  }
+}
+
+.contacts {
+  @include col;
+
+  align-items: flex-end;
+
+  &__title {
+    font-size: $font-size-large;
+    cursor: default;
+  }
+
+  &__developer {
+    font-size: $font-size-normal;
+    cursor: pointer;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}

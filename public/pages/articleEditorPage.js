@@ -1,0 +1,76 @@
+import BasePageMV from './basePageMV.js';
+import EditorView from './articleEditorView.js';
+
+import store from '../flux/store.js';
+import ModalTemplates from '../components/modal/modalTemplates.js';
+import {authorizationTypes} from '../flux/types.js';
+import {changePageActions} from '../flux/actions.js';
+import {redirect} from '../common/utils.js';
+
+/**
+   * Проверяет состояние editor
+   * @return {boolean}
+   */
+function isUpdate() {
+  const state = store.getState().editor;
+  return typeof state.currentId === 'string' && state.currentId !== '0' ||
+         typeof state.currentId === 'number' && state.currentId !== 0;
+}
+
+/**
+ * @class EditorPage
+ */
+export default class EditorPage extends BasePageMV {
+  /**
+   * @param {HTMLElement} root
+   */
+  constructor(root) {
+    super(root);
+    this.view = new EditorView(root);
+
+    // /////////////////////////////////
+    //
+    //        Communication
+    //
+    // /////////////////////////////////
+
+    store.subscribe(authorizationTypes.LOGOUT, () => {
+      console.log('[ArticleEditorPage] Logout reaction');
+      if (this.isActive()) {
+        ModalTemplates.warn(
+            'Вы неавторизованы',
+            `Чтобы продолжить редактирование, выполните повторный вход.
+            Текущее состояние сохранено. Не перезагружайте страницу.`,
+            () => redirect('/'),
+        );
+      }
+    });
+  }
+  /**
+   * Отобразить подконтрольную страницу.
+   */
+  show() {
+    super.show();
+    store.dispatch(
+        changePageActions.changePage(
+            'editor',
+            `SaberProject | ${isUpdate() ? 'Edit' : 'Create'} article`,
+        ),
+    );
+  }
+
+  /**
+   * Вызывается в роутере. Если return не '', нужно выполнить переход
+   * по пути, возвращенному из функции
+   *
+   * Возможны редиректы на: /login
+   * @param {string} currentPath
+   * @return {string}
+   */
+  redirect(currentPath) {
+    if (store.getState().authorization.isAuthenticated) {
+      return '';
+    }
+    return '/login';
+  }
+}

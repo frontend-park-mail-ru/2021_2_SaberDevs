@@ -1,0 +1,8 @@
+form.modal__form.form
+  .form__rows !{form_rows}
+  .form__row
+    .form__label(id="form-warning-label" style="display: none; color: transparent;") |
+    div.form__input.form__warning Поля заполнены неверно
+  .form__row
+    .form__label(style="color: transparent;") |
+    input.form__input.form__submit-btn(type='submit' name='btn-submit' value=`${submit_btn_placeholder}`)

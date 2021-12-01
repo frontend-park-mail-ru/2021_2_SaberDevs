@@ -1,270 +1,130 @@
 'use strict';
 
-// pages & components
-import signupPage from './pages/signupPage.js';
-import signupModal from './components/signupModal.js';
-import profilePage from './pages/profilePage.js';
-import {uploadNextCards, setHeaderLinks} from './pages/mainPage.js';
-import mainPage from './pages/mainPage.js';
-import logoutRequest from './modules/logout.js';
+import {disableSW} from './globals.js';
+// если WebPack не используется, закомменть строку ниже
+import './static/styles/style.scss';
 
-import Utils from './utils.js';
-import Ajax from './modules/ajax.js';
+// pages
+import MainPage from './pages/mainPage.js';
+import ProfilePage from './pages/profilePage.js';
+import ProfileSettingsPage from './pages/profileSettingsPage.js';
+import LoadingPage from './pages/loadingScreen.js';
+import EditorPage from './pages/articleEditorPage.js';
+import ReaderPage from './pages/articleReaderPage.js';
+import CategoryPage from './pages/categoryPage.js';
+import SignupPage from './pages/signupPage.js';
+import SearchPage from './pages/searchPage.js';
 
-const root = document.getElementById('root');
+// Controllers
+import LinksController from './components/linksController.js';
+import Router from './components/router.js';
 
-const headerLinksOnLogin = [
-  {name: 'Профиль', section: 'profilePage', href: '/profile'},
-  {href: '/logout', section: 'logout', name: 'Выход'},
-];
-const headerLinksOnLogout = [
-  {name: 'Зарегистрироваться', section: 'signupPopUp', href: '/signup'},
-  {name: 'Войти', section: 'loginPopUp', href: '/login'},
-];
-const sideBarLinks = ['hello'];
+// components
+import SignupModal from './components/modal/signupModal.js';
+import Warning from './components/modal/serviceWarning.js';
+import ImgPreloader from './components/imgPreloader.js';
 
-// глобальное состояние приложения
-// все важнейшие данные, получаемые с API-сервера, флаги
-const state = {
-  currentPage: 'main',     // текщуая отображаемая страница
-  isAuthenticated: false,  // верстка зависит от того, залогинен ли пользователь
-  isRegistered: true,      // верстка формы авторизации: вход или регистрация
-  userData: {},            // данные пользователя с бека, если авторизован
-  headerLinks: headerLinksOnLogout,
-  mainPageState: {
-    trackedCardId: 'loading-card', // отслеживаемая запись в ленте для подгрузки
-    isLoading: false,              // отправлен ли запрос на сервер
-    idLastLoaded: '',              // запоминаем последнюю загруженную запись
-    lastScrollPos: 0,              // скрол для возврата к той же записи
-    login: '',                     // для какого пользователя подборка
-    cards: [],                     // массив загруженных новостей
-    doNotUpload: false,
-  },
-};
+// network
+import {logoutRequest} from './modules/ajaxRequests.js';
+import {cookieLogin} from './modules/ajaxRequests.js';
+// eslint-disable-next-line no-unused-vars
+import webSocket from './modules/webSocket.js';
 
-const configuration = {
-  mainPage: {
-    href: '/',
-    name: 'Главная',
-    open: {
-      action: (props) => {
-        state.currentPage = 'mainPage';
-        props.headerLinks = state.headerLinks;
-        mainPage(props);
-      },
-      props: {
-        sideBarLinks,
-        headerLinks: state.headerLinks,
-        isAuthenticated: state.isAuthenticated,
-        userData: state.userData,
-        state: state.mainPageState,
-        // создаем такой обработчик, который можно будет удалить
-        // это обертка функции в (event) => undefined
-        newsFeedEndReachEventAction(event) {
-          const trackedCard = document.getElementById(
-              state.mainPageState.trackedCardId,
-          );
-          // работаем, только если отслеживаемый элемент
-          // находися в области видимости пользователя
-          if (state.mainPageState.isLoading ||
-            trackedCard.getBoundingClientRect().y>Utils.getUserWindowHeight()) {
-            return;
-          }
-          console.log('scroll trigger');
-          uploadNextCards(state.mainPageState);
-        },
-      },
-    },
-  },
-  signupPopUp: {
-    href: '/signup',
-    name: 'Регистрация',
-    open: {
-      action: (props) => {
-        state.isRegistered = false;
-        signupModal(props);
-      },
-      props: {
-        onLogin: (props) => {
-          state.isAuthenticated = true;
-          state.userData = props;
-          state.headerLinks = headerLinksOnLogin;
-          setHeaderLinks(state.headerLinks);
-        },
-        isRegistered: false,
-      },
-    },
-  },
-  loginPopUp: {
-    href: '/login',
-    name: 'Авторизация',
-    open: {
-      action: (props) => {
-        state.isRegistered = true;
-        signupModal(props);
-      },
-      props: {
-        onLogin: (props) => {
-          state.isAuthenticated = true;
-          state.userData = props;
-          state.headerLinks = headerLinksOnLogin;
-          setHeaderLinks(state.headerLinks);
-        },
-        isRegistered: true,
-      },
-    },
-  },
-  profilePage: {
-    href: '/profile',
-    name: 'Профиль',
-    open: {
-      action: () => {
-        if (state.isAuthenticated) {
-          state.currentPage = 'profilePage';
-          profilePage(state.userData);
-        } else {
-          // TODO: popup
-          state.isRegistered = true;
-          signupPage({
-            onLogin: (props) => {
-              state.isAuthenticated = true;
-              state.headerLinks = headerLinksOnLogin;
-              state.userData = props;
-              profilePage(props);
-            },
-            isRegistered: true,
-          });
-        }
-      },
-      props: null,
-    },
-  },
-  logout: {
-    href: '/logout',
-    name: 'Выход',
-    open: {
-      action: () => {
-        if (state.isAuthenticated) {
-          logoutRequest((status) => {
-            if (status === Ajax.STATUS.ok) {
-              state.isAuthenticated = false;
-              state.headerLinks = headerLinksOnLogout;
-              setHeaderLinks(state.headerLinks);
-              console.log('logout successful');
-            }
-          });
-        }
-      },
-      props: null,
-    },
-  },
+// flux store
+import store from './flux/store.js';
 
-  // others navigations (apart menu)
+// Preload
+ImgPreloader.upload([
+  'static/img/background-space.png',
+  'static/img/background.png',
+  'static/img/icons/cross.svg',
+  'static/img/icons/eye-closed.svg',
+  'static/img/icons/eye-open.svg',
+  'static/img/icons/key.svg',
+  'static/img/icons/mail.svg',
+  'static/img/icons/username.svg',
+  'static/img/icons/like.svg',
+  'static/img/icons/like_hover.svg',
+  'static/img/icons/comment.svg',
+  'static/img/icons/comment_hover.svg',
+  'static/img/icons/share.svg',
+  'static/img/icons/share_hover.svg',
+  'static/img/icons/trash.svg',
+  'static/img/icons/trash_hover.svg',
+  'static/img/icons/search.svg',
+  'static/img/icons/search_hover.svg',
+  'static/img/icons/send.svg',
+  'static/img/icons/send.svg',
+]);
 
-  // auth form
-  changeRegFormType: {
-    open: {
-      action: (props) => {
-        state.isRegistered = !state.isRegistered;
-        props.isRegistered = state.isRegistered;
-        signupPage(props);
-      },
-      props: {
-        onLogin: (props) => {
-          state.isAuthenticated = true;
-          state.userData = props;
-          profilePage(props);
-        },
-      },
-    },
-  },
 
-  template: {
-    open: {
-      action: () => {
+// ServiceWorker
+const SWJSFile = 'serviceWorker.js';
 
-      },
-      props: null,
-    },
-  },
-};
-
-// ///////////////////////////////// //
-//
-//                utils
-//
-// ///////////////////////////////// //
-
-/**
- * Попытка аутентификации пользователя
- * через куки при загрузке приложения
- * @param {callback} onDone - метод, выполняюшийся
- * после получения ответа
- */
-function launchLogin(onDone) {
-  Ajax.post({
-    url: '/login',
-    body: {},
-    callback: (status, msg) => {
-      if (status === Ajax.STATUS.ok) {
-        state.isAuthenticated = true;
-        state.userData = JSON.parse(msg).data;
-        state.headerLinks = headerLinksOnLogin;
-        setHeaderLinks(state.headerLinks);
-      } else {
-        console.log('launchLogin failed');
-      }
-      onDone();
-    },
-  });
+if ('serviceWorker' in navigator && !disableSW) {
+  navigator.serviceWorker.register(SWJSFile, {scope: '/'})
+      .then((registration) => {
+        console.warn('sw registration on scope:', registration.scope);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+} else {
+  console.warn('ServiceWorker is unable in navigator');
 }
 
+const root = document.getElementById('root');
+const router = new Router(root);
+const linksController = new LinksController(root);
+// экран загрузки
+const loadingScreen = new LoadingPage();
+
+Warning.init();
 // ///////////////////////////////// //
 //
-//            Сама страница
+//        Настройки переходов
 //
 // ///////////////////////////////// //
+router
+    .register('/', MainPage)
+    .register('/profile', ProfilePage)
+    .registerPattern('/user/<login>', ProfilePage)
+    .registerPattern('/article/<id>', ReaderPage)
+    .register('/profile/settings', ProfileSettingsPage)
+    .register('/editor', EditorPage)
+    .registerPattern('/categories/<сategory>', CategoryPage)
+    .register('/categories', CategoryPage)
+    .register('/login', SignupPage)
+    .register('/search', SearchPage);
 
-// TODO: экран загрузки
-launchLogin(() => mainPage(configuration.mainPage.open.props));
+linksController
+    .register(
+        'signupModal',
+        SignupModal.show,
+        true,
+    )
+    .register(
+        'loginModal',
+        SignupModal.show,
+        false,
+    )
+    .register(
+        'logout',
+        () => {
+          if (store.getState().authorization.isAuthenticated) {
+            logoutRequest();
+          }
+        },
+    )
+    .register(
+        'back',
+        () => window.history.back(),
+    );
 
-// ///////////////////////////////// //
-//
-//     Общий глобальный обработчик
-//     действует только на ссылки
-//
-// ///////////////////////////////// //
-
-root.addEventListener('click', (e) => {
-  const {target} = e;
-
-  // проверям, что клик был по ссылке (anchor)
-  if (target instanceof HTMLAnchorElement) {
-    e.preventDefault();
-
-    if (routerDebug) {
-      console.log('targeter: ', target.dataset.section);
-    }
-
-    const props = configuration[target.dataset.section]?.open?.props;
-    const action = configuration[target.dataset.section]?.open?.action;
-    if (action !== undefined) {
-      if (target.dataset.section.indexOf('Page') !== -1) {
-        // дополнительные действия при переходе на другие страницы
-        switch (state.currentPage) {
-          case 'mainPage':
-            window.removeEventListener(
-                'scroll',
-                configuration.mainPage.open.props.newsFeedEndReachEventAction,
-                false,
-            );
-            break;
-          case 'profilePage':
-            console.log('u r leaving profilePage');
-            break;
-        }
-      }
-      action.call(null, props);
-    }
-  }
-});
+loadingScreen.start();
+(async function init() {
+  await cookieLogin();
+  await loadingScreen.end();
+  linksController.enable();
+  router.start();
+})();

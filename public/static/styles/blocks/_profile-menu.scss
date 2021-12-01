@@ -1,0 +1,61 @@
+$profile-menu-item-padding: 10px;
+$profile-menu-box-shadow: -10px 10px 10px rgba(0, 0, 0, 0.25);
+$profile-menu-padding: 5px;
+$profile-menu-bg-hover: $color-selection;
+$profile-menu-user-img-margin: 5px;
+$profile-menu-min-width: 180px;
+
+.user-preview {
+  @include col;
+
+  position: relative;
+  height: 100%;
+
+  &__links {
+    @include row;
+
+    justify-content: flex-end;
+    height: 100%;
+    min-width: $profile-menu-min-width;
+  }
+
+  &__user-img {
+    margin: $profile-menu-user-img-margin;
+  }
+
+  &:hover {
+    background-color: $profile-menu-bg-hover;
+
+    .profile-menu {
+      display: flex;
+    }
+  }
+}
+
+.profile-menu {
+  position: absolute;
+  top: $header-size;
+  display: none;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 100%;
+  box-shadow: $profile-menu-box-shadow;
+  background-color: $color-elements;
+
+  &__item {
+    padding: $profile-menu-item-padding;
+    width: -webkit-fill-available;
+    font-size: $font-size-normal;
+    color: $color-primary;
+    cursor: pointer;
+
+    &:hover {
+      color: $color-primary;
+      background-color: $color-selection;
+    }
+
+    &:active {
+      text-decoration: underline;
+    }
+  }
+}

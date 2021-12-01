@@ -1,0 +1,11 @@
+include _onAvatarErrorMixin
+
+.profile
+  .profile__info
+    +avatarMixin.profile__photo(src=`${avatarUrl}`)
+    .profile__description
+      .profile__username #{firstName} #{lastName} (#{login})
+      .profile__aboutme Обо мне:
+      | #{description}
+  if (!disableArticles)   
+    .profile__articles-title Статьи

@@ -1,22 +1,33 @@
-#sidebar.sidebar.col
-  .sidebar-menu
-    mixin sidebar-item(title, img_href)
-      .sidebar-item.row
-        img(src='static/img/sidebar-icons/' + img_href)
-        div=title
-
-    +sidebar-item("Популярное", "star.png")
-    +sidebar-item("Новое", "clock.png")
-    +sidebar-item("Подписки", "subscribes.png")
-    +sidebar-item("Мероприятия", "calendar.png")
-    +sidebar-item("Группы", "group.png")
-    +sidebar-item("Трансляции", "camera.png")
-    
-    .sidebar-line
-
-    +sidebar-item("IT-Новости", "question.png")
-    +sidebar-item("UX-Дизайн", "question.png")
-    +sidebar-item("Финансы", "question.png")
-    +sidebar-item("Техника", "question.png")
-    +sidebar-item("Медиа", "question.png")
-    +sidebar-item("Торговля", "question.png")
+.sidebar
+  .sidebar__nav-links
+    a(href="/editor").sidebar__nav-item
+      | Добавить  
+      br
+      | запись
+    .sidebar__nav-buttons#sidebarTopBlockContent !{topBlockContent}
+  .sidebar__content
+    .sidebar__categories
+      .sidebar__nav-items
+        include nav-items.pug
+      .sidebar__categories-title.sidebar__item Мнения
+      .sidebar__streams !{streams}
+      .sidebar__categories-title.sidebar__item
+        a(href='/categories') Категории
+      if Array.isArray(categoriesList)
+        each category, idx in categoriesList
+          if (idx < limit)
+            .sidebar__categories-item.sidebar__item
+              a(href=`/categories/${category}`) #{category}
+          else
+            .sidebar__categories-item.sidebar__item(style='display: none')
+              a(href=`/categories/${category}`) #{category}
+        .sidebar__categories-more.sidebar__item
+          .sidebar__categories-more-text Показать ещё
+          button.action-btns__arrow-icon.icon-small__img.sidebar__categories-more-btn.rotate-180
+    .sidebar-bottom_right
+      .contacts
+        .contacts__title Контакты
+        a.contacts__developer(data-router='outer' target="_blank" href='https://github.com/yurij-lyubskij') Юра
+        a.contacts__developer(data-router='outer' target="_blank" href='https://github.com/Svetlanlka') Света
+        a.contacts__developer(data-router='outer' target="_blank" href='https://github.com/Denactive') Денис
+        a.contacts__developer(data-router='outer' target="_blank" href='https://github.com/MollenAR') Лёша

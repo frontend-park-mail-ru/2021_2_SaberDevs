@@ -1,0 +1,38 @@
+/* border-radius nen не убирать - иначе стиль становится дефолтным */
+progress.progress__loading {
+  display: block;
+  margin-top: 80vh;
+  border-radius: 0;
+  width: 100%;
+  height: 10px;
+}
+
+/* стилизация фона */
+progress.progress__loading::-webkit-progress-bar {
+  background-color: transparent;
+}
+
+/* стилизация самого ползунка */
+progress.progress__loading::-webkit-progress-value {
+  background-color: #dee4ea;
+}
+
+/* вариант стилизации: зеленая полоска на белом фоне
+progress.progress__loading::-webkit-progress-bar {
+    background-color: beige;
+}
+progress.progress__loading::-webkit-progress-value {
+    background-color: green;
+    background-image: linear-gradient(green, lime);
+}
+*/
+
+/* для нехромоподобных браузеров */
+progress.progress__loading::-moz-progress-bar {
+  background-image: linear-gradient(rgb(6, 117, 6), rgb(8, 252, 8));
+  background-color: rgb(21, 116, 21);
+}
+
+.search__row_group_dropdown:hover .search__row_group_dropdown-content {
+  display: block;
+}

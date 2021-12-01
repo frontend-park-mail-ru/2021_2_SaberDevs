@@ -1,0 +1,75 @@
+@mixin search__button-before() {
+  content: "";
+  position: absolute;
+  left: 22px;
+  right: 0;
+  top: 22px;
+  bottom: 0;
+  margin: auto;
+  width: 12px;
+  height: 2px;
+  background: $color-elements;
+  transform: rotate(45deg);
+  transition: all 0.5s;
+}
+
+@mixin search__button-after() {
+  content: "";
+  position: absolute;
+  left: -5px;
+  right: 0;
+  top: -5px;
+  bottom: 0;
+  margin: auto;
+  border: 2px solid $color-elements;
+  border-radius: 50%;
+  width: 25px;
+  height: 25px;
+  transition: all 0.5s;
+}
+
+.search-icon {
+  &::before {
+    @include search__button-before;
+  }
+
+  &::after {
+    @include search__button-after;
+  }
+}
+
+.cross-icon {
+  background: $color-elements;
+
+  &::before {
+    @include search__button-before;
+
+    left: 0;
+    top: 0;
+    width: 25px;
+    background: $color-primary;
+  }
+
+  &::after {
+    @include search__button-after;
+
+    left: 0;
+    top: 0;
+    border: none;
+    border-radius: 0%;
+    width: 25px;
+    height: 2px;
+    background: $color-primary;
+    transform: rotate(-45deg);
+  }
+
+  &_white {
+    &::before {
+      background-color: $color-elements;
+    }
+
+    &::after {
+      background-color: $color-elements;
+    }
+  }
+}

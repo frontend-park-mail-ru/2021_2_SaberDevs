@@ -1,0 +1,41 @@
+$icon-size: 40px;
+$icon-font-size: 24px;
+$icon-small-size: 25px;
+$user-img: 60px;
+
+.icon {
+  @include row;
+
+  &__img {
+    width: $icon-size;
+    height: $icon-size;
+    cursor: pointer;
+  }
+
+  &__text {
+    font-size: $font-size-normal;
+  }
+}
+
+.icon-small {
+  @include row;
+
+  &__img {
+    width: $icon-small-size;
+    height: $icon-small-size;
+    background-size: cover;
+    cursor: pointer;
+  }
+
+  &__text {
+    font-size: $font-size-normal;
+  }
+}
+
+.user-img {
+  border: $border;
+  border-radius: $border-radius;
+  width: $user-img;
+  height: $user-img;
+  pointer-events: all;
+}

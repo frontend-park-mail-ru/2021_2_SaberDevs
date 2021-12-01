@@ -1,18 +1,34 @@
-.card(id=id).row
-  a.card-photo.row(href=commentsUrl)
-    img(src=previewUrl)
-  .card-content.col
-    .card-tags.row
-      each tag in tags.length ? tags : ['no tags']
-        .card-tag #{tag}
-    .card-text.col
-      .card-header #{title}
-      .card-description #{text}
-    .card-bottom.row
-      .card-user.row
-        img.card-user-photo(src=authorAvatar)
-        a.card-username(href=authorUrl) #{authorName}
-      .card-buttons.row
-        a(href=commentsUrl).comment-icon #{comments}
-        a.share-icon
-        a.like-icon #{likes}
+include _onAvatarErrorMixin
+mixin tagMixin(content, color, cross=false)
+  include tag.pug
+
+.card(id=`card${id}` style=`background: -webkit-gradient(linear, left top, left bottom, from(rgba(0, 0, 0, 0.7)), to(rgba(0, 0, 0, 0.7))), url(${previewUrl});
+background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url(${previewUrl});
+background-size: cover;
+background-repeat: no-repeat;`)
+  .card__top
+    .card__top-left
+      .card__time-category
+        .card__time #{datetime}
+        .card__category #{category}
+      .tags
+        if Array.isArray(tags)
+          each tag in tags
+            +tagMixin(tag.content, tag.color)
+    .card__author
+      +avatarMixin.card__author-photo(src=`${author.avatarUrl}`)
+      .author-name
+        if typeof author === 'object'
+          .author-name__login #{author.login}
+          .author-name__username #{author.firstName} #{author.lastName}
+  .card__content
+    a.preview__title #{title}
+    .card__description #{text}
+  .card__bottom
+    .action-btns
+      .icon.action-btns_m-right
+        .icon__text #{likes}
+        button.action-btns__likes-icon.icon__img
+      .icon
+        .icon__text #{comments}
+        button.action-btns__comments-icon.icon__img

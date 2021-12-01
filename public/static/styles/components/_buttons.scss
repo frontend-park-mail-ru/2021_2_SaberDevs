@@ -1,0 +1,34 @@
+$btn-font-size: 18px;
+$btn-padding: 10px 20px;
+
+.btn-more {
+  font-weight: $font-thin;
+  font-size: $font-size-normal;
+  cursor: pointer;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.btn {
+  &_color-elementary {
+    border-radius: $border-radius;
+    padding: $btn-padding;
+    box-shadow: $box-shadow;
+    font-size: $font-size-normal;
+    color: $color-elements;
+    background-color: $color-secondary;
+    cursor: pointer;
+
+    &:hover {
+      background-color: $color-secondary;
+      opacity: $button-opacity;
+    }
+
+    &:active {
+      border-color: $color-elements;
+      box-shadow: none;
+    }
+  }
+}

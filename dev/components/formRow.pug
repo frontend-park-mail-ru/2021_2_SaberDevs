@@ -1,0 +1,21 @@
+.form__row
+  .form__label #{label}
+  .form__field
+    if placeholder != undefined && pattern != undefined && required
+      input.form__input(type=`${type}` name=`${name}` placeholder=`${placeholder}` pattern=`${pattern}` required=`${required}`)
+    if placeholder != undefined && pattern != undefined && !required
+      input.form__input(type=`${type}` name=`${name}` placeholder=`${placeholder}` pattern=`${pattern}` required=false)
+    if placeholder != undefined && pattern == undefined && required
+      input.form__input(type=`${type}` name=`${name}` placeholder=`${placeholder}` required=`${required}`)
+    if placeholder != undefined && pattern == undefined && !required
+      input.form__input(type=`${type}` name=`${name}` required=false)
+    if placeholder == undefined && pattern != undefined && required
+      input.form__input(type=`${type}` name=`${name}` pattern=`${pattern}` required=`${required}`)
+    if placeholder == undefined && pattern != undefined && !required
+      input.form__input(type=`${type}` name=`${name}` pattern=`${pattern}` required=false)
+    if placeholder == undefined && pattern == undefined && required
+      input.form__input(type=`${type}` name=`${name}` required=`${required}`)
+    if placeholder == undefined && pattern == undefined && !required
+      input.form__input(type=`${type}` name=`${name}` required=false)
+    if eye == true
+      a.password__control-btn.control-password

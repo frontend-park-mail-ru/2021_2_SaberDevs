@@ -1,0 +1,33 @@
+.article-create
+  .article-create__title Создание статьи
+  form.article-create__form
+    .article-create__category_selector
+      .article-create__row
+        .article-create__label Выберите категорию
+    .article-create__right
+      button.btn_color-elementary.article-create__del-btn Удалить
+      button.btn_color-elementary.article-create__clear-btn Очистить
+    .article-create__rows
+      .article-create__row
+        .article-create__label Заголовок
+        .article-create__field
+          input(type="text" name="title").article-create__input
+      .article-create__row
+        .article-create__label Текст статьи
+        .article-create__field
+          textarea(name="text").article-create__input.article-create__text
+      .article-create__row
+        .article-create__label Теги
+        .article-create__tags-actions
+          input.article-create__input-tag(type="text" name="tag" maxlength=20)
+          button.article-create__add-tag +
+        .article-create__tags !{tags}
+    .article-create__right
+      input.btn_color-elementary(type='file' name='photo' value='Заставка')
+      input.btn_color-elementary(type='button' name='clear-photo' value='Удалить картинку')
+    .article-create__preview
+      .article-create__preview__title Предпросмотр:
+      .article-create__preview__content
+      .article-create__tags-actions
+    .article-create__right
+      input.btn_color-elementary(type='submit' name='btn-submit' value='Создать')

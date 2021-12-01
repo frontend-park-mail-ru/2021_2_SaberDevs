@@ -1,0 +1,98 @@
+$card-min-height: 300px;
+$card-padding: 30px;
+$card-title-margin-bottom: 30px;
+$tag-margin-right: 5px;
+
+.card {
+  @include col;
+
+  flex-grow: 1;
+  justify-content: space-between;
+  border: $border;
+  padding: $card-padding;
+  min-height: $card-min-height;
+
+  &__top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    width: 100%;
+  }
+
+  &__tag {
+    margin-right: $tag-margin-right;
+    font-size: $font-size-small;
+  }
+
+  &__title {
+    margin-bottom: $card-title-margin-bottom;
+    font-size: $font-size-large;
+    text-align: center;
+  }
+
+  &__description {
+    font-weight: $font-thin;
+    font-size: $font-size-normal;
+    margin-top: 15px;
+  }
+
+  &__content {
+    width: 100%;
+  }
+
+  &__bottom {
+    @include row;
+
+    justify-content: flex-end;
+    width: 100%;
+  }
+
+  &__author {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  &__author-photo {
+    margin-right: 10px;
+    width: 50px;
+    height: 50px;
+  }
+
+  &__time-category {
+    display: flex;
+  }
+
+  &__time {
+    margin-bottom: 5px;
+    font-size: $font-size-normal;
+  }
+
+  &__category {
+    margin-left: 20px;
+    font-weight: $font-thick;
+    font-size: $font-size-normal;
+    text-shadow: 0 0 10px $color-elements;
+  }
+
+  &:hover {
+    transform: translateY(-20px);
+    transition: transform 0.5s ease, -webkit-transform 0.5s ease, -moz-transform 0.5s ease;
+    cursor: pointer;
+  }
+}
+
+.author-name {
+  @include col;
+
+  align-items: flex-start;
+  min-width: 20%;
+
+  &__username {
+    font-size: $font-size-small;
+  }
+
+  &__login {
+    font-size: $font-size-normal;
+  }
+}

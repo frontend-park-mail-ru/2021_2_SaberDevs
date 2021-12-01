@@ -1,55 +1,62 @@
-import signupForm from '../components/signupForm.js';
-import createToMenuBtn from '../components/buttonToMenu.js';
+import BasePageMV from './basePageMV.js';
+import SignupPageView from './signupPageView.js';
 
+import store from '../flux/store.js';
+import {changePageActions} from '../flux/actions.js';
+import {authorizationTypes} from '../flux/types.js';
+
+import {redirect} from '../common/utils.js';
 // ///////////////////////////////// //
 //
-//          Globals
-//
-// ///////////////////////////////// //
-
-/**
- * Выполняется, если вход успешный
- * @callback loginCallback
- * @param {Object} props
- */
-
-// ///////////////////////////////// //
-//
-//         Page Content
+//         Signup Page
 //
 // ///////////////////////////////// //
 
 /**
- * импортирует root-элемент через замыкание
- *
- * Страница содержит главный компонент - форму регистрации
- * для нее обязательны следующие поля
- * @param {Object} props
- * @property {boolean} isRegistered - true, если нужно отобразить форму
- * для входа, false - для регистрации
- * @property {loginCallback} onLogin действие, которое будет выполнено после
- * успешного входа/регистрации
+ * @class SignupPage
  */
-export default function signupPage(props) {
-  if (propsDebug) console.log('signupPage props: ', JSON.stringify(props));
+export default class SignupPage extends BasePageMV {
+  /**
+   * @param {HTMLElement} root
+   */
+  constructor(root) {
+    super(root);
+    this.view = new SignupPageView(root);
+    this.showRegister = false;  // отображение формы логины
+    this.unsubscribeLogin = () => {};
+  }
 
-  document.title = 'SaberProject | ' + (!props.isRegistered? 'Sign Up':'Login');
-  // стираем старые элементы, чтобы нарисовать новые
-  root.innerHTML = '';
+  /**
+   * Отобразить подконтрольную страницу.
+   */
+  show() {
+    super.show();
+    this.showRegister = false;
+    this.unsubscribeLogin = store.subscribe(
+        authorizationTypes.LOGIN,
+        () => {
+          redirect('/');
+        },
+    );
 
-  // форма
-  const form = signupForm(props);
+    this.view.changeFormTypeBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      this.showRegister = !this.showRegister;
+      this.view.switchFormType(this.showRegister);
+    });
+    store.dispatch(
+        changePageActions.changePage(
+            'signup',
+            `SaberProjects | ${this.showRegister? 'Signup' : 'Login'}`,
+        ),
+    );
+  }
 
-  // Элементы навигации
-  const backBtn = createToMenuBtn();
-
-  const changeFormTypeBtn = document.createElement('a');
-  changeFormTypeBtn.textContent =
-    props.isRegistered ? 'Создать аккаунт' : 'У меня уже есть аккаунт';
-  changeFormTypeBtn.href = !props.isRegistered ? '/login' : '/register';
-  changeFormTypeBtn.dataset.section = 'changeRegFormType';
-
-  root.appendChild(form);
-  root.appendChild(changeFormTypeBtn);
-  root.appendChild(backBtn);
+  /**
+   * Скрыть подконтрольную страницу
+   */
+  hide() {
+    super.hide();
+    this.unsubscribeLogin();
+  }
 }

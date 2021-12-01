@@ -1,0 +1,27 @@
+.preview
+  .preview__top
+    .card__top-left
+      .card__time-category
+              .card__time #{datetime}
+              .card__category #{category}
+    .card__author
+      .author-name
+        .author-name__login #{login}
+        .author-name__username #{firstName} #{lastName}
+      //- img.card__author-photo(src=`${avatarUrl || 'static/img/users/user_icon_loading.svg'}`)
+  .preview__content
+    .tags
+      //- TODO: new tag mixin as in card.pug
+      if Array.isArray(tags)
+        each tag in tags.length ? tags : []
+          .tags__tag.preview__tag #{tag}     
+    a.preview__title #{title}
+    .preview__description #{text}
+  .card__bottom
+    .action-btns
+      .icon.action-btns_m-right
+        .icon__text #{likes}
+        button.action-btns__likes-icon.icon__img
+      .icon
+        .icon__text #{comments}
+        button.action-btns__comments-icon.icon__img

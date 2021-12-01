@@ -1,0 +1,45 @@
+$preview-min-height: 400px;
+$preview-padding: 30px 60px;
+$preview-title-font-size: 48px;
+$preview-tags-font-size: 14px;
+
+.preview {
+  @include col;
+
+  align-items: flex-start;
+  justify-content: space-between;
+  padding: $preview-padding;
+  width: 90%;
+  min-height: $preview-min-height;
+  font-weight: $font-thin;
+
+  &__top {
+    @include right;
+
+    justify-content: space-between;
+  }
+
+  &__title {
+    margin-bottom: $card-title-margin-bottom;
+    font-weight: $font-thick;
+    font-size: $font-size-large;
+  }
+
+  &__content {
+    width: 100%;
+  }
+
+  &__description {
+    font-size: $font-size-normal;
+    margin-top: 15px;
+  }
+
+  &__tag {
+    font-size: $font-size-normal;
+    cursor: pointer;
+  }
+
+  &__time {
+    font-size: $font-size-normal;
+  }
+}

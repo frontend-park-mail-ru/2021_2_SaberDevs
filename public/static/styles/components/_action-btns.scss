@@ -1,0 +1,81 @@
+.action-btns {
+  @include row;
+
+  &_m-right {
+    margin-right: $action-btns-margin-right;
+  }
+
+  &__likes-icon {
+    background: $img-icon-like;
+    background-size: cover;
+
+    &:hover {
+      background-image: $img-icon-like-hover;
+    }
+  }
+
+  &__comments-icon {
+    background: $img-icon-comments;
+    background-size: cover;
+
+    &:hover {
+      background-image: $img-icon-comments-hover;
+    }
+  }
+
+  &__share-icon {
+    background: $img-icon-share;
+    background-size: cover;
+
+    &:hover {
+      background-image: $img-icon-share-hover;
+    }
+  }
+
+  &__trash-icon {
+    background: $img-icon-trash;
+    background-size: cover;
+
+    &:hover {
+      background-image: $img-icon-trash-hover;
+    }
+  }
+
+  &__search-icon {
+    background: $img-icon-search;
+    background-size: cover;
+
+    &:hover {
+      background-image: $img-icon-search-hover;
+    }
+  }
+
+  &__menu-icon {
+    position: absolute;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    z-index: 4;
+    display: none;
+    margin: auto;
+    border-radius: $border-radius;
+    width: 50px;
+    height: 50px;
+    background: $img-icon-menu;
+    background-size: cover;
+  }
+
+  &__arrow-icon {
+    background: $img-icon-arrow;
+    background-size: cover;
+  }
+
+  &__send-icon {
+    background: $img-icon-send;
+    background-size: cover;
+
+    &:hover {
+      opacity: 0.5;
+    }
+  }
+}

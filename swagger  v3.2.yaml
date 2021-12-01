@@ -1,0 +1,767 @@
+openapi: 3.0.1
+info:
+  title: SaberDevs VC.RU
+  description: SD test server.
+  version: 1.0.0
+externalDocs:
+  description: Find out more about project
+  url: https://github.com/frontend-park-mail-ru/2021_2_SaberDevs/tree/dev
+servers:
+- url: https://dno.ru/
+- url: http://dno.ru/
+tags:
+- name: article
+  description: операции над статьями
+- name: img
+  description: операции над фотками
+- name: user
+  description: операции над пользователями и их сессиями
+- name: comment
+  description: комментарий и все. Че тут описывать
+- name: search
+  description: апишка для поиска
+paths:
+  /api/v1/user/login:
+    post:
+      tags:
+      - user
+      summary: user login
+      description: Вход в систему
+      requestBody:
+        description: user data for signing in
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserLogIn'
+        required: true
+      responses:
+        200:
+          description: successful operation
+          headers:
+            Set-Cookie:
+              description: HTTP-only cookie and time left before expire
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserAuth'
+        400:
+          description: Логин или пароль неверные
+        405:
+          description: Невалидные данные
+      x-codegen-request-body-name: body
+  /api/v1/user/signup:
+    post:
+      tags:
+      - user
+      summary: user registration
+      description: Регистрация в системе
+      operationId: ""
+      requestBody:
+        description: user data for signing up
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserSignUp'
+        required: true
+      responses:
+        200:
+          description: успешная регистрация
+          headers:
+            Set-Cookie:
+              description: HTTP-only cookie and time left before expire
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserAuth'
+        400:
+          description: Логин или пароль неверные или Логин уже занят
+        405:
+          description: Невалидные данные
+      x-codegen-request-body-name: body
+  /api/v1/user:
+    get:
+      tags:
+      - user
+      summary: Find user with login
+      description: Returns a common user data
+      operationId: ""
+      parameters:
+      - name: user
+        in: query
+        description: Login of user to return
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserProfile'
+        400:
+          description: Невалидный логин
+        404:
+          description: Пользователь не найдет
+  /api/v1/user/profile/update:
+    post:
+      tags:
+      - user
+      summary: Редактирование профиля текущего авторизованного пользователя
+      description: This can only be done by the logged in user.
+      requestBody:
+        description: поля, которые доступно изменять пользователю
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserSignUpFull'
+        required: true
+      responses:
+        200:
+          description: ок
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserProfile'
+        401:
+          description: Нет прав для изменения профиля
+  /api/v1/user/logout:
+    post:
+      tags:
+      - user
+      summary: Logs out current logged in user session
+      description: This can only be done by the logged in user
+      operationId: ""
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+  /api/v1/articles/feed:
+    get:
+      tags:
+      - article
+      summary: Новостная лента
+      operationId: ""
+      parameters:
+      - name: idLastLoaded
+        in: query
+        description: start point in news feed
+        required: true
+        schema:
+          type: string
+      - name: login
+        in: query
+        description: news for what user
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: ОК
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ArticlePreview'
+        400:
+          description: Невалидный логин
+        401:
+          description: Нет доступа к данным пользователя
+        404:
+          description: Пользователь не найден или Статья не найдена
+  /api/v1/articles:
+    get:
+      tags:
+      - article
+      summary: Просмотр статьи
+      parameters:
+      - name: id
+        in: query
+        description: ID статьи для просмотра
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: ОК
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Article'
+        404:
+          description: Статья не найдена
+  /api/v1/articles/tags:
+    get:
+      tags:
+      - article
+      summary: Finds news by tags
+      description: Muliple tags can be provided with comma separated strings. Use         tag1,
+        tag2, tag3 for testing.
+      parameters:
+      - name: tag
+        in: query
+        description: Tags to filter by
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description:  ОК
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ArticlePreview'
+        404:
+          description: Not found
+  /api/v1/articles/category:
+    get:
+      tags:
+      - article
+      summary: Finds news by category
+      parameters:
+      - name: category
+        in: query
+        description: category to filter by
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description:  ОК
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ArticlePreview'
+        404:
+          description: Not found
+    
+  /api/v1/articles/author:
+    get:
+      tags:
+      - article
+      summary: Finds news by author
+      parameters:
+      - name: login
+        in: query
+        description: author login to filter by
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description:  ОК
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ArticlePreview'
+        404:
+          description: Not found
+  /api/v1/articles/create:
+    post:
+      tags:
+      - article
+      summary: Загрузка новой статьи
+      requestBody:
+        description: содержание статьи, заголовок, теги, категория
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ArticleEditorCreate'
+        required: true
+      responses:
+        200:
+          description: ОК
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: 29
+        401:
+          description: Нет прав на добавление статьи
+  /api/v1/articles/delete:
+    post:
+      tags:
+      - article
+      summary: Удаление существующей статьи
+      parameters:
+      - name: id
+        in: query
+        description: ID статьи, с которой работаем
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: ОК
+        401:
+          description: Нет прав на удаление статьи
+        404:
+          description: Статья не найдена
+  /api/v1/articles/update:
+    post:
+      tags:
+      - article
+      summary: Изменение существующей статьи
+      requestBody:
+        description: айди, измененные содержание статьи, заголовок, теги, категория
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ArticleEditorUpdate'
+        required: true
+      responses:
+        200:
+          description: ОК
+        401:
+          description: Нет прав на изменение статьи
+        404:
+          description: Статья не найдена
+          
+  /api/v1/img/upload:
+    post:
+      tags:
+      - img
+      description: Загрузка фото. ВНИМАНИЕ! до 5 мБ
+      requestBody:
+        content: 
+          multipart/form-data: # Media type
+            schema:
+              type: object
+              properties: # Request parts
+                img:
+                  type: string
+                  format: binary
+            encoding: # The same level as schema
+              profileImage: # Property name (see above)
+                contentType: image/png, image/jpeg
+      responses:
+        200:
+          description: ОК
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  imgId:
+                    type: string
+        401:
+          description: Нет прав на загрузку картинки
+        413:
+          description: Превышен размер 5 Мб
+        400:
+          description: Отправили не png/jpg/
+  /api/v1/img/{pathname}:
+    get:
+      tags:
+      - img
+      description: Загрузка фото
+      parameters:
+        - in: path
+          name: pathname
+          schema:
+            type: string
+          required: true
+          description: hash картинки
+      responses:
+        200:
+          description: ОК
+        401:
+          description: Нет прав на добавление статьи
+          
+  /api/v1/comments:
+    get:
+      tags:
+      - comment
+      description: Загрузка комментариев к записи с id
+      parameters:
+        - in: query
+          name: id
+          schema:
+            type: string
+          required: true
+          description: айди статьи
+      responses:
+        200:
+          description: ОК
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Comment'
+
+  /api/v1/comments/create:
+    post:
+      tags:
+      - comment
+      description: Создание комментариев к записи с articleId
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CommentCreate'
+        required: true
+      responses:
+        200:
+          description: ОК
+        401:
+          description: Не авторизован, чтобы оставлять мнение
+  /api/v1/comments/update:
+    post:
+      tags:
+      - comment
+      description: изменение комментария
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CommentUpdate'
+        required: true
+      responses:
+        200:
+          description: ОК
+        401:
+          description: Не имеешь право, чтобы что-то менять
+
+  /api/v1/search/articles:
+    get:
+      tags:
+      - search
+      description: поиск по содержанию статей
+      parameters:
+      - name: q
+        in: query
+        description: строка
+        required: true
+        schema:
+          type: string
+      - name: idLastLoaded
+        in: query
+        description: start point in news feed
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: ОК
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ArticlePreview'
+        404:
+          description: Пользователь не найден или Статья не найдена
+  /api/v1/search/author:
+    get:
+      tags:
+      - search
+      description: поиск по авторам
+      parameters:
+      - name: q
+        in: query
+        description: имя / фамилия / логин
+        required: true
+        schema:
+          type: string
+      - name: idLastLoaded
+        in: query
+        description: start point in news feed
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: ОК
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/UserProfile'
+        404:
+          description: Пользователь не найден или Статья не найдена
+  /api/v1/search/tags:
+    get:
+      tags:
+      - search
+      description: поиск статей по тегам
+      parameters:
+      - name: q
+        in: query
+        description: строка
+        required: true
+        schema:
+          type: string
+      - name: idLastLoaded
+        in: query
+        description: start point in news feed
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: ОК
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ArticlePreview'
+        404:
+          description: Пользователь не найден или Статья не найдена
+
+components:
+  schemas:
+    UserProfile:
+      description: Данные профиля другого пользователя
+      type: object
+      properties:
+        login:
+          type: string
+        firstName:
+          type: string
+        lastName:
+          type: string
+        avatarUrl:
+          type: string
+        score:
+          type: integer
+          description: Popularity rating
+          format: int64
+    UserSignUp:
+      description: Отправить для регистрации
+      type: object
+      properties:
+        login:
+          type: string
+        email:
+          type: string
+        password:
+          type: string
+    UserSignUpFull:
+      type: object
+      description: Изменение данных профиля пользователя
+      properties:
+        password:
+          type: string
+        firstName:
+          type: string
+        lastName:
+          type: string
+        avatar:
+          type: string
+          description: хеш, который получил, загрузив картинку предварительно
+    UserLogIn:
+      description: Отправить для авторизации
+      type: object
+      properties:
+        login:
+          type: string
+        password:
+          type: string
+    UserAuth:
+      type: object
+      description: Данные текущего авторизованного пользователя
+      properties:
+        avatarUrl:
+          type: string
+        email:
+          type: string
+        login:
+          type: string
+        firstName:
+          type: string
+        lastName:
+          type: string
+        score:
+          type: integer
+          description: Popularity rating
+          format: int64
+            
+    Tag:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+          
+    Article:
+      type: object
+      properties:
+        datetime:
+          type: string
+          description: дата и время публикации в виде строки hh::mm dd::mm::yyyy
+        id:
+          type: string
+        title:
+          type: string
+        text:
+          type: string
+          description: HTML-верстка содержания
+        author:
+          $ref: '#/components/schemas/UserProfile'
+        comments:
+          type: integer
+          description: Number of comments
+          format: int64
+        likes:
+          type: integer
+          description: Popularity rating
+          format: int64
+        category:
+          type: string
+        tags:
+          type: array
+          items:
+            type: string
+    ArticlePreview:
+      type: object
+      properties:
+        id:
+          type: string
+        previewUrl:
+          type: string
+          description: сжатая (или нет) картинка
+        title:
+          type: string
+        text:
+          type: string
+          description: текст начала содержания
+        author:
+          $ref: '#/components/schemas/UserProfile'
+        datetime:
+          type: string
+          description: дата и время публикации в виде строки hh::mm dd::mm::yyyy
+        comments:
+          type: integer
+          description: Number of comments
+          format: int64
+        likes:
+          type: integer
+          description: Popularity rating
+          format: int64
+        category:
+          type: string
+        tags:
+          type: array
+          items:
+            type: string
+    ArticleEditorCreate:
+      type: object
+      properties:
+        title:
+          type: string
+        text:
+          type: string
+        category:
+          type: string
+        img:
+          type: string
+          description: hash предварительно загруженной картинки
+        tags:
+          type: array
+          items:
+            type: string
+    ArticleEditorUpdate:
+      type: object
+      properties:
+        id:
+          type: string
+        title:
+          type: string
+        text:
+          type: string
+        category:
+          type: string
+        img:
+          type: string
+          description: hash предварительно загруженной картинки
+        tags:
+          type: array
+          items:
+            type: string
+            
+
+    Comment:
+      type: object
+      properties:
+        text:
+          type: string
+        articleId:
+          type: string
+        parentId:
+          type: string
+        id:
+          type: string
+        dateTime:
+          type: string
+        isEdited:
+          type: boolean
+        author:
+          $ref: '#/components/schemas/UserProfile'
+    CommentCreate:
+      type: object
+      properties:
+        text:
+          type: string
+        articleId:
+          type: string
+        parentId:
+          type: string
+          description: 0, если нет родителя
+    CommentUpdate:
+      type: object
+      properties:
+        id:
+          type: string
+          description: айди комментария
+        text:
+          type: string
+
+    ApiResponse:
+      type: object
+      properties:
+        status:
+          type: integer
+          format: int64
+        data:
+          type: object
+          properties: {}
+        msg:
+          type: string
+          
+  securitySchemes:
+    petstore_auth:
+      type: oauth2
+      flows:
+        implicit:
+          authorizationUrl: http://petstore.swagger.io/oauth/dialog
+          scopes:
+            write:pets: modify pets in your account
+            read:pets: read your pets
+    api_key:
+      type: apiKey
+      name: api_key
+      in: header

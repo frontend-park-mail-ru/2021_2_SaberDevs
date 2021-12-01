@@ -1,0 +1,99 @@
+$comments-input-font-size: 24px;
+$comments-input-padding: 5px 10px;
+$comment-margin-top: 25px;
+$comment-photo-size: 60px;
+$comment-photo-border: 1px solid $color-elements;
+$comment-author-name-font-size: 24px;
+$comment-description-margin-left: 20px;
+
+.comments {
+  transition: 0.5s;
+
+  &__comment {
+    margin-top: $comment-margin-top;
+  }
+}
+
+.comments-show {
+  @include row;
+
+  justify-content: center;
+  margin-top: 1em;
+  cursor: pointer;
+
+  &__text {
+    margin-left: 0.3em;
+    font-size: $font-size-normal;
+  }
+}
+
+.inner-comment {
+  margin-left: 4rem;
+}
+
+.comment-answer-input {
+  margin-bottom: 2.5rem;
+}
+
+.comment {
+  margin-bottom: 1rem;
+
+  &__content {
+    display: flex;
+  }
+
+  &__author-photo {
+    border: $comment-photo-border;
+    border-radius: $border-radius;
+    width: $comment-photo-size;
+    height: $comment-photo-size;
+  }
+
+  &__description {
+    @include col;
+
+    align-items: flex-start;
+    margin-left: $comment-description-margin-left;
+  }
+
+  &__author-name {
+    font-weight: $font-thick;
+    font-size: $font-size-normal;
+  }
+
+  &__text {
+    font-size: $font-size-normal;
+  }
+
+  &__bottom {
+    @include right;
+  }
+
+  &__answer-btn {
+    font-size: $font-size-small;
+    color: $color-elements;
+    cursor: pointer;
+
+    &:hover {
+      color: $color-secondary;
+    }
+  }
+
+  &__edit-btn {
+    font-size: $font-size-small;
+    color: $color-elements;
+    cursor: pointer;
+
+    &:hover {
+      color: $color-secondary;
+    }
+  }
+
+  &__answers {
+    margin-left: 20px;
+  }
+
+  &__time {
+    font-size: $font-size-small;
+  }
+}

@@ -1,3 +1,10 @@
-a.row(href='#{url}')
-    .user-name.m-10 #{name}
-    a#user-img.user-img(href='#{img}')
+include _onAvatarErrorMixin
+
+.user-preview
+  a.user-preview__links(href='/profile')
+    .sidebar__nav-item(data-router='ignore') #{login}
+    //- TODO: firstName
+    +avatarMixin.user-img.user-preview__user-img(src=`${avatarUrl}` data-router='ignore')
+  .profile-menu
+      a.profile-menu__item(href='/profile/settings') Настройки
+      a.profile-menu__item(data-section='logout') Выйти
