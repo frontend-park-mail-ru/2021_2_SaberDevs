@@ -1,5 +1,27 @@
+@mixin card-padding() {
+  @media (min-width: 901px) {
+    padding: 2rem;
+  }
+  @media (max-width: 900px) {
+    padding: 0.5rem;
+  }
+}
+
+@mixin card-author-icon-size() {
+  @media (min-width: 901px) {
+    width: 50px;
+    height: 50px;
+  }
+  @media (max-width: 900px) {
+    width: 30px;
+    height: 30px;
+  }
+}
+
+@mixin card-inline-margin-horizontal {
+  margin-right: 20px;
+}
 $card-min-height: 300px;
-$card-padding: 30px;
 $card-title-margin-bottom: 30px;
 $tag-margin-right: 5px;
 
@@ -9,8 +31,9 @@ $tag-margin-right: 5px;
   flex-grow: 1;
   justify-content: space-between;
   border: $border;
-  padding: $card-padding;
+  @include card-padding;
   min-height: $card-min-height;
+  background-position: center center; 
 
   &__top {
     display: flex;
@@ -21,18 +44,18 @@ $tag-margin-right: 5px;
 
   &__tag {
     margin-right: $tag-margin-right;
-    font-size: $font-size-small;
+    @include font-size-small;
   }
 
   &__title {
     margin-bottom: $card-title-margin-bottom;
-    font-size: $font-size-large;
+    @include font-size-large;
     text-align: center;
   }
 
   &__description {
     font-weight: $font-thin;
-    font-size: $font-size-normal;
+    @include font-size-normal;
     margin-top: 15px;
   }
 
@@ -55,23 +78,23 @@ $tag-margin-right: 5px;
 
   &__author-photo {
     margin-right: 10px;
-    width: 50px;
-    height: 50px;
+    @include card-author-icon-size;
   }
 
   &__time-category {
     display: flex;
+    margin-bottom: 5px;
   }
 
   &__time {
-    margin-bottom: 5px;
-    font-size: $font-size-normal;
+    @include card-inline-margin-horizontal;
+    @include font-size-normal;
   }
 
   &__category {
-    margin-left: 20px;
     font-weight: $font-thick;
-    font-size: $font-size-normal;
+    @include font-size-normal;
+    white-space: nowrap;
     text-shadow: 0 0 10px $color-elements;
   }
 
@@ -89,10 +112,10 @@ $tag-margin-right: 5px;
   min-width: 20%;
 
   &__username {
-    font-size: $font-size-small;
+    @include font-size-small;
   }
 
   &__login {
-    font-size: $font-size-normal;
+    @include font-size-normal;
   }
 }

@@ -1,4 +1,24 @@
 $header-size: 75px;
+$header-size-mobile: 55px;
+
+@mixin header-height() {
+  @media (min-width: 901px) {
+    height: $header-size;
+  }
+  @media (max-width: 900px) {
+    height: $header-size-mobile;
+  }
+}
+
+@mixin header-height-offset() {
+  @media (min-width: 901px) {
+    top: $header-size;
+  }
+  @media (max-width: 900px) {
+    top: $header-size-mobile;
+  }
+}
+
 $padding-nav-item: 10px;
 $title-font-size: 36px;
 $profile-menu-items: 30px;

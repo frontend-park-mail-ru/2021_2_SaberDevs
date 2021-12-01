@@ -25,8 +25,10 @@ export default function createPage(title, ...elements) {
   const pageDiv = document.createElement('div');
   pageDiv.className = 'page';
   const pageTitleDiv = document.createElement('div');
-  pageTitleDiv.className = 'page_title';
-  pageTitleDiv.textContent = title;
+  if (title) {
+    pageTitleDiv.className = 'page_title';
+    pageTitleDiv.textContent = title;
+  }
   const contentDiv = document.createElement('div');
   contentDiv.className = 'content';
 

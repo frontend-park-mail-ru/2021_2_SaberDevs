@@ -10,9 +10,9 @@
   &__nav-links {
     @include row;
 
-    height: $header-size;
+    @include header-height;
     font-family: $font-primary;
-    font-size: $font-size-normal;
+    @include font-size-normal;
     background-color: $color-secondary;
     width: 100%;
   }
@@ -38,7 +38,7 @@
 
   &__categories-title {
     margin-right: 5px;
-    font-size: $font-size-large;
+    @include font-size-large;
 
     &:hover {
       text-decoration: underline;
@@ -47,7 +47,7 @@
   }
 
   &__categories-item {
-    font-size: $font-size-normal;
+    @include font-size-normal;
     cursor: pointer;
 
     &:hover {
@@ -58,7 +58,7 @@
   &__categories-more {
     @include row;
 
-    font-size: $font-size-small;
+    @include font-size-small;
     cursor: pointer;
   }
 
@@ -80,7 +80,7 @@
     justify-content: center;
     padding: 10px;
     height: -webkit-fill-available;
-    font-size: $font-size-normal;
+    @include font-size-normal;
     text-align: center;
 
     &:hover {
@@ -143,12 +143,12 @@
   align-items: flex-end;
 
   &__title {
-    font-size: $font-size-large;
+    @include font-size-large;
     cursor: default;
   }
 
   &__developer {
-    font-size: $font-size-normal;
+    @include font-size-normal;
     cursor: pointer;
 
     &:hover {

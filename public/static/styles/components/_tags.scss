@@ -29,7 +29,7 @@
     border-radius: $border-radius;
     padding: $tag-padding;
     box-sizing: border-box;
-    font-size: $font-size-normal;
+    @include font-size-normal;
 
     &_clicked {
       border: 2px solid $color-elements;

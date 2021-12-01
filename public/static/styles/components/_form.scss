@@ -30,7 +30,7 @@ $form-padding: 70px;
     border-radius: $border-radius;
     padding: $input-padding;
     width: -webkit-fill-available;
-    font-size: $font-size-normal;
+    @include font-size-normal;
     color: $color-primary;
     background-color: $color-elements;
 
@@ -45,7 +45,7 @@ $form-padding: 70px;
     padding: $submit-btn-padding;
     width: 100%;
     box-sizing: border-box;
-    font-size: $font-size-normal;
+    @include font-size-normal;
     color: $color-primary;
     background-color: $color-elements;
     cursor: pointer;
@@ -62,7 +62,7 @@ $form-padding: 70px;
     padding: $input-padding;
     width: -webkit-fill-available;
     box-shadow: 0 0 25px $color-warning;
-    font-size: $font-size-normal;
+    @include font-size-normal;
     hyphens: auto;
     color: $color-warning;
     background-color: $color-elements;
@@ -73,7 +73,7 @@ $form-padding: 70px;
   }
 
   &__title {
-    font-size: $font-size-large;
+    @include font-size-large;
   }
 
   &__page {

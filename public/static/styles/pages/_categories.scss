@@ -6,7 +6,7 @@ $categories-margin: 20px;
   width: 50%;
 
   &__title {
-    font-size: $font-size-large;
+    @include font-size-large;
   }
 
   &__search {
@@ -23,7 +23,7 @@ $categories-margin: 20px;
     padding: 5px 10px;
     width: 80%;
     height: 100%;
-    font-size: $font-size-normal;
+    @include font-size-normal;
     color: $color-primary;
     background-color: $color-elements;
   }

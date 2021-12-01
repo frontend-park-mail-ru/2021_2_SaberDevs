@@ -4,22 +4,112 @@ $color-sidebar: #313030;
 $color-elements: #dee4ea;
 $color-warning: #bb1717;
 $color-selection: rgba(0, 0, 0, 0.2);
+
+// ///////////////////////////////// //
+//
+//               Fonts
+//
+// ///////////////////////////////// //
 $font-primary: "Roboto", sans-serif;
 $font-secondary: "Roboto", sans-serif;
 $font-logo: "Signika Negative", sans-serif;
 $font-thin: 300;
 $font-thick: 400;
-$font-size-small: 1rem;
-$font-size-normal: 1.5rem;
-$font-size-big: 2rem;
-$font-size-large: 2.5rem;
-$font-size-extreme: 3rem;
+@mixin font-size-small() {
+  @media (min-width: 901px) {
+    font-size: 1rem;
+  }
+  @media (max-width: 900px) {
+    font-size: 0.7rem;
+  }
+}
+@mixin font-size-normal() {
+  @media (min-width: 901px) {
+    font-size: 1.5rem;
+  }
+  @media (max-width: 900px) {
+    font-size: 1rem;
+  }
+}
+@mixin font-size-big() {
+  @media (min-width: 901px) {
+    font-size: 2rem;
+  }
+  @media (max-width: 900px) {
+    font-size: 1.4rem;
+  }
+}
+@mixin font-size-large() {
+  @media (min-width: 901px) {
+    font-size: 2.5rem;
+  }
+  @media (max-width: 900px) {
+    font-size: 1.75rem;
+  }
+}
+@mixin font-size-extreme() {
+  @media (min-width: 901px) {
+    font-size: 3rem;
+  }
+  @media (max-width: 900px) {
+    font-size: 2rem;
+  }
+}
+@mixin font-size-small() {
+  @media (min-width: 901px) {
+    font-size: 1rem;
+  }
+  @media (max-width: 900px) {
+    font-size: 0.7rem;
+  }
+}
+
+// ///////////////////////////////// //
+//
+//         Main Blocks Layout
+//
+// ///////////////////////////////// //
 $page-top: 30px;
 $screen-width: 1440px;
 $border-radius: 5px;
 $border: 2px solid $color-primary;
 $box-shadow: 0 0 5px rgba(0, 0, 0, 0.25);
 $button-opacity: 0.5;
+
+
+// ///////////////////////////////// //
+//
+//           Images & Icons
+//
+// ///////////////////////////////// //
+@mixin icon() {
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center center;
+}
+
+@mixin icon-size() {
+  @media (min-width: 901px) {
+    width: 40px;
+    height: 40px;
+  }
+  @media (max-width: 900px) {
+    width: 30px;
+    height: 30px;
+  }
+}
+
+@mixin icon-size-small() {
+  @media (min-width: 901px) {
+    width: 25px;
+    height: 25px;
+  }
+  @media (max-width: 450px) {
+    width: 20px;
+    height: 20px;
+  }
+}
+
 $img-bg: url("Static/img/background-img.png");
 $img-bg-space: url("Static/img/background-space.png");
 $img-bg2: url("Static/img/background-img.png");

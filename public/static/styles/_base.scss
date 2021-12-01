@@ -20,8 +20,9 @@ body,
 
 .background {
   padding-top: $page-top;
-  background: $img-bg bottom;
-  background-size: 100%;
+  background: $img-bg;
+  background-repeat: no-repeat;
+  background-size: cover;
 }
 
 .background-space {
@@ -29,7 +30,6 @@ body,
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding-top: $page-top;
   background: $img-bg-space bottom;
   background-size: cover;
   background-repeat: no-repeat;
@@ -65,7 +65,7 @@ body,
   @include col;
 
   width: 100%;
-  font-size: $font-size-large;
+  @include font-size-large;
   margin-bottom: 15px;
 }
 
@@ -83,24 +83,24 @@ body,
 }
 
 .page-space {
-  position: fixed;
+  @include col;
+  justify-content: center;
   display: flex;
   height: 100%;
+  width: 80%;
   max-width: $screen-width;
   font-family: "Roboto", sans-serif;
   backdrop-filter: blur(5px);
 }
 
 .content-space {
-  position: absolute;
-  left: 50%;
-  top: 50%;
   padding: 1.5%;
   min-width: 15%;
   min-height: 20%;
   max-width: 55%;
   max-height: 50%;
-  transform: translate(-50%, -50%) scale(1);
+  @include col;
+
 }
 
 .hide {

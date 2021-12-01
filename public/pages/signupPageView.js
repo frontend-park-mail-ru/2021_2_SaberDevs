@@ -38,7 +38,10 @@ export default class SignupPageView extends BasePageView {
     logoDiv.innerHTML = 'SaberNews';
     logoDiv.className = 'header__title';
     logoDiv.href = '/';
-    logoDiv.style.cssText = 'position: absolute;';
+    // TODO: разобраться на мобилке
+    // logoDiv.style.cssText = 'position: absolute;' +
+    // 'top: 0; left: 50%; transform: translate(-75%, 0) scale(1);';
+    logoDiv.style.cssText = 'position: absolute; top: 30px;';
 
     // //////////////////////////////////
 

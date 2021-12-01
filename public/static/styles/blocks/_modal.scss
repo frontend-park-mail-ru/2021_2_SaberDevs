@@ -46,13 +46,13 @@ $window-filter: drop-shadow(0 0 10px rgba(0, 0, 0, 0.5));
   &__content {
     @include col;
 
-    font-size: $font-size-normal;
+    @include font-size-normal;
   }
 
   &__header {
     margin-bottom: $title-margin-bottom;
     font-family: $font-secondary;
-    font-size: $font-size-large;
+    @include font-size-large;
     text-align: center;
   }
 
@@ -87,7 +87,7 @@ $window-filter: drop-shadow(0 0 10px rgba(0, 0, 0, 0.5));
     border: $border;
     border-radius: $border-radius;
     padding: 10px;
-    font-size: $font-size-normal;
+    @include font-size-normal;
     color: $color-elements;
     background-color: $color-secondary;
 

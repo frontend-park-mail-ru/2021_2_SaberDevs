@@ -17,11 +17,11 @@
 
   &__author-name {
     margin-left: 10px;
-    font-size: $font-size-normal;
+    @include font-size-normal;
   }
 
   &__text {
     margin-top: 5px;
-    font-size: $font-size-small;
+    @include font-size-small;
   }
 }

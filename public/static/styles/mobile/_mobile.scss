@@ -9,12 +9,18 @@
 
   .header__nav-item {
     margin: 10px 0;
-    font-size: $font-size-big;
+    @include font-size-big;
 
     &:hover {
       text-decoration: underline;
       background-color: $color-sidebar;
     }
+  }
+}
+
+@media (min-width: 901px) {
+  .sidebar {
+    display: flex;
   }
 }
 
@@ -38,8 +44,12 @@
   }
 }
 
-@media (min-width: 900px) {
-  .sidebar {
-    display: flex;
+@media (max-width: 450px) {
+  .card__time {
+    display: none;
+  }
+
+  .tags__tag {
+    padding: 2px;
   }
 }

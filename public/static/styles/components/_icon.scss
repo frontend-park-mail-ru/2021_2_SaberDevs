@@ -1,19 +1,15 @@
-$icon-size: 40px;
-$icon-font-size: 24px;
-$icon-small-size: 25px;
 $user-img: 60px;
 
 .icon {
   @include row;
 
   &__img {
-    width: $icon-size;
-    height: $icon-size;
+    @include icon-size;
     cursor: pointer;
   }
 
   &__text {
-    font-size: $font-size-normal;
+    @include font-size-normal;
   }
 }
 
@@ -21,14 +17,13 @@ $user-img: 60px;
   @include row;
 
   &__img {
-    width: $icon-small-size;
-    height: $icon-small-size;
-    background-size: cover;
+    @include icon-size-small;
+    @include icon;
     cursor: pointer;
   }
 
   &__text {
-    font-size: $font-size-normal;
+    @include font-size-normal;
   }
 }
 
