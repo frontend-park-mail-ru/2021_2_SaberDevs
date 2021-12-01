@@ -4,7 +4,7 @@ const mime = require('mime/lite');
 
 // ///////////////////////////////// //
 //
-//            Globals
+//               Globals
 //
 // ///////////////////////////////// //
 
@@ -17,7 +17,19 @@ const ip = '192.168.0.31';
 // локальная разработка
 // const ip = 'localhost';
 
-const page404 = fs.readFileSync('./dist/404.html');
+// ///////////////////////////////// //
+//
+//           Application
+//
+// ///////////////////////////////// //
+
+// /////////   WebPack   ///////// //
+const NO_WEB_PACK = false;
+
+const appRootDir = NO_WEB_PACK ? 'public' : 'dist';
+const index = (NO_WEB_PACK ? 'index-no-webpack' : 'index') + '.html';
+
+const page404 = fs.readFileSync('./'+ appRootDir + '/404.html');
 const CORS = '*';
 
 const appPages = [
@@ -62,7 +74,7 @@ const server = http.createServer((req, res) => {
   let path = req.url;
   console.log('request', path);
   if (appPages.indexOf(path) !== -1) {
-    path = 'index.html';
+    path = index;
   }
 
   // не найдено в путях приложения, проверить
@@ -72,7 +84,7 @@ const server = http.createServer((req, res) => {
       return;
     }
     if (pattern.test(path)) {
-      path = 'index.html';
+      path = index;
     }
   });
 
@@ -84,8 +96,12 @@ const server = http.createServer((req, res) => {
     }
   }
 
+  if (path === 'index.html') {
+    path = index;
+  }
+
   // обработка апи. Если урл есть в массиве APIUrls, то это апи
-  fs.readFile(`./dist/${path}`, (err, data) => {
+  fs.readFile(`./${appRootDir}/${path}`, (err, data) => {
     if (err) {
       // вот тут отдать страничку 404
       data = page404;

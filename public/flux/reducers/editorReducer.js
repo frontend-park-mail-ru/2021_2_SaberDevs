@@ -43,7 +43,7 @@ export default function editorReducer(state = InitialEditorState, action) {
     case editorTypes.CLEAR_ARTICLE:
       return {
         ...state,
-        [action.payload.id]: {
+        [state.currentId]: {
           title: '',
           text: '',
           tags: [],
@@ -75,28 +75,22 @@ export default function editorReducer(state = InitialEditorState, action) {
       stateCopy.currentId = 0;
       return stateCopy;
 
-    case editorTypes.SAVE_ARTICLE:
-      let currentStateCopySaveArticle = {};
-      if (action.payload.id in state) {
-        Object.assign(currentStateCopySaveArticle, state[action.payload.id]);
-      } else {
-        currentStateCopySaveArticle = {
-          title: '',
-          text: '',
-          tags: [],
-          category: '',
-          img: '',
-        };
-      }
-      currentStateCopySaveArticle = {
-        ...currentStateCopySaveArticle,
-        ...action.payload,
-      };
-      delete currentStateCopySaveArticle.id;
+    case editorTypes.SAVE_TEXT:
+      const saveTextStateCopy = Object.assign({}, state[state.currentId]);
+      saveTextStateCopy.text = action.payload;
       return {
         ...state,
-        [action.payload.id]: currentStateCopySaveArticle,
+        [state.currentId]: saveTextStateCopy,
       };
+
+    case editorTypes.SAVE_TITLE:
+      const saveTitleStateCopy = Object.assign({}, state[state.currentId]);
+      saveTitleStateCopy.title = action.payload;
+      return {
+        ...state,
+        [state.currentId]: saveTitleStateCopy,
+      };
+
     case editorTypes.PUBLISH_ARTICLE:
       return {
         ...state,
@@ -111,6 +105,7 @@ export default function editorReducer(state = InitialEditorState, action) {
         },
         currentId: 0,
       };
+
     case editorTypes.APPEND_TAG:
       const currentIdStateCopy = Object.assign({}, state[state.currentId]);
       currentIdStateCopy.tags.push(action.payload);
@@ -118,6 +113,7 @@ export default function editorReducer(state = InitialEditorState, action) {
         ...state,
         [state.currentId]: currentIdStateCopy,
       };
+
     case editorTypes.REMOVE_TAG:
       const currentStateCopyRemove = Object.assign({}, state[state.currentId]);
       currentStateCopyRemove.tags =
@@ -126,6 +122,7 @@ export default function editorReducer(state = InitialEditorState, action) {
         ...state,
         [state.currentId]: currentStateCopyRemove,
       };
+
     case editorTypes.SAVE_PREVIEW:
       const currentStateCopySavePreview = {...state[state.currentId]};
       currentStateCopySavePreview.img = action.payload;
@@ -133,6 +130,7 @@ export default function editorReducer(state = InitialEditorState, action) {
         ...state,
         [state.currentId]: currentStateCopySavePreview,
       };
+
     case editorTypes.SAVE_CATEGORY:
       const currentStateCopySaveCategory = {...state[state.currentId]};
       currentStateCopySaveCategory.category = action.payload;

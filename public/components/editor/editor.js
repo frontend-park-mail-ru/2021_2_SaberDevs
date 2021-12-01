@@ -110,6 +110,32 @@ export default class Editor extends BaseComponent {
     //
     // //////////////////////////////////
 
+    // игнор клика ентер на инпутах
+    this.root.querySelectorAll('input').forEach((el) => {
+      el.addEventListener('keydown', (e) => {
+        if (e.keyCode === 13) {
+          e.preventDefault();
+          const ct = e.currentTarget;
+          ct.blur();
+          if (ct.classList.contains('article-create__input-tag')) {
+            const tag = ct.value.trim().replace(/\s+/g, '_');
+            // Проверка, а есть ли уже такой тег?
+            const state = store.getState().editor;
+            if (tag === '' || state[state.currentId].tags.includes(tag)) {
+              return;
+            }
+            store.dispatch(editorActions.appendTag(tag));
+            this.view.appendTag(
+                tag,
+                () => store.dispatch(editorActions.removeTag(tag)),
+            );
+            ct.value = '';
+          }
+        }
+      });
+    });
+
+
     // кнопка добавления тега
     const tagInput = this.root.querySelector('input.article-create__input-tag');
     this.root.querySelector('.article-create__add-tag').addEventListener(
@@ -136,15 +162,12 @@ export default class Editor extends BaseComponent {
 
     // Сохранение введенного пользователем текста onChange
     // Этот евент не рейзится, если textValue меняется программой
-    const textInputChangeListener = (e) => {
-      const title = titleInput.value;
-      const text = textareaInput.value;
-      store.dispatch(editorActions.saveArticle(
-          store.getState().editor.currentId, {title, text},
-      ));
-    };
-    textareaInput.addEventListener('change', textInputChangeListener);
-    titleInput.addEventListener('input', textInputChangeListener);
+    titleInput.addEventListener('input', (e) => {
+      store.dispatch(editorActions.saveTitle(titleInput.value));
+    });
+    textareaInput.addEventListener('change', (e) => {
+      store.dispatch(editorActions.saveText(textareaInput.value));
+    });
 
     // Дублирование измененного текста на превью
     textareaInput.addEventListener('input', (e) => {
@@ -165,6 +188,7 @@ export default class Editor extends BaseComponent {
               'Вы собираетесь очистить всё',
               'Продолжив, Вы безвозвратно сотрете то, что написали',
               () => {
+                store.dispatch(editorActions.clearArticle());
                 this.clear();
               });
         });
@@ -361,6 +385,7 @@ export default class Editor extends BaseComponent {
       img: '',
       category: '',
     });
+    this.view.clearTags();
   }
 
   /**

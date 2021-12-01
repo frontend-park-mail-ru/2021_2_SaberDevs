@@ -6,6 +6,7 @@ const cacheUrls = [
   './404.html',
   './favicon.ico',
   './globals.js',
+  './index-no-webpack.html',
   './index.html',
   './main.js',
   './serviceWorker.js',

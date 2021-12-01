@@ -1,6 +1,7 @@
 'use strict';
 
 import {disableSW} from './globals.js';
+// если WebPack не используется, закомменть строку ниже
 import './static/styles/style.scss';
 
 // pages

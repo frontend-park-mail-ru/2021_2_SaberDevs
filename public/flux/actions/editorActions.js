@@ -18,10 +18,9 @@ import {appendApiImg} from '../../common/transformApi.js';
  * @param {string} id
  * @return {Action}
  */
-function clearArticle(id) {
+function clearArticle() {
   return {
     type: editorTypes.CLEAR_ARTICLE,
-    payload: id,
   };
 }
 
@@ -85,32 +84,24 @@ function deleteArticle(id) {
 }
 
 /**
- * @param {number} id - id, полученный с сервера,
- *                      либо 0, если запись только создается
- * @param {Object?} article
- * @property {string} title
- * @property {string} text
- * @property {Array<string>?} tags
- * @property {number?} dateTime
- * @property {string}  category
- * @property {string}  img
- * @property {string?} author
- * @property {number?} likes
- * @property {number?} comments
+ * @param {string} title
  * @return {Action}
  */
-function saveArticle(id, article) {
-  appendApiImg(article);
+function saveTitle(title) {
   return {
-    type: editorTypes.SAVE_ARTICLE,
-    payload: {
-      id,
-      title: article.title,
-      text: article.text,
-      tags: Array.isArray(article.tags) ? article.tags : [],
-      img: article.img || '',
-      category: article.category || '',
-    },
+    type: editorTypes.SAVE_TITLE,
+    payload: title,
+  };
+}
+
+/**
+ * @param {string} text
+ * @return {Action}
+ */
+function saveText(text) {
+  return {
+    type: editorTypes.SAVE_TEXT,
+    payload: text,
   };
 }
 
@@ -183,12 +174,13 @@ const editorActions = {
   clearArticle,
   editArticle,
   publishArticle,
-  saveArticle,
   deleteArticle,
   appendTag,
   removeTag,
   saveImg,
   clearImg,
+  saveTitle,
+  saveText,
   saveCategory,
   clearCategory,
 };
