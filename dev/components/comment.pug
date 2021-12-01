@@ -1,4 +1,5 @@
 include _onAvatarErrorMixin
+
 .comment(id=`${id}` data-author=`${author.login}`)
   .comment__content
     +avatarMixin.comment__author-photo(src=`${author.avatarUrl}`)

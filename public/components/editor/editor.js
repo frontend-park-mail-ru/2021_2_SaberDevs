@@ -274,9 +274,7 @@ export default class Editor extends BaseComponent {
               reject(new Error(response.msg));
             }
           }))
-          .then((data) => {
-            // TODO: пофиксте API
-            const id = data.match(/\d/);
+          .then((id) => {
             store.dispatch(editorActions.publishArticle(id));
             ModalTemplates.informativeMsg(
                 'Успех!', `Статья успешно ${isUpdate?'изменена' : 'создана'}`,

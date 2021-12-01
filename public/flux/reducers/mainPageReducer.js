@@ -22,9 +22,7 @@ const endOfFeedMarkerID = 'end';
 const InitialMainPageState = {
   isAuthenticated: false,
   isLoading: false,              // отправлен ли запрос на сервер
-  // TODO: убрать костыль
   idLastLoaded: '',              // запоминаем последнюю загруженную запись
-  idLastLoaded: 0,              // запоминаем последнюю загруженную запись
   lastScrollPos: 0,              // скрол для возврата к той же записи
   cards: [],                     // массив загруженных новостей
   isEndFound: false,
@@ -54,6 +52,13 @@ export default function mainPageReducer(state = InitialMainPageState, action) {
       };
     case mainPageTypes.SAVE_NEW_CARDS:
       const cards = action.payload.cards;
+      cards.forEach((element) => {
+        if (!Array.isArray(element.tags)) {
+          console.warn('API Error | server return ' +
+            'tags which do not represent an array');
+          element.tags = [];
+        }
+      });
       if (cards.length === 0) {
         return {
           ...state,
@@ -69,9 +74,7 @@ export default function mainPageReducer(state = InitialMainPageState, action) {
       return {
         ...state,
         isLoading: false,
-        // TODO: убрать костыль
-        // idLastLoaded: cards[cards.length - 1]?.id || state.idLastLoaded,
-        idLastLoaded: state.idLastLoaded + (cards.length || 0),
+        idLastLoaded: cards[cards.length - 1]?.id || state.idLastLoaded,
         cards: state.cards.concat(cards),
         isEndFound,
       };
@@ -80,8 +83,6 @@ export default function mainPageReducer(state = InitialMainPageState, action) {
         ...state,
         cards: [],
         isLoading: false,
-        // TODO: убрать костыль
-        // idLastLoaded: '',
         idLastLoaded: '',
         lastScrollPos: 0,
         isEndFound: false,
