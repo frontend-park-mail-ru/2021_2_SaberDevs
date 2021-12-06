@@ -4,7 +4,10 @@ include _onAvatarErrorMixin
   .comment__content
     +avatarMixin.comment__author-photo(src=`${author.avatarUrl}`)
     .comment__description
-      .comment__author-name #{author.lastName} #{author.firstName}
+      if (author.lastName !=='' || author.firstName !== '')
+        .comment__author-name #{author.lastName} #{author.firstName}
+      else
+        .comment__author-name #{author.login}
       .comment__text #{text}
   .comment__bottom
     .action-btns

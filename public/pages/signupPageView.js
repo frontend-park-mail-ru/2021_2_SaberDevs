@@ -34,14 +34,6 @@ export default class SignupPageView extends BasePageView {
     const contentDiv = document.createElement('div');
     contentDiv.className = 'content-space';
     const formDiv = document.createElement('div');
-    const logoDiv = document.createElement('a');
-    logoDiv.innerHTML = 'SaberNews';
-    logoDiv.className = 'header__title';
-    logoDiv.href = '/';
-    // TODO: разобраться на мобилке
-    // logoDiv.style.cssText = 'position: absolute;' +
-    // 'top: 0; left: 50%; transform: translate(-75%, 0) scale(1);';
-    logoDiv.style.cssText = 'position: absolute; top: 30px;';
 
     // //////////////////////////////////
 
@@ -51,6 +43,11 @@ export default class SignupPageView extends BasePageView {
     changeFormTypeBtn.dataset.router = 'ignore';
 
     // форма
+    const logoDiv = document.createElement('a');
+    logoDiv.innerHTML = 'SaberNews';
+    logoDiv.className = 'header__title';
+    logoDiv.href = '/';
+
     formDiv.appendChild(new SignupForm(false).render());
 
     // //////////////////////////////////
@@ -60,9 +57,9 @@ export default class SignupPageView extends BasePageView {
 
     // //////////////////////////////////
 
+    contentDiv.appendChild(logoDiv);
     contentDiv.appendChild(formDiv);
     contentDiv.appendChild(changeFormTypeBtn);
-    pageDiv.appendChild(logoDiv);
     pageDiv.appendChild(contentDiv);
     bkgDiv.appendChild(pageDiv);
     this.root.appendChild(bkgDiv);

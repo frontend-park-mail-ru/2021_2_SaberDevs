@@ -5,6 +5,9 @@ import store from '../../flux/store.js';
 import searchActions from '../../flux/actions/searchActions.js';
 
 import {redirect} from '../../common/utils.js';
+
+import MobileLayoutUtils from '../../common/mobileLayout.js';
+
 /**
  * ViewModel-компонент соответсвующего View
  * @class Header
@@ -131,6 +134,7 @@ export default class Header extends BaseComponent {
     const searchRow = this.root.querySelector('.search__row');
     console.log('{Header} searchField close');
     navItems.style.pointerEvents = 'all';
+    this.root.querySelector('.header__title-block').style.display = 'flex';
     searchBtn.classList.add('search-icon');
     searchBtn.classList.remove('cross-icon');
     searchRow.classList.add('search__row_close');
@@ -148,6 +152,9 @@ export default class Header extends BaseComponent {
     const searchInput = this.root.querySelector('.search__input');
     console.log('{Header} searchField open');
     navItems.style.pointerEvents = 'none';
+    if (MobileLayoutUtils.isDeviceTablet()) {
+      this.root.querySelector('.header__title-block').style.display = 'none';
+    }
     searchBtn.classList.remove('search-icon');
     searchBtn.classList.add('cross-icon');
     searchRow.classList.remove('search__row_close');

@@ -31,10 +31,10 @@ export default function composeCards(root, cards) {
     appendApiImg(element);
     appendApiImg(element.author);
     const cardWrapper = document.createElement('div');
-    const tags = element.tags.map((tag) => ({
+    const tags = Array.isArray(element.tags) ? element.tags.map((tag) => ({
       content: tag,
       color: genRanHexColor(),
-    }));
+    })) : [];
     cardWrapper.innerHTML = cardComponent({
       ...element,
       tags,
