@@ -108,13 +108,9 @@ export default class CategoryChoiceBar extends BaseComponent {
       categoryDiv.onmouseout = ({currentTarget}) => {
         currentTarget.style.borderColor = 'transparent';
       };
-      // categoryDiv.style.borderColor = 'transparent';
       if (categoryDiv.textContent === currentCategory) {
         categoryDiv.style.borderColor = categoryDiv.firstChild.style.color;
         categoryDiv.onmouseout = undefined;
-        // ({currentTarget}) => {
-        //   currentTarget.style.borderColor=currentTarget.firstChild.style.color;
-        // };
       }
     });
   }

@@ -3,7 +3,21 @@
     .header__title(data-router='ignore') SaberNews
   .header__content
     .header__nav-items
-      include nav-items.pug
+      a.header__nav-item
+        .header__nav-item-sign Популярное
+      a.header__nav-item
+        .header__nav-item-sign Новое
+      a.header__nav-item
+        .header__nav-item-sign Подписки
+      a.header__nav-item
+        .header__nav-item-sign Мероприятия
+      a.header__nav-item
+        .header__nav-item-sign Группы
+      //- a.header__nav-item Трансляции
+
+    a.header__add-article-btn
+      .header__add-article-btn-sign Добавить запись
+    
     .search
       .search__row.search__row_close(style='transition: all 0.5s;')
         input(type='text' placeholder='Найти').search__input

@@ -19,14 +19,20 @@
 }
 
 $card-min-height: 300px;
-$card-title-margin-bottom: 30px;
-$tag-margin-right: 5px;
+$card-element-margin-bottom: 15px;
+$card-title-margin-extra: calc(10px + $card-element-margin-bottom) 0;
+$card-top-margin-bottom: calc($card-element-margin-bottom - $tag-margin-bottom);
+
+
+
+
 
 .card {
   @include col;
 
   flex-grow: 1;
   justify-content: space-between;
+  align-items: flex-start;
   border: $border;
   @include card-padding;
   min-height: $card-min-height;
@@ -36,36 +42,27 @@ $tag-margin-right: 5px;
     display: flex;
     align-items: flex-start;
     justify-content: space-between;
+    margin-bottom: $card-top-margin-bottom;
     width: 100%;
   }
 
-  &__tag {
-    margin-right: $tag-margin-right;
-    @include font-size-small;
-  }
-
   &__title {
-    margin-bottom: $card-title-margin-bottom;
+    font-weight: $font-thick;
     @include font-size-large;
     text-align: center;
+    margin: $card-title-margin-extra;
   }
 
   &__description {
     font-weight: $font-thin;
     @include font-size-normal;
-    margin-top: 15px;
-  }
-
-  &__content {
-    width: 100%;
-    margin-bottom: 10px;
+    margin-bottom: $card-element-margin-bottom;
   }
 
   &__bottom {
     @include row;
-
-    justify-content: flex-end;
     width: 100%;
+    justify-content: flex-end;
   }
 
   &__author {

@@ -23,9 +23,8 @@ background-repeat: no-repeat;`)
         if typeof author === 'object'
           .author-name__login #{author.login}
           .author-name__username #{author.firstName} #{author.lastName}
-  .card__content
-    a.preview__title #{title}
-    .card__description #{text}
+  .card__title #{title}
+  .card__description #{text}
   .card__bottom
     .action-btns
       .icon.action-btns_m-right

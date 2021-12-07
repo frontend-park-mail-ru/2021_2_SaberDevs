@@ -60,29 +60,17 @@ export default class Sidebar extends BaseComponent {
     super.render();
     const state = store.getState().authorization;
 
-    let topBlockContent = '';
-    if (!state.isAuthenticated) {
-      topBlockContent += buttonNavComponent({
-        data_section: 'loginModal',
-        name: 'Логин',
-      });
-      topBlockContent += buttonNavComponent({
-        data_section: 'signupModal',
-        name: 'Регистрация',
-      });
-    } else {
-      topBlockContent = userPreviewComponent({
-        login: state.login,
-        avatarUrl: state.avatarUrl,
-      });
-    }
     const comments = [...store.getState().stream.comments].reverse();
     this.root = this.view.render(
-        topBlockContent,
         categoriesList,
         displayedDefaultLimit,
         comments,
     );
+    if (!state.isAuthenticated) {
+      this.setSidebarSignupButtons();
+    } else {
+      this.setSidebarUserPreview();
+    }
     this.view.root.querySelector('a.sidebar__nav-item').addEventListener(
         'click',
         () => store.dispatch(editorActions.createArticle()),
@@ -119,14 +107,14 @@ export default class Sidebar extends BaseComponent {
    * Заполнить верхний блок сайдбара кнопками "войти / зарегистрироваться"
    */
   setSidebarSignupButtons() {
-    let topBlockContent = buttonNavComponent({
+    const topBlockContent = buttonNavComponent({
       data_section: 'loginModal',
-      name: 'Логин',
+      name: 'Вход и регистрация',
     });
-    topBlockContent += buttonNavComponent({
-      data_section: 'signupModal',
-      name: 'Регистрация',
-    });
+    // topBlockContent += buttonNavComponent({
+    //   data_section: 'signupModal',
+    //   name: 'Регистрация',
+    // });
     this.view.setTopBlockContent(topBlockContent);
   }
 

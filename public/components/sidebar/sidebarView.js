@@ -15,13 +15,12 @@ export default class SidebarView extends BaseComponentView {
   }
 
   /**
-    * @param {string} topBlockContent - вид верхнего блока
     * @param {string} categoriesList
     * @param {string} limit
     * @param {Array<Comment>} comments
     * @return {HTMLElement}
     */
-  render(topBlockContent, categoriesList, limit, comments) {
+  render(categoriesList, limit, comments) {
     let streams = '';
     comments.forEach((element) => {
       const streamComment = streamCommentComponent(element);
@@ -30,7 +29,6 @@ export default class SidebarView extends BaseComponentView {
 
     const wrapper = document.createElement('div');
     wrapper.innerHTML = sidebarComponent({
-      topBlockContent,
       categoriesList,
       limit,
       streams,
