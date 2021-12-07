@@ -92,7 +92,7 @@
   &__nav-buttons {
     display: flex;
     align-items: center;
-    height: 100%;
+    @include header-height;
   }
 
   &__streams {

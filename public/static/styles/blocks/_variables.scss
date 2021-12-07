@@ -10,6 +10,17 @@ $header-size-mobile: 55px;
   }
 }
 
+@mixin header-search-btn-size() {
+  @media (min-width: 901px) {
+    height: $header-size;
+    width: $header-size;
+  }
+  @media (max-width: 900px) {
+    height: $header-size-mobile;
+    width: $header-size-mobile;
+  }
+}
+
 @mixin header-height-offset() {
   @media (min-width: 901px) {
     top: $header-size;

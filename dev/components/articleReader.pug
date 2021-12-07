@@ -1,17 +1,24 @@
+include categoryMixin
+
 .article-view
   .article-view__content
     .article-view__top
       a(id='article-change-btn' style='display:none').article-view__back-btn Изменить
       a(data-section='back').article-view__back-btn Назад
     .article-view__author-time
+      +categoryMixin(category.content, category.color)
       if typeof author === "object"
         .article-view__author 
-          a(href=`/user/${author.login}`) #{author.login}
+          a(href=`/user/${author.login}`)
+            if (!author.firstName || !author.lastName)
+              | #{author.login}
+            else
+              | #{author.firstName} #{author.lastName}
       else
         .article-view__author Ошибка
       .article-view__time #{datetime}
-      .article-view__category
-        a(href=`/categories/${category}`) #{category}
+      //- .article-view__category
+        +categoryMixin(category.content, category.color)
     .article-view__title #{title}
     .article-view__info
       .article-view__tags

@@ -107,14 +107,14 @@ export default class Sidebar extends BaseComponent {
    * Заполнить верхний блок сайдбара кнопками "войти / зарегистрироваться"
    */
   setSidebarSignupButtons() {
-    const topBlockContent = buttonNavComponent({
+    let topBlockContent = buttonNavComponent({
       data_section: 'loginModal',
-      name: 'Вход и регистрация',
+      name: 'Войти',
     });
-    // topBlockContent += buttonNavComponent({
-    //   data_section: 'signupModal',
-    //   name: 'Регистрация',
-    // });
+    topBlockContent += buttonNavComponent({
+      data_section: 'signupModal',
+      name: 'Регистрация',
+    });
     this.view.setTopBlockContent(topBlockContent);
   }
 

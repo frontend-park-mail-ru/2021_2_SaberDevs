@@ -354,7 +354,7 @@ export default class Reader extends BaseComponent {
       );
 
       // активируем кнопку изменения у комментариев, принадлежащих
-      // текущему юзеру});
+      // текущему юзеру;
       const authLogin = store.getState().authorization.login;
       if (authLogin === comment.author.login || layoutDebug) {
         createCommentChangeListener(commentDiv, comment);
@@ -502,7 +502,10 @@ function commentsShowAction(root) {
 
   if (hide) {
     comments.classList.add('hide');
+    const delay = 550;
+    setTimeout(() => comments.style.position = 'absolute', delay);
   } else {
+    comments.style.position = 'relative';
     comments.classList.remove('hide');
   }
 }

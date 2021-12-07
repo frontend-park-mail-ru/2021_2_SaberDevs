@@ -23,10 +23,6 @@ $card-element-margin-bottom: 15px;
 $card-title-margin-extra: calc(10px + $card-element-margin-bottom) 0;
 $card-top-margin-bottom: calc($card-element-margin-bottom - $tag-margin-bottom);
 
-
-
-
-
 .card {
   @include col;
 

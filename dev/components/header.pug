@@ -15,18 +15,23 @@
         .header__nav-item-sign Группы
       //- a.header__nav-item Трансляции
 
-    a.header__add-article-btn
-      .header__add-article-btn-sign Добавить запись
-    
-    .search
-      .search__row.search__row_close(style='transition: all 0.5s;')
-        input(type='text' placeholder='Найти').search__input
-        .search__row_group_dropdown
-          input(type='text' placeholder='где?' readonly).search__row_group_bar
-          .search__row_group_dropdown-content
-            .search__row_group_dropdown-item(data-search="articles") Статьи
-            .search__row_group_dropdown-item(data-search="author") Пользователи
-            .search__row_group_dropdown-item(data-search="tags") Теги
-        .search__row_btn
-      button.search__button.search-icon
-      button.action-btns__menu-icon.icon__img
+    .header__right-block
+      a.header__add-article-btn(href="/editor")
+        .header__add-article-btn-sign
+          | Добавить
+          br
+          | запись
+      .header__search-btn
+        .search
+          .search__row.search__row_close(style='transition: all 0.5s;')
+            input(type='text' placeholder='Найти').search__input
+            .search__row_group_dropdown
+              input(type='text' placeholder='где?' readonly).search__row_group_bar
+              .search__row_group_dropdown-content
+                .search__row_group_dropdown-item(data-search="articles") Статьи
+                .search__row_group_dropdown-item(data-search="author") Пользователи
+                .search__row_group_dropdown-item(data-search="tags") Теги
+            .search__row_btn
+          button.search__button.search-icon
+      .header__search-btn-mobile-hideble
+        button.action-btns__menu-icon.icon__img

@@ -32,7 +32,8 @@ export default class Header extends BaseComponent {
     this.root = this.view.render();
 
     const searchBtn = this.root.querySelector('.search__button');
-    const menuBtn = this.root.querySelector('.action-btns__menu-icon');
+    const menuBtn = this.root
+        .querySelector('.header__search-btn-mobile-hideble');
     const searchInput = this.root.querySelector('.search__input');
     const searchRow = this.root.querySelector('.search__row');
     const groupOptions = this.root.querySelector(
@@ -97,12 +98,11 @@ export default class Header extends BaseComponent {
 
       const sidebar = document.querySelector('.sidebar');
       const searchBtn = document.querySelector('.search__button');
-      const menuBtnThis = document.querySelector('.action-btns__menu-icon');
       const overlay = document.querySelector('.modal__overlay');
 
       if (!searchBtn.classList.contains('hide')) {
         searchBtn.classList.add('hide');
-        menuBtnThis.classList.add('hide');
+        e.currentTarget.classList.add('hide');
         overlay.style.opacity = '1';
         overlay.style.visibility = 'visible';
 
@@ -111,13 +111,13 @@ export default class Header extends BaseComponent {
 
         overlay.addEventListener('click', (e) => {
           e.preventDefault();
-          hideSidebar();
+          this.hideSidebar();
         });
 
         const widthMatch = window.matchMedia('(min-width: 900px)');
         widthMatch.addEventListener('change', (e) => {
           e.preventDefault();
-          hideSidebar();
+          this.hideSidebar();
         });
       }
     });
@@ -132,7 +132,10 @@ export default class Header extends BaseComponent {
     const searchBtn = this.root.querySelector('.search__button');
     const navItems = this.root.querySelector('.header__nav-items');
     const searchRow = this.root.querySelector('.search__row');
+    const addArticleBtn = this.root.querySelector('a.header__add-article-btn');
     console.log('{Header} searchField close');
+
+    addArticleBtn.classList.remove('hide');
     navItems.style.pointerEvents = 'all';
     this.root.querySelector('.header__title-block').style.display = 'flex';
     searchBtn.classList.add('search-icon');
@@ -150,7 +153,10 @@ export default class Header extends BaseComponent {
     const navItems = this.root.querySelector('.header__nav-items');
     const searchRow = this.root.querySelector('.search__row');
     const searchInput = this.root.querySelector('.search__input');
+    const addArticleBtn = this.root.querySelector('a.header__add-article-btn');
+
     console.log('{Header} searchField open');
+    addArticleBtn.classList.add('hide');
     navItems.style.pointerEvents = 'none';
     if (MobileLayoutUtils.isDeviceTablet()) {
       this.root.querySelector('.header__title-block').style.display = 'none';
@@ -162,26 +168,27 @@ export default class Header extends BaseComponent {
     searchInput.focus();
     searchInput.select();
     this.isOpen = true;
-  };
-}
-
-/**
- * Прячет сайдбар
- */
-function hideSidebar() {
-  const searchBtn = document.querySelector('.search__button');
-  const menuBtnThis = document.querySelector('.action-btns__menu-icon');
-  const overlay = document.querySelector('.modal__overlay');
-  const screen = document.querySelector('.screen');
-  const sidebar = document.querySelector('.sidebar');
-
-  searchBtn.classList.remove('hide');
-  menuBtnThis.classList.remove('hide');
-  overlay.style.opacity = '0';
-  overlay.style.visibility = 'hidden';
-
-  if (sidebar) {
-    screen.appendChild(sidebar);
   }
-  overlay.innerHTML = overlay.innerHTML;
-}
+
+  /**
+   * Прячет сайдбар
+   */
+  hideSidebar() {
+    const searchBtn = this.root.querySelector('.search__button');
+    const menuBtnThis = this.root
+        .querySelector('.header__search-btn-mobile-hideble');
+    const overlay = this.root.querySelector('.modal__overlay');
+    const screen = this.root.querySelector('.screen');
+    const sidebar = this.root.querySelector('.sidebar');
+
+    searchBtn.classList.remove('hide');
+    menuBtnThis.classList.remove('hide');
+    overlay.style.opacity = '0';
+    overlay.style.visibility = 'hidden';
+
+    if (sidebar) {
+      screen.appendChild(sidebar);
+    }
+    overlay.innerHTML = overlay.innerHTML;
+  }
+};
