@@ -1,8 +1,6 @@
 .tags {
   display: flex;
-  flex-wrap: wrap;
   justify-content: flex-start;
-  margin-bottom: $tags-margin-bottom;
 
   &__tag-content {
     position: relative;

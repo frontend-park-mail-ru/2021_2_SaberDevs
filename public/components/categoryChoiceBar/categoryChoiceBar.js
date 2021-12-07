@@ -49,20 +49,17 @@ export default class CategoryChoiceBar extends BaseComponent {
     this.root = this.view.render(categoriesList);
     const categoriesBox = this.root.querySelector('div.tags');
 
-    this.root.querySelectorAll('div.tags__tag-content').forEach((category) => {
-      category.addEventListener('click', ({target}) => {
-        const choosenCategory = this.getCurrentSelection();
-        if (target.innerHTML === choosenCategory) {
-          store.dispatch(this.clearSelection());
-        } else {
-          store.dispatch(this.setSelection(target.textContent));
-        }
-      });
-      if (category.textContent.trim() ===
-          this.getCurrentSelection()) {
-        category.classList.add('categories__choosen');
-      }
-    });
+    this.root.querySelectorAll('div.categories__bar-content').forEach(
+        (category) => {
+          category.addEventListener('click', ({target}) => {
+            const choosenCategory = this.getCurrentSelection();
+            if (target.textContent === choosenCategory) {
+              store.dispatch(this.clearSelection());
+            } else {
+              store.dispatch(this.setSelection(target.textContent));
+            }
+          });
+        });
 
     // Выводятся нужные теги при вводе в поисковую строку (поиск)
     const showMatch = (elem, pos, len) => elem.slice(0, pos) +
@@ -107,9 +104,17 @@ export default class CategoryChoiceBar extends BaseComponent {
       return;
     }
     categoriesBox.childNodes.forEach((categoryDiv) => {
-      categoryDiv.classList.remove('categories__choosen');
-      if (categoryDiv.innerText === currentCategory) {
-        categoryDiv.classList.add('categories__choosen');
+      categoryDiv.style.borderColor = 'transparent';
+      categoryDiv.onmouseout = ({currentTarget}) => {
+        currentTarget.style.borderColor = 'transparent';
+      };
+      // categoryDiv.style.borderColor = 'transparent';
+      if (categoryDiv.textContent === currentCategory) {
+        categoryDiv.style.borderColor = categoryDiv.firstChild.style.color;
+        categoryDiv.onmouseout = undefined;
+        // ({currentTarget}) => {
+        //   currentTarget.style.borderColor=currentTarget.firstChild.style.color;
+        // };
       }
     });
   }

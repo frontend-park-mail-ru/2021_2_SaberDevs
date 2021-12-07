@@ -1,0 +1,3 @@
+mixin categoryMixin(categoryContent, categoryColor)
+  .categories__bar-content(onmouseover=`this.style.borderColor = "${categoryColor}";`, onmouseout='this.style.borderColor = "transparent";')
+    .categories__bar(style = `color: ${categoryColor}; text-shadow: ${categoryColor} 0px 0px 10px`) #{categoryContent}

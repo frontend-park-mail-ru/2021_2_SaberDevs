@@ -13,7 +13,7 @@ export default class CategoryChoiceBarView extends BaseComponentView {
   render(categories) {
     const barDiv = document.createElement('div');
     barDiv.innerHTML = categoryChoiceBarComponent({
-      categories: categories.map((c)=>({content: c, color: genRanHexColor()})),
+      categories: categories.map((c)=>({content: c, color: genRanHexColor(c)})),
     });
     return barDiv.firstChild;
   }

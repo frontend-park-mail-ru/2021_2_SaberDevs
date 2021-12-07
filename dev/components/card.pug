@@ -1,4 +1,5 @@
 include _onAvatarErrorMixin
+include categoryMixin
 mixin tagMixin(content, color, cross=false)
   include tag.pug
 
@@ -9,8 +10,9 @@ background-repeat: no-repeat;`)
   .card__top
     .card__top-left
       .card__time-category
-        .card__time #{datetime}
-        .card__category #{category}
+        +categoryMixin(category.categoryContent, category.categoryColor)
+        .card__time
+          .card__time-content #{datetime}
       .tags
         if Array.isArray(tags)
           each tag in tags

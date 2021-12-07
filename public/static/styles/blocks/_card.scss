@@ -18,9 +18,6 @@
   }
 }
 
-@mixin card-inline-margin-horizontal {
-  margin-right: 20px;
-}
 $card-min-height: 300px;
 $card-title-margin-bottom: 30px;
 $tag-margin-right: 5px;
@@ -61,6 +58,7 @@ $tag-margin-right: 5px;
 
   &__content {
     width: 100%;
+    margin-bottom: 10px;
   }
 
   &__bottom {
@@ -83,13 +81,33 @@ $tag-margin-right: 5px;
 
   &__time-category {
     display: flex;
-    margin-bottom: 5px;
   }
 
   &__time {
-    @include card-inline-margin-horizontal;
+    font-weight: 400;
+    white-space: nowrap;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    border: 2px solid transparent;
+    border-radius: $border-radius;
+    padding: $tag-padding;
+    box-sizing: border-box;
     @include font-size-normal;
+
+    &-content {
+      display: flex;
+  
+      // отступ справа + снизу, чтобы много тегов разбивались по строкам
+      margin: $tag-margin;
+      border: 2px solid transparent;
+      border-radius: $border-radius;
+      box-sizing: border-box;
+      background: transparent;
+    }
   }
+
+  
 
   &__category {
     font-weight: $font-thick;

@@ -79,7 +79,10 @@ export default class EditorView extends BaseComponentView {
     this.previewBox.innerHTML = cardComponent({
       id: '-preview',
       datetime: convertDate(),
-      category: 'категория не выбрана',
+      category: {
+        categoryContent: 'категория не выбрана',
+        categoryColor: '#dee4ea',
+      },
       author,
       comments: '',
       likes: '',
@@ -110,7 +113,7 @@ export default class EditorView extends BaseComponentView {
     const wrapper = document.createElement('div');
     wrapper.innerHTML = tagComponent({
       content: tag,
-      color: genRanHexColor(),
+      color: genRanHexColor(tag),
       cross: true,
     });
     const tagDiv = wrapper.firstChild;
@@ -197,14 +200,25 @@ export default class EditorView extends BaseComponentView {
       return;
     }
     if (text === '') {
-      this.previewBox.querySelector('.card__category').textContent =
+      this.previewBox.querySelector('.categories__bar').textContent =
         'категория не выбрана';
       this.root.querySelector('.article-create__label').innerHTML =
         'Выберите категорию | <strong>категория не выбрана</strong>';
     } else {
-      this.previewBox.querySelector('.card__category').textContent = text;
-      this.root.querySelector('.article-create__label').innerHTML =
+      const categoryColor = genRanHexColor(text);
+      const categoryBoxTop = this.root.querySelector('.article-create__label');
+      categoryBoxTop.innerHTML =
         `Выберите категорию | <strong>${text}</strong>`;
+      categoryBoxTop.style.color = categoryColor;
+      categoryBoxTop
+          .style.textShadow = `text-shadow: ${categoryColor} 0px 0px 10px`;
+
+      const categoryBoxPreview =
+        this.previewBox.querySelector('.categories__bar');
+      categoryBoxPreview.textContent = text;
+      categoryBoxPreview.style.color = categoryColor;
+      categoryBoxPreview
+          .style.textShadow = `text-shadow: ${categoryColor} 0px 0px 10px`;
     }
   }
 

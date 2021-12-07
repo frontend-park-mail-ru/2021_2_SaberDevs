@@ -1,5 +1,4 @@
-mixin tagMixin(content, color, cross=false)
-  include tag.pug
+include categoryMixin
 
 .plate
   .categories__search-block
@@ -8,4 +7,4 @@ mixin tagMixin(content, color, cross=false)
   .tags
     if Array.isArray(categories)
       each category in categories
-        +tagMixin(category.content, category.color)
+        +categoryMixin(category.content, category.color)
