@@ -4,7 +4,7 @@ include categoryMixin
   .categories__search-block
     .categories__search
       input(type='text' id='categories-search' placeholder='фильтр').categories__search-input
-  .tags
+  .categories__row
     if Array.isArray(categories)
       each category in categories
         +categoryMixin(category.content, category.color)

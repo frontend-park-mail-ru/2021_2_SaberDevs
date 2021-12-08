@@ -3,6 +3,7 @@ import HeaderView from './headerView.js';
 
 import store from '../../flux/store.js';
 import searchActions from '../../flux/actions/searchActions.js';
+import editorActions from '../../flux/actions/editorActions.js';
 
 import {redirect} from '../../common/utils.js';
 
@@ -30,6 +31,12 @@ export default class Header extends BaseComponent {
   render() {
     super.render();
     this.root = this.view.render();
+
+    this.root.querySelector('.header__add-article-btn-sign')
+        .addEventListener(
+            'click',
+            () => store.dispatch(editorActions.createArticle()),
+        );
 
     const searchBtn = this.root.querySelector('.search__button');
     const menuBtn = this.root

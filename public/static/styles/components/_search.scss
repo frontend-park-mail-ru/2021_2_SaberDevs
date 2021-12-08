@@ -2,10 +2,12 @@
   @media (min-width: 901px) {
     width: calc(100% - 20px + 10px);
   }
+
   @media (max-width: 900px) {
     width: 100%;
   }
 }
+
 .search {
   position: absolute;
   right: 10px;
@@ -16,6 +18,9 @@
   height: 100%;
 
   &__button {
+    @include icon-size;
+    @include icon;
+
     position: absolute;
     right: 0;
     top: 0;
@@ -23,8 +28,6 @@
     z-index: 4;
     margin: auto;
     border-radius: $border-radius;
-    @include icon-size;
-    @include icon;
     transition: all 1s;
 
     &:hover {
@@ -50,8 +53,9 @@
     background-color: transparent;
 
     &_open {
-      left: 0;
       @include search-open-row-width;
+
+      left: 0;
       opacity: 1;
       cursor: text;
     }
@@ -69,23 +73,25 @@
     }
 
     &_group_bar {
+      @include font-size-normal;
+
       padding-left: 10px;
       width: -webkit-fill-available;
       height: -webkit-fill-available;
       font-family: $font-secondary;
       font-weight: 200;
-      @include font-size-normal;
       letter-spacing: 0.1em;
       text-shadow: 0 0 10px $color-secondary;
       color: $color-primary;
     }
 
     &_group_dropdown {
+      @include font-size-normal;
+
       position: relative;
       display: inline-block;
       width: 25%;
       height: -webkit-fill-available;
-      @include font-size-normal;
       color: $color-primary;
     }
 
@@ -124,6 +130,8 @@
   }
 
   &__input {
+    @include font-size-normal;
+
     border-top-left-radius: $border-radius;
     border-bottom-left-radius: $border-radius;
     padding-left: 10px;
@@ -131,7 +139,6 @@
     height: -webkit-fill-available;
     font-family: $font-secondary;
     font-weight: 200;
-    @include font-size-normal;
     letter-spacing: 0.1em;
     text-shadow: 0 0 10px $color-secondary;
     color: $color-primary;

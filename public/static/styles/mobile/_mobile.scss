@@ -8,8 +8,9 @@
   }
 
   .header__nav-item {
-    margin: 10px 0;
     @include font-size-big;
+
+    margin: 10px 0;
 
     &:hover {
       text-decoration: underline;
@@ -26,9 +27,9 @@
 
 @media (max-width: 900px) {
   .sidebar {
-    display: none;
     position: absolute;
     right: 0;
+    display: none;
   }
 
   .action-btns__menu-icon {

@@ -16,12 +16,14 @@
   }
 
   &__author-name {
-    margin-left: 10px;
     @include font-size-normal;
+
+    margin-left: 10px;
   }
 
   &__text {
-    margin-top: 5px;
     @include font-size-small;
+
+    margin-top: 5px;
   }
 }

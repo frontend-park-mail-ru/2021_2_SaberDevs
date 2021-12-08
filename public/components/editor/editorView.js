@@ -87,14 +87,14 @@ export default class EditorView extends BaseComponentView {
       comments: '',
       likes: '',
     })
-        .replace('card', 'article-create__preview__card')
-        .replace(/style=".*\n.*\n.*\n.*;"/, '');
+        .replace('card__lift-effect', '');
 
-    this.tagBox = this.previewBox.querySelector('.tags');
+    this.tagBox = this.previewBox.querySelector('.tags__row');
     this.textAreaInput = editor.firstChild.querySelector('textarea');
     this.titleInput = editor.firstChild.querySelector('input[name="title"]');
     this.root = editor.firstChild;
 
+    console.warn(this);
     return editor.firstChild;
   }
 
@@ -186,7 +186,7 @@ export default class EditorView extends BaseComponentView {
       );
       return;
     }
-    this.previewBox.querySelector('.preview__title').textContent = text;
+    this.previewBox.querySelector('.card__title').textContent = text;
   }
 
   /**
@@ -200,7 +200,7 @@ export default class EditorView extends BaseComponentView {
       return;
     }
     if (text === '') {
-      this.previewBox.querySelector('.categories__bar').textContent =
+      this.previewBox.querySelector('.category__content').textContent =
         'категория не выбрана';
       this.root.querySelector('.article-create__label').innerHTML =
         'Выберите категорию | <strong>категория не выбрана</strong>';
@@ -214,7 +214,7 @@ export default class EditorView extends BaseComponentView {
           .style.textShadow = `text-shadow: ${categoryColor} 0px 0px 10px`;
 
       const categoryBoxPreview =
-        this.previewBox.querySelector('.categories__bar');
+        this.previewBox.querySelector('.category__content');
       categoryBoxPreview.textContent = text;
       categoryBoxPreview.style.color = categoryColor;
       categoryBoxPreview

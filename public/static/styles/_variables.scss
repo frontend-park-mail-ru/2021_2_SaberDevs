@@ -15,53 +15,74 @@ $font-secondary: "Roboto", sans-serif;
 $font-logo: "Signika Negative", sans-serif;
 $font-thin: 300;
 $font-thick: 400;
+$title-margin: 25px 0;
+
 @mixin font-size-small() {
   @media (min-width: 901px) {
     font-size: 1rem;
   }
+
   @media (max-width: 900px) {
     font-size: 0.7rem;
   }
 }
+
 @mixin font-size-normal() {
   @media (min-width: 901px) {
     font-size: 1.5rem;
   }
+
   @media (max-width: 900px) {
     font-size: 1rem;
   }
 }
+
 @mixin font-size-big() {
   @media (min-width: 901px) {
     font-size: 2rem;
   }
+
   @media (max-width: 900px) {
     font-size: 1.4rem;
   }
 }
+
 @mixin font-size-large() {
   @media (min-width: 901px) {
     font-size: 2.5rem;
   }
+
   @media (max-width: 900px) {
     font-size: 1.75rem;
   }
 }
+
 @mixin font-size-extreme() {
   @media (min-width: 901px) {
     font-size: 3rem;
   }
+
   @media (max-width: 900px) {
     font-size: 2rem;
   }
 }
+
 @mixin font-size-small() {
   @media (min-width: 901px) {
     font-size: 1rem;
   }
+
   @media (max-width: 900px) {
     font-size: 0.7rem;
   }
+}
+
+@mixin title() {
+  @include font-size-large;
+
+  margin: $title-margin;
+  font-weight: $font-thick;
+  text-align: center;
 }
 
 // ///////////////////////////////// //
@@ -74,6 +95,7 @@ $font-thick: 400;
   @media (min-width: 901px) {
     display: flex;
   }
+
   @media (max-width: 900px) {
     display: none;
   }
@@ -83,6 +105,7 @@ $font-thick: 400;
   @media (min-width: 901px) {
     display: none;
   }
+
   @media (max-width: 900px) {
     display: flex;
   }
@@ -95,17 +118,15 @@ $border: 2px solid $color-primary;
 $box-shadow: 0 0 5px rgba(0, 0, 0, 0.25);
 $button-opacity: 0.5;
 
-
-
 // ///////////////////////////////// //
 //
 //           Images & Icons
 //
 // ///////////////////////////////// //
 @mixin icon() {
+  background-position: center center;
   background-size: cover;
   background-repeat: no-repeat;
-  background-position: center center;
 }
 
 @mixin icon-size() {
@@ -113,6 +134,7 @@ $button-opacity: 0.5;
     width: 40px;
     height: 40px;
   }
+
   @media (max-width: 900px) {
     width: 30px;
     height: 30px;
@@ -124,6 +146,7 @@ $button-opacity: 0.5;
     width: 25px;
     height: 25px;
   }
+
   @media (max-width: 450px) {
     width: 20px;
     height: 20px;

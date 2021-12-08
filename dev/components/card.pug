@@ -3,7 +3,7 @@ include categoryMixin
 mixin tagMixin(content, color, cross=false)
   include tag.pug
 
-.card(id=`card${id}` style=`background: -webkit-gradient(linear, left top, left bottom, from(rgba(0, 0, 0, 0.7)), to(rgba(0, 0, 0, 0.7))), url(${previewUrl});
+.card.card__lift-effect(id=`card${id}` style=`background: -webkit-gradient(linear, left top, left bottom, from(rgba(0, 0, 0, 0.7)), to(rgba(0, 0, 0, 0.7))), url(${previewUrl});
 background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url(${previewUrl});
 background-size: cover;
 background-repeat: no-repeat;`)
@@ -11,9 +11,9 @@ background-repeat: no-repeat;`)
     .card__top-left
       .card__time-category
         +categoryMixin(category.categoryContent, category.categoryColor)
-        .card__time
-          .card__time-content #{datetime}
-      .tags
+        .category
+          .category__content #{datetime}
+      .tags__row
         if Array.isArray(tags)
           each tag in tags
             +tagMixin(tag.content, tag.color)

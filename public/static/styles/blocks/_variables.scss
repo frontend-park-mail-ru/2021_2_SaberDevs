@@ -5,6 +5,7 @@ $header-size-mobile: 55px;
   @media (min-width: 901px) {
     height: $header-size;
   }
+
   @media (max-width: 900px) {
     height: $header-size-mobile;
   }
@@ -12,12 +13,13 @@ $header-size-mobile: 55px;
 
 @mixin header-search-btn-size() {
   @media (min-width: 901px) {
-    height: $header-size;
     width: $header-size;
+    height: $header-size;
   }
+
   @media (max-width: 900px) {
-    height: $header-size-mobile;
     width: $header-size-mobile;
+    height: $header-size-mobile;
   }
 }
 
@@ -25,6 +27,7 @@ $header-size-mobile: 55px;
   @media (min-width: 901px) {
     top: $header-size;
   }
+
   @media (max-width: 900px) {
     top: $header-size-mobile;
   }
@@ -39,11 +42,11 @@ $items-font-size: 24px;
 $button-font-size: 24px;
 $links-font-size: 20px;
 $text-font-size: 18px;
-$title-margin: auto 20px;
 $action-btns-margin-right: 15px;
 $sidebar-item-padding-top: 10px;
 $sidebar-margin-bottom: 50px;
 $tag-margin: 0 10px 10px 0;
+
 // для calc
 $tag-margin-bottom: 10px;
 $tag-padding: 5px;

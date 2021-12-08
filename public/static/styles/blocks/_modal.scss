@@ -35,6 +35,7 @@ $window-filter: drop-shadow(0 0 10px rgba(0, 0, 0, 0.5));
     min-width: 15%;
     min-height: 20%;
     max-width: 55%;
+
     // max-height: 50%;
     background-color: $color-primary;
     opacity: 0;
@@ -45,14 +46,14 @@ $window-filter: drop-shadow(0 0 10px rgba(0, 0, 0, 0.5));
 
   &__content {
     @include col;
-
     @include font-size-normal;
   }
 
   &__header {
+    @include font-size-large;
+
     margin-bottom: $title-margin-bottom;
     font-family: $font-secondary;
-    @include font-size-large;
     text-align: center;
   }
 
@@ -84,10 +85,11 @@ $window-filter: drop-shadow(0 0 10px rgba(0, 0, 0, 0.5));
   }
 
   &__btn {
+    @include font-size-normal;
+
     border: $border;
     border-radius: $border-radius;
     padding: 10px;
-    @include font-size-normal;
     color: $color-elements;
     background-color: $color-secondary;
 

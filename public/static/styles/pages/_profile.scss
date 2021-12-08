@@ -35,17 +35,20 @@ $profile-articles-title-margin: 0 0 30px 40px;
   }
 
   &__username {
-    margin-bottom: $profile-username-margin-bottom;
     @include font-size-normal;
+
+    margin-bottom: $profile-username-margin-bottom;
   }
 
   &__aboutme {
-    font-weight: $font-thin;
     @include font-size-small;
+
+    font-weight: $font-thin;
   }
 
   &__articles-title {
-    margin: $profile-articles-title-margin;
     @include font-size-large;
+
+    margin: $profile-articles-title-margin;
   }
 }

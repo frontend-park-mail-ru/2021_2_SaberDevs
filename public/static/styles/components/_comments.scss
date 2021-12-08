@@ -22,8 +22,9 @@ $comment-description-margin-left: 20px;
   cursor: pointer;
 
   &__text {
-    margin-left: 0.3em;
     @include font-size-normal;
+
+    margin-left: 0.3em;
   }
 }
 
@@ -57,8 +58,9 @@ $comment-description-margin-left: 20px;
   }
 
   &__author-name {
-    font-weight: $font-thick;
     @include font-size-normal;
+
+    font-weight: $font-thick;
   }
 
   &__text {
@@ -71,6 +73,7 @@ $comment-description-margin-left: 20px;
 
   &__answer-btn {
     @include font-size-small;
+
     color: $color-elements;
     cursor: pointer;
 
@@ -81,6 +84,7 @@ $comment-description-margin-left: 20px;
 
   &__edit-btn {
     @include font-size-small;
+
     color: $color-elements;
     cursor: pointer;
 

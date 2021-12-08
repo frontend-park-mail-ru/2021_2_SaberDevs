@@ -24,8 +24,9 @@ $photo-size: 50px;
   }
 
   &__back-btn {
-    margin-left: 5px;
     @include font-size-normal;
+
+    margin-left: 5px;
     cursor: pointer;
 
     &:hover {
@@ -36,9 +37,7 @@ $photo-size: 50px;
   }
 
   &__title {
-    margin-bottom: $article-title-margin-bottom;
-    font-weight: $font-thick;
-    @include font-size-large;
+    @include title;
   }
 
   &__info {
@@ -53,8 +52,9 @@ $photo-size: 50px;
   }
 
   &__text {
-    margin-bottom: $article-text-margin-bottom;
     @include font-size-normal;
+
+    margin-bottom: $article-text-margin-bottom;
   }
 
   &__tags {
@@ -62,8 +62,9 @@ $photo-size: 50px;
   }
 
   &__tag {
-    margin-right: $article-tag-margin-right;
     @include font-size-normal;
+
+    margin-right: $article-tag-margin-right;
 
     &:hover {
       text-decoration: underline;
@@ -87,16 +88,17 @@ $photo-size: 50px;
   }
 
   &__time {
-    margin: 0 19px;
     @include font-size-normal;
+
+    margin: 0 19px;
   }
 
   &__category {
-    margin: 0 10px;
-
     // font-weight: 200;
 
     @include font-size-normal;
+
+    margin: 0 10px;
   }
 
   &__add-comment {
@@ -115,11 +117,12 @@ $photo-size: 50px;
   }
 
   &__comment-input {
+    @include font-size-normal;
+
     border: 3px solid $color-elements;
     border-radius: $border-radius;
     padding: 15px;
     width: 100%;
-    @include font-size-normal;
     background-color: $color-elements;
 
     &:hover {

@@ -13,8 +13,9 @@ $article-create-trash-height: 40px;
   width: -webkit-fill-available;
 
   &__title {
-    margin-bottom: 10px;
     @include font-size-large;
+
+    margin-bottom: 10px;
   }
 
   &__form {
@@ -38,18 +39,20 @@ $article-create-trash-height: 40px;
   }
 
   &__add-tag {
-    margin-left: $article-create-tag-margin-left;
     @include font-size-large;
+
+    margin-left: $article-create-tag-margin-left;
     color: $color-elements;
     background-color: transparent;
     cursor: pointer;
   }
 
   &__input-tag {
+    @include font-size-normal;
+
     border: $border;
     border-radius: $border-radius;
     padding: $article-create-input-padding;
-    @include font-size-normal;
     color: $color-primary;
     background-color: $color-elements;
   }
@@ -68,12 +71,13 @@ $article-create-trash-height: 40px;
   }
 
   &__input {
+    @include font-size-normal;
+
     margin-top: $article-create-label-margin-top;
     border: $border;
     border-radius: $border-radius;
     padding: 10px 5px;
     width: -webkit-fill-available;
-    @include font-size-normal;
     color: $color-primary;
     background-color: $color-elements;
   }
@@ -83,9 +87,10 @@ $article-create-trash-height: 40px;
   }
 
   &__label {
+    @include font-size-normal;
+
     justify-content: end;
     width: 100%;
-    @include font-size-normal;
   }
 
   &__tags {
@@ -114,19 +119,20 @@ $article-create-trash-height: 40px;
     width: 100%;
 
     &__title {
-      margin: 10px 0;
       @include font-size-normal;
+
+      margin: 10px 0;
     }
 
     &__card {
       @include col;
+      @include card-padding;
 
       flex-grow: 1;
       justify-content: space-between;
       border: $border;
-      @include card-padding;
       min-height: $card-min-height;
-      background-position: center center; 
+      background-position: center center;
     }
   }
 }

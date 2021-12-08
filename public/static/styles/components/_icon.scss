@@ -5,6 +5,7 @@ $user-img: 60px;
 
   &__img {
     @include icon-size;
+
     cursor: pointer;
   }
 
@@ -19,6 +20,7 @@ $user-img: 60px;
   &__img {
     @include icon-size-small;
     @include icon;
+
     cursor: pointer;
   }
 

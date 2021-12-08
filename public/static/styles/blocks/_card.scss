@@ -2,6 +2,7 @@
   @media (min-width: 901px) {
     padding: 2rem;
   }
+
   @media (max-width: 900px) {
     padding: 0.5rem;
   }
@@ -12,6 +13,7 @@
     width: 50px;
     height: 50px;
   }
+
   @media (max-width: 900px) {
     width: 30px;
     height: 30px;
@@ -20,19 +22,19 @@
 
 $card-min-height: 300px;
 $card-element-margin-bottom: 15px;
-$card-title-margin-extra: calc(10px + $card-element-margin-bottom) 0;
+$card-title-margin-extra: 10px 0 calc(10px + $card-element-margin-bottom);
 $card-top-margin-bottom: calc($card-element-margin-bottom - $tag-margin-bottom);
 
 .card {
   @include col;
+  @include card-padding;
 
   flex-grow: 1;
-  justify-content: space-between;
   align-items: flex-start;
+  justify-content: space-between;
   border: $border;
-  @include card-padding;
   min-height: $card-min-height;
-  background-position: center center; 
+  background-position: center center;
 
   &__top {
     display: flex;
@@ -43,22 +45,23 @@ $card-top-margin-bottom: calc($card-element-margin-bottom - $tag-margin-bottom);
   }
 
   &__title {
-    font-weight: $font-thick;
-    @include font-size-large;
-    text-align: center;
+    @include title;
+
     margin: $card-title-margin-extra;
   }
 
   &__description {
-    font-weight: $font-thin;
     @include font-size-normal;
+
     margin-bottom: $card-element-margin-bottom;
+    font-weight: $font-thin;
   }
 
   &__bottom {
     @include row;
-    width: 100%;
+
     justify-content: flex-end;
+    width: 100%;
   }
 
   &__author {
@@ -68,8 +71,9 @@ $card-top-margin-bottom: calc($card-element-margin-bottom - $tag-margin-bottom);
   }
 
   &__author-photo {
-    margin-right: 10px;
     @include card-author-icon-size;
+
+    margin-right: 10px;
   }
 
   &__time-category {
@@ -77,8 +81,8 @@ $card-top-margin-bottom: calc($card-element-margin-bottom - $tag-margin-bottom);
   }
 
   &__time {
-    font-weight: 400;
-    white-space: nowrap;
+    @include font-size-normal;
+
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -86,11 +90,12 @@ $card-top-margin-bottom: calc($card-element-margin-bottom - $tag-margin-bottom);
     border-radius: $border-radius;
     padding: $tag-padding;
     box-sizing: border-box;
-    @include font-size-normal;
+    font-weight: 400;
+    white-space: nowrap;
 
     &-content {
       display: flex;
-  
+
       // отступ справа + снизу, чтобы много тегов разбивались по строкам
       margin: $tag-margin;
       border: 2px solid transparent;
@@ -100,21 +105,23 @@ $card-top-margin-bottom: calc($card-element-margin-bottom - $tag-margin-bottom);
     }
   }
 
-  
-
   &__category {
-    font-weight: $font-thick;
     @include font-size-normal;
+
+    font-weight: $font-thick;
     white-space: nowrap;
     text-shadow: 0 0 10px $color-elements;
   }
 
-  &:hover {
-    transform: translateY(-20px);
-    transition: transform 0.5s ease, -webkit-transform 0.5s ease, -moz-transform 0.5s ease;
-    cursor: pointer;
+  &__lift-effect {
+    &:hover {
+      transform: translateY(-20px);
+      transition: transform 0.5s ease, -webkit-transform 0.5s ease, -moz-transform 0.5s ease;
+      cursor: pointer;
+    }
   }
 }
+
 
 .author-name {
   @include col;

@@ -47,9 +47,9 @@ export default class CategoryChoiceBar extends BaseComponent {
   render() {
     super.render();
     this.root = this.view.render(categoriesList);
-    const categoriesBox = this.root.querySelector('div.tags');
+    const categoriesBox = this.root.querySelector('div.tags__row');
 
-    this.root.querySelectorAll('div.categories__bar-content').forEach(
+    this.root.querySelectorAll('div.category').forEach(
         (category) => {
           category.addEventListener('click', ({target}) => {
             const choosenCategory = this.getCurrentSelection();
@@ -98,7 +98,7 @@ export default class CategoryChoiceBar extends BaseComponent {
    * @param {string} currentCategory
    */
   markSelectedCategory(currentCategory) {
-    const categoriesBox = this.root.querySelector('div.tags');
+    const categoriesBox = this.root.querySelector('div.categories__row');
     if (!categoriesBox) {
       console.warn('{CategoryChoiceBar} component hasn\'t been rendered yet');
       return;
