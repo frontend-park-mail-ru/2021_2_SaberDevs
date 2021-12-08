@@ -79,7 +79,7 @@ function publishArticle(id) {
 function deleteArticle(id) {
   return {
     type: editorTypes.DELETE_ARTICLE,
-    payload: {id},
+    payload: id,
   };
 }
 
