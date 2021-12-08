@@ -4,17 +4,17 @@
 //
 // ///////////////////////////////// //
 
-// set to true
+// set to false
 
-const disableSW = true;
+const disableSW = false;
 
-const ajaxDebug = true;
-const modalsDebug = true;
-const fluxDebug = true;
-const routerDebug = true;
-const linkControllerDebug = true;
-const viewsDebug = true;
-const pageDebug = true;
-const wsDebug = true;
+const ajaxDebug = false;
+const modalsDebug = false;
+const fluxDebug = false;
+const routerDebug = false;
+const linkControllerDebug = false;
+const viewsDebug = false;
+const pageDebug = false;
+const wsDebug = false;
 
 export {disableSW, ajaxDebug, modalsDebug, fluxDebug, routerDebug, linkControllerDebug, viewsDebug, pageDebug, wsDebug};

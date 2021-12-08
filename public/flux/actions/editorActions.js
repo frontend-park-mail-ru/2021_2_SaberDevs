@@ -73,7 +73,7 @@ function publishArticle(id) {
 }
 
 /**
- * @param {number} id - id, присвоенный записи на сервере
+ * @param {string} id - id, присвоенный записи на сервере
  * @return {Action}
  */
 function deleteArticle(id) {

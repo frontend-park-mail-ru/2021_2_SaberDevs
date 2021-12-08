@@ -209,14 +209,14 @@ export default class Editor extends BaseComponent {
                   body: {},
                 }).then(({status, response}) => {
                   if (status === Ajax.STATUS.ok) {
+                    // диспатчим общее событие для 4-х лент.
+                    // Все ленты отреагируют
+                    // одинаково за счет общего типа
                     store.dispatch(editorActions.deleteArticle(
                         articleId,
                     ));
                     ModalTemplates.
                         informativeMsg('Успех!', 'Статья была удалена');
-                    // диспатчим любое событие из 4-х. Все ленты отреагируют
-                    // одинаково за счет общего типа
-                    store.dispatch(editorActions.deleteArticle(articleId));
                     redirect('/profile');
                     return;
                   }
