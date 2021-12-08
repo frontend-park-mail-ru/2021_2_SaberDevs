@@ -225,6 +225,17 @@ function askNewCards() {
   };
 }
 
+/**
+ * @param {string} id
+ * @return {Action}
+ */
+function deleteCard(id) {
+  return {
+    type: mainPageTypes.DELETE_CARD,
+    payload: id,
+  };
+}
+
 export const mainPageActions = {
   askNewCards,
   saveNewCards,
@@ -234,6 +245,7 @@ export const mainPageActions = {
   forbidCardsLoading,
   allowCardsLoading,
   toggleLogin,
+  deleteCard,
 };
 
 // ////////////////
@@ -311,6 +323,18 @@ function askNewArticles() {
 }
 
 /**
+ * @param {string} id
+ * @return {Action}
+ */
+function deleteArticle(id) {
+  return {
+    type: profilePageTypes.DELETE_CARD,
+    payload: id,
+  };
+}
+
+
+/**
  * @param {Object} user
  * @property {string} login
  * @property {string?} firstName
@@ -360,6 +384,7 @@ export const profilePageActions = {
   unsetArticlesLoadingFlag,
   forbidArticlesLoading,
   allowArticlesLoading,
+  deleteArticle,
 };
 
 // ////////////////

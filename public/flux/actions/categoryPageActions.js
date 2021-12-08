@@ -76,6 +76,18 @@ function askNewCategoryArticles() {
 }
 
 /**
+ * @param {string} id
+ * @return {Action}
+ */
+function deleteArticle(id) {
+  return {
+    type: categoryPageTypes.DELETE_CARD,
+    payload: id,
+  };
+}
+
+
+/**
  * @param {string} category
  * @return {Action}
  */
@@ -106,6 +118,7 @@ const categoryPageActions = {
   clearCategoryArticles,
   selectCategory,
   clearSelectedCategory,
+  deleteArticle,
 };
 
 export default categoryPageActions;

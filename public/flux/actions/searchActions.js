@@ -101,6 +101,18 @@ function askNewCards() {
   };
 }
 
+/**
+ * @param {string} id
+ * @return {Action}
+ */
+function deleteCard(id) {
+  return {
+    type: searchTypes.DELETE_CARD,
+    payload: id,
+  };
+}
+
+
 const searchActions = {
   askNewCards,
   saveNewCards,
@@ -111,6 +123,7 @@ const searchActions = {
   allowCardsLoading,
   setSearchGroup,
   setSearchValue,
+  deleteCard,
 };
 
 export default searchActions;

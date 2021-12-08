@@ -99,6 +99,17 @@ export default function profilePageReducer(
         cards: [],
         isEndFound: false,
       };
+    case profilePageTypes.DELETE_CARD: {
+      const idx = state.cards.findIndex((card) => card.id === action.payload);
+      if (idx !== -1) {
+        return {
+          ...state,
+          cards: state.cards.splice(idx),
+        };
+      } else {
+        return state;
+      }
+    }
   }
   return state;
 }

@@ -87,6 +87,17 @@ export default function mainPageReducer(state = InitialMainPageState, action) {
         lastScrollPos: 0,
         isEndFound: false,
       };
+    case mainPageTypes.DELETE_CARD: {
+      const idx = state.cards.findIndex((card) => card.id === action.payload);
+      if (idx !== -1) {
+        return {
+          ...state,
+          cards: state.cards.splice(idx),
+        };
+      } else {
+        return state;
+      }
+    }
   }
   return state;
 }

@@ -67,6 +67,17 @@ export default function searchPageReducer(state = InitialSearchState, action) {
         cards: state.cards.concat(cards),
         isEndFound,
       };
+    case searchTypes.DELETE_CARD: {
+      const idx = state.cards.findIndex((card) => card.id === action.payload);
+      if (idx !== -1) {
+        return {
+          ...state,
+          cards: state.cards.splice(idx),
+        };
+      } else {
+        return state;
+      }
+    }
     case searchTypes.CLEAR_CARDS:
       return {
         ...state,

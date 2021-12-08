@@ -84,6 +84,17 @@ export default function categoryPageReducer(
         cards: state.cards.concat(cards),
         isEndFound,
       };
+    case categoryPageTypes.DELETE_CARD: {
+      const idx = state.cards.findIndex((card) => card.id === action.payload);
+      if (idx !== -1) {
+        return {
+          ...state,
+          cards: state.cards.splice(idx),
+        };
+      } else {
+        return state;
+      }
+    }
     case categoryPageTypes.CLEAR_CATEGORY_ARTICLES:
       return {
         ...state,

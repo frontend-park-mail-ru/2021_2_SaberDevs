@@ -1,5 +1,10 @@
 export const TYPE = 'TYPE';
 
+export const SYSTYPES = {
+  INIT: '__INIT__',
+  DELETE_CARD: '__DELETE_CARD__',
+};
+
 const LOGIN = 'LOGIN';
 const LOGOUT = 'LOGOUT';
 export const authorizationTypes = {
@@ -32,6 +37,7 @@ export const mainPageTypes = {
   ALLOW_CARDS_UPLOADING: 'ALLOW_CARDS_UPLOADING',
   SET_LOADING_FLAG: 'SET_LOADING_FLAG',
   UNSET_LOADING_FLAG: 'UNSET_LOADING_FLAG',
+  DELETE_CARD: SYSTYPES.DELETE_CARD,
 };
 
 export const profilePageTypes = {
@@ -44,6 +50,7 @@ export const profilePageTypes = {
   UNSET_USER_ARTICLES_LOADING: 'UNSET_USER_ARTICLES_LOADING',
   SET_USER_INFO: 'SET_USER_INFO',
   SET_USER_LOADING: 'SET_USER_LOADING',
+  DELETE_CARD: SYSTYPES.DELETE_CARD,
 };
 
 export const categoryPageTypes = {
@@ -55,6 +62,7 @@ export const categoryPageTypes = {
   SET_CATEGORY_ARTICLES_LOADING: 'SET_CATEGORY_ARTICLES_LOADING',
   UNSET_CATEGORY_ARTICLES_LOADING: 'UNSET_CATEGORY_ARTICLES_LOADING',
   SELECT_CATEGORY: 'SELECT_CATEGORY',
+  DELETE_CARD: SYSTYPES.DELETE_CARD,
 };
 
 export const searchTypes = {
@@ -67,6 +75,7 @@ export const searchTypes = {
   UNSET_LOADING_FLAG: 'UNSET_LOADING_FLAG_SEARCH',
   SET_SEARCH_GROUP: 'SET_SEARCH_GROUP_SEARCH',
   SET_SEARCH_VALUE: 'SET_SEARCH_VALUE_SEARCH',
+  DELETE_CARD: SYSTYPES.DELETE_CARD,
 };
 
 export const streamTypes = {
@@ -106,8 +115,4 @@ export const readerTypes = {
 
 export const routerTypes = {
   REDIRECT: 'REDIRECT',
-};
-
-export const SYSTYPES = {
-  INIT: '__INIT__',
 };

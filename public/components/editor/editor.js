@@ -194,6 +194,7 @@ export default class Editor extends BaseComponent {
         });
 
     // удаление статьи
+    const articleId = store.getState().editor.currentId;
     this.root.querySelector('.article-create__del-btn').addEventListener(
         'click',
         (e) => {
@@ -204,15 +205,18 @@ export default class Editor extends BaseComponent {
               () => {
                 Ajax.post({
                   url:
-                    `/articles/delete?id=${store.getState().editor.currentId}`,
+                    `/articles/delete?id=${articleId}`,
                   body: {},
                 }).then(({status, response}) => {
                   if (status === Ajax.STATUS.ok) {
                     store.dispatch(editorActions.deleteArticle(
-                        store.getState().editor.currentId,
+                        articleId,
                     ));
                     ModalTemplates.
                         informativeMsg('Успех!', 'Статья была удалена');
+                    // диспатчим любое событие из 4-х. Все ленты отреагируют
+                    // одинаково за счет общего типа
+                    store.dispatch(editorActions.deleteArticle(articleId));
                     redirect('/profile');
                     return;
                   }
