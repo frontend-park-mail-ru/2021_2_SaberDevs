@@ -35,31 +35,13 @@ import store from './flux/store.js';
 
 // Preload
 ImgPreloader.upload([
-  'static/img/background-space.png',
-  'static/img/background.png',
-  'static/img/icons/cross.svg',
-  'static/img/icons/eye-closed.svg',
-  'static/img/icons/eye-open.svg',
-  'static/img/icons/key.svg',
-  'static/img/icons/mail.svg',
-  'static/img/icons/username.svg',
-  'static/img/icons/like.svg',
-  'static/img/icons/like_hover.svg',
-  'static/img/icons/comment.svg',
-  'static/img/icons/comment_hover.svg',
-  'static/img/icons/share.svg',
-  'static/img/icons/share_hover.svg',
-  'static/img/icons/trash.svg',
-  'static/img/icons/trash_hover.svg',
-  'static/img/icons/search.svg',
-  'static/img/icons/search_hover.svg',
-  'static/img/icons/send.svg',
-  'static/img/icons/send.svg',
+  // теперь это делает
+  // webpack + SW
 ]);
 
 
 // ServiceWorker
-const SWJSFile = 'serviceWorker.js';
+const SWJSFile = '/service-worker.js';
 
 if ('serviceWorker' in navigator && !disableSW) {
   navigator.serviceWorker.register(SWJSFile, {scope: '/'})
@@ -70,7 +52,11 @@ if ('serviceWorker' in navigator && !disableSW) {
         console.error(err);
       });
 } else {
-  console.warn('ServiceWorker is unable in navigator');
+  if (disableSW) {
+    console.warn('ServiceWorker disbled with disableSW set to true');
+  } else {
+    console.warn('ServiceWorker is unable in navigator');
+  }
 }
 
 const root = document.getElementById('root');

@@ -30,7 +30,7 @@ body,
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background: $img-bg-space bottom;
+  background: $img-bg-space bottom, $img-bg bottom;
   background-size: cover;
   background-repeat: no-repeat;
 }

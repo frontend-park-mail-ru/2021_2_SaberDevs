@@ -94,7 +94,6 @@ export default class EditorView extends BaseComponentView {
     this.titleInput = editor.firstChild.querySelector('input[name="title"]');
     this.root = editor.firstChild;
 
-    console.warn(this);
     return editor.firstChild;
   }
 

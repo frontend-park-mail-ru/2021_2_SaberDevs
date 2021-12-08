@@ -11,6 +11,7 @@ export default class serviceWarningView extends BaseComponentView {
     box.style = `
     display: none;
 
+    z-index: 10;
     position:fixed; 
     box-sizing: border-box;
     border-radius: 5px;

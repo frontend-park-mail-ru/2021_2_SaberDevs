@@ -222,7 +222,9 @@ export default class Editor extends BaseComponent {
                     return;
                   }
                   // В случае ошибки
-                  ModalTemplates.netOrServerError(status, response.msg);
+                  // пусть модалка закроется
+                  setTimeout(() => ModalTemplates
+                      .netOrServerError(status, response.msg), 200);
                 });
               });
         },

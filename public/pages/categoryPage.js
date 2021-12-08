@@ -12,6 +12,8 @@ import Ajax from '../modules/ajax.js';
 import {getUserWindowHeight} from '../common/utils.js';
 import {ajaxDebug} from '../globals.js';
 
+import categoriesList from '../common/categoriesList.js';
+
 // ///////////////////////////////// //
 //
 //             Category Page
@@ -191,7 +193,11 @@ export default class CategoryPage extends BasePageMV {
       store.dispatch(categoryPageActions.selectCategory(category));
     } else if (document.URL.indexOf('categories') !== -1) {
       // Если была выбрана категория, но юзер перешел по урлу на categories
-      store.dispatch(categoryPageActions.clearSelectedCategory());
+      // store.dispatch(categoryPageActions.clearSelectedCategory());
+      // Если категория еще не была выбрана -> // категория по умолчанию
+      if (store.getState().categoryPage.currentCategory === '') {
+        store.dispatch(categoryPageActions.selectCategory(categoriesList[0]));
+      }
     }
 
     // Чтобы спрятать анимацию загрузки, пока Category не выбранa

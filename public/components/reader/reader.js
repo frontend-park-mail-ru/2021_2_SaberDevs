@@ -304,8 +304,7 @@ export default class Reader extends BaseComponent {
       const articleChangeBtn = this.root.querySelector('#article-change-btn');
       articleChangeBtn.style.display = 'block';
       articleChangeBtn.href = '/editor';
-      // TODO: проверить
-      // articleChangeBtn.addEventListener('click', editArticleAction);
+      articleChangeBtn.addEventListener('click', editArticleAction);
     }
   }
 

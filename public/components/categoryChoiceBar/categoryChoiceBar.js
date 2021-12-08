@@ -47,7 +47,7 @@ export default class CategoryChoiceBar extends BaseComponent {
   render() {
     super.render();
     this.root = this.view.render(categoriesList);
-    const categoriesBox = this.root.querySelector('div.tags__row');
+    const categoriesBox = this.root.querySelector('div.categories__row');
 
     this.root.querySelectorAll('div.category').forEach(
         (category) => {
@@ -60,6 +60,8 @@ export default class CategoryChoiceBar extends BaseComponent {
             }
           });
         });
+
+    this.markSelectedCategory(this.getCurrentSelection());
 
     // Выводятся нужные теги при вводе в поисковую строку (поиск)
     const showMatch = (elem, pos, len) => elem.slice(0, pos) +
