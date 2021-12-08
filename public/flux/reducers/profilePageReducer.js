@@ -104,7 +104,7 @@ export default function profilePageReducer(
       if (idx !== -1) {
         return {
           ...state,
-          cards: state.cards.splice(idx),
+          cards: state.cards.splice(idx, 1),
         };
       } else {
         return state;
