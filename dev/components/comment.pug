@@ -2,12 +2,13 @@ include _onAvatarErrorMixin
 
 .comment(id=`${id}` data-author=`${author.login}`)
   .comment__content
-    +avatarMixin.comment__author-photo(src=`${author.avatarUrl}`)
+    a(href=`/user/${author.login}`)
+      +avatarMixin.comment__author-photo(src=`${author.avatarUrl}` data-router='ignore')
     .comment__description
       if (author.lastName !=='' || author.firstName !== '')
-        .comment__author-name #{author.lastName} #{author.firstName}
+        a(href=`/user/${author.login}`).comment__author-name #{author.lastName} #{author.firstName}
       else
-        .comment__author-name #{author.login}
+        a(href=`/user/${author.login}`).comment__author-name #{author.login}
       .comment__text #{text}
   .comment__bottom
     .action-btns

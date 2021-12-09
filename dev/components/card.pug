@@ -26,10 +26,9 @@ background-repeat: no-repeat;`)
   .card__title #{title}
   .card__description #{text}
   .card__bottom
-    .action-btns
-      .icon.action-btns_m-right
-        .icon__text #{likes}
-        button.action-btns__likes-icon.icon__img
-      .icon
-        .icon__text #{comments}
-        button.action-btns__comments-icon.icon__img
+    .icon.icon-margin-r
+      .icon__text #{likes || ''}
+      button.action-btns__likes-icon.icon__img
+    .icon
+      .icon__text #{comments || ''}
+      button.action-btns__comments-icon.icon__img

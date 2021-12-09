@@ -1,4 +1,5 @@
 $user-img: 60px;
+$icon-margin: 15px;
 
 .icon {
   @include row;
@@ -12,6 +13,10 @@ $user-img: 60px;
   &__text {
     @include font-size-normal;
   }
+}
+
+.icon-margin-r {
+  margin-right: $icon-margin;
 }
 
 .icon-small {

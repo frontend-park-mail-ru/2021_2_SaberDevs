@@ -1,32 +1,40 @@
-$article-create-add-tag-font-size: 48px;
-$article-create-tag-font-size: 16px;
 $article-create-tag-margin-left: 10px;
-$article-create-label-margin-top: 10px;
-$article-create-label-font-size: 24px;
-$article-create-input-padding: 10px;
-$article-create-trash-height: 40px;
+$article-create-input-padding-vertical: 10px;
+$article-create-input-padding: 10px 5px;
+
+$article-row-margin: 25px 0;
+$article-row-margin-vertical: 25px;
+/* сверху | справа | снизу | слева */
+// $article-row-btns-margin: 0 0 25px 0;
+$article-labels-margin: 0 0 10px 0;
 
 .article-create {
   @include col;
 
   padding: 0 10%;
   width: -webkit-fill-available;
+  height: 100%;
 
   &__title {
     @include font-size-large;
-
     margin-bottom: 10px;
   }
 
   &__form {
     @include col;
-
     width: 100%;
+    height: 100%;
   }
 
-  &__rows {
-    @include col;
+  &__stage-1 {
+    width: 100%;
+    height: -webkit-fill-available;
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+  }
 
+  &__stage-2 {
     width: 100%;
   }
 
@@ -58,11 +66,21 @@ $article-create-trash-height: 40px;
   }
 
   &__row {
-    @include col;
+    @include row;
+    flex-wrap: wrap;
+    margin: $article-row-margin;
+  }
 
-    align-items: flex-start;
-    justify-content: flex-start;
-    width: 100%;
+  &__col {
+    @include col;
+  }
+
+  &__row-text {
+    @include row;
+    flex-wrap: wrap;
+    margin: $article-row-margin;
+    justify-content: space-between;
+    height: 100%;
   }
 
   &__field {
@@ -70,43 +88,59 @@ $article-create-trash-height: 40px;
     width: 100%;
   }
 
+  &__label {
+    @include font-size-big;
+    justify-content: end;
+    width: 100%;
+    margin: $article-labels-margin;
+  }
+
   &__input {
+    width: 100%;
     @include font-size-normal;
 
-    margin-top: $article-create-label-margin-top;
     border: $border;
     border-radius: $border-radius;
-    padding: 10px 5px;
+    padding: $article-create-input-padding;
     width: -webkit-fill-available;
     color: $color-primary;
     background-color: $color-elements;
   }
 
   &__text {
+    display: block;
     min-height: 24rem;
+    height: calc(100% - 2*$article-create-input-padding-vertical - $article-row-margin-vertical);
   }
 
-  &__label {
-    @include font-size-normal;
-
-    justify-content: end;
+  &__btns-row {
     width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: nowrap;
+    margin: $article-row-margin;
+  }
+
+  &__btns-row-right {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: center;
+    flex-wrap: nowrap;
+    margin: $article-row-margin;
+  }
+
+  &__btn-group {
+    display: flex;
+    flex-wrap: nowrap;
   }
 
   &__tags {
     display: flex;
     flex-wrap: wrap;
     justify-content: flex-start;
-  }
-
-  &__tags-actions {
-    display: flex;
-    align-items: center;
-    margin-top: $article-create-label-margin-top;
-  }
-
-  &__right {
-    @include right;
   }
 
   &__category_selector {

@@ -13,7 +13,7 @@ $btn-padding: 10px 20px;
 }
 
 .btn {
-  &_color-elementary {
+  &-color-elementary {
     @include font-size-normal;
 
     border-radius: $border-radius;

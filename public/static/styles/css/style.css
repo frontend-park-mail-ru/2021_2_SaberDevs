@@ -2067,7 +2067,7 @@ body,
   text-decoration: underline;
 }
 
-.btn_color-elementary {
+.btn-color-elementary {
   border-radius: 5px;
   padding: 10px 20px;
   -webkit-box-shadow: 0 0 5px rgba(0, 0, 0, 0.25);
@@ -2078,23 +2078,23 @@ body,
 }
 
 @media only screen and (min-width: 901px) {
-  .btn_color-elementary {
+  .btn-color-elementary {
     font-size: 1.5rem;
   }
 }
 
 @media (max-width: 900px) {
-  .btn_color-elementary {
+  .btn-color-elementary {
     font-size: 1rem;
   }
 }
 
-.btn_color-elementary:hover {
+.btn-color-elementary:hover {
   background-color: #354580;
   opacity: 0.5;
 }
 
-.btn_color-elementary:active {
+.btn-color-elementary:active {
   border-color: #dee4ea;
   -webkit-box-shadow: none;
           box-shadow: none;

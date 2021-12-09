@@ -27,6 +27,10 @@ export default class ReaderView extends BaseComponentView {
    * @return {HTMLElement}
    */
   render(article) {
+    const tags = article?.tags?.map((el) => ({
+      content: el,
+      color: genRanHexColor(el),
+    }));
     const reader = document.createElement('div');
     reader.innerHTML = articleReaderComponent({
       ...article,
@@ -37,6 +41,7 @@ export default class ReaderView extends BaseComponentView {
         content: '',
         color: '',
       },
+      tags,
     });
 
     return reader.firstChild;

@@ -12,8 +12,6 @@ import {readerTypes, authorizationTypes} from '../../flux/types.js';
 import readerActions from '../../flux/actions/readerActions.js';
 import editorActions from '../../flux/actions/editorActions.js';
 
-import {translateServerComment} from '../../common/transformApi.js';
-
 // true - поля ответа и изменения не убираются,
 // игнорируется авторизация для комментариев
 const layoutDebug = false;
@@ -83,6 +81,12 @@ function createCommentAnswerListener(root, articleId, comment) {
   const answerBtns = root.querySelectorAll('.comment__answer-btn');
   answerBtns.forEach((el) => el.addEventListener('click', (e) => {
     e.preventDefault();
+
+    // проверяем авторизацию
+    if (!checkRootsToComment()) {
+      return;
+    }
+
     // рисуем чистое текстовое поле
     appendTextField(root, 'ответ на комментарий', comment, true, (value) => {
       let responseStatus = 0;
@@ -396,6 +400,9 @@ function addEventListenersToReader(root) {
       .querySelector('.article-view__send-comment-btn');
   commentBtn.addEventListener('click', (e) => {
     e.preventDefault();
+    if (!checkRootsToComment()) {
+      return;
+    }
     addCommentAction(root);
   });
 
@@ -406,13 +413,6 @@ function addEventListenersToReader(root) {
     e.preventDefault();
     commentsShowAction(root);
   });
-
-  // обработчик: ответить на комментарий
-  const comments = root
-      .querySelectorAll('.comments__comment');
-  for (const comment of comments) {
-    answerOnComment(comment);
-  }
 }
 
 const editArticleAction = (e) => {
@@ -424,17 +424,10 @@ const editArticleAction = (e) => {
 
 /**
  * Добавление комментария
+ * визуал + обработчики
  * @param {Element} root
  */
 function addCommentAction(root) {
-  if (!store.getState().authorization.isAuthenticated) {
-    ModalTemplates.warn(
-        'Сначала авторизируйтесь',
-        'Чтобы оставить комментарий, выполните вход',
-    );
-    return;
-  }
-
   const input = root.querySelector('input.article-view__comment-input');
   if (input.value.trim() != '') {
     let responseStatus = 0;
@@ -507,4 +500,30 @@ function commentsShowAction(root) {
     comments.style.position = 'relative';
     comments.classList.remove('hide');
   }
+}
+
+/**
+ * Проверяет авторизацию и наличие имени / фамилии
+ * у пользователя
+ * возвращает true, если права на добавление
+ * комментариев есть, иначе выводит модалку
+ * @return {boolean}
+ */
+function checkRootsToComment() {
+  if (!store.getState().authorization.isAuthenticated) {
+    ModalTemplates.signup(false);
+    return false;
+  }
+
+  if (!store.getState().authorization.firstName ||
+      !store.getState().authorization.lastName) {
+    ModalTemplates.needFullRegConfirm(
+        'Пользователи, не указавшие имя и фамилию, не могут оставлять' +
+        ' комментарии.',
+        '',
+    );
+    return false;
+  }
+
+  return true;
 }

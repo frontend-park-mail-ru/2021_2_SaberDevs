@@ -4,6 +4,9 @@ $article-text-margin-bottom: 20px;
 $article-main-picture-margin: 15px 0;
 $article-tag-margin-right: 15px;
 $photo-size: 50px;
+$row-margin-bottom: 15px;
+$row-margin-bottom-tags-categories: calc(15px - $tag-margin-bottom);
+$article-view-title-margin-extra: calc(25px - $row-margin-bottom) 0 25px;
 
 .article-view {
   @include col;
@@ -14,38 +17,32 @@ $photo-size: 50px;
   min-height: 450px;
   font-weight: $font-thin;
 
+  &__heading {
+    width: 90%;
+  }
+
   &__content {
     padding-bottom: 5%;
     width: 90%;
   }
 
-  &__top {
-    @include right;
+  &__top-btns {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: $row-margin-bottom;
   }
 
-  &__back-btn {
-    @include font-size-normal;
-
-    margin-left: 5px;
-    cursor: pointer;
-
-    &:hover {
-      text-decoration: underline;
-      color: $color-secondary;
-      cursor: pointer;
-    }
+  &__categories {
+    margin-bottom: $row-margin-bottom-tags-categories;
   }
 
   &__title {
     @include title;
+    margin: $article-view-title-margin-extra;
   }
-
-  &__info {
-    @include row;
-
-    justify-content: space-between;
-  }
-
+  
   &__main-picture {
     margin: $article-main-picture-margin;
     width: 100%;
@@ -55,22 +52,6 @@ $photo-size: 50px;
     @include font-size-normal;
 
     margin-bottom: $article-text-margin-bottom;
-  }
-
-  &__tags {
-    display: flex;
-  }
-
-  &__tag {
-    @include font-size-normal;
-
-    margin-right: $article-tag-margin-right;
-
-    &:hover {
-      text-decoration: underline;
-      color: $color-secondary;
-      cursor: pointer;
-    }
   }
 
   &__author-time {
@@ -91,14 +72,6 @@ $photo-size: 50px;
     @include font-size-normal;
 
     margin: 0 19px;
-  }
-
-  &__category {
-    // font-weight: 200;
-
-    @include font-size-normal;
-
-    margin: 0 10px;
   }
 
   &__add-comment {

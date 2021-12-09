@@ -67,9 +67,8 @@ export default class EditorView extends BaseComponentView {
     editor.innerHTML = articleEditorComponent();
 
     this.category =
-        editor.firstChild.querySelector('.article-create__category_selector');
-    this.category.querySelector('.article-create__row')
-        .appendChild(this.innerComponents.categoryChoiceBar.render());
+        editor.firstChild.querySelector('#article-category-selector');
+    this.category.appendChild(this.innerComponents.categoryChoiceBar.render());
     // немного другие стили
     editor.firstChild.querySelector('.plate')
         .className = 'article-create__category_selector';
@@ -201,16 +200,16 @@ export default class EditorView extends BaseComponentView {
     if (text === '') {
       this.previewBox.querySelector('.category__content').textContent =
         'категория не выбрана';
-      this.root.querySelector('.article-create__label').innerHTML =
-        'Выберите категорию | <strong>категория не выбрана</strong>';
+      // this.root.querySelector('.article-create__label').innerHTML =
+      //   'Выберите категорию | <strong>категория не выбрана</strong>';
     } else {
       const categoryColor = genRanHexColor(text);
-      const categoryBoxTop = this.root.querySelector('.article-create__label');
-      categoryBoxTop.innerHTML =
-        `Выберите категорию | <strong>${text}</strong>`;
-      categoryBoxTop.style.color = categoryColor;
-      categoryBoxTop
-          .style.textShadow = `text-shadow: ${categoryColor} 0px 0px 10px`;
+      // const categoryBoxTop=this.root.querySelector('.article-create__label');
+      // categoryBoxTop.innerHTML =
+      //   `Выберите категорию | <strong>${text}</strong>`;
+      // categoryBoxTop.style.color = categoryColor;
+      // categoryBoxTop
+      //     .style.textShadow = `text-shadow: ${categoryColor} 0px 0px 10px`;
 
       const categoryBoxPreview =
         this.previewBox.querySelector('.category__content');

@@ -59,9 +59,6 @@ $card-top-margin-bottom: calc($card-element-margin-bottom - $tag-margin-bottom);
 
   &__bottom {
     @include row;
-
-    justify-content: flex-end;
-    width: 100%;
   }
 
   &__author {

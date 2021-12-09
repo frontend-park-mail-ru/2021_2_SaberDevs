@@ -1,6 +1,8 @@
 import Modal from './modal.js';
 import SignupModal from './signupModal.js';
 
+import {redirect, spanUnderline} from '../../common/utils.js';
+
 /**
  * Информационное окно
  * @param {string} header
@@ -86,6 +88,51 @@ export function showModalConfirm(
   Modal.open(true);
 }
 
+
+/**
+ * Информационное окно, требующее подтверждения
+ * @param {string} msgBefore
+ * @param {string} msgMain
+ */
+export function showModalNeedFullReg(msgBefore, msgMain) {
+  console.warn({msgBefore, msgMain});
+  let part1 = '';
+  let part2 = '';
+  if (msgBefore !== '') {
+    part1 = '<br>' + msgBefore;
+  }
+  if (msgMain !== '') {
+    part2 = '<br>' + msgMain;
+  }
+  showModalConfirmCustom(
+      'Пройдите полную регистрацию',
+      `${part1}<br/>Посетите ${spanUnderline('Профиль')} > ` +
+      `${spanUnderline('Настройки')} и расскажите о себе.${part2}`,
+      'В Профиль!',
+      'Позже',
+      () => redirect('/profile/settings'),
+  );
+}
+
+/**
+ * Информационное окно, требующее подтверждения с настраиваемыми
+ * подписями кнопок
+ * @param {string} header
+ * @param {string | HTMLElement} content
+ * @param {string} confirmSign
+ * @param {string} declineSign
+ * @param {function} onConfirm
+ * @param {function} onDecline
+ */
+export function showModalConfirmCustom(
+    header, content, confirmSign, declineSign, onConfirm, onDecline = () => {},
+) {
+  showModalConfirm(header, content, onConfirm, onDecline);
+  Modal.changeBtnOkSign(confirmSign);
+  Modal.changeBtnCancelSign(declineSign);
+  Modal.open(true);
+}
+
 /**
  * Сборник полезных модальных окон
  * Все функции включают полную настройку модального окна
@@ -132,6 +179,23 @@ export default class ModalTemplates {
   }
 
   /**
+   * Информационное окно, требующее подтверждения с настраиваемыми
+   * подписями кнопок
+   * @param {string} header
+   * @param {string | HTMLElement} content
+   * @param {string} confirmSign
+   * @param {string} declineSign
+   * @param {function} onConfirm
+   * @param {function} onDecline
+   */
+  static confirmCustom(
+      header, content, confirmSign,
+      declineSign, onConfirm, onDecline) {
+    showModalConfirmCustom(header, content, confirmSign,
+        declineSign, onConfirm, onDecline);
+  }
+
+  /**
    * Информационное окно, требующее подтверждения
    * @param {string} header
    * @param {string | HTMLElement} content
@@ -139,5 +203,14 @@ export default class ModalTemplates {
    */
   static warn(header, content, onConfirm) {
     showModalWarn(header, content, onConfirm);
+  }
+
+  /**
+   * Информационное окно, требующее подтверждения
+   * @param {string} msgBefore
+   * @param {string} msgMain
+   */
+  static needFullRegConfirm(msgBefore, msgMain) {
+    showModalNeedFullReg(msgBefore, msgMain);
   }
 }

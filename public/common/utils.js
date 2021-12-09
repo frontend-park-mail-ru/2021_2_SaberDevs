@@ -5,6 +5,24 @@
 // ///////////////////////////////// //
 
 /**
+ * @param {string} str
+ * @return {string}
+ */
+export function spanUnderline(str) {
+  return '<span style="display: contents; text-decoration: underline;">' +
+  str + '</span>';
+}
+
+/**
+ * @param {string} str
+ * @param {string} color
+ * @return {string}
+ */
+export function spanColor(str, color) {
+  return '<span style="display: contents; color: ' + color + ';">' +
+  str + '</span>';
+}
+/**
  * @param {number} time
  * @return {string}
  */

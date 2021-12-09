@@ -2,9 +2,10 @@ include _onAvatarErrorMixin
 
 .stream-comment(id=`${id}`)
     .stream-comment__author
-        +avatarMixin.stream-comment__author-photo(src=`${author.avatarUrl}`)
-        if (author.lastName !=='' || author.firstName !== '')
-          .stream-comment__author-name #{author.firstName} #{author.lastName}
-        else
-          .stream-comment__author-name #{author.login}
-    .stream-comment__text #{text}
+      a(href=`/user/${author.login}`)
+        +avatarMixin.stream-comment__author-photo(src=`${author.avatarUrl}` data-router='ignore')
+      if (author.lastName !=='' || author.firstName !== '')
+        a(href=`/user/${author.login}`).stream-comment__author-name #{author.firstName} #{author.lastName}
+      else
+        a(href=`/user/${author.login}`).stream-comment__author-name #{author.login}
+    a(href=`/article/${articleId}`).stream-comment__text #{text}

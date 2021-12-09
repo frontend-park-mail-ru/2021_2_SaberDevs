@@ -5,7 +5,7 @@ import store from '../flux/store.js';
 import ModalTemplates from '../components/modal/modalTemplates.js';
 import {authorizationTypes} from '../flux/types.js';
 import {changePageActions} from '../flux/actions.js';
-import {redirect} from '../common/utils.js';
+import {redirect, spanUnderline} from '../common/utils.js';
 
 /**
    * Проверяет состояние editor
@@ -50,6 +50,13 @@ export default class EditorPage extends BasePageMV {
    * Отобразить подконтрольную страницу.
    */
   show() {
+    if (!store.getState().authorization.firstName ||
+        !store.getState().authorization.lastName) {
+      ModalTemplates.needFullRegConfirm(
+          'Только пользователи, указавшие имя и фамилию могут быть авторами.',
+          'Вы можете ознакомиться с интерфейсом, но статью создать не сможете.',
+      );
+    }
     super.show();
     store.dispatch(
         changePageActions.changePage(
