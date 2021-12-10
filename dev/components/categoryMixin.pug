@@ -1,3 +1,8 @@
-mixin categoryMixin(categoryContent, categoryColor)
-  .category.cursor-pointer(onmouseover=`this.style.borderColor = "${categoryColor}";`, onmouseout='this.style.borderColor = "transparent";')
-    .category__content(style = `color: ${categoryColor}; text-shadow: ${categoryColor} 0px 0px 10px`) #{categoryContent}
+mixin categoryMixin(categoryContent, categoryColor, glassed)
+  if glassed
+    .category.cursor-pointer.glass-plate(onmouseover=`this.style.borderColor = "${categoryColor}";`, onmouseout='this.style.borderColor = "transparent";')
+      .category__content(style = `color: ${categoryColor}; text-shadow: ${categoryColor} 0px 0px 10px`) #{categoryContent}
+  else
+    .category.cursor-pointer(onmouseover=`this.style.borderColor = "${categoryColor}";`, onmouseout='this.style.borderColor = "transparent";')
+      .category__content(style = `color: ${categoryColor}; text-shadow: ${categoryColor} 0px 0px 10px`) #{categoryContent}
+  

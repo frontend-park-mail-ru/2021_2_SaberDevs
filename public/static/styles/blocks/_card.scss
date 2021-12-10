@@ -78,28 +78,11 @@ $card-top-margin-bottom: calc($card-element-margin-bottom - $tag-margin-bottom);
   }
 
   &__time {
-    @include font-size-normal;
-
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
+    margin: $tag-margin;
     border: 2px solid transparent;
     border-radius: $border-radius;
-    padding: $tag-padding;
     box-sizing: border-box;
-    font-weight: 400;
-    white-space: nowrap;
-
-    &-content {
-      display: flex;
-
-      // отступ справа + снизу, чтобы много тегов разбивались по строкам
-      margin: $tag-margin;
-      border: 2px solid transparent;
-      border-radius: $border-radius;
-      box-sizing: border-box;
-      background: transparent;
-    }
+    background: transparent;
   }
 
   &__category {

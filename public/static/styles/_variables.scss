@@ -128,28 +128,81 @@ $button-opacity: 0.5;
   background-repeat: no-repeat;
 }
 
-@mixin icon-size() {
+@mixin icon-size-width() {
   @media (min-width: 901px) {
     width: 40px;
-    height: 40px;
   }
 
   @media (max-width: 900px) {
     width: 30px;
+  }
+}
+
+@mixin icon-size-height() {
+  @media (min-width: 901px) {
+    height: 40px;
+  }
+
+  @media (max-width: 900px) {
     height: 30px;
   }
 }
 
-@mixin icon-size-small() {
+@mixin icon-size() {
+  @include icon-size-width();
+  @include icon-size-height();
+}
+
+@mixin icon-size-tooltip-offset() {
+  @media (min-width: 901px) {
+    margin-left: 40px;
+    margin-top: -40px;
+  }
+
+  @media (max-width: 900px) {
+    margin-left: 30px;
+    margin-top: -30px;
+  }
+}
+
+@mixin icon-size-small-width() {
   @media (min-width: 901px) {
     width: 25px;
-    height: 25px;
   }
 
   @media (max-width: 450px) {
     width: 20px;
+  }
+}
+
+@mixin icon-size-small-heigth() {
+  @media (min-width: 901px) {
+    height: 25px;
+  }
+
+  @media (max-width: 450px) {
     height: 20px;
   }
+}
+
+@mixin icon-size-small() {
+  @include icon-size-small-width();
+  @include icon-size-small-heigth();
+}
+
+@mixin icon-share-size-width() {
+  @media (min-width: 901px) {
+    width: 128px;
+  }
+
+  @media (max-width: 450px) {
+    width: 96px;
+  }
+}
+
+@mixin icon-share-size() {
+  @include icon-size-height();
+  @include icon-share-size-width();
 }
 
 $img-bg: url("Static/img/background-img.png");
@@ -174,3 +227,9 @@ $img-icon-search-hover: url("Static/img/icons/search_hover.svg");
 $img-icon-arrow: url("Static/img/icons/arrow.svg");
 $img-icon-send: url("Static/img/icons/send.svg");
 $img-icon-menu: url("Static/img/icons/menu.svg");
+
+$logo-icon-vk: url("Static/img/share/VK.com-logo.svg");
+$logo-icon-tg: url("https://telegram.org/img/WidgetButton_LogoLarge.png");
+// $logo-icon-ok: url("Static/img/share/ok_logo.png");
+$logo-icon-ok: url("Static/img/share/odnoklassniki_PNG16.png");
+$logo-icon-email: url("http://png-2.findicons.com/files/icons/573/must_have/48/mail.png");

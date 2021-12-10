@@ -32,6 +32,7 @@ const saveTo = {
   categoryMixin: '',
   _onAvatarErrorMixin: '',
   avatarMixin: '',
+  shareMixin: '',
 };
 
 const correctLaunchDir = '2021_2_SaberDevs';

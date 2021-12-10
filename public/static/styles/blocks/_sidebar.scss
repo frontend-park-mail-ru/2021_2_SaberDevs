@@ -40,11 +40,6 @@
     @include font-size-large;
 
     margin-right: 5px;
-
-    &:hover {
-      text-decoration: underline;
-      cursor: pointer;
-    }
   }
 
   &__categories-item {
@@ -124,8 +119,8 @@
 
     justify-content: space-between;
     overflow-y: scroll;
-    width: 90%;
     height: 100vh;
+    margin: 15px;
 
     &::-webkit-scrollbar {
       width: 0;

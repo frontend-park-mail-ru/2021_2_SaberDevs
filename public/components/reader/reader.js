@@ -329,6 +329,11 @@ export default class Reader extends BaseComponent {
     const commentsDiv = this.root.querySelector('#comments');
     commentsDiv.innerHTML = '';
 
+    // показываем кнопку "скрытб комментарии"
+    if (comments.length > 0) {
+      this.root.querySelector('comments-show').style.display = 'block';
+    }
+
     comments.forEach((comment) => {
       const commentWrapper = document.createElement('div');
       let answers = '';
@@ -460,7 +465,14 @@ function addCommentAction(root) {
               readerActions.addComment(newComment),
           );
 
-          root.querySelector('.comments').appendChild(commentDiv);
+          const commentsDiv = root.querySelector('.comments');
+          commentsDiv.appendChild(commentDiv);
+
+          // если это был первый комментарий, активируем кнопку "скрыть"
+          // показываем кнопку "скрыть комментарии"
+          if (commentsDiv.childElementCount > 0) {
+            root.querySelector('comments-show').style.display = 'block';
+          }
         })
         .catch((err) => {
           if (responseStatus !== 0) {

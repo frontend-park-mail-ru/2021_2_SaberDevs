@@ -1,4 +1,5 @@
 include categoryMixin
+include shareMixin
 mixin tagMixin(content, color, cross=false)
   include tag.pug
 
@@ -37,14 +38,14 @@ mixin tagMixin(content, color, cross=false)
         .icon__text #{comments || ''}
         .action-btns__comments-icon.icon__img
       .icon
-        .action-btns__share-icon.icon__img
+        +shareMixin('/article/' + id)
   img(src=`${previewUrl}` onerror=`
   const img = document.querySelector('img[src="${previewUrl}"]');
   img.style.visibility = 'hidden';`).article-view__main-picture
   .article-view__content
     .article-view__text #{text}
     include articleAddComment.pug
-    .comments-show
-        button.action-btns__arrow-icon.icon-small__img.comments-show__btn.rotate-180
+    .comments-show(style='display: none')
+        button.action-btns__arrow-icon.icon-small__img.comments-show__btn.rotate-18
         .comments-show__text Скрыть комментарии
     .comments(id='comments')

@@ -10,8 +10,8 @@ background-repeat: no-repeat;`)
   .card__top
     .card__top-left
       .card__time-category
-        +categoryMixin(category.categoryContent, category.categoryColor)
-        .category
+        +categoryMixin(category.categoryContent, category.categoryColor, true)
+        .card__time
           .category__content #{datetime}
       .tags__row
         if Array.isArray(tags)

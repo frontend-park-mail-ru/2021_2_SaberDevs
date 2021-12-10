@@ -1,0 +1,18 @@
+- const domain='http://89.208.197.247:8080'
+
+mixin shareMixin(url, title, image, description)
+  span.tooltip()&attributes(attributes)
+    .action-btns__share-icon.icon__img
+    span.tooltip-content-share
+      //- https://vk.com/dev/widget_share
+      a.icon__share-vk(data-router="outer" target='_blank' title='Вконтакте' href=`https://vk.com/share.php?url=${domain}${url}`)
+
+      //- https://core.telegram.org/widgets/share
+      a.icon__share-tg(data-router="outer" target='_blank' title='Телеграм' href=`https://t.me/share/url?url=${domain}${url}&text=${title || ''}`)
+
+      //- https://apiok.ru/en/ext/like
+      a.icon__share-ok(data-router="outer" target='_blank' title='Одноклассники' href=`https://connect.ok.ru/offer?url=${domain}${url}&title=${title || ''}&imageUrl=${image || ''}`)
+
+      //- e-mail
+      //- https://stackoverflow.com/questions/5045918/adding-a-share-by-email-link-to-website
+      a.icon__share-email(data-router="outer" target='_blank'   href=`mailto:?subject=Смотри что нашёл&body=Советую заглянуть на этот потрясающий новостной IT-портал: ${domain}${url}` title="e-mail")
