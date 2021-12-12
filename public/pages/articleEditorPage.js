@@ -5,7 +5,7 @@ import store from '../flux/store.js';
 import ModalTemplates from '../components/modal/modalTemplates.js';
 import {authorizationTypes} from '../flux/types.js';
 import {changePageActions} from '../flux/actions.js';
-import {redirect, spanUnderline} from '../common/utils.js';
+import {redirect} from '../common/utils.js';
 
 /**
    * Проверяет состояние editor

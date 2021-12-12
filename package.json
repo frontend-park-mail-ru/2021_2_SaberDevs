@@ -7,8 +7,8 @@
     "lint": "npx eslint . && npx stylelint --fix **/*.scss",
     "debug-no-webpack": "node ./dev/toggleGlobals.js true && node ./dev/compileTemplates.js debug && npm run start-static",
     "debug": "node ./dev/toggleGlobals.js true && node ./dev/compileTemplates.js debug && npx webpack --mode development && npm run start-static",
-    "build": "npx eslint . && node ./dev/toggleGlobals.js false && node ./dev/compileTemplates.js && npx webpack && npm run start-static",
-    "nohup": "npx eslint . && node ./dev/toggleGlobals.js false && node ./dev/compileTemplates.js && npx webpack && nohup node server/server.js",
+    "build": "npx eslint . && node ./dev/toggleGlobals.js false && node ./dev/compileTemplates.js && npx webpack",
+    "deploy": "npm run build && sudo systemctl stop nginx && echo 'server stopped' && sudo cp -r dist/* /var/www/sabernews/html/ && echo 'copied' && sudo systemctl start nginx && echo 'server started\nHave fun'",
     "start": "concurrently --kill-others \"npm run start-static\" \"npm run start-api\"",
     "start-static": "node server/server.js",
     "start-api": "node server/server-api.js"

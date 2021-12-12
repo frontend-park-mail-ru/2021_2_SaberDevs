@@ -28,7 +28,7 @@ import ImgPreloader from './components/imgPreloader.js';
 import {logoutRequest} from './modules/ajaxRequests.js';
 import {cookieLogin} from './modules/ajaxRequests.js';
 // eslint-disable-next-line no-unused-vars
-import webSocket from './modules/webSocket.js';
+// import webSocket from './modules/webSocket.js';
 
 // flux store
 import store from './flux/store.js';
