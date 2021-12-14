@@ -114,7 +114,7 @@ function addClickListenersOnCards(where, cards, dispatchLike) {
           );
 
           const body = {
-            type: 1, // 0 - article, 1 - comment
+            type: 0, // 0 - article, 1 - comment
             sign: 1,
             id: parseInt(cardDiv.id.replace('card', ''), 10),
           };
@@ -127,7 +127,6 @@ function addClickListenersOnCards(where, cards, dispatchLike) {
                 if (status === Ajax.STATUS.ok) {
                   resolve(response.data);
                 } else {
-                  responseStatus = status;
                   reject(new Error(response.msg));
                 }
               }))

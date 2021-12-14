@@ -245,7 +245,7 @@ function deleteCard(id) {
 function like(id, sign, newLikesNum) {
   return {
     type: mainPageTypes.LIKE,
-    payload: {id, sign, likes: newLikesNum},
+    payload: {id: id + '', sign, likes: newLikesNum},
   };
 }
 
