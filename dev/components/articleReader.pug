@@ -38,7 +38,7 @@ mixin tagMixin(content, color, cross=false)
         .icon__text #{comments || ''}
         a.action-btns__comments-icon.icon__img(href='#comments' data-router='outer')
       .icon
-        +shareMixin('/article/' + id)
+        +shareMixin('/article/' + id, `SaberNews | ${title}`)
   img(src=`${previewUrl}` onerror=`
   const img = document.querySelector('img[src="${previewUrl}"]');
   img.style.visibility = 'hidden';`).article-view__main-picture

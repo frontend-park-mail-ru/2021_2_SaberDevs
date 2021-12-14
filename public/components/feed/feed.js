@@ -7,8 +7,7 @@ import store from '../../flux/store.js';
 import {profilePageActions} from '../../flux/actions.js';
 import readerActions from '../../flux/actions/readerActions.js';
 import {ajaxDebug} from '../../globals.js';
-import Ajax from '../../modules/ajax.js';
-import ModalTemplates from '../modal/modalTemplates.js';
+import Likes from '../likes/likes.js';
 
 /**
  * @typedef {Object} Card
@@ -27,17 +26,17 @@ import ModalTemplates from '../modal/modalTemplates.js';
  */
 
 const resetDoNotUploadTime = 6000;  // anti- brutforce
-const likeAnimationDuration = 800;
 
 /**
  * Создает обработчики клика на разные участки карточки
+ * Монтирует компонент лайков
  * @param {HTMLElement} where место, где искать смонтированные шаблонизатором
  * карточки
  * @param {Array<Card>} cards массив с данными, по которым
  * карточки монтировались
  * @param {function} dispatchLike
  */
-function addClickListenersOnCards(where, cards, dispatchLike) {
+function upgradeCards(where, cards, dispatchLike) {
   cards.forEach((card) => {
     const cardDiv = where.querySelector('#card' + card.id);
     if (cardDiv === null) {
@@ -91,57 +90,17 @@ function addClickListenersOnCards(where, cards, dispatchLike) {
           // TODO: апнуть роутер, чтобы он совершал переход по ссылке с якорем
         });
 
-    const likesNum = cardDiv.querySelector('#likesNum');
-
-    cardDiv.querySelector('.action-btns__likes-icon').addEventListener(
-        'click',
-        (e) => {
-          e.preventDefault();
-          e.stopPropagation();
-
-          if (!store.getState().authorization.isAuthenticated) {
-            ModalTemplates.signup(false);
-            return;
-          }
-
-          const likesNumInitial = parseInt(likesNum.textContent, 10);
-          likesNum.textContent = (likesNumInitial + 1) + '';
-          const colorDefault = likesNum.style.color;
-          likesNum.style.color = '#597d36'; // green
-          setTimeout(
-              () => likesNum.style.color = colorDefault,
-              likeAnimationDuration,
-          );
-
-          const body = {
-            type: 0, // 0 - article, 1 - comment
-            sign: 1,
-            id: parseInt(cardDiv.id.replace('card', ''), 10),
-          };
-
-          Ajax.post({
-            url: `/like`,
-            body,
-          })
-              .then(({status, response}) => new Promise((resolve, reject) => {
-                if (status === Ajax.STATUS.ok) {
-                  resolve(response.data);
-                } else {
-                  reject(new Error(response.msg));
-                }
-              }))
-              .then((newLikesNum) => {
-                dispatchLike(body.id, body.sign, newLikesNum);
-                console.warn('Успешно лайкнул');
-                likesNum.textContent = newLikesNum;
-              })
-              .catch(({message}) => {
-                if (ajaxDebug) {
-                  console.warn(message);
-                }
-                likesNum.textContent = likesNumInitial;
-              });
-        });
+    // лайки
+    const likesReplaced = cardDiv.querySelector('#place-for-likes');
+    const likesComponent = new Likes(
+        0,
+        parseInt(card.id, 10),
+        card.likes,
+        card.liked,
+        dispatchLike,
+    );
+    const newLikes = likesComponent.render();
+    likesReplaced.parentElement.replaceChild(newLikes, likesReplaced);
   });
 }
 /**
@@ -217,7 +176,7 @@ export default class Feed extends BaseComponent {
           }
 
           this.view.addCards(cards);
-          addClickListenersOnCards(
+          upgradeCards(
               this.view.root.querySelector(`.feed__cards`),
               cards,
               (id, sign, newLikesNum)=>this.dispatchLike(id, sign, newLikesNum),
@@ -266,7 +225,8 @@ export default class Feed extends BaseComponent {
     const preview = this.innerComponent.render().outerHTML;
     const cards = store.getState()[this.storeName].cards;
     this.root = this.view.render(preview, cards);
-    addClickListenersOnCards(
+
+    upgradeCards(
         this.view.root.querySelector(`.feed__cards`),
         cards,
         (id, sign, newLikesNum) => this.dispatchLike(id, sign, newLikesNum),
