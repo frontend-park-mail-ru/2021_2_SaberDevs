@@ -99,8 +99,11 @@ export default function mainPageReducer(state = InitialMainPageState, action) {
       }
     }
     case mainPageTypes.LIKE: {  // TODO: распространить на другие ленты, ридер
+      console.warn('Like ruducer!', action.payload, {cards: state.cards});
       const idx = state.cards.findIndex((card) => card.id===action.payload.id);
       if (idx !== -1) {
+        console.warn('Like ruducer!', action.payload);
+
         const likeCardCopy = JSON.parse(JSON.stringify(state.cards[idx]));
         /*
           liked 0  | sign 1  => liked 1
@@ -116,6 +119,7 @@ export default function mainPageReducer(state = InitialMainPageState, action) {
           likeCardCopy.liked = action.payload.sign;
         }
         likeCardCopy.likes = action.payload.likes;
+        console.warn(likeCardCopy);
         return {
           ...state,
           cards: state.cards.slice(0, idx)
