@@ -36,6 +36,7 @@ export default class MainPageView extends BasePageView {
           mainPageTypes.ALLOW_CARDS_UPLOADING,
           mainPageActions.forbidCardsLoading,
           mainPageActions.allowCardsLoading,
+          mainPageActions.like,
       ),
     };
   }

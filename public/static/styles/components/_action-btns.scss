@@ -9,9 +9,18 @@
     background: $img-icon-like;
     background-size: cover;
 
-    &:hover {
-      background-image: $img-icon-like-hover;
-    }
+    // &:hover {
+    //   background-image: $img-icon-like-hover;
+    // }
+  }
+
+  &__dislike-icon {
+    background: $img-icon-dislike;
+    background-size: cover;
+  }
+
+  &__liked {
+    border-color: $color-elements;
   }
 
   &__comments-icon {

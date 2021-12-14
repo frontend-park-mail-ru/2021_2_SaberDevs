@@ -7,6 +7,8 @@ import store from '../../flux/store.js';
 import {profilePageActions} from '../../flux/actions.js';
 import readerActions from '../../flux/actions/readerActions.js';
 import {ajaxDebug} from '../../globals.js';
+import Ajax from '../../modules/ajax.js';
+import ModalTemplates from '../modal/modalTemplates.js';
 
 /**
  * @typedef {Object} Card
@@ -25,6 +27,7 @@ import {ajaxDebug} from '../../globals.js';
  */
 
 const resetDoNotUploadTime = 6000;  // anti- brutforce
+const likeAnimationDuration = 800;
 
 /**
  * Создает обработчики клика на разные участки карточки
@@ -32,8 +35,9 @@ const resetDoNotUploadTime = 6000;  // anti- brutforce
  * карточки
  * @param {Array<Card>} cards массив с данными, по которым
  * карточки монтировались
+ * @param {function} dispatchLike
  */
-function addClickListenersOnCards(where, cards) {
+function addClickListenersOnCards(where, cards, dispatchLike) {
   cards.forEach((card) => {
     const cardDiv = where.querySelector('#card' + card.id);
     if (cardDiv === null) {
@@ -74,9 +78,71 @@ function addClickListenersOnCards(where, cards) {
           e.stopPropagation();
           console.warn('TODO: клик по тегу', e.currentTarget.textContent);
           // TODO: редирект на страницу с тегами
-          // TODO: то же с категориями
         },
     ));
+
+    cardDiv.querySelector('.action-btns__comments-icon')
+        .addEventListener('click', (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          console.warn('клик по комментам');
+          // redirectOuter(
+          // '/article/'+ cardDiv.id.replace('card', '')+'#comments');
+          // TODO: апнуть роутер, чтобы он совершал переход по ссылке с якорем
+        });
+
+    const likesNum = cardDiv.querySelector('#likesNum');
+
+    cardDiv.querySelector('.action-btns__likes-icon').addEventListener(
+        'click',
+        (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+
+          if (!store.getState().authorization.isAuthenticated) {
+            ModalTemplates.signup(false);
+            return;
+          }
+
+          const likesNumInitial = parseInt(likesNum.textContent, 10);
+          likesNum.textContent = (likesNumInitial + 1) + '';
+          const colorDefault = likesNum.style.color;
+          likesNum.style.color = '#597d36'; // green
+          setTimeout(
+              () => likesNum.style.color = colorDefault,
+              likeAnimationDuration,
+          );
+
+          const body = {
+            type: 1, // 0 - article, 1 - comment
+            sign: 1,
+            id: parseInt(cardDiv.id.replace('card', ''), 10),
+          };
+
+          Ajax.post({
+            url: `/like`,
+            body,
+          })
+              .then(({status, response}) => new Promise((resolve, reject) => {
+                if (status === Ajax.STATUS.ok) {
+                  resolve(response.data);
+                } else {
+                  responseStatus = status;
+                  reject(new Error(response.msg));
+                }
+              }))
+              .then((newLikesNum) => {
+                dispatchLike(body.id, body.sign, newLikesNum);
+                console.warn('Успешно лайкнул');
+                likesNum.textContent = newLikesNum;
+              })
+              .catch(({message}) => {
+                if (ajaxDebug) {
+                  console.warn(message);
+                }
+                likesNum.textContent = likesNumInitial;
+              });
+        });
   });
 }
 /**
@@ -103,6 +169,7 @@ export default class Feed extends BaseComponent {
    * говорит, о том, что все данные загружены
    * @param {Action} allowCardsUploading - действие, которое
    * разрешает загрузку карточек снова через resetDoNotUploadTime
+   * @param {function<string, number, number>} like
    * @param {BaseComponent} previewComponent - компонент,
    * который будет вложен в .feed__preview в ленте
    */
@@ -115,6 +182,7 @@ export default class Feed extends BaseComponent {
       ALLOW_CARDS_UPLOADING_ACTION,
       forbidCardsUploading,
       allowCardsUploading,
+      like,
       previewComponent = new BaseComponent(),
   ) {
     console.log('{FEED} creation with params:');
@@ -123,6 +191,9 @@ export default class Feed extends BaseComponent {
     super();
     this.innerComponent = previewComponent;
     this.storeName = storeName;
+    this.dispatchLike = (id, sign, newLikesNum) => store.dispatch(
+        like(id, sign, newLikesNum),
+    );
     const cards = store.getState()[storeName].cards;
     this.view = new FeedView(
         composeCards,
@@ -150,6 +221,7 @@ export default class Feed extends BaseComponent {
           addClickListenersOnCards(
               this.view.root.querySelector(`.feed__cards`),
               cards,
+              (id, sign, newLikesNum)=>this.dispatchLike(id, sign, newLikesNum),
           );
 
           const endFound = store.getState()[storeName].isEndFound;
@@ -198,6 +270,7 @@ export default class Feed extends BaseComponent {
     addClickListenersOnCards(
         this.view.root.querySelector(`.feed__cards`),
         cards,
+        (id, sign, newLikesNum) => this.dispatchLike(id, sign, newLikesNum),
     );
 
     if (store.getState()[this.storeName].isEndFound) {

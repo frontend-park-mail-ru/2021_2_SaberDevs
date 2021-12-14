@@ -36,7 +36,7 @@ mixin tagMixin(content, color, cross=false)
         .action-btns__likes-icon.icon__img
       .icon.icon-margin-r
         .icon__text #{comments || ''}
-        .action-btns__comments-icon.icon__img
+        a.action-btns__comments-icon.icon__img(href='#comments' data-router='outer')
       .icon
         +shareMixin('/article/' + id)
   img(src=`${previewUrl}` onerror=`
@@ -49,3 +49,4 @@ mixin tagMixin(content, color, cross=false)
         button.action-btns__arrow-icon.icon-small__img.comments-show__btn.rotate-18
         .comments-show__text Скрыть комментарии
     .comments(id='comments')
+    a(name='comments').hide

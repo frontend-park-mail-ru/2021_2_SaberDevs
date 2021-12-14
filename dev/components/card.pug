@@ -26,9 +26,20 @@ background-repeat: no-repeat;`)
   .card__title #{title}
   .card__description #{text}
   .card__bottom
-    .icon.icon-margin-r
-      .icon__text #{likes || ''}
-      button.action-btns__likes-icon.icon__img
     .icon
-      .icon__text #{comments || ''}
+      if (liked === 0)
+        button.action-btns__likes-icon.icon__img
+      if (liked === 1)
+        button.action-btns__likes-icon.action-btns__liked.icon__img
+      //- .icon__text #{likes || ''}
+      .icon__text(id="likesNum") #{likes || '16'}
+    .icon-margin-r
+      if (liked === 0)
+        button.action-btns__dislike-icon.icon__img
+      if (liked === -1)
+        button.action-btns__dislike-icon.action-btns__liked.icon__img
+    .icon
+      //- a(href=`/article/${id}#comments`).action-btns__comments-icon.icon__img
       button.action-btns__comments-icon.icon__img
+    .icon__text(id="commentsNum") #{comments || '20'}
+    //- .icon__text #{comments || ''}

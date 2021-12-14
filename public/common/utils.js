@@ -88,6 +88,24 @@ export function redirect(to) {
 }
 
 /**
+ * Вызов Router.open(to) через имитацию клика
+ * Обязательно наличие элемента #root в DOM
+ * @param {string} to
+ */
+export function redirectOuter(to) {
+  const clickSimulator = document.createElement('a');
+  const root = document.querySelector('#root');
+
+  clickSimulator.id = 'clickSimulator';
+  clickSimulator.href = to;
+  clickSimulator.dataset.router = 'outer';
+
+  root.appendChild(clickSimulator);
+  clickSimulator.click();
+  root.removeChild(clickSimulator);
+}
+
+/**
  * Возврат содежимого в виде строки
  * @param {HTMLElement} el
  * @return {string}

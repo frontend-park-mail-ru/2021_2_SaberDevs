@@ -236,6 +236,19 @@ function deleteCard(id) {
   };
 }
 
+/**
+ * @param {string} id
+ * @param {number} sign
+ * @param {number} newLikesNum
+ * @return {Action}
+ */
+function like(id, sign, newLikesNum) {
+  return {
+    type: mainPageTypes.LIKE,
+    payload: {id, sign, likes: newLikesNum},
+  };
+}
+
 export const mainPageActions = {
   askNewCards,
   saveNewCards,
@@ -246,6 +259,7 @@ export const mainPageActions = {
   allowCardsLoading,
   toggleLogin,
   deleteCard,
+  like,
 };
 
 // ////////////////

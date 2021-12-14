@@ -6,7 +6,9 @@ $icon-margin: 15px;
 
   &__img {
     @include icon-size;
-
+    box-sizing: border-box;
+    border-radius: $border-radius;
+    border: 2px solid transparent;
     cursor: pointer;
   }
 

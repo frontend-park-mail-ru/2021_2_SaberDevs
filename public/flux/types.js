@@ -3,6 +3,7 @@ export const TYPE = 'TYPE';
 export const SYSTYPES = {
   INIT: '__INIT__',
   DELETE_CARD: '__DELETE_CARD__',
+  LIKE_CARD: '__LIKE_CARD__',
 };
 
 const LOGIN = 'LOGIN';
@@ -38,6 +39,7 @@ export const mainPageTypes = {
   SET_LOADING_FLAG: 'SET_LOADING_FLAG',
   UNSET_LOADING_FLAG: 'UNSET_LOADING_FLAG',
   DELETE_CARD: SYSTYPES.DELETE_CARD,
+  LIKE: SYSTYPES.LIKE_CARD,
 };
 
 export const profilePageTypes = {
@@ -51,6 +53,7 @@ export const profilePageTypes = {
   SET_USER_INFO: 'SET_USER_INFO',
   SET_USER_LOADING: 'SET_USER_LOADING',
   DELETE_CARD: SYSTYPES.DELETE_CARD,
+  LIKE: SYSTYPES.LIKE_CARD,
 };
 
 export const categoryPageTypes = {
@@ -63,6 +66,7 @@ export const categoryPageTypes = {
   UNSET_CATEGORY_ARTICLES_LOADING: 'UNSET_CATEGORY_ARTICLES_LOADING',
   SELECT_CATEGORY: 'SELECT_CATEGORY',
   DELETE_CARD: SYSTYPES.DELETE_CARD,
+  LIKE: SYSTYPES.LIKE_CARD,
 };
 
 export const searchTypes = {
@@ -76,6 +80,7 @@ export const searchTypes = {
   SET_SEARCH_GROUP: 'SET_SEARCH_GROUP_SEARCH',
   SET_SEARCH_VALUE: 'SET_SEARCH_VALUE_SEARCH',
   DELETE_CARD: SYSTYPES.DELETE_CARD,
+  LIKE: SYSTYPES.LIKE_CARD,
 };
 
 export const streamTypes = {
@@ -111,6 +116,7 @@ export const readerTypes = {
   EDIT_ARTICLE_COMMENT: 'READER_EDIT_ARTICLE_COMMENT',
   ADD_COMMENT_ANSWER: 'READER_ADD_COMMENT_ANSWER',
   ADD_NEW_COMMENT: 'READER_ADD_NEW_COMMENT',
+  LIKE: SYSTYPES.LIKE_CARD,
 };
 
 export const routerTypes = {

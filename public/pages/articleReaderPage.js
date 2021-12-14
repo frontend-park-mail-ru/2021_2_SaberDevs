@@ -9,6 +9,7 @@ import Ajax from '../modules/ajax.js';
 import {showModalNetOrServerError} from '../components/modal/modalTemplates.js';
 
 import {translateServerComment} from '../common/transformApi.js';
+import {redirectOuter} from '../common/utils.js';
 
 /**
  * @class ReaderPage
@@ -35,7 +36,13 @@ export default class ReaderPage extends BasePageMV {
         ),
     );
     // берем id из урла
-    const idUrlParam = document.URL.slice(document.URL.indexOf('article/') + 8);
+    let idUrlParam = document.URL.slice(document.URL.indexOf('article/') + 8);
+    const anchorPos = idUrlParam.indexOf('#');
+    let anchor = '';
+    if (anchorPos !== -1) {
+      anchor = idUrlParam.slice(anchorPos);
+      idUrlParam = idUrlParam.slice(0, anchorPos);
+    }
     console.warn('[ArticleReaderPage] id from Url ', document.URL, idUrlParam);
     store.dispatch(readerActions.setArticleLoading({id: idUrlParam}));
     store.dispatch(readerActions.openArticle(idUrlParam));
@@ -53,6 +60,10 @@ export default class ReaderPage extends BasePageMV {
         .then((article) => {
           store.dispatch(readerActions.saveArticle(article));
           store.dispatch(readerActions.openArticle(article.id));
+          // После загрузки перекидываем на часть документа с якорем
+          if (anchor) {
+            redirectOuter(document.URL);
+          }
         })
         .then(() => Ajax.get({url: `/comments?id=${idUrlParam}`}))
         .then(({status, response}) => new Promise((resolve, reject) => {
