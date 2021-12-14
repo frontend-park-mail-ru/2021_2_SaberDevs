@@ -123,7 +123,7 @@ export default function mainPageReducer(state = InitialMainPageState, action) {
         return {
           ...state,
           cards: state.cards.slice(0, idx)
-              .push(likeCardCopy)
+              .concat([likeCardCopy])
               .concat(state.cards.slice(idx + 1)),
         };
       } else {
