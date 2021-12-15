@@ -1,0 +1,5 @@
+.notif(id=`${id}` style=`${bkColor}`)
+  p.notif__title !{title}
+  .notif__content #{content}
+  if (duration)
+    .notif-progress(data-duration=`${duration}`)

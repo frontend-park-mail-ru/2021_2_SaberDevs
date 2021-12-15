@@ -1,5 +1,6 @@
 import store from '../flux/store.js';
 import {authorizationTypes} from '../flux/types.js';
+import Ajax from '../modules/ajax';
 
 // eslint-disable-next-line max-len
 const privateKey = 'BAm53SFQL61CJdkPZYxN4qcdNTpnRc5yVSrL182-GNHW1RYmgRSeHoF5rYdMUfZMGT93MzVsN64NBe0azXKcplM';
@@ -17,8 +18,14 @@ export default class PushManager {
     if (activated) {
       return;
     }
-    // store.subscribe(authorizationTypes.LOGIN, () => pushSubsribe());
-    pushSubsribe();
+    store.subscribe(authorizationTypes.LOGIN, () => pushSubsribe());
+    self.addEventListener('push', (e) => {
+      console.warn('[PushManager]: push event');
+      const title = e.data.title || 'SaberNews';
+      e.waitUntil(
+          self.registration.showNotification(title),
+      );
+    });
     activated = true;
   }
 }
@@ -31,21 +38,28 @@ function pushSubsribe() {
       .then((reg) => {
         reg.pushManager.getSubscription();
       })
-      .then((sub) => {
+      .then((sub) => new Promise((resolve) => {
         // проверяем был ли уже зарегистрирован объект pushService
         if (sub === undefined) {
           // спрашиваем юзера
           navigator.serviceWorker.ready.then(
               (reg) => reg.pushManager.subscribe({
                 userVisibleOnly: true,
-                // applicationServerKey: urlBase64ToUint8Array(pk),
                 applicationServerKey: urlBase64ToUint8Array(privateKey),
-              }));
+              }))
+              .then((sub) => resolve(sub));
         } else {
-          // шлем на сервер актуалку
-          console.warn('[PushManager] Типа пошли на сервер');
-          return sub;
+          resolve(sub);
         }
+      }))
+      // в любом случае получаем подписку
+      .then((sub) => {
+        const body = sub.toJSON();
+        Ajax.post({url: 'api/v1/notifications/subscribe', body}).then(
+            ({response}) => {
+              console.warn('[PushManager] subsription on server:', response);
+            },
+        );
       })
       .then((sub) => console.log('[PushManager]', {subscription: sub}))
       .catch((err) => console.error('[PushManager]', err));
