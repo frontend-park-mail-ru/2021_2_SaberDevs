@@ -2,7 +2,8 @@ const fs = require('fs');
 const path = require('path');
 
 const correctLaunchDir = '2021_2_SaberDevs';
-const cachedFilesRoot = 'public';
+const cachedFilesRoot = 'dist';
+const SWJSFileRoot = 'public';
 const SWJSFile = 'serviceWorker.js';
 
 console.log(
@@ -32,7 +33,7 @@ const walker = walk.walk('./' + cachedFilesRoot, {followLinks: false});
 walker.on('file', (root, stat, next) => {
   // Add this file to the list of files
   const path = root + '/' + stat.name;
-  files.push(path.replace(/\\/g, '/').replace('public/', ''));
+  files.push(path.replace(/\\/g, '/').replace(cachedFilesRoot + '/', ''));
   next();
 });
 
@@ -52,13 +53,13 @@ walker.on('end', () => {
               .replace(/]/, ',\n];')}`,
     );
     fs.writeFileSync(
-        './' + cachedFilesRoot + '/' + SWJSFile,
+        './' + SWJSFileRoot + '/' + SWJSFile,
         result,
         'utf8',
     );
     console.log(
         `[DONE]  ${files.length} caching filepaths writen to
-${'./' + cachedFilesRoot + '/' + SWJSFile}\n`,
+${'./' + SWJSFileRoot + '/' + SWJSFile}\n`,
     );
   });
 });

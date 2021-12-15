@@ -1,4 +1,4 @@
-import profilePageTypes from '../types.js';
+import {profilePageTypes} from '../types.js';
 
 // ////////////////
 //  profilePageActions

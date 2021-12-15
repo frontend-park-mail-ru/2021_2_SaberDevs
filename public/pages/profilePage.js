@@ -2,7 +2,8 @@ import BasePageMV from './basePageMV.js';
 import ProfilePageView from './profilePageView.js';
 
 import store from '../flux/store.js';
-import {changePageActions, profilePageActions} from '../flux/actions.js';
+import {changePageActions} from '../flux/actions.js';
+import profilePageActions from '../flux/actions/profilePageActions.js';
 import {authorizationTypes, editorTypes} from '../flux/types.js';
 
 import {showModalNetOrServerError} from '../components/modal/modalTemplates.js';

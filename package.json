@@ -7,10 +7,10 @@
     "lint": "npx eslint . && npx stylelint --fix **/*.scss",
     "debug-no-webpack": "node ./dev/toggleGlobals.js true && node ./dev/compileTemplates.js debug && npm run start-static",
     "debug": "node ./dev/toggleGlobals.js true && node ./dev/compileTemplates.js debug && npx webpack --mode development && npm run start-static",
-    "debug-sw": "node ./dev/toggleGlobals.js true sw && node ./dev/compileTemplates.js debug && npx webpack --mode development && npm run start-static",
-    "build": "npx eslint . && node ./dev/toggleGlobals.js false && node ./dev/compileTemplates.js && npx webpack",
+    "debug-sw": "node ./dev/toggleGlobals.js true sw && node ./dev/compileTemplates.js debug && npx webpack --mode development && node ./dev/createCachedList && npm run start-static",
+    "build": "npx eslint . && node ./dev/toggleGlobals.js false && node ./dev/compileTemplates.js && npx webpack && node ./dev/createCachedList",
     "prod": "npm run build && sudo systemctl stop nginx && echo 'server stopped' && sudo cp -r dist/* /var/www/sabernews/html/ && echo 'copied' && sudo systemctl start nginx && echo 'server started\nHave fun'",
-    "deploy": "node ./dev/toggleGlobals.js true sw && node ./dev/compileTemplates.js debug && npx webpack --mode development && sudo systemctl stop nginx && echo 'server stopped' && sudo cp -r dist/* /var/www/sabernews/html/ && echo 'copied' && sudo systemctl start nginx && echo 'server started\nHave fun'",
+    "deploy": "node ./dev/toggleGlobals.js true sw && node ./dev/compileTemplates.js debug && npx webpack --mode development && node ./dev/createCachedList && sudo systemctl stop nginx && echo 'server stopped' && sudo cp -r dist/* /var/www/sabernews/html/ && echo 'copied' && sudo systemctl start nginx && echo 'server started\nHave fun'",
     "start": "concurrently --kill-others \"npm run start-static\" \"npm run start-api\"",
     "start-static": "node server/server.js",
     "start-api": "node server/server-api.js"
@@ -49,7 +49,6 @@
     "url-loader": "^4.1.1",
     "webpack": "^5.64.4",
     "webpack-cli": "^4.9.1",
-    "workbox-webpack-plugin": "^6.4.2",
     "ws": "^8.3.0"
   }
 }
