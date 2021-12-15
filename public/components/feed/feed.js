@@ -91,7 +91,6 @@ function upgradeCards(where, cards, dispatchLike) {
         });
 
     // лайки
-    const likesReplaced = cardDiv.querySelector('#place-for-likes');
     const likesComponent = new Likes(
         0,
         parseInt(card.id, 10),
@@ -99,8 +98,7 @@ function upgradeCards(where, cards, dispatchLike) {
         card.liked,
         dispatchLike,
     );
-    const newLikes = likesComponent.render();
-    likesReplaced.parentElement.replaceChild(newLikes, likesReplaced);
+    likesComponent.mountInPlace(cardDiv);
   });
 }
 /**

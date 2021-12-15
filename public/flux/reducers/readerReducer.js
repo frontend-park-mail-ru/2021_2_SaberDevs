@@ -199,6 +199,25 @@ export default function readerReducer(state = InitialReaderState, action) {
         console.warn('коментарий с таким айди', action.payload.id, 'не найден');
         return state;
       }
+
+    case readerTypes.LIKE:
+      if (state[action.payload.id] === undefined) {
+        return state;
+      }
+
+      const likeArticleCopy = JSON.parse(
+          JSON.stringify(state[action.payload.id]),
+      );
+      if (likeArticleCopy.liked ^ action.payload.sign === 0) {
+        likeArticleCopy.liked = 0; // отменили оценку
+      } else {
+        likeArticleCopy.liked = action.payload.sign;
+      }
+      likeArticleCopy.likes = action.payload.likes;
+      return {
+        ...state,
+        [action.payload.id]: likeArticleCopy,
+      };
   }
   return state;
 }

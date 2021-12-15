@@ -11,3 +11,6 @@ public/flux/reducers/template.js
 dist/
 
 static/style/css/style.css
+
+certificate/
+certificate/*

@@ -5,6 +5,8 @@ import store from '../../flux/store.js';
 import Ajax from '../../modules/ajax.js';
 import ModalTemplates from '../modal/modalTemplates.js';
 
+import {ajaxDebug} from '../../globals.js';
+
 const likeAnimationDuration = 800;
 const colorInitial = '#dee4ea';
 
@@ -81,14 +83,14 @@ export default class Likes extends BaseComponent {
               .then((newLikesNum) => {
                 dispatchLike(body.id, body.sign, newLikesNum);
                 console.warn('Успешно лайкнул');
-                likesNum.textContent = newLikesNum;
+                likesNum.textContent = newLikesNum || ' ';
                 this.likes = newLikesNum;
               })
               .catch(({message}) => {
                 if (ajaxDebug) {
                   console.warn(message);
                 }
-                likesNum.textContent = this.likes;
+                likesNum.textContent = this.likes || ' ';
               });
         });
 
@@ -137,10 +139,21 @@ export default class Likes extends BaseComponent {
                 if (ajaxDebug) {
                   console.warn(message);
                 }
-                likesNum.textContent = this.likes;
+                likesNum.textContent = this.likes || ' ';
               });
         });
 
     return this.root;
+  }
+
+  /**
+   * заменяет диваk с data-inplace = "place-for-likes" на дивак с кнопками
+   * лайков и дизов
+   * @param {HTMLElement} root
+   */
+  mountInPlace(root) {
+    const likesReplaced = root
+        .querySelector('[data-inplace="place-for-likes"]');
+    likesReplaced.parentElement.replaceChild(this.render(), likesReplaced);
   }
 }

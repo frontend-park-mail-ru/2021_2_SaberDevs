@@ -2,6 +2,7 @@ import BaseComponent from '../_basic/baseComponent.js';
 import ReaderView from './readerView.js';
 import commentComponent from './comment.pug.js';
 import articleAddCommentComponent from './articleAddComment.pug.js';
+import Likes from '../likes/likes.js';
 
 import ModalTemplates from '../../components/modal/modalTemplates.js';
 
@@ -279,6 +280,18 @@ export default class Reader extends BaseComponent {
 
     const state = store.getState().reader;
     this.root = this.view.render(state[state.currentId]);
+
+    // const likesComponent = new Likes(
+    //     0,
+    //     parseInt(state[state.currentId]?.id || 0, 10),
+    //     state[state.currentId].likes,
+    //     state[state.currentId].liked,
+    //     (id, sign, newLikesNum) => store.dispatch(readerActions.like(
+    //         id, sign, newLikesNum,
+    //     )),
+    // );
+    // likesComponent.mountInPlace(this.root);
+
     addEventListenersToReader(this.root);
 
     // пока контент статьи не прогрузился, изменять статью не даем
@@ -301,6 +314,20 @@ export default class Reader extends BaseComponent {
     this.view.render(article).childNodes.forEach((node) => {
       this.root.appendChild(node.cloneNode(true));
     });
+
+    // лайки
+    const likesComponent = new Likes(
+        0,
+        parseInt(article.id, 10),
+        article.likes,
+        article.liked,
+        (id, sign, newLikesNum) => store.dispatch(readerActions.like(
+            id, sign, newLikesNum,
+        )),
+    );
+    likesComponent.mountInPlace(this.root);
+
+    // обработчики
     addEventListenersToReader(this.root);
 
     const authLogin = store.getState().authorization.login;

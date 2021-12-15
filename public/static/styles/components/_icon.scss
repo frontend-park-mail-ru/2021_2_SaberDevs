@@ -60,6 +60,7 @@ $icon-margin: 15px;
 
   &__text {
     @include font-size-normal;
+    margin: 0 5px;
   }
 }
 
