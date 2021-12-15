@@ -4,6 +4,10 @@ const cacheName = 'SaberDevs-Project';
 // createCachedList заполнит список
 const cacheUrls = [
   '/',
+  '/404.html',
+  '/index.html',
+  '/main.css',
+  '/main.bundle.js',
 ];
 
 // наименование для нашего хранилища кэша
@@ -46,5 +50,14 @@ self.addEventListener('fetch', (event) => {
           .catch((err) => {
             console.error('smth went wrong with caches.match: ', err);
           }),
+  );
+});
+
+// Обработчик для пушей
+self.addEventListener('push', (e) => {
+  console.warn('[PushManager]: push event');
+  const title = e.data.title || 'SaberNews';
+  e.waitUntil(
+      self.registration.showNotification(title),
   );
 });

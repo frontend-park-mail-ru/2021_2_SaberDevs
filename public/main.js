@@ -41,7 +41,8 @@ ImgPreloader.upload([
 
 
 // ServiceWorker
-const SWJSFile = '/service-worker.js';
+// const SWJSFile = '/service-worker.js';
+const SWJSFile = '/serviceWorker.js';
 
 if ('serviceWorker' in navigator && !disableSW) {
   navigator.serviceWorker.register(SWJSFile, {scope: '/'})

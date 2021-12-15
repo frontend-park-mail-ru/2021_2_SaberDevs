@@ -17,37 +17,41 @@ module.exports = {
     assetModuleFilename: 'static/[name][ext][query]',
   },
   plugins: [
-    new WorkboxPlugin.GenerateSW({
-      // https://developers.google.com/web/tools/workbox/guides/generate-service-worker/webpack
-      // Do not precache images
-      // exclude: [/\.(?:png|jpg|jpeg|svg)$/],
+    // new WorkboxPlugin.GenerateSW({
+    // https://developers.google.com/web/tools/workbox/guides/generate-service-worker/webpack
+    // Do not precache images
+    // exclude: [/\.(?:png|jpg|jpeg|svg)$/],
 
-      // Define runtime caching rules.
-      // runtimeCaching: [{
-      //   // Match any request that ends with .png, .jpg, .jpeg or .svg.
-      //   urlPattern: /\.(?:png|jpg|jpeg|svg)$/,
+    // Define runtime caching rules.
+    // runtimeCaching: [{
+    //   // Match any request that ends with .png, .jpg, .jpeg or .svg.
+    //   urlPattern: /\.(?:png|jpg|jpeg|svg)$/,
 
-      //   // Apply a cache-first strategy.
-      //   handler: 'CacheFirst',
+    //   // Apply a cache-first strategy.
+    //   handler: 'CacheFirst',
 
-      //   options: {
-      //     // Use a custom cache name.
-      //     cacheName: 'images',
+    //   options: {
+    //     // Use a custom cache name.
+    //     cacheName: 'images',
 
-      //     // Only cache 10 images.
-      //     expiration: {
-      //       maxEntries: 10,
-      //     },
-      //   },
-      // }],
-      importScripts: ['./public/pushEventListener.js'],
-    }),
+    //     // Only cache 10 images.
+    //     expiration: {
+    //       maxEntries: 10,
+    //     },
+    //   },
+    // }],
+    // importScripts: ['./public/pushEventListener.js'],
+    // }),
 
     new CopyPlugin({
       patterns: [
         {
           from: './public/static/img/user_icon_loading.svg',
           to: 'img/',
+        },
+        {
+          from: './public/serviceWorker.js',
+          to: '.',
         },
       ],
     }),
@@ -65,7 +69,7 @@ module.exports = {
     }),
     new CleanWebpackPlugin(),
     new MiniCssExtractPlugin({
-      filename: '[name].[contenthash].css',
+      filename: '[name].css',
     }),
   ],
   module: {
