@@ -17,10 +17,11 @@ if (currentDir !== correctLaunchDir) {
 
 // чтение параметра командной строки
 const mode = !(process.argv[2] === 'false');
+const sw = process.argv[3] === 'sw';
 
 console.log(
     `[START] ===============================
-    \t=      Console.log > ${mode}${mode === 'true' ? ' ' : ''}   =
+    \t=      Console.log > ${mode}${mode === 'true' ? ' ' : ''}    =
     \t=      Командa SaberDevs      =
     \t===============================`,
 );
@@ -33,16 +34,22 @@ fs.readFile(root + '/' + targetFile, 'utf8', (err, data) => {
   const currentMode = mode ? 'false' : 'true';
   const currentModeReg = new RegExp(currentMode, 'gs');
 
-  const result = data.replace(
+  let result = data.replace(
       currentModeReg,
       `${mode}`,
   );
+  if (sw && mode) {
+    result = result.replace(
+        'disableSW = true',
+        'disableSW = false',
+    );
+  }
   fs.writeFileSync(
       root + '/' + targetFile,
       result,
       'utf8',
   );
   console.log(
-      `[DONE] console.logs were set to ${mode}`,
+      `[DONE]  console.logs were set to ${mode}`,
   );
 });

@@ -109,6 +109,25 @@ export default function categoryPageReducer(
         ...state,
         currentCategory: action.payload,
       };
+    case categoryPageTypes.LIKE:
+      const idx = state.cards.findIndex((card) => card.id===action.payload.id);
+      if (idx !== -1) {
+        const likeCardCopy = JSON.parse(JSON.stringify(state.cards[idx]));
+        if (likeCardCopy.liked ^ action.payload.sign === 0) {
+          likeCardCopy.liked = 0; // отменили оценку
+        } else {
+          likeCardCopy.liked = action.payload.sign;
+        }
+        likeCardCopy.likes = action.payload.likes;
+        return {
+          ...state,
+          cards: state.cards.slice(0, idx)
+              .concat([likeCardCopy])
+              .concat(state.cards.slice(idx + 1)),
+        };
+      } else {
+        return state;
+      }
   }
   return state;
 }

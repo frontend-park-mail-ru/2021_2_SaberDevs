@@ -112,6 +112,19 @@ function deleteCard(id) {
   };
 }
 
+/**
+ * @param {string} id
+ * @param {number} sign
+ * @param {number} newLikesNum
+ * @return {Action}
+ */
+function like(id, sign, newLikesNum) {
+  return {
+    type: searchTypes.LIKE,
+    payload: {id: id + '', sign, likes: newLikesNum},
+  };
+}
+
 
 const searchActions = {
   askNewCards,
@@ -124,6 +137,7 @@ const searchActions = {
   setSearchGroup,
   setSearchValue,
   deleteCard,
+  like,
 };
 
 export default searchActions;

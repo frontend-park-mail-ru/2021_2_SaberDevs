@@ -32,9 +32,6 @@ mixin tagMixin(content, color, cross=false)
             +tagMixin(tag.content || tag, tag.color)
     .row
       div(data-inplace='place-for-likes')
-      //- .icon.icon-margin-r
-      //-   .icon__text #{likes || ''}
-      //-   .action-btns__likes-icon.icon__img
       .icon.icon-margin-r
         .icon__text #{comments || ''}
         a.action-btns__comments-icon.icon__img(href='#comments' data-router='outer')

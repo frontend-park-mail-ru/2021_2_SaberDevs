@@ -4,7 +4,7 @@ import FeedView from './feedView.js';
 import {redirect} from '../../common/utils.js';
 
 import store from '../../flux/store.js';
-import {profilePageActions} from '../../flux/actions.js';
+import profilePageActions from '../../flux/actions/profilePageActions.js';
 import readerActions from '../../flux/actions/readerActions.js';
 import {ajaxDebug} from '../../globals.js';
 import Likes from '../likes/likes.js';

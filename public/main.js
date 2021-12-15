@@ -23,12 +23,12 @@ import Router from './components/router.js';
 import SignupModal from './components/modal/signupModal.js';
 import Warning from './components/modal/serviceWarning.js';
 import ImgPreloader from './components/imgPreloader.js';
+import PushManager from './components/pushManager';
 
 // network
 import {logoutRequest} from './modules/ajaxRequests.js';
 import {cookieLogin} from './modules/ajaxRequests.js';
-// eslint-disable-next-line no-unused-vars
-// import webSocket from './modules/webSocket.js';
+import WS from './modules/webSocket.js';
 
 // flux store
 import store from './flux/store.js';
@@ -107,10 +107,14 @@ linksController
         () => window.history.back(),
     );
 
+WS.init();
 loadingScreen.start();
 (async function init() {
   await cookieLogin();
   await loadingScreen.end();
   linksController.enable();
   router.start();
+  PushManager.init();
 })();
+
+// PushManager

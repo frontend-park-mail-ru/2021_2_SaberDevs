@@ -34,7 +34,6 @@ export default class Likes extends BaseComponent {
       liked,
       dispatchLike,
     });
-    console.warn('Likes построился:', this);
   }
 
   /**

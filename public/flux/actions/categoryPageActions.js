@@ -108,6 +108,19 @@ function clearSelectedCategory() {
   };
 }
 
+/**
+ * @param {string} id
+ * @param {number} sign
+ * @param {number} newLikesNum
+ * @return {Action}
+ */
+function like(id, sign, newLikesNum) {
+  return {
+    type: categoryPageTypes.LIKE,
+    payload: {id: id + '', sign, likes: newLikesNum},
+  };
+}
+
 const categoryPageActions = {
   setCategoryArticlesLoadingFlag,
   unsetCategoryArticlesLoadingFlag,
@@ -119,6 +132,7 @@ const categoryPageActions = {
   selectCategory,
   clearSelectedCategory,
   deleteArticle,
+  like,
 };
 
 export default categoryPageActions;

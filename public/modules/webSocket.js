@@ -5,52 +5,85 @@ import streamActions from '../flux/actions/streamActions.js';
 
 import {wsDebug} from '../globals.js';
 // Тачка Дорофеева
-const APIurl = 'wss://sabernews:8081/api/v1/ws';
+const APIurl = 'wss://sabernews.ru/api/v1/ws';
 // Локальная разработка (Запусти node server/serverWs.js)
 // const APIurl = 'ws://localhost:8082';
 
-const webSocket = new WebSocket(APIurl);
+let webSocket = null;
 
-webSocket.onopen = function(e) {
-  if (wsDebug) {
-    console.log('webSocket: Соединение установлено');
-  }
-};
+const retryDelay = 10000;
 
-webSocket.onmessage = function(event) {
-  if (wsDebug) {
-    console.log(`webSocket: Данные получены с сервера: ${event.data}`);
-  }
-
-  let data = '';
-  try {
-    data = JSON.parse(event.data);
-  } catch (e) {
-    console.warn(e.message);
-    return;
-  }
-
-  if (data.type = 'stream-comment') {
-    addStreamComment(data);
-  }
-};
-
-webSocket.onclose = function(event) {
-  if (event.wasClean) {
-    if (wsDebug) {
-      console.log(`webSocket: Соединение закрыто чисто, \
-      код=${event.code} причина=${event.reason}`);
+/**
+ * @class
+ */
+export default class WS {
+  /**
+   * стартует WS соединение с сервером и грузит стримы
+   * @param {boolean} doRetry
+   */
+  static init(doRetry = true) {
+    if (webSocket === null) {
+      webSocket = new WebSocket(APIurl);
     }
-  } else {
-    if (wsDebug) {
-      console.warn('Соединение прервано');
-    }
-  }
-};
 
-webSocket.onerror = function(error) {
-  console.warn(`webSocket: error: ${error.message}`);
-};
+    webSocket.onopen = function(e) {
+      if (wsDebug) {
+        console.log('[WS]: Соединение установлено');
+      }
+    };
+
+    webSocket.onmessage = function(event) {
+      if (wsDebug) {
+        console.log(`[WS]: Данные получены с сервера: ${event.data}`);
+      }
+
+      let data = '';
+      try {
+        data = JSON.parse(event.data);
+      } catch (e) {
+        console.warn(e.message);
+        return;
+      }
+
+      // логика тут
+      if (data.type = 'stream-comment') {
+        addStreamComment(data);
+      }
+    };
+
+    webSocket.onclose = function(event) {
+      if (event.wasClean) {
+        if (wsDebug) {
+          console.log(`[WS] Соединение закрыто чисто, \
+          код=${event.code} причина=${event.reason}`);
+          webSocket = null;
+        }
+      } else {
+        if (wsDebug) {
+          console.warn('Соединение прервано');
+          webSocket = null;
+        }
+        if (doRetry) {
+          if (wsDebug) {
+            console.log('[WS] восстанавливаю соединение');
+          }
+          setTimeout(() => WS.init(), retryDelay);
+        }
+      }
+    };
+
+    webSocket.onerror = function(error) {
+      console.warn(`webSocket: error: ${error.message}`);
+    };
+  }
+
+  /**
+   * закрываем
+   */
+  static close() {
+    webSocket.close();
+  }
+}
 
 /**
  * Добавляет стрим-комментарий
@@ -60,5 +93,3 @@ function addStreamComment(data) {
   appendApiImg(data.author);
   store.dispatch(streamActions.saveNewComments([data]));
 }
-
-export default webSocket;
