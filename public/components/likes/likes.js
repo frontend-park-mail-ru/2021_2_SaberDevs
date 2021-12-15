@@ -46,6 +46,8 @@ export default class Likes extends BaseComponent {
     this.root = this.view.render(this.likes, this.liked);
 
     const likesNum = this.root.querySelector('#likesNum');
+    const dislikeBtn = this.root.querySelector('.action-btns__dislike-icon');
+    const likeBtn = this.root.querySelector('.action-btns__likes-icon');
 
     this.root.querySelector('.action-btns__likes-icon').addEventListener(
         'click',
@@ -92,11 +94,10 @@ export default class Likes extends BaseComponent {
                 this.likes = newLikesNum;
                 this.liked = sign;
                 if (sign === 1) {
-                  this.root.querySelector('.action-btns__likes-icon').classList
-                      .add('action-btns__liked');
+                  dislikeBtn.classList.remove('action-btns__liked');
+                  likeBtn.classList.add('action-btns__liked');
                 } else {
-                  this.root.querySelector('.action-btns__likes-icon').classList
-                      .remove('action-btns__liked');
+                  likeBtn.classList.remove('action-btns__liked');
                 }
               })
               .catch(({message}) => {
@@ -153,11 +154,10 @@ export default class Likes extends BaseComponent {
                 this.likes = newLikesNum;
                 this.liked = sign;
                 if (sign === -1) {
-                  this.root.querySelector('.action-btns__dislike-icon')
-                      .classList.add('action-btns__liked');
+                  likeBtn.classList.remove('action-btns__liked');
+                  dislikeBtn.classList.add('action-btns__liked');
                 } else {
-                  this.root.querySelector('.action-btns__dislike-icon')
-                      .classList.remove('action-btns__liked');
+                  dislikeBtn.classList.remove('action-btns__liked');
                 }
               })
               .catch(({message}) => {
