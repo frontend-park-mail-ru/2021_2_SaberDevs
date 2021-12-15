@@ -81,7 +81,8 @@ export default class Likes extends BaseComponent {
                 }
               }))
               .then((newLikesNum) => {
-                dispatchLike(body.id, body.sign, newLikesNum);
+                newLikesNum = parseInt(newLikesNum, 10);
+                this.dispatchLike(body.id, body.sign, newLikesNum);
                 console.warn('Успешно лайкнул');
                 likesNum.textContent = newLikesNum || ' ';
                 this.likes = newLikesNum;
@@ -130,7 +131,8 @@ export default class Likes extends BaseComponent {
                 }
               }))
               .then((newLikesNum) => {
-                dispatchLike(body.id, body.sign, newLikesNum);
+                newLikesNum = parseInt(newLikesNum, 10);
+                this.dispatchLike(body.id, body.sign, newLikesNum);
                 console.warn('Успешно диз-лайкнул (за шо)');
                 likesNum.textContent = newLikesNum;
                 this.likes = newLikesNum;
