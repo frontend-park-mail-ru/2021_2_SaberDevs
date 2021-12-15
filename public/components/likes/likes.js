@@ -9,6 +9,8 @@ import {ajaxDebug} from '../../globals.js';
 
 const likeAnimationDuration = 800;
 const colorInitial = '#dee4ea';
+const redRubyColor = '#900603'; // red ruby
+const greedGreenColor = '#597d36'; // green
 
 /**
  * @class Likes
@@ -56,8 +58,10 @@ export default class Likes extends BaseComponent {
             return;
           }
 
+          const sign = this.liked === 1 ? 0 : 1;
+
           likesNum.textContent = (this.likes + 1) + '';
-          likesNum.style.color = '#597d36'; // green
+          likesNum.style.color = sign === 0 ? redRubyColor : greedGreenColor;
           setTimeout(
               () => likesNum.style.color = colorInitial,
               likeAnimationDuration,
@@ -65,7 +69,7 @@ export default class Likes extends BaseComponent {
 
           const body = {
             type: this.type, // 0 - article, 1 - comment
-            sign: 1,
+            sign,
             id: this.id,
           };
 
@@ -83,9 +87,17 @@ export default class Likes extends BaseComponent {
               .then((newLikesNum) => {
                 newLikesNum = parseInt(newLikesNum, 10);
                 this.dispatchLike(body.id, body.sign, newLikesNum);
-                console.warn('Успешно лайкнул');
+                console.warn('Успешно', this.liked === 1 ? 'отменил':'лайкнул');
                 likesNum.textContent = newLikesNum || ' ';
                 this.likes = newLikesNum;
+                this.liked = sign;
+                if (sign === 1) {
+                  this.root.querySelector('.action-btns__likes-icon').classList
+                      .add('action-btns__liked');
+                } else {
+                  this.root.querySelector('.action-btns__likes-icon').classList
+                      .remove('action-btns__liked');
+                }
               })
               .catch(({message}) => {
                 if (ajaxDebug) {
@@ -106,8 +118,10 @@ export default class Likes extends BaseComponent {
             return;
           }
 
+          const sign = this.liked === -1 ? 0 : -1;
+
           likesNum.textContent = (this.likes - 1) + '';
-          likesNum.style.color = '#900603'; // red ruby
+          likesNum.style.color = sign === 0 ? greedGreenColor : redRubyColor;
           setTimeout(
               () => likesNum.style.color = colorInitial,
               likeAnimationDuration,
@@ -115,7 +129,7 @@ export default class Likes extends BaseComponent {
 
           const body = {
             type: this.type, // 0 - article, 1 - comment
-            sign: -1,
+            sign,
             id: this.id,
           };
 
@@ -133,9 +147,18 @@ export default class Likes extends BaseComponent {
               .then((newLikesNum) => {
                 newLikesNum = parseInt(newLikesNum, 10);
                 this.dispatchLike(body.id, body.sign, newLikesNum);
-                console.warn('Успешно диз-лайкнул (за шо)');
+                console.warn('Успешно', this.liked === -1 ? 'отменил диз':
+                'диз-лайкнул (за шо)');
                 likesNum.textContent = newLikesNum;
                 this.likes = newLikesNum;
+                this.liked = sign;
+                if (sign === -1) {
+                  this.root.querySelector('.action-btns__dislike-icon')
+                      .classList.add('action-btns__liked');
+                } else {
+                  this.root.querySelector('.action-btns__dislike-icon')
+                      .classList.remove('action-btns__liked');
+                }
               })
               .catch(({message}) => {
                 if (ajaxDebug) {

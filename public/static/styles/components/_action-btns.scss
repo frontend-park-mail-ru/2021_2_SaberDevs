@@ -19,8 +19,8 @@
     background-size: cover;
   }
 
-  .icon__img &__liked {
-    border-color: $color-elements;
+  &__liked {
+    border-color: $color-elements !important;
   }
 
   &__comments-icon {
