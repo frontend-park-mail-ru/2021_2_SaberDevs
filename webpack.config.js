@@ -40,6 +40,7 @@ module.exports = {
       //     },
       //   },
       // }],
+      importScripts: ['./public/pushEventListener.js'],
     }),
 
     new CopyPlugin({
