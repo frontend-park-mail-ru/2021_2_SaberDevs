@@ -116,5 +116,3 @@ loadingScreen.start();
   router.start();
   PushManager.init();
 })();
-
-// PushManager

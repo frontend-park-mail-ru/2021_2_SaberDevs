@@ -6,6 +6,7 @@ import {redirect} from '../../common/utils.js';
 import store from '../../flux/store.js';
 import profilePageActions from '../../flux/actions/profilePageActions.js';
 import readerActions from '../../flux/actions/readerActions.js';
+import {authorizationTypes} from '../../flux/types.js';
 import {ajaxDebug} from '../../globals.js';
 import Likes from '../likes/likes.js';
 
@@ -210,6 +211,18 @@ export default class Feed extends BaseComponent {
         store.subscribe(
             FORBID_CARDS_UPLOADING_ACTION,
             () => this.view.hideLoadingAnimation(),
+        ),
+        // Отмечаем пролайканные карточки
+        // store.subscribe(
+        //     authorizationTypes.LOGIN,
+        //     // TODO: сделать апишку по которой я получу те карточки
+        //     // из текущей ленты, которые я лайкал
+        //     (userData) => this.view.setLikes(userData.login),
+        // ),
+        // Стираем отметки о лайках
+        store.subscribe(
+            authorizationTypes.LOGOUT,
+            () => this.view.clearLikes(),
         ),
     );
   }

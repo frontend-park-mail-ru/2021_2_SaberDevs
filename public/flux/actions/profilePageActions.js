@@ -1,4 +1,5 @@
 import {profilePageTypes} from '../types.js';
+import {appendApiImg} from '../../common/transformApi.js';
 
 // ////////////////
 //  profilePageActions

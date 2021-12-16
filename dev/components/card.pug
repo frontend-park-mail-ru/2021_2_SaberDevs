@@ -4,7 +4,7 @@ mixin tagMixin(content, color, cross=false)
   include tag.pug
 
 //- левитация при наведении .card__lift-effect
-.card(id=`card${id}` style=`background: -webkit-gradient(linear, left top, left bottom, from(rgba(0, 0, 0, 0.7)), to(rgba(0, 0, 0, 0.7))), url(${previewUrl});
+.card.cursor-poiner(id=`card${id}` style=`background: -webkit-gradient(linear, left top, left bottom, from(rgba(0, 0, 0, 0.7)), to(rgba(0, 0, 0, 0.7))), url(${previewUrl});
 background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url(${previewUrl});
 background-size: cover;
 background-repeat: no-repeat;`)
@@ -31,5 +31,4 @@ background-repeat: no-repeat;`)
     .icon
       //- a(href=`/article/${id}#comments`).action-btns__comments-icon.icon__img
       button.action-btns__comments-icon.icon__img
-    .icon__text(id="commentsNum") #{comments || '20'}
-    //- .icon__text #{comments || ''}
+    .icon__text(id="commentsNum") #{comments || ''}

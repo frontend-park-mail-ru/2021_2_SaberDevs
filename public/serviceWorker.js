@@ -1,5 +1,6 @@
 // не используется. Перешли на вебпак
 const cacheName = 'SaberDevs-Project';
+const APIPrefix = '/api/v1/';
 
 // /dev/createCachedList.js заполняет этот список автоматически
 const cacheUrls = [
@@ -66,8 +67,15 @@ self.addEventListener('install', (event) => {
   );
 });
 self.addEventListener('fetch', (event) => {
+  // не кешируем запросы к апи
+  const url = event.request.url.toString();
+  if (url.includes(APIPrefix) && !url.includes('img/')) {
+    return;
+  }
+
   /** online first */
   if (navigator.onLine === true) {
+    console.log('SW кеширует', url);
     return fetch(event.request);
   }
 
@@ -92,14 +100,88 @@ self.addEventListener('fetch', (event) => {
 // Обработчик для пушей
 self.addEventListener('push', (e) => {
   console.warn('[PushManager]: push event');
-  const title = e.data.title || 'Это Ваш SaberNews!';
+  let title = e.data.title || 'Это Ваш SaberNews!';
   const options = {
     icon: 'favicon.ico',
     image: 'logo-for-sharing.png',
     lang: 'ru-RU',
     vibrate: [200, 300, 200, 300],
     body: 'Народ умнеет, милорд',
+  };
+
+  /*
+    0 - для лайков по твоим статьям,
+    1 - для комментов по твоим статьям,
+    2 - для лаков твоих комментов,
+    3 - для ответов на твои комменты
+
+    // для комментариев и для ответов на комментарии
+    // тип 1
+    data: {
+    articleTitle: string
+    commentText: string
+    articleId: number
+    commentId: number
+    firstName: string
+    lastName: string
+    }
+    // тип 3
+    data: {
+    commentText: string
+    answerText: string
+    commentId: number
+    answerId: number
+    firstName: string
+    lastName: string
+    }
+
+    // для лайка
+    // тип 0
+    data: {
+    articleId: number
+    articleTitle: string
+    }
+
+    // тип 2
+    data: {
+    articleId: number
+    commentId: number
+    commentText: string
+    }
+  */
+  // TODO: url, actions
+  const data = e.data.data;
+  switch (e.data.type) {
+    case 0: {
+      title = 'У Вашей статьи новый лайк!';
+      options.body = `
+      ${data.articleTitle}
+      `;
+    }
+    case 1: {
+      title = 'У Вашей статьи новый комментарий!';
+      options.body = `
+      ${data.articleTitle}
+      ${data.firstName} ${data.lastName}:
+      ${data.commentText}
+      `;
+    }
+    case 2: {
+      title = 'Ваш комментарий кто-то оценил!';
+      options.body = `
+      ${data.commentText}
+      `;
+    }
+    case 3: {
+      title = 'На Ваш комментарий поступил ответ!';
+      options.body = `
+      ${data.commentText}
+      ${data.firstName} ${data.lastName}:
+      ${data.answerText}
+      `;
+    }
   }
+
   e.waitUntil(
       self.registration.showNotification(title, options),
   );
