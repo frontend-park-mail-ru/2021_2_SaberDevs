@@ -6,7 +6,7 @@ import Likes from '../likes/likes.js';
 
 import ModalTemplates from '../../components/modal/modalTemplates.js';
 import Ajax from '../../modules/ajax.js';
-import {translateServerComment} from '../../common/transformAPI.js';
+import {translateServerComment} from '../../common/transformApi.js';
 
 import store from '../../flux/store.js';
 import {readerTypes, authorizationTypes} from '../../flux/types.js';

@@ -9,6 +9,7 @@ const cacheUrls = [
   './favicon.ico',
   './index.html',
   './main.bandle.js',
+  './main.bandle.js.LICENSE.txt',
   './main.css',
   './serviceWorker.js',
   './img/background-img.png',

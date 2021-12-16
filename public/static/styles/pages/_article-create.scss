@@ -160,7 +160,6 @@ $article-labels-margin: 0 0 10px 0;
 
     &__card {
       @include col;
-      @include card-padding;
 
       flex-grow: 1;
       justify-content: space-between;

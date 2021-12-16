@@ -3,7 +3,6 @@ const HTMLWebpackPlugin = require('html-webpack-plugin');
 const {CleanWebpackPlugin} = require('clean-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CopyPlugin = require('copy-webpack-plugin');
-const {IgnoreAsyncImportsPlugin} = require('ignore-webpack-plugin');
 
 module.exports = {
   mode: 'production',
@@ -17,9 +16,7 @@ module.exports = {
     assetModuleFilename: 'static/[name][ext][query]',
   },
   optimization: {
-    // minimize: true,
-    // to save SW
-    minimize: false,
+    minimize: true,
   },
 
   plugins: [
@@ -34,6 +31,8 @@ module.exports = {
         {
           from: './public/serviceWorker.js',
           to: '.',
+          // Terser skip this file for minimization
+          info: {minimized: true},
         },
         {
           from: './public/favicon.ico',
@@ -56,10 +55,6 @@ module.exports = {
     new CleanWebpackPlugin(),
     new MiniCssExtractPlugin({
       filename: '[name].css',
-    }),
-    new IgnoreAsyncImportsPlugin({
-      resourceRegExp: /serviceWorker/,
-      // contextRegExp,
     }),
   ],
 
