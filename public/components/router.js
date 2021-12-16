@@ -81,8 +81,9 @@ export default class Router {
 
   /**
    * @param {string} link
+   * @param {string?} anchor
    */
-  open(link) {
+  open(link, anchor) {
     let path = link;
     // Проверяем, является ли путь шаблонным
     this.routesPatterned.forEach((pattern) => {
@@ -129,8 +130,9 @@ export default class Router {
       );
     }
 
-    console.log('[ROUTER] !page.isActive():', !page.isActive());
-    if (!page.isActive()) {
+    const isInactive = !page.isActive();
+    console.log('[ROUTER] !page.isActive():', isInactive);
+    if (isInactive) {
       Object.values(this.routes).forEach(({page}) => {
         if (page && page.isActive()) {
           page.hide();
@@ -138,6 +140,10 @@ export default class Router {
       });
 
       page.show();
+      if (anchor) {
+        console.warn('[ROUTER] поиск якоря', anchor);
+        root.querySelector(`a[name=${anchor}]`)?.scrollIntoView();
+      }
     }
 
     // сохраняем изменения в объекте не разрушая объекте
@@ -174,17 +180,18 @@ export default class Router {
 
       event.preventDefault();
       const link = target.pathname || target.parentElement.pathname;
-      console.warn('link:', link);
+      const anchor = target.hash?.substr(1);
+      console.warn('link:', link, `${anchor ? ('anchor: ' + anchor) : ''}`);
 
       if (routerDebug) {
-        console.log({pathname: link || '[ROUTER] empty path (ignored)'});
+        console.log({link: link || '[ROUTER] empty path (ignored)', anchor});
       }
 
       if (!link) {
         return;
       }
 
-      this.open(link);
+      this.open(link, anchor);
     });
 
     window.addEventListener('popstate', () => {

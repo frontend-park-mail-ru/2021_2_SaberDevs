@@ -178,6 +178,6 @@ export default class Likes extends BaseComponent {
   mountInPlace(root) {
     const likesReplaced = root
         .querySelector('[data-inplace="place-for-likes"]');
-    likesReplaced.parentElement.replaceChild(this.render(), likesReplaced);
+    likesReplaced?.parentElement.replaceChild(this.render(), likesReplaced);
   }
 }

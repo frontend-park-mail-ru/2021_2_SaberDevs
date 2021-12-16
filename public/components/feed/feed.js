@@ -86,8 +86,7 @@ function upgradeCards(where, cards, dispatchLike) {
           e.preventDefault();
           e.stopPropagation();
           console.warn('клик по комментам');
-          // redirectOuter(
-          // '/article/'+ cardDiv.id.replace('card', '')+'#comments');
+          redirect('/article/'+ cardDiv.id.replace('card', '')+'#comments');
           // TODO: апнуть роутер, чтобы он совершал переход по ссылке с якорем
         });
 

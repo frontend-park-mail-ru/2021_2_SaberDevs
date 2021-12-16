@@ -17,8 +17,11 @@ export default class CategoryChoiceBar extends BaseComponent {
    * @param {Action} clearSelection
    * @param {Type} SELECT_CATEGORY_TYPE
    */
-  constructor(getCurrentSelection, setSelection,
-      clearSelection, SELECT_CATEGORY_TYPE,
+  constructor(
+      getCurrentSelection,
+      setSelection,
+      clearSelection,
+      SELECT_CATEGORY_TYPE,
   ) {
     super();
     this.view = new CategoryChoiceBarView();

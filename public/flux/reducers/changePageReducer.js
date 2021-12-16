@@ -14,6 +14,8 @@ export default function changePageReducer(state = InitialPageState, action) {
   switch (action.type) {
     case changePageTypes.CHANGE_PAGE:
       document.title = action.payload.docTitle;
+      // очень хитро кидаю предыдущую страницу
+      action.payload.prev = state.page;
       return {
         ...state,
         page: action.payload.page,
