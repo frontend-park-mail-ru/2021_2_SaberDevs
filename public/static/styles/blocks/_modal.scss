@@ -1,10 +1,8 @@
 $modal-bg: rgba(0, 0, 0, 0.7);
 $label-margin: 10px;
 $title-margin-bottom: 20px;
-$form-width-min: 200px;
-$form-width-limit: 350px;
 $btn-box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
-$modal-window-padding: 2%;
+$modal-window-padding: 1% 2%;
 $close-btn-margin: 10px;
 $window-filter: drop-shadow(0 0 10px rgba(0, 0, 0, 0.5));
 
@@ -32,11 +30,11 @@ $window-filter: drop-shadow(0 0 10px rgba(0, 0, 0, 0.5));
     z-index: 5;
     justify-content: space-around;
     padding: $modal-window-padding;
-    min-width: 15%;
-    min-height: 20%;
+    min-width: 30%;
+    min-height: 15%;
+    height: fit-content;
     max-width: 55%;
 
-    // max-height: 50%;
     background-color: $color-primary;
     opacity: 0;
     filter: $window-filter;
@@ -47,6 +45,21 @@ $window-filter: drop-shadow(0 0 10px rgba(0, 0, 0, 0.5));
   &__content {
     @include col;
     @include font-size-normal;
+    width: 100%;
+
+    &-inner {
+      @include col;
+      width: 100%;
+      height: 100%;
+      justify-content: space-between;
+    }
+
+    &-block {
+      @include col;
+      width: 100%;
+      height: 100%;
+      justify-content: space-between;
+    }
   }
 
   &__header {
@@ -68,9 +81,7 @@ $window-filter: drop-shadow(0 0 10px rgba(0, 0, 0, 0.5));
 
   &__form {
     @include col;
-
-    min-width: $form-width-min;
-    max-width: $form-width-limit;
+    width: 100%;
   }
 
   &__footer {

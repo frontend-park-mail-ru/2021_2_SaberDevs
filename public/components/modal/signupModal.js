@@ -26,8 +26,10 @@ export function signupModal(showRegister) {
   // форма
   const signupForm = new SignupForm(showRegister);
   const form = signupForm.render();
+  form.className = 'modal__form';
 
   const contentDiv = document.createElement('div');
+  contentDiv.className = 'modal__content-inner';
   contentDiv.appendChild(form);
   contentDiv.appendChild(changeFormTypeBtn);
 

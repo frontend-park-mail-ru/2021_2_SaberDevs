@@ -6,6 +6,8 @@
   z-index: 1;
   font-family: $font-secondary;
   background-color: $color-sidebar;
+  max-width: 18%;
+  width: fit-content;
 
   &__nav-links {
     @include row;
@@ -22,6 +24,7 @@
 
     display: none;
     align-items: flex-start;
+    justify-content: center;
     margin-top: 10px;
   }
 
@@ -117,13 +120,15 @@
   &__content {
     @include col;
 
+    align-items: flex-start;
     justify-content: space-between;
     overflow-y: scroll;
     height: 100vh;
     margin: 15px;
+    width: 80%;
 
     &::-webkit-scrollbar {
-      width: 0;
+      width: 0px;
     }
   }
 }

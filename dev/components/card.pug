@@ -3,34 +3,6 @@ include categoryMixin
 mixin tagMixin(content, color, cross=false)
   include tag.pug
 
-//- левитация при наведении .card__lift-effect
-//- .card.cursor-pointer(id=`card${id}` style=`background: -webkit-gradient(linear, left top, left bottom, from(rgba(0, 0, 0, 0.7)), to(rgba(0, 0, 0, 0.7))), url(${previewUrl});
-//- background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url(${previewUrl});
-//- background-size: cover;
-//- background-repeat: no-repeat;`)
-//-   .card__top
-//-     .card__top-left
-//-       .card__time-category
-//-         +categoryMixin(category.categoryContent, category.categoryColor, true)
-//-         .card__time
-//-           .category__content #{datetime}
-//-       .tags__row
-//-         if Array.isArray(tags)
-//-           each tag in tags
-//-             +tagMixin(tag.content, tag.color)
-//-     .card__author
-//-       +avatarMixin.card__author-photo(src=`${author.avatarUrl}`)
-//-       .author-name
-//-         if typeof author === 'object'
-//-           .author-name__login #{author.login}
-//-           .author-name__username #{author.firstName} #{author.lastName}
-//-   .card__title #{title}
-//-   .card__description #{text}
-//-   .card__bottom
-//-     div(data-inplace='place-for-likes')
-//-     .icon
-//-       button.action-btns__comments-icon.icon__img
-//-     .icon__text(id="commentsNum") #{comments || ''}
 .card.cursor-pointer(id=`card${id}`)
   .card__image(style=`background-image: url(${previewUrl}); ${previewUrl.endsWith('/img/') ? 'min-height: 0' : ''}`)
     .card__image-top-shadow
