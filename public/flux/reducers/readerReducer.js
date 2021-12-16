@@ -196,7 +196,7 @@ export default function readerReducer(state = InitialReaderState, action) {
         return {
           ...state,
           [state.currentId]: {
-            ...[state.currentId],
+            ...state[state.currentId],
             commentsContent: commentsDeepCopy,
           },
         };
