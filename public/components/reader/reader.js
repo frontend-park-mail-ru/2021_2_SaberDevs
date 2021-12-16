@@ -281,6 +281,8 @@ export default class Reader extends BaseComponent {
     const state = store.getState().reader;
     this.root = this.view.render(state[state.currentId]);
 
+    // при первом рендере стейт может быть пустым!!!
+    //
     // const likesComponent = new Likes(
     //     0,
     //     parseInt(state[state.currentId]?.id || 0, 10),
@@ -380,6 +382,19 @@ export default class Reader extends BaseComponent {
         answers,
       });
       const commentDiv = commentWrapper.firstChild;
+
+      // лайки
+      const likesComponent = new Likes(
+          1,
+          parseInt(comment.id, 10),
+          comment.likes,
+          // TODO: починить API
+          comment.liked,
+          (id, sign, newLikesNum) => store.dispatch(readerActions.likeComment(
+              id, sign, newLikesNum,
+          )),
+      );
+      likesComponent.mountInPlace(commentDiv);
 
       // активируем кнопку "ответить"
       createCommentAnswerListener(

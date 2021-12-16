@@ -121,6 +121,11 @@ export default function readerReducer(state = InitialReaderState, action) {
       };
 
     case readerTypes.SAVE_ARTICLE_COMMENTS:
+      // TODO: FIX API
+      action.payload.comments.map((comment) => comment = {
+        ...comment,
+        liked: 0,
+      });
       if (action.payload.id in state) {
         return {
           ...state,
@@ -218,6 +223,53 @@ export default function readerReducer(state = InitialReaderState, action) {
         ...state,
         [action.payload.id]: likeArticleCopy,
       };
+
+    case readerTypes.LIKE_COMMENT: {
+      let answerIdx = -1;
+      const thisComments = state[state.currentId].commentsContent;
+      // поиск по комментам нулевого уровня
+      let commentsIdx = thisComments
+          .findIndex(({id}) => id === action.payload.id);
+      if (commentsIdx === -1) {
+        // поиск по комментам первого уровня
+        commentsIdx = thisComments.findIndex(({answers}, idx) => {
+          answerIdx = answers.findIndex(({id}) => id === action.payload.id);
+          if (answerIdx !== -1) {
+            commentsIdx = idx;
+          }
+        });
+      }
+      // поиск по комментариям 0 уровня или по ответам удался
+      if (commentsIdx !== -1) {
+        console.warn('коментарий с айди найден', {commentsIdx, answerIdx});
+        // глубокая копия комментариев к текущей статье
+        const commentsDeepCopy =
+            JSON.parse(JSON.stringify(state[state.currentId].commentsContent));
+        let changeObj = null;
+        if (answerIdx !== -1) {
+          changeObj = commentsDeepCopy[commentsIdx][answerIdx];
+        } else {
+          changeObj = commentsDeepCopy[commentsIdx];
+        }
+        changeObj.likes = action.payload.likes;
+        if (changeObj.liked ^ action.payload.sign === 0) {
+          changeObj.liked = 0; // отменили оценку
+        } else {
+          changeObj.liked = action.payload.sign;
+        }
+        console.warn(commentsDeepCopy);
+        return {
+          ...state,
+          [state.currentId]: {
+            ...[state.currentId],
+            commentsContent: commentsDeepCopy,
+          },
+        };
+      } else {
+        console.warn('коментарий с таким айди', action.payload.id, 'не найден');
+        return state;
+      }
+    }
   }
   return state;
 }

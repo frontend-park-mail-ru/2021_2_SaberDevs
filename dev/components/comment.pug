@@ -18,7 +18,8 @@ include _onAvatarErrorMixin
         .comment__time #{datetime}
       button.comment__edit-btn(style='display: none') Изменить
       button.comment__answer-btn Ответить
-      .icon-small.action-btns_m-right
+      div(data-inplace='place-for-likes')
+      //- .icon-small.action-btns_m-right
         .icon-small__text #{likes}
         .action-btns__likes-icon.icon-small__img
   .comment__answers !{answers}

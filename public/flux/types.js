@@ -4,6 +4,7 @@ export const SYSTYPES = {
   INIT: '__INIT__',
   DELETE_CARD: '__DELETE_CARD__',
   LIKE_CARD: '__LIKE_CARD__',
+  LIKE_COMMENT: '__LIKE_COMMENT__',
 };
 
 const LOGIN = 'LOGIN';
@@ -117,6 +118,7 @@ export const readerTypes = {
   ADD_COMMENT_ANSWER: 'READER_ADD_COMMENT_ANSWER',
   ADD_NEW_COMMENT: 'READER_ADD_NEW_COMMENT',
   LIKE: SYSTYPES.LIKE_CARD,
+  LIKE_COMMENT: SYSTYPES.LIKE_COMMENT,
 };
 
 export const routerTypes = {

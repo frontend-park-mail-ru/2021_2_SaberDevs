@@ -129,6 +129,19 @@ function like(id, sign, newLikesNum) {
   };
 }
 
+/**
+ * @param {string | number} id
+ * @param {number} sign
+ * @param {number} newLikesNum
+ * @return {Action}
+ */
+function likeComment(id, sign, newLikesNum) {
+  return {
+    type: readerTypes.LIKE_COMMENT,
+    payload: {id, sign, likes: newLikesNum},
+  };
+}
+
 const readerActions = {
   saveArticle,
   openArticle,
@@ -138,6 +151,7 @@ const readerActions = {
   addAnswer,
   addComment,
   like,
+  likeComment,
 };
 
 export default readerActions;
