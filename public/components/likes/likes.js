@@ -61,7 +61,7 @@ export default class Likes extends BaseComponent {
 
           const sign = this.liked === 1 ? 0 : 1;
 
-          likesNum.textContent = (this.likes + 1) + '';
+          likesNum.textContent = (this.likes + (sign ? 1 : -1)) + '';
           likesNum.style.color = sign === 0 ? redRubyColor : greedGreenColor;
           setTimeout(
               () => likesNum.style.color = colorInitial,
@@ -120,7 +120,7 @@ export default class Likes extends BaseComponent {
 
           const sign = this.liked === -1 ? 0 : -1;
 
-          likesNum.textContent = (this.likes - 1) + '';
+          likesNum.textContent = (this.likes + (sign ? -1 : 1)) + '';
           likesNum.style.color = sign === 0 ? greedGreenColor : redRubyColor;
           setTimeout(
               () => likesNum.style.color = colorInitial,

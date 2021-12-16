@@ -69,8 +69,16 @@ self.addEventListener('install', (event) => {
 self.addEventListener('fetch', (event) => {
   // не кешируем запросы к апи
   const url = event.request.url.toString();
-  if (url.includes(APIPrefix) && !url.includes('img/')) {
-    return;
+  if (url.includes(APIPrefix)) {
+    const imgPos = url.indexOf('img/');
+    if (imgPos !== -1) {
+      const img = url.substr(imgPos + 4);
+      if (img === '') {
+        return;
+      }
+    } else {
+      return;
+    }
   }
 
   /** online first */

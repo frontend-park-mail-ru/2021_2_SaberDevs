@@ -48,7 +48,7 @@ function pushSubsribe() {
       // в любом случае получаем подписку
       .then((sub) => {
         const body = sub.toJSON();
-        Ajax.post({url: 'api/v1/notifications/subscribe', body}).then(
+        Ajax.post({url: '/notifications/subscribe', body}).then(
             ({response}) => {
               console.warn('[PushManager] subsription on server:', response);
             },

@@ -353,12 +353,12 @@ export default class Reader extends BaseComponent {
    * @param {Array<Comment>} comments
    */
   setComments(comments) {
-    const commentsDiv = this.root.querySelector('#comments');
+    const commentsDiv = this.root.querySelector('[data-inplace="comments"]');
     commentsDiv.innerHTML = '';
 
-    // показываем кнопку "скрытб комментарии"
+    // показываем кнопку "скрыть комментарии"
     if (comments.length > 0) {
-      this.root.querySelector('comments-show').style.display = 'block';
+      this.root.querySelector('.comments-show').style.display = 'flex';
     }
 
     comments.forEach((comment) => {
