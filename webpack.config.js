@@ -3,6 +3,7 @@ const HTMLWebpackPlugin = require('html-webpack-plugin');
 const {CleanWebpackPlugin} = require('clean-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CopyPlugin = require('copy-webpack-plugin');
+const {IgnoreAsyncImportsPlugin} = require('ignore-webpack-plugin');
 
 module.exports = {
   mode: 'production',
@@ -15,6 +16,12 @@ module.exports = {
     clean: true,
     assetModuleFilename: 'static/[name][ext][query]',
   },
+  optimization: {
+    // minimize: true,
+    // to save SW
+    minimize: false,
+  },
+
   plugins: [
     // new WorkboxPlugin.GenerateSW({
 
@@ -50,7 +57,12 @@ module.exports = {
     new MiniCssExtractPlugin({
       filename: '[name].css',
     }),
+    new IgnoreAsyncImportsPlugin({
+      resourceRegExp: /serviceWorker/,
+      // contextRegExp,
+    }),
   ],
+
   module: {
     rules: [
       {
@@ -73,7 +85,13 @@ module.exports = {
       },
       {
         test: /\.(js)$/,
-        use: 'babel-loader',
+        loader: 'babel-loader',
+        options: {
+          exclude: [
+            // \\ for Windows, \/ for Mac OS and Linux
+            /node_modules/,
+          ],
+        },
       },
     ],
   },

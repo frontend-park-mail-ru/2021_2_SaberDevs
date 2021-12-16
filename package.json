@@ -19,6 +19,7 @@
   "author": "Denis, Svetlana, Yuriy, Alexey",
   "license": "ISC",
   "dependencies": {
+    "ignore-webpack-plugin": "^0.3.0",
     "mime": "^2.5.2",
     "pug": "^3.0.2",
     "walk": "^2.3.15"
