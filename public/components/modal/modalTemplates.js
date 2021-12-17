@@ -95,7 +95,6 @@ export function showModalConfirm(
  * @param {string} msgMain
  */
 export function showModalNeedFullReg(msgBefore, msgMain) {
-  console.warn({msgBefore, msgMain});
   let part1 = '';
   let part2 = '';
   if (msgBefore !== '') {
@@ -159,7 +158,7 @@ export default class ModalTemplates {
   }
 
   /**
-   * Информационное окно
+   * Информационное окно (исчезает)
    * @param {string} header
    * @param {string | HTMLElement} content
    */
@@ -168,7 +167,7 @@ export default class ModalTemplates {
   }
 
   /**
-   * Информационное окно, требующее подтверждения
+   * Информационное окно с двумя кнопками, требующее подтверждения
    * @param {string} header
    * @param {string | HTMLElement} content
    * @param {function} onConfirm
@@ -196,7 +195,7 @@ export default class ModalTemplates {
   }
 
   /**
-   * Информационное окно, требующее подтверждения
+   * Информационное окно с одной кнопкой, требующее подтверждения
    * @param {string} header
    * @param {string | HTMLElement} content
    * @param {function} onConfirm

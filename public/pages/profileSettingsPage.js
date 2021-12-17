@@ -66,19 +66,38 @@ export default class ProfileSettingsPage extends BasePageMV {
       const img = form.querySelector('input[type="file"]')?.files[0];
 
       if (firstName !== '' && !regexp.firstName.test(firstName)) {
+        let errorClass = 0;
+        if (/\d/.test(firstName)) {
+          errorClass = 1;
+        } else if (firstName.length >= 20) {
+          errorClass = 2;
+        } else if (firstName.length < 2) {
+          errorClass = 3;
+        }
         this.view.pageComponents.settingsForm.appendWarning(
             'Такое имя выбрать нельзя' +
-            (firstName.length >= 20 ? '\nСлишком длинное' : '') +
-            (firstName.length < 20 ? '\nСлишком короткое' : ''),
+            (errorClass === 1 ? '. Цифр быть не должно.' : '') +
+            (errorClass === 2? '. Слишком длинное.' : '') +
+            (errorClass === 3 ? '. Слишком короткое.' : ''),
         );
         return;
       }
 
-      if (lastName !== '' && !regexp.lastName.test(lastName)) {
+      if (lastName !== '' && !regexp.lastName.test(lastName) ||
+          lastName.length >= 20) {
+        let errorClass = 0;
+        if (/\d/.test(lastName)) {
+          errorClass = 1;
+        } else if (lastName.length >= 20) {
+          errorClass = 2;
+        } else if (lastName.length < 2) {
+          errorClass = 3;
+        }
         this.view.pageComponents.settingsForm.appendWarning(
             'Такую фамилию выбрать нельзя' +
-            (lastName.length >= 20 ? '\nСлишком длинная' : '') +
-            (lastName.length < 20 ? '\nСлишком короткая' : ''),
+            (errorClass === 1 ? '. Цифр быть не должно.' : '') +
+            (errorClass === 2? '. Слишком длинная.' : '') +
+            (errorClass === 3 ? '. Слишком короткая.' : ''),
         );
         return;
       }
@@ -148,15 +167,15 @@ export default class ProfileSettingsPage extends BasePageMV {
           .then((userData) => {
             if (avatarHash !== '') {
               userData.avatarUrl = Ajax.APIurl + '/img/' + avatarHash;
-              // TODO: пофиксить апи
-              if ('name' in userData) {
-                userData.firstName = userData.name;
-                delete userData.name;
-              }
-              if ('surname' in userData) {
-                userData.lastName = userData.name;
-                delete userData.surname;
-              }
+            }
+            // TODO: пофиксить апи
+            if ('name' in userData) {
+              userData.firstName = userData.name;
+              delete userData.name;
+            }
+            if ('surname' in userData) {
+              userData.lastName = userData.surname;
+              delete userData.surname;
             }
             store.dispatch(authorizationActions.login(userData));
             store.dispatch(profilePageActions.setUserInfo(userData));

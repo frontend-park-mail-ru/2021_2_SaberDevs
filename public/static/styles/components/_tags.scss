@@ -1,7 +1,7 @@
 .tags {
   &__row {
     display: flex;
-    flex-wrap: nowrap;
+    flex-wrap: wrap;
     justify-content: flex-start;
     overflow: hidden;
   }

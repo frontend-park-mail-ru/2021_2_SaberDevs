@@ -36,6 +36,7 @@ export default class SettingsForm extends BaseComponent {
         appendWarning call while SignupForm was not rendered`);
     }
     formWarning.style.display = 'block';
+    formWarning.style.margin = '3rem 0';
     formWarning.textContent = msg;
   }
 }

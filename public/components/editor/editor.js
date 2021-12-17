@@ -185,9 +185,10 @@ export default class Editor extends BaseComponent {
           }
           // проверка, не превышено ли количество тегов
           if (storedTags.length >= articleLimitations.tagsLenght) {
-            ModalTemplates.informativeMsg(
-                'Много тегов',
-                'Не следует добавлять больше ' + articleLimitations.tagsLenght,
+            ModalTemplates.warn(
+                'Ух, сколько тегов!',
+                'Не следует добавлять больше, чем ' +
+                    articleLimitations.tagsLenght,
             );
             return;
           }
@@ -207,7 +208,7 @@ export default class Editor extends BaseComponent {
       if (title.length >= articleLimitations.headerLenght) {
         ModalTemplates.informativeMsg(
             'Длинные заголовки',
-            'не помогут увлечь читателей',
+            'не помогут привлечь читателей',
         );
         titleInput.value = titleInput.value
             .slice(0, articleLimitations.headerLenght - 1);
@@ -304,7 +305,7 @@ export default class Editor extends BaseComponent {
       if (!text || !title || text === '' || title === '') {
         console.warn('{Editor} пустые статьи - это плохо:', {text}, {title});
         ModalTemplates.informativeMsg(
-            'Ошибка', 'Заголовок и текст статьи не должны быть пустыми',
+            'Что-то не так', 'Заголовок и текст статьи не должны быть пустыми',
         );
         return;
       }
@@ -314,7 +315,7 @@ export default class Editor extends BaseComponent {
 
       const category = state[state.currentId].category;
       if (state[state.currentId].category === '') {
-        ModalTemplates.informativeMsg(
+        ModalTemplates.warn(
             'Ошибка', 'Не забудьте указать одну из категорий, наиболее ' +
             'точно описывающую Вашу статью',
         );
@@ -392,7 +393,7 @@ export default class Editor extends BaseComponent {
           const file = e.currentTarget.files[0];
 
           if (!file.type.startsWith('image/')) {
-            ModalTemplates.warn('Ошибка', 'Выберите изображение');
+            ModalTemplates.warn('Что-то не так', 'Выберите изображение');
             return;
           }
           getFileBrowserStorageUrl(file).then((imgUrl) => {
