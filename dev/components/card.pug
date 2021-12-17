@@ -4,7 +4,7 @@ mixin tagMixin(content, color, cross=false)
   include tag.pug
 
 .card.cursor-pointer(id=`card${id}`)
-  .card__image(style=`background-image: url(${previewUrl}); ${previewUrl.endsWith('/img/') ? 'min-height: 0' : ''}`)
+  .card__image(style=`background-image: url(${previewUrl || ''}); ${(!previewUrl || previewUrl.endsWith('/img/')) ? 'min-height: 0' : ''}`)
     .card__image-top-shadow
       .card__top
         .card__top-left

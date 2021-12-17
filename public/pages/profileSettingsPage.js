@@ -8,6 +8,7 @@ import {
   changePageActions,
   authorizationActions,
 } from '../flux/actions.js';
+import profilePageActions from '../flux/actions/profilePageActions.js';
 import {authorizationTypes} from '../flux/types.js';
 
 import Ajax from '../modules/ajax.js';
@@ -66,14 +67,18 @@ export default class ProfileSettingsPage extends BasePageMV {
 
       if (firstName !== '' && !regexp.firstName.test(firstName)) {
         this.view.pageComponents.settingsForm.appendWarning(
-            'Такое имя выбрать нельзя',
+            'Такое имя выбрать нельзя' +
+            (firstName.length >= 20 ? '\nСлишком длинное' : '') +
+            (firstName.length < 20 ? '\nСлишком короткое' : ''),
         );
         return;
       }
 
       if (lastName !== '' && !regexp.lastName.test(lastName)) {
         this.view.pageComponents.settingsForm.appendWarning(
-            'Такую фамилию выбрать нельзя',
+            'Такую фамилию выбрать нельзя' +
+            (lastName.length >= 20 ? '\nСлишком длинная' : '') +
+            (lastName.length < 20 ? '\nСлишком короткая' : ''),
         );
         return;
       }
@@ -145,6 +150,7 @@ export default class ProfileSettingsPage extends BasePageMV {
               userData.avatarUrl = Ajax.APIurl + '/img/' + avatarHash;
             }
             store.dispatch(authorizationActions.login(userData));
+            store.dispatch(profilePageActions.setUser(userData));
             ModalTemplates.informativeMsg('Успех!', 'Профиль обновлен');
             redirect('/profile');
             return;
@@ -167,7 +173,8 @@ export default class ProfileSettingsPage extends BasePageMV {
               return;
             }
             // в случае провала валидации формы
-            this.view.pageComponents.settingsForm.appendWarning(msg);
+            // this.view.pageComponents.settingsForm.appendWarning(message);
+            ModalTemplates.warn('Что-то не так', message);
           });
     });
 

@@ -19,6 +19,7 @@ export default class SettingsForm extends BaseComponent {
    */
   render() {
     super.render();
+    // TODO: обработчик кнопки сменить пароль
 
     this.root = this.view.render();
     return this.root;

@@ -77,6 +77,23 @@ $title-margin: 25px 0;
   }
 }
 
+@mixin sidebar-login-font-size() {
+  @media (min-width: 901px) {
+    font-size: 14px;
+    padding: 10px;
+  }
+
+  @media (max-width: 1200px) {
+    font-size: 12px;
+    padding: 7px;
+  }
+
+  @media (max-width: 900px) {
+    font-size: 10px;
+    padding: 14px;
+  }
+}
+
 @mixin title() {
   @include font-size-large;
 
@@ -135,6 +152,23 @@ $button-opacity: 0.5;
 
   @media (max-width: 900px) {
     width: 30px;
+  }
+}
+
+@mixin side-bar-user-icon-size() {
+  @media (min-width: 901px) {
+    width: 60px;
+    height: 60px;
+  }
+
+  @media (max-width: 1200px) {
+    width: 40px;
+    height: 40px;
+  }
+
+  @media (max-width: 900px) {
+    width: 30px;
+    height: 30px;
   }
 }
 

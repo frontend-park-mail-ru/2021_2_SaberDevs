@@ -111,6 +111,7 @@ export default class Sidebar extends BaseComponent {
       name: 'Регистрация',
     });
     this.view.setTopBlockContent(topBlockContent);
+    this.root.querySelector('[data-section="loginModal"]').style.width = '100%';
   }
 
   /**

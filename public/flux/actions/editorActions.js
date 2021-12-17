@@ -34,14 +34,14 @@ function createArticle() {
 }
 
 /**
- * img кладешь опционально, если менял картинку.
+ * previewUrl кладешь опционально, если менял картинку.
  * @param {number} id
  * @param {Object?} article
  * @property {string} title
  * @property {string} text
  * @property {Array<string>} tags
  * @property {string}  category
- * @property {string}  img
+ * @property {string}  previewUrl
  * @property {string?} dateTime
  * @property {string?} author
  * @property {number?} likes

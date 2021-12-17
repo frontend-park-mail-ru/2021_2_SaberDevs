@@ -83,6 +83,25 @@
     padding: 10px;
     height: -webkit-fill-available;
     text-align: center;
+    width: 100%;
+
+    &:hover {
+      background-color: $color-selection;
+      cursor: pointer;
+    }
+  }
+
+  &__login {
+    @include sidebar-login-font-size;
+
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    height: -webkit-fill-available;
+    text-align: center;
+    width: 100%;
+    text-align: right;
+    overflow: hidden;
 
     &:hover {
       background-color: $color-selection;
@@ -95,6 +114,7 @@
 
     display: flex;
     align-items: center;
+    width: 100%;
   }
 
   &__streams {

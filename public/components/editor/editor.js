@@ -123,7 +123,7 @@ export default class Editor extends BaseComponent {
         (e) => {
           e.preventDefault();
           this.root.querySelector('.article-create__stage-1')
-              .style.display = 'block';
+              .style.display = 'flex';
           this.root.querySelector('.article-create__stage-2')
               .style.display = 'none';
         },
@@ -333,7 +333,7 @@ export default class Editor extends BaseComponent {
       }
 
       let responseStatus = 0;
-      recoverBlobWithUrl(state[state.currentId].img)
+      recoverBlobWithUrl(state[state.currentId].previewUrl)
           .then((blob) => Ajax.postFile({url: '/img/upload', body: blob}))
           .then(({status, response}) => new Promise((resolve, reject) => {
             if (status === Ajax.STATUS.ok) {
@@ -425,17 +425,17 @@ export default class Editor extends BaseComponent {
     * @property {number?} likes
     * @property {number?} comments
     */
-  setContent({title, text, img, category}) {
+  setContent({title, text, previewUrl, category}) {
     if (title || text) {
       console.log('{EDITOR} set content');
     }
     this.view.setContent(title, text);
     this.view.changePreviewCategory(category);
-    if (!img) {
+    if (!previewUrl) {
       return;
     }
-    if (img !== '') {
-      this.view.changePreviewImage(img);
+    if (previewUrl !== '') {
+      this.view.changePreviewImage(previewUrl);
     } else {
       this.view.clearPreviewImage();
     }
@@ -449,7 +449,7 @@ export default class Editor extends BaseComponent {
     this.setContent({
       title: '',
       text: '',
-      img: '',
+      previewUrl: '',
       category: '',
     });
     this.view.clearTags();

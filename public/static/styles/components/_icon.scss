@@ -85,7 +85,6 @@ $icon-margin: 15px;
 .user-img {
   border: $border;
   border-radius: $border-radius;
-  width: $user-img;
-  height: $user-img;
   pointer-events: all;
+  @include side-bar-user-icon-size;
 }

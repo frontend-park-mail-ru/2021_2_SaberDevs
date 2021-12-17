@@ -8,7 +8,7 @@ const InitialEditorState = {
   //   text: string,
   //   tags: [string],
   //   category: string,
-  //   img: string,
+  //   previewUrl: string,
   // }
   // Изменение статьи
   // id: {
@@ -16,7 +16,7 @@ const InitialEditorState = {
   //   text: string,
   //   tags: [string...],
   //   category: string,
-  //   img: string
+  //   previewUrl: string
   // }
 };
 
@@ -28,16 +28,17 @@ const InitialEditorState = {
 export default function editorReducer(state = InitialEditorState, action) {
   switch (action.type) {
     case editorTypes.EDIT_EXISTING_ARTICLE:
+      console.warn(action.payload, typeof action.payload.id)
       return {
         ...state,
+        currentId: action.payload.id,
         [action.payload.id]: {
           title: action.payload.title,
           text: action.payload.text,
           tags: action.payload.tags,
           category: action.payload.category,
-          img: action.payload.img,
+          previewUrl: action.payload.previewUrl,
         },
-        currentId: action.payload.id,
       };
 
     case editorTypes.CLEAR_ARTICLE:
@@ -48,7 +49,7 @@ export default function editorReducer(state = InitialEditorState, action) {
           text: '',
           tags: [],
           category: '',
-          img: '',
+          previewUrl: '',
         },
       };
 
@@ -69,7 +70,7 @@ export default function editorReducer(state = InitialEditorState, action) {
           text: '',
           tags: [],
           category: '',
-          img: '',
+          previewUrl: '',
         };
       }
       stateCopy.currentId = 0;
@@ -101,7 +102,7 @@ export default function editorReducer(state = InitialEditorState, action) {
           text: '',
           tags: [],
           category: '',
-          img: '',
+          previewUrl: '',
         },
         currentId: 0,
       };
@@ -125,7 +126,7 @@ export default function editorReducer(state = InitialEditorState, action) {
 
     case editorTypes.SAVE_PREVIEW:
       const currentStateCopySavePreview = {...state[state.currentId]};
-      currentStateCopySavePreview.img = action.payload;
+      currentStateCopySavePreview.previewUrl = action.payload;
       return {
         ...state,
         [state.currentId]: currentStateCopySavePreview,

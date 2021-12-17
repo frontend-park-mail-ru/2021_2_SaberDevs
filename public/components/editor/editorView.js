@@ -8,6 +8,7 @@ import CategoryChoiceBar from '../categoryChoiceBar/categoryChoiceBar.js';
 import {genRanHexColor} from '../../common/utils.js';
 
 const PREVIEW_TEXT_LIMIT = 350;
+const whiteTextColor = '#dee4ea';
 
 /**
  * @param {Date} d
@@ -24,12 +25,14 @@ function convertDate(d = new Date()) {
  * @return {string}
  */
 function fillCardImgStyle(url) {
-  return `background: -webkit-gradient(linear, left top, left bottom,` +
-  `from(rgba(0, 0, 0, 0.7)), to(rgba(0, 0, 0, 0.7))), url(${url});`+
-  `background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)),` +
-  `url(${url});
-  background-size: cover;
-  background-repeat: no-repeat;`;
+  // старый стиль. покрытие всей карточки затенением
+  // return `background: -webkit-gradient(linear, left top, left bottom,` +
+  // `from(rgba(0, 0, 0, 0.7)), to(rgba(0, 0, 0, 0.7))), url(${url});`+
+  // `background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)),` +
+  // `url(${url});
+  // background-size: cover;
+  // background-repeat: no-repeat;`;
+  return `background-image: url(${url});`;
 }
 
 /**
@@ -80,13 +83,20 @@ export default class EditorView extends BaseComponentView {
       datetime: convertDate(),
       category: {
         categoryContent: 'категория не выбрана',
-        categoryColor: '#dee4ea',
+        categoryColor: whiteTextColor,
       },
       author,
       comments: '',
       likes: '',
-    })
-        .replace('card__lift-effect', '');
+    });
+    // имитация лайков
+    this.previewBox.querySelector('.card__bottom')
+        .innerHTML = `
+          <div class="icon action-btns__likes-icon icon__img"></div>
+          <div class="icon-margin-r action-btns__dislike-icon icon__img"></div>
+          <div class="icon action-btns__comments-icon icon__img"></div>
+        `;
+    ;
 
     this.tagBox = this.previewBox.querySelector('.tags__row');
     this.textAreaInput = editor.firstChild.querySelector('textarea');
@@ -148,7 +158,7 @@ export default class EditorView extends BaseComponentView {
       return;
     }
 
-    this.previewBox.querySelector('.article-create__preview__card')
+    this.previewBox.querySelector('.card__image')
         .style.cssText = fillCardImgStyle(url);
   }
 
@@ -156,8 +166,8 @@ export default class EditorView extends BaseComponentView {
    * сброс фотографии
    */
   clearPreviewImage() {
-    this.previewBox.querySelector('.article-create__preview__card')
-        .style.cssText = '';
+    this.previewBox.querySelector('.card__image')
+        .style.cssText = 'background-image = ""; min-height: 0;';
   }
 
   /**
@@ -197,26 +207,16 @@ export default class EditorView extends BaseComponentView {
       );
       return;
     }
+    const categoryBoxPreview =
+          this.previewBox.querySelector('.category__content');
     if (text === '') {
-      this.previewBox.querySelector('.category__content').textContent =
-        'категория не выбрана';
-      // this.root.querySelector('.article-create__label').innerHTML =
-      //   'Выберите категорию | <strong>категория не выбрана</strong>';
+      categoryBoxPreview.textContent = 'категория не выбрана';
+      categoryBoxPreview.style.color = whiteTextColor;
     } else {
-      const categoryColor = genRanHexColor(text);
-      // const categoryBoxTop=this.root.querySelector('.article-create__label');
-      // categoryBoxTop.innerHTML =
-      //   `Выберите категорию | <strong>${text}</strong>`;
-      // categoryBoxTop.style.color = categoryColor;
-      // categoryBoxTop
-      //     .style.textShadow = `text-shadow: ${categoryColor} 0px 0px 10px`;
-
-      const categoryBoxPreview =
-        this.previewBox.querySelector('.category__content');
       categoryBoxPreview.textContent = text;
+      const categoryColor = genRanHexColor(text);
       categoryBoxPreview.style.color = categoryColor;
-      categoryBoxPreview
-          .style.textShadow = `text-shadow: ${categoryColor} 0px 0px 10px`;
+      categoryBoxPreview.style.textShadow = `${categoryColor} 0px 0px 10px`;
     }
   }
 
