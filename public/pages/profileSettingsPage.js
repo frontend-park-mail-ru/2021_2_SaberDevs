@@ -148,6 +148,15 @@ export default class ProfileSettingsPage extends BasePageMV {
           .then((userData) => {
             if (avatarHash !== '') {
               userData.avatarUrl = Ajax.APIurl + '/img/' + avatarHash;
+              // TODO: пофиксить апи
+              if ('name' in userData) {
+                userData.firstName = userData.name;
+                delete userData.name;
+              }
+              if ('surname' in userData) {
+                userData.lastName = userData.name;
+                delete userData.surname;
+              }
             }
             store.dispatch(authorizationActions.login(userData));
             store.dispatch(profilePageActions.setUserInfo(userData));
