@@ -458,7 +458,6 @@ function addEventListenersToReader(root) {
   // нажатие Enter
   root.querySelector('input')
       .addEventListener('keydown', ({keyCode, target}) => {
-        console.warn('enter')
         if (keyCode === 13) {
           if (!checkRootsToComment()) {
             return;
@@ -499,15 +498,15 @@ const editArticleAction = (e) => {
  */
 function addCommentAction(root) {
   const input = root.querySelector('input.article-view__comment-input');
-  if (input.value.trim() != '') {
-    input.value = '';
+  const text = input.value.trim();
+  if (text !== '') {
     let responseStatus = 0;
     const articleId = store.getState().reader.currentId;
     Ajax.post({url: '/comments/create', body: {
       // number
       articleId: parseInt(articleId, 10),
       parentId: 0,
-      text: input.value.trim(),
+      text,
     }})
         .then(({status, response}) => new Promise((resolve, reject) => {
           if (status === Ajax.STATUS.ok) {
@@ -518,11 +517,25 @@ function addCommentAction(root) {
           }
         }))
         .then((newComment) => {
+          input.value = '';
           newComment = translateServerComment(newComment);
 
           const commentWrapper = document.createElement('div');
           commentWrapper.innerHTML = commentComponent(newComment);
           const commentDiv = commentWrapper.firstChild;
+
+          // лайки
+          const likesComponent = new Likes(
+              1,
+              parseInt(newComment.id, 10),
+              0,
+              0,
+              (id, sign, newLikesNum)=>store.dispatch(readerActions.likeComment(
+                  id, sign, newLikesNum,
+              )),
+          );
+          likesComponent.mountInPlace(commentDiv);
+
           // обработчики
           createCommentAnswerListener(commentDiv, articleId, newComment);
           createCommentChangeListener(commentDiv, newComment);
