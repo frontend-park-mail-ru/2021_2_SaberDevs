@@ -25,6 +25,9 @@ export default function authorizeReducer(state = InitialUserState, action) {
       return {
         ...state,
         ...action.payload,
+        login: action.payload.login || '',
+        firstName: action.payload.firstName || '',
+        lastName: action.payload.lastName || '',
         isAuthenticated: true,
       };
     case authorizationTypes.LOGOUT:

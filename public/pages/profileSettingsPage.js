@@ -150,7 +150,7 @@ export default class ProfileSettingsPage extends BasePageMV {
               userData.avatarUrl = Ajax.APIurl + '/img/' + avatarHash;
             }
             store.dispatch(authorizationActions.login(userData));
-            store.dispatch(profilePageActions.setUser(userData));
+            store.dispatch(profilePageActions.setUserInfo(userData));
             ModalTemplates.informativeMsg('Успех!', 'Профиль обновлен');
             redirect('/profile');
             return;
