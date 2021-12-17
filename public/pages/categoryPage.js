@@ -234,6 +234,6 @@ export default class CategoryPage extends BasePageMV {
       store.dispatch(categoryPageActions.forbidCategoryArticlesLoading());
     }
 
-    return isActive();
+    return super.isActive();
   }
 }

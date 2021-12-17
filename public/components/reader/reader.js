@@ -154,6 +154,12 @@ function appendTextField(root, message, comment, isFieldClear, onClick) {
     if (value === comment.text || value === '') {
       return;
     }
+    if (!checkRootsToComment()) {
+      return;
+    }
+
+    input.value = '';
+
     onClick(value);
     // мог быть уже убран если сработал focusout
     // focusout отключен, если нажимается кнопка
@@ -167,10 +173,16 @@ function appendTextField(root, message, comment, isFieldClear, onClick) {
   };
 
   const sendBtn = answerField.querySelector('.article-view__send-comment-btn');
-
+  // клик по кнопке
   sendBtn.addEventListener('click', (e) => {
     e.preventDefault();
     submitAction();
+  });
+  // нажатие Enter
+  input.addEventListener('keydown', ({keyCode, target}) => {
+    if (keyCode === 13) {
+      submitAction();
+    }
   });
   root.appendChild(answerField);
 
@@ -443,15 +455,26 @@ function addEventListenersToReader(root) {
   // });
 
   // обработчик: добавление комментария
-  const commentBtn = root
-      .querySelector('.article-view__send-comment-btn');
-  commentBtn.addEventListener('click', (e) => {
-    e.preventDefault();
-    if (!checkRootsToComment()) {
-      return;
-    }
-    addCommentAction(root);
-  });
+  // нажатие Enter
+  root.querySelector('input')
+      .addEventListener('keydown', ({keyCode, target}) => {
+        console.warn('enter')
+        if (keyCode === 13) {
+          if (!checkRootsToComment()) {
+            return;
+          }
+          addCommentAction(root);
+        }
+      });
+  // клик по кнопке
+  root.querySelector('.article-view__send-comment-btn')
+      .addEventListener('click', (e) => {
+        e.preventDefault();
+        if (!checkRootsToComment()) {
+          return;
+        }
+        addCommentAction(root);
+      });
 
   // обработчик: показать комментарии
   const btnShow = root
@@ -477,6 +500,7 @@ const editArticleAction = (e) => {
 function addCommentAction(root) {
   const input = root.querySelector('input.article-view__comment-input');
   if (input.value.trim() != '') {
+    input.value = '';
     let responseStatus = 0;
     const articleId = store.getState().reader.currentId;
     Ajax.post({url: '/comments/create', body: {
