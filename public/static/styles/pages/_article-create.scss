@@ -2,7 +2,7 @@ $article-create-tag-margin-left: 10px;
 $article-create-input-padding-vertical: 10px;
 $article-create-input-padding: 10px 5px;
 
-$article-row-margin: 25px 0;
+$article-row-margin: 3rem;
 $article-row-margin-vertical: 25px;
 /* сверху | справа | снизу | слева */
 // $article-row-btns-margin: 0 0 25px 0;
@@ -16,8 +16,8 @@ $article-labels-margin: 0 0 10px 0;
   height: 100%;
 
   &__title {
-    @include font-size-large;
-    margin: 10px;
+    @extend .page_title;
+    margin-bottom: 10px;
   }
 
   &__form {
@@ -69,7 +69,7 @@ $article-labels-margin: 0 0 10px 0;
   &__row {
     @include row;
     flex-wrap: wrap;
-    margin: $article-row-margin;
+    margin-bottom: $article-row-margin;
   }
 
   &__col {
@@ -79,7 +79,7 @@ $article-labels-margin: 0 0 10px 0;
   &__row-text {
     @include row;
     flex-wrap: wrap;
-    margin: $article-row-margin;
+    margin-bottom: $article-row-margin;
     justify-content: space-between;
     height: 100%;
   }
@@ -121,7 +121,7 @@ $article-labels-margin: 0 0 10px 0;
     justify-content: space-between;
     align-items: center;
     flex-wrap: nowrap;
-    margin: $article-row-margin;
+    margin-bottom: $article-row-margin;
   }
 
   &__btns-row-right {
@@ -130,7 +130,7 @@ $article-labels-margin: 0 0 10px 0;
     justify-content: flex-end;
     align-items: center;
     flex-wrap: nowrap;
-    margin: $article-row-margin;
+    margin-bottom: $article-row-margin;
   }
 
   &__btn-group {
