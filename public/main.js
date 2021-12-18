@@ -85,7 +85,6 @@ router
     .register('/categories', CategoryPage)
     .register('/login', SignupPage)
     .register('/search', SearchPage);
-// .registerPattern('/search<g?q?>', SearchPage);
 
 linksController
     .register(

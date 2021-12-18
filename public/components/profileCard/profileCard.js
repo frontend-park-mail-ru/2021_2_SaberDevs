@@ -3,6 +3,7 @@ import ProfileCardView from './profileCardView.js';
 
 import store from '../../flux/store.js';
 import {profilePageTypes} from '../../flux/types.js';
+import {redirect} from '../../common/utils.js';
 
 /**
  * @class ProfileCard
@@ -38,7 +39,10 @@ export default class ProfileCard extends BaseComponent {
   render() {
     super.render();
     const user = store.getState().profilePage.user;
-    this.root = this.view.render(user);
+    this.root = document.createElement('div');
+    this.root.className = 'profile';
+    this.root.appendChild(this.view.render(user));
+    addEventListeners(this.root.firstChild, user);
     return this.root;
   }
 
@@ -53,6 +57,25 @@ export default class ProfileCard extends BaseComponent {
    */
   setUser(user) {
     this.root.innerHTML = '';
-    this.root.appendChild(this.view.render(user).firstChild);
+    const newCard = this.view.render(user);
+    addEventListeners(newCard, user);
+    this.root.appendChild(newCard);
   }
 }
+
+const addEventListeners = (root, user) => {
+  const auth = store.getState().authorization;
+  if (user.login === auth.login) {
+    // вкл кнопку настроек
+    const btn = root.querySelector('#to-profile-settings');
+    btn.style.display = 'flex';
+    btn.addEventListener('click', (e) => {
+      redirect('/profile/settings');
+    });
+
+    if (user.description === '') {
+      root.querySelector('.profile__aboutme')
+          .innerHTML = 'Поделительсь информацией о себе в настройках';
+    }
+  }
+};

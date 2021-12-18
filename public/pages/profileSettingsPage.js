@@ -10,9 +10,10 @@ import {
 } from '../flux/actions.js';
 import profilePageActions from '../flux/actions/profilePageActions.js';
 import {authorizationTypes} from '../flux/types.js';
+import {appendApiImg} from '../common/transformApi.js';
 
 import Ajax from '../modules/ajax.js';
-import {redirect} from '../common/utils.js';
+import {redirect, getFileBrowserStorageUrl} from '../common/utils.js';
 import regexp from '../common/regexp.js';
 import {ajaxDebug} from '../globals.js';
 
@@ -60,6 +61,30 @@ export default class ProfileSettingsPage extends BasePageMV {
     form.querySelector('input[name="surname"]').value = auth.lastName;
     form.querySelector('textarea[name="description"]').value = auth.description;
 
+    const previewImg = form.querySelector('img');
+    previewImg.addEventListener('error', (e) => {
+      console.warn('не удалось загрузить аватар', e.currentTarget.src);
+      e.currentTarget.src='img/user_icon_loading.svg';
+      e.currentTarget.onerror = undefined;
+    });
+    appendApiImg(auth);
+    previewImg.src = auth.avatarUrl;
+
+    const fileLoader = form.querySelector('input[type="file"]');
+    fileLoader.addEventListener(
+        'change',
+        (e) => {
+          const file = e.currentTarget.files[0];
+
+          if (!file.type.startsWith('image/')) {
+            ModalTemplates.warn('Что-то не так', 'Выберите изображение');
+            return;
+          }
+          getFileBrowserStorageUrl(file).then((imgUrl) => {
+            previewImg.src = imgUrl;
+          });
+        });
+
     form.addEventListener('submit', (e) => {
       e.preventDefault();
       // TODO: смена пароля
@@ -70,7 +95,7 @@ export default class ProfileSettingsPage extends BasePageMV {
           form.querySelector('input[name="surname"]')?.value.trim();
       const description =
           form.querySelector('textarea[name="description"]')?.value.trim();
-      const img = form.querySelector('input[type="file"]')?.files[0];
+      const img = fileLoader.files[0];
 
       if (firstName !== '' && !regexp.firstName.test(firstName)) {
         let errorClass = 0;

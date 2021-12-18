@@ -1,5 +1,5 @@
 $card-outer-margin-mobile: 0.5rem;
-$card-outer-margin: 2rem;
+$card-outer-margin: 4rem;
 
 @mixin card-margin() {
   @media (min-width: 901px) {
@@ -95,6 +95,7 @@ $card-top-margin-bottom: calc($card-element-margin-bottom - $tag-margin-bottom);
     @include row;
     margin-bottom: $card-element-margin-bottom;
     font-weight: $font-thin;
+    word-wrap: break-word;
   }
 
   &__bottom {

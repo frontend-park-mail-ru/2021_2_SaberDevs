@@ -180,7 +180,11 @@ export default class EditorView extends BaseComponentView {
       );
       return;
     }
-    text = text.slice(0, PREVIEW_TEXT_LIMIT);
+
+    if (text.length > PREVIEW_TEXT_LIMIT) {
+      text = text.slice(0, PREVIEW_TEXT_LIMIT);
+      text = text.subString(0, text.lastIndexOf(' ')) + '...';
+    }
     this.previewBox.querySelector('.card__description').textContent = text;
   }
 

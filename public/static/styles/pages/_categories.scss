@@ -38,7 +38,7 @@ $categories-margin: 20px;
   &__search-block {
     @include col;
 
-    margin-bottom: $categories-margin;
+    margin: $categories-margin 0;
     width: 100%;
   }
 

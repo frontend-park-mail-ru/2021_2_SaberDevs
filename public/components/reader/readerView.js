@@ -40,6 +40,7 @@ export default class ReaderView extends BaseComponentView {
       } : {
         content: '',
         color: '',
+        message: 'Комментарий',
       },
       tags,
     });

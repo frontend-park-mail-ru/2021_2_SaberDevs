@@ -1,11 +1,16 @@
 include _onAvatarErrorMixin
 
 .profile
+  .article-create__btns-row-right(id="to-profile-settings" style="display: none; width: 90%;")
+    button.btn-color-elementary Настройки
   .profile__info
     +avatarMixin.profile__photo(src=`${avatarUrl}`)
     .profile__description
-      .profile__username #{firstName} #{lastName} (#{login})
-      .profile__aboutme Обо мне:
-      | #{description}
+      .profile__username #{firstName} #{lastName}
+      .profile__username #{login}
+      if description !== ''
+        .profile__aboutme Обо мне: #{description}
+      else
+        .profile__aboutme
   if (!disableArticles)   
     .profile__articles-title Статьи

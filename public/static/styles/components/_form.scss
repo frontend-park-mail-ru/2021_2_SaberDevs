@@ -66,6 +66,7 @@ $form-padding: 70px;
   }
 
   &__link {
+    width: fit-content;
     @media (max-height: 400px) {
       align-self: center;
       display: flex;

@@ -12,7 +12,6 @@ export default class profileCardView extends BaseComponentView {
   constructor() {
     super();
     this.root = document.createElement('div');
-    this.root.innerHTML = 'компонент profileCard';
   }
 
   /**
@@ -27,7 +26,8 @@ export default class profileCardView extends BaseComponentView {
   render(user) {
     const wrapper = document.createElement('div');
     wrapper.innerHTML = profileCardComponent(user);
-    this.root = wrapper.firstChild;
+    console.warn(profileCardComponent(user));
+    console.warn(wrapper);
     return wrapper.firstChild;
   }
 }
