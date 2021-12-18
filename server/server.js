@@ -50,6 +50,7 @@ const appPagesPatterned = [
   /^\/user\/([\w0-9_\-%&=\?\+]+)$/,
   /^\/article\/([\w0-9_\-%&=\?\+]+)$/,
   /^\/categories\/([\w0-9_\-%&=\?\+]+)$/,
+  /^\/search([\w0-9_\-%&=\?\+]+)$/,
 ];
 
 const subDomains = [

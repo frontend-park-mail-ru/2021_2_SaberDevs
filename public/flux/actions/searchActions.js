@@ -125,6 +125,41 @@ function like(id, sign, newLikesNum) {
   };
 }
 
+/**
+ * @return {Action}
+ */
+function showEmptyFeed() {
+  return {
+    type: searchTypes.SHOW_EMPTY_FEED,
+  };
+}
+
+/**
+ * @return {Action}
+ */
+function submit() {
+  return {
+    type: searchTypes.SUBMIT,
+  };
+}
+
+/**
+ * @return {Action}
+ */
+function submitOnHeader() {
+  return {
+    type: searchTypes.SUBMIT_ON_HEADER,
+  };
+}
+
+/**
+ * @return {Action}
+ */
+function upload() {
+  return {
+    type: searchTypes.REQUEST,
+  };
+}
 
 const searchActions = {
   askNewCards,
@@ -138,6 +173,10 @@ const searchActions = {
   setSearchValue,
   deleteCard,
   like,
+  showEmptyFeed,
+  submit,
+  submitOnHeader,
+  upload,
 };
 
 export default searchActions;

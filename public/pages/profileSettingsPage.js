@@ -52,7 +52,14 @@ export default class ProfileSettingsPage extends BasePageMV {
   show() {
     super.show();
 
+    const auth = store.getState().authorization;
     const form = this.view.root.querySelector('form');
+
+    // вписываем текущие данные
+    form.querySelector('input[name="username"]').value = auth.firstName;
+    form.querySelector('input[name="surname"]').value = auth.lastName;
+    form.querySelector('textarea[name="description"]').value = auth.description;
+
     form.addEventListener('submit', (e) => {
       e.preventDefault();
       // TODO: смена пароля
@@ -167,15 +174,6 @@ export default class ProfileSettingsPage extends BasePageMV {
           .then((userData) => {
             if (avatarHash !== '') {
               userData.avatarUrl = Ajax.APIurl + '/img/' + avatarHash;
-            }
-            // TODO: пофиксить апи
-            if ('name' in userData) {
-              userData.firstName = userData.name;
-              delete userData.name;
-            }
-            if ('surname' in userData) {
-              userData.lastName = userData.surname;
-              delete userData.surname;
             }
             store.dispatch(authorizationActions.login(userData));
             store.dispatch(profilePageActions.setUserInfo(userData));

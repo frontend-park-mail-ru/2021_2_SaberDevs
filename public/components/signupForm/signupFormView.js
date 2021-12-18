@@ -4,6 +4,7 @@ import formRowComponent from './formRow.pug.js';
 
 import regexp from '../../common/regexp.js';
 
+
 /**
  * @class SignupFormView
  */
@@ -21,8 +22,8 @@ export default class SignupFormView extends BaseComponentView {
         console.warn(`[SignupFormView]
           appendWarning call while SignupForm was not rendered`);
       }
-      formWarningLabel.style.display = 'block';
       formWarning.style.display = 'block';
+      formWarningLabel.classList.add('form__warning-label-show');
       formWarning.textContent = msg;
     };
   }
@@ -104,7 +105,7 @@ export default class SignupFormView extends BaseComponentView {
       const formWarningLabel = this.root.querySelector('#form-warning-label');
       formWarning.style.display = 'none';
       formWarning.textContent = '';
-      formWarningLabel.style.display = 'none';
+      formWarningLabel.classList.remove('form__warning-label-show');
 
       const login = form.querySelector('input[name="login"]').value;
       const password = form.querySelector('input[name="password"]').value;
@@ -115,7 +116,7 @@ export default class SignupFormView extends BaseComponentView {
 
       if (!regexp.login.test(login)) {
         formWarning.style.display = 'block';
-        formWarningLabel.style.display = 'block';
+        formWarningLabel.classList.add('form__warning-label-show');
         formWarning.textContent = 'Логин - это латинские буквы, цифры и ' +
             'нижнее подчеркивание (_). Длина логина - от 4 до 20 символов';
         return;
@@ -123,7 +124,7 @@ export default class SignupFormView extends BaseComponentView {
 
       if (!regexp.password.test(password)) {
         formWarning.style.display = 'block';
-        formWarningLabel.style.display = 'block';
+        formWarningLabel.classList.add('form__warning-label-show');
         formWarning.textContent = 'В качестве пароля используйте любую ' +
             'комбинацию непробельных символы длиной более 8';
         return;
@@ -132,7 +133,7 @@ export default class SignupFormView extends BaseComponentView {
       // если пароли не совпадают
       if (showRegister && passwordRepeated !== password) {
         formWarning.style.display = 'block';
-        formWarningLabel.style.display = 'block';
+        formWarningLabel.classList.add('form__warning-label-show');
         formWarning.textContent = 'Удостоверьтесь, что пароли совпадают';
         return;
       }

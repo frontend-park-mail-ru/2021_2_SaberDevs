@@ -87,4 +87,6 @@ $icon-margin: 15px;
   border-radius: $border-radius;
   pointer-events: all;
   @include side-bar-user-icon-size;
+  background-position: center center;
+  background-repeat: no-repeat;
 }

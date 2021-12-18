@@ -106,6 +106,12 @@ export default function searchPageReducer(state = InitialSearchState, action) {
       } else {
         return state;
       }
+    case searchTypes.SHOW_EMPTY_FEED:
+      return state;
+    case searchTypes.SUBMIT:
+      return state;
+    case searchTypes.REQUEST:
+      return state;
   }
   return state;
 }

@@ -164,6 +164,8 @@ export default class Editor extends BaseComponent {
                 () => store.dispatch(editorActions.removeTag(tag)),
             );
             ct.value = '';
+            // возвращаю фокус
+            ct.focus();
           }
         }
       });
@@ -198,6 +200,7 @@ export default class Editor extends BaseComponent {
               () => store.dispatch(editorActions.removeTag(tag)),
           );
           tagInput.value = '';
+          tagInput.focus();
         },
     );
 

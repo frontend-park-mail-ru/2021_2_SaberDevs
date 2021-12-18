@@ -1,6 +1,7 @@
 export const mobileLayoutConstants = {
   phone: {
     maxWidth: 400,
+    maxHeight: 400,
   },
   tablet: {
     maxWidth: 900,
@@ -22,6 +23,17 @@ class MobileLayoutUtils {
   static isDevicePhone() {
     return window.matchMedia(
         `(max-width: ${mobileLayoutConstants.phone.maxWidth}px)`,
+    ).matches;
+  }
+
+  /**
+   * Производит Media Query по высоте экрана
+   * Настройки в файле mobileLayout.js
+   * @return {boolean}
+   */
+  static isDevicePhoneHeight() {
+    return window.matchMedia(
+        `(max-height: ${mobileLayoutConstants.phone.maxHeight}px)`,
     ).matches;
   }
 

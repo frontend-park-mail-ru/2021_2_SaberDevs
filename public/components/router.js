@@ -81,10 +81,14 @@ export default class Router {
 
   /**
    * @param {string} link
-   * @param {string?} anchor
+   * @param {Object?} params
+   * @property {string?} anchor  // якорь URL
+   * @property {string?} query   // query-параметры URL
+   * @property {string} href     // запись в историю
    */
-  open(link, anchor) {
+  open(link, params) {
     let path = link;
+    const {href, anchor} = params || {href: null, anchor: null};
     // Проверяем, является ли путь шаблонным
     this.routesPatterned.forEach((pattern) => {
       if (path.startsWith(pattern)) {
@@ -126,7 +130,7 @@ export default class Router {
       window.history.pushState(
           null,
           '',
-          link,
+          href || link,
       );
     }
 
@@ -181,17 +185,22 @@ export default class Router {
       event.preventDefault();
       const link = target.pathname || target.parentElement.pathname;
       const anchor = target.hash?.substr(1);
-      console.warn('link:', link, `${anchor ? ('anchor: ' + anchor) : ''}`);
+      const query = target.search;
+      const href = target.href;
 
       if (routerDebug) {
-        console.log({link: link || '[ROUTER] empty path (ignored)', anchor});
+        console.warn(
+            '[ROUTER] link:', link || 'empty path (ignored)',
+            `${anchor ? ('anchor: ' + anchor) : ''}`,
+            `${query ? ('query: ' + query) : ''}`,
+        );
       }
 
       if (!link) {
         return;
       }
 
-      this.open(link, anchor);
+      this.open(link, {anchor, query, href});
     });
 
     window.addEventListener('popstate', () => {

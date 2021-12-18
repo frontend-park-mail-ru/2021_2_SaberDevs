@@ -6,27 +6,28 @@
     //-   | запись
     .sidebar__nav-buttons#sidebarTopBlockContent !{topBlockContent}
   .sidebar__content
-    .sidebar__categories
-      .sidebar__nav-items
-      .sidebar__categories-title.sidebar__item Мнения
-      .sidebar__streams !{streams}
-      .sidebar__categories-title.sidebar__item
-        a(href='/categories') Категории
-      if Array.isArray(categoriesList)
-        each category, idx in categoriesList
-          if (idx < limit)
-            .sidebar__categories-item.sidebar__item
-              a(href=`/categories/${category}`) #{category}
-          else
-            .sidebar__categories-item.sidebar__item(style='display: none')
-              a(href=`/categories/${category}`) #{category}
-        .sidebar__categories-more.sidebar__item
-          .sidebar__categories-more-text Показать ещё
-          button.action-btns__arrow-icon.icon-small__img.sidebar__categories-more-btn.rotate-180
-    .sidebar-bottom_right
-      .contacts
-        .contacts__title Контакты
-        a.contacts__developer(data-router='outer' target="_blank" href='https://github.com/yurij-lyubskij') Юра
-        a.contacts__developer(data-router='outer' target="_blank" href='https://github.com/Svetlanlka') Света
-        a.contacts__developer(data-router='outer' target="_blank" href='https://github.com/Denactive') Денис
-        a.contacts__developer(data-router='outer' target="_blank" href='https://github.com/MollenAR') Лёша
+    .sidebar__content-section
+      .sidebar__categories
+        .sidebar__title.sidebar__item Мнения
+        .sidebar__streams !{streams}
+      .sidebar__categories
+        .sidebar__title.sidebar__item
+          a(href='/categories') Категории
+        if Array.isArray(categoriesList)
+          each category, idx in categoriesList
+            if (idx < limit)
+              .sidebar__categories-item.sidebar__item
+                a(href=`/categories/${category}`) #{category}
+            else
+              .sidebar__categories-item.sidebar__item(style='display: none')
+                a(href=`/categories/${category}`) #{category}
+          .sidebar__categories-more.sidebar__item
+            .sidebar__categories-more-text Показать ещё
+            button.action-btns__arrow-icon.icon-small__img.sidebar__categories-more-btn.rotate-180
+    .sidebar__content-section
+      .sidebar__contacts
+        .sidebar__title Контакты
+        a.sidebar__contacts__developer(data-router='outer' target="_blank" href='https://github.com/Svetlanlka') Света
+        a.sidebar__contacts__developer(data-router='outer' target="_blank" href='https://github.com/Denactive') Денис
+        a.sidebar__contacts__developer(data-router='outer' target="_blank" href='https://github.com/MollenAR') Лёша
+        a.sidebar__contacts__developer(data-router='outer' target="_blank" href='https://github.com/yurij-lyubskij') Юра

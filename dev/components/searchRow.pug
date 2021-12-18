@@ -1,0 +1,14 @@
+.search(style=`${relative ? 'position: relative;' : ''}`)
+  .search__row(class=`search__row_${open ? 'open' : 'close'}` style=`transition: all 0.5s; ${relative ? 'position: relative;' : ''}`)
+    input(type='text' placeholder='Найти').search__input
+    .search__row_group_dropdown
+      input(type='text' placeholder='где?' readonly).search__row_group_bar
+      .search__row_group_dropdown-content
+        .search__row_group_dropdown-item(data-search="articles") Статьи
+        .search__row_group_dropdown-item(data-search="author") Пользователи
+        .search__row_group_dropdown-item(data-search="tags") Теги
+    .search__row_btn
+      if relative
+        button.search__button.search-icon(style=`${relative ? 'position: relative;' : ''}`)
+  if !relative
+    button.search__button.search-icon

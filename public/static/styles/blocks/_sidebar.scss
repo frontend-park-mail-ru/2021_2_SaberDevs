@@ -6,7 +6,7 @@
   z-index: 1;
   font-family: $font-secondary;
   background-color: $color-sidebar;
-  max-width: 18%;
+  max-width: 24%;
   width: fit-content;
 
   &__nav-links {
@@ -35,13 +35,12 @@
 
   &__categories {
     @include col;
-
     align-items: flex-start;
+    margin-bottom: 30px;
   }
 
-  &__categories-title {
-    @include font-size-large;
-
+  &__title {
+    @include font-size-large();
     margin-right: 5px;
   }
 
@@ -92,7 +91,7 @@
   }
 
   &__login {
-    @include sidebar-login-font-size;
+    @include header-font-size;
 
     display: flex;
     align-items: center;
@@ -100,10 +99,11 @@
     height: -webkit-fill-available;
     text-align: center;
     width: 100%;
-    font-weight: 600;
     text-align: right;
     overflow: hidden;
-
+    padding: 10px;
+    text-overflow: ellipsis;
+  
     &:hover {
       background-color: $color-selection;
       cursor: pointer;
@@ -123,19 +123,11 @@
     flex-direction: column;
     overflow-y: scroll;
     margin-top: 10px;
-    margin-bottom: 30px;
-    height: 25rem;
+    max-height: 25rem;
 
     &::-webkit-scrollbar {
       width: 0;
     }
-  }
-
-  &__bottom {
-    position: relative;
-    bottom: 100px;
-    display: flex;
-    align-items: flex-end;
   }
 
   &__content {
@@ -151,35 +143,32 @@
     &::-webkit-scrollbar {
       width: 0px;
     }
+
+    &-section {
+      @include col;
+      align-items: flex-start;
+      width: 100%;
+      display: flex;
+    }
   }
-}
 
-.sidebar-bottom {
-  &_right {
-    @include right;
-
+  &__contacts {
     margin-bottom: $sidebar-margin-bottom;
-  }
-}
-
-.contacts {
-  @include col;
-
-  align-items: flex-end;
-
-  &__title {
-    @include font-size-large;
-
-    cursor: default;
-  }
-
-  &__developer {
-    @include font-size-normal;
-
-    cursor: pointer;
-
-    &:hover {
-      text-decoration: underline;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  
+    &__developer {
+      @include header-font-size;
+  
+      cursor: pointer;
+  
+      &:hover {
+        text-decoration: underline;
+      }
     }
   }
 }
+
+

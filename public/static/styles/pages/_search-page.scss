@@ -1,0 +1,18 @@
+.search-page {
+  width: 100%;
+
+  &__search-bar {
+    @extend .plate;
+  }
+  &__message {
+    @extend .plate;
+
+    &-title {
+      @extend .page_title;
+    }
+    &-text {
+      @include font-size-normal();
+      text-align: center;
+    }
+  }
+}

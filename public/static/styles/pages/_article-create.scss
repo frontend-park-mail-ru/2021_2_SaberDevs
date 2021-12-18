@@ -49,6 +49,7 @@ $article-labels-margin: 0 0 10px 0;
   &__add-tag {
     @include font-size-large;
 
+    display: flex;
     margin-left: $article-create-tag-margin-left;
     color: $color-elements;
     background-color: transparent;
@@ -141,6 +142,13 @@ $article-labels-margin: 0 0 10px 0;
     display: flex;
     flex-wrap: wrap;
     justify-content: flex-start;
+
+    &-actions {
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      align-items: center;
+    }
   }
 
   &__category_selector {

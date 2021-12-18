@@ -33,6 +33,9 @@ import WS from './modules/webSocket.js';
 // flux store
 import store from './flux/store.js';
 
+// utils
+import {redirect} from './common/utils.js';
+
 // Preload
 ImgPreloader.upload([
   // теперь это делает
@@ -82,6 +85,7 @@ router
     .register('/categories', CategoryPage)
     .register('/login', SignupPage)
     .register('/search', SearchPage);
+// .registerPattern('/search<g?q?>', SearchPage);
 
 linksController
     .register(
@@ -104,7 +108,18 @@ linksController
     )
     .register(
         'back',
-        () => window.history.back(),
+        () => {
+          if (window.history.length > 1) {
+            // переходили с другой страницы
+            if (!document.referrer.includes('sabernews')) {
+              redirect('/');  // на main
+            } else {
+              window.history.back();  // переход внутри spa
+            }
+          } else {
+            redirect('/');  // на main
+          }
+        },
     );
 
 WS.init();

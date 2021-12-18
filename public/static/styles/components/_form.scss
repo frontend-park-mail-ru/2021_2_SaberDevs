@@ -57,6 +57,21 @@ $form-padding: 70px;
     width: 100%;
   }
 
+  &__block {
+    // @include block;
+    display: flex;
+    flex-grow: 1;
+    flex-direction: column;
+    width: 100%;
+  }
+
+  &__link {
+    @media (max-height: 400px) {
+      align-self: center;
+      display: flex;
+    }
+  }
+
   &__warning {
     @include font-size-normal;
 
@@ -69,11 +84,22 @@ $form-padding: 70px;
     hyphens: auto;
     color: $color-warning;
     background-color: $color-elements;
+
+    &-label-show {
+      display: block;
+      @media (max-height: 400px) {
+        display: none;
+      }
+    }
   }
 
   &__label {
     margin-right: $label-margin;
   }
+
+  // #form-warning-label {
+  //   
+  // }
 
   &__title {
     @include font-size-large;

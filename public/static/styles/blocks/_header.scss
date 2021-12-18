@@ -27,6 +27,7 @@
     z-index: 1;
     display: flex;
     transition: all 1s;
+    @include header-font-size;
   }
 
   &__nav-item {
