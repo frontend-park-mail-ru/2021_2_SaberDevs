@@ -42,6 +42,7 @@ const appPages = [
   '/profile/settings',
   '/editor',
   '/login',
+  '/register',
   '/search',
 ];
 

@@ -58,7 +58,6 @@ $form-padding: 70px;
   }
 
   &__block {
-    // @include block;
     display: flex;
     flex-grow: 1;
     flex-direction: column;
@@ -67,6 +66,9 @@ $form-padding: 70px;
 
   &__link {
     width: fit-content;
+    cursor: pointer;
+    @include font-size-normal;
+
     @media (max-height: 400px) {
       align-self: center;
       display: flex;

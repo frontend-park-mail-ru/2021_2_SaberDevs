@@ -94,13 +94,8 @@ body,
 }
 
 .content-space {
-  padding: 1.5%;
-  min-width: 15%;
-  min-height: 20%;
-  max-width: 55%;
-  max-height: 50%;
+  padding: 2% 4%;
   @include col;
-
 }
 
 .hide {

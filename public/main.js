@@ -84,6 +84,7 @@ router
     .registerPattern('/categories/<сategory>', CategoryPage)
     .register('/categories', CategoryPage)
     .register('/login', SignupPage)
+    .register('/register', SignupPage)
     .register('/search', SearchPage);
 
 linksController

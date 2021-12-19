@@ -1,33 +1,54 @@
 .tooltip {
-  &-content {
-    background-color: rgba(0,0,0, 0.8);
-    border-radius: 15px 15px 15px 0px;
-    box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.5);
-    color: #fff;
+  &:hover > &-row {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  &-row {
     margin-left: 2px;
     margin-top: -75px;
     opacity: 0; /* Делаем его прозрачным */
-    padding: 10px 10px 10px 40px;
+    padding-left: 0.5rem;
     position: absolute;
-    text-decoration: none;
     visibility: hidden; /* И прячем */
-    width: 350px;
-  	z-index: 10;
+    z-index: 10;
+    width: fit-content;
+
+    &__content {
+      background-color: $color-sidebar;
+      border-radius: $border-radius;
+      color: #fff;
+      text-decoration: none;
+      width: 350px;
+    }
   }
 
-  &-content-share {
-    @extend .tooltip-content;
-    @include icon-size-tooltip-offset();
-    @include icon-size-height();
-    display: flex;
-    flex-direction: row;
-    flex-wrap: nowrap;
-    justify-content: flex-start;
-    align-items: center;
+  &-share {
+    &-row {
+      @extend .tooltip-row;
+      @include icon-size-tooltip-offset();
+      
+      @media (max-width: 700px) {
+        width: 100%;
+        margin: 0;
+        left: 0;
+        padding: 10px 10px 10px 5%;
+      }
+
+      &__content {
+        padding: 0.5rem 1rem;
+        @extend .tooltip-row__content;
+        @include icon-size-height();
+        width: fit-content;
+        height: fit-content;
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: flex-start;
+        align-items: center;
+      }
+    }
   }
 
-  &:hover > &-content {
-    opacity: 1;
-	  visibility: visible;
-  }
+  
 }
