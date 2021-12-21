@@ -55,12 +55,24 @@
 .search-icon {
   &::before {
     @include search__button-before;
-    @include glass-handle-offset-left;
+    left: 19.5px;
   }
 
   &::after {
     @include search__button-after;
-    @include glass-lense-offset-left;
+    left: -12.5px;;
+  }
+
+  &-mobile-move {
+    &::before {
+      @include search__button-before;
+      @include glass-handle-offset-left;
+    }
+  
+    &::after {
+      @include search__button-after;
+      @include glass-lense-offset-left;
+    }
   }
 }
 

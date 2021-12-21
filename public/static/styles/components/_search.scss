@@ -22,7 +22,7 @@
     @include icon;
 
     position: absolute;
-    right: 0;
+    right: 5px;
     top: 0;
     bottom: 0;
     z-index: 4;
@@ -32,6 +32,12 @@
 
     &:hover {
       cursor: pointer;
+    }
+
+    &-mobile-move {
+      @media (max-width: 900px) {
+        right: 50px;
+      }
     }
   }
 

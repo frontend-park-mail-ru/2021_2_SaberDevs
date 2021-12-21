@@ -23,6 +23,9 @@ body,
   background: $img-bg;
   background-repeat: no-repeat;
   background-size: cover;
+  @media (max-height: 400px) {
+    padding-top: 0;
+  }
 }
 
 .background-space {
@@ -66,7 +69,14 @@ body,
 
   width: 100%;
   @include font-size-large;
-  margin: 2rem 0;
+  margin: 1rem 0;
+
+  @media (max-height: 400px) {
+    margin: 0;
+    height: 75px;
+    position: absolute;
+    top: 10px;  // padding on header
+  }
 }
 
 .content {

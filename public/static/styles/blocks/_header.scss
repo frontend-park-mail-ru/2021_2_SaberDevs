@@ -47,7 +47,7 @@
 
     &:hover {
       background-color: $color-secondary;
-      cursor: pointer;
+      // cursor: pointer;
     }
   }
 
@@ -86,7 +86,7 @@
   &__add-article-btn {
     @include font-size-normal;
 
-    z-index: 4;
+    z-index: 2;
     display: flex;
     height: 100%;
     color: $color-elements;

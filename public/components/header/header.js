@@ -73,61 +73,6 @@ export default class Header extends BaseComponent {
             () => store.dispatch(editorActions.createArticle()),
         );
 
-    const menuBtn = this.root
-        .querySelector('.header__search-btn-mobile-hideble');
-
-    menuBtn?.addEventListener('click', (e) => {
-      e.preventDefault();
-
-      const sidebar = document.querySelector('.sidebar');
-      const searchBtn = document.querySelector('.search__button');
-      const overlay = document.querySelector('.modal__overlay');
-
-      if (!searchBtn.classList.contains('hide')) {
-        searchBtn.classList.add('hide');
-        e.currentTarget.classList.add('hide');
-        overlay.style.opacity = '1';
-        overlay.style.visibility = 'visible';
-
-        sidebar.style.display = 'flex';
-        overlay.appendChild(sidebar);
-
-        overlay.addEventListener('click', (e) => {
-          e.preventDefault();
-          this.hideSidebar();
-        });
-
-        const widthMatch = window.matchMedia('(min-width: 900px)');
-        widthMatch.addEventListener('change', (e) => {
-          e.preventDefault();
-          this.hideSidebar();
-          // TODO: mobile sidebar
-        });
-      }
-    });
-
     return this.root;
-  }
-
-  /**
-   * Прячет сайдбар
-   */
-  hideSidebar() {
-    const searchBtn = this.root.querySelector('.search__button');
-    const menuBtnThis = this.root
-        .querySelector('.header__search-btn-mobile-hideble');
-    const overlay = this.root.querySelector('.modal__overlay');
-    const screen = this.root.querySelector('.screen');
-    const sidebar = this.root.querySelector('.sidebar');
-
-    searchBtn.classList.remove('hide');
-    menuBtnThis.classList.remove('hide');
-    overlay.style.opacity = '0';
-    overlay.style.visibility = 'hidden';
-
-    if (sidebar) {
-      screen.appendChild(sidebar);
-    }
-    overlay.innerHTML = overlay.innerHTML;
   }
 };

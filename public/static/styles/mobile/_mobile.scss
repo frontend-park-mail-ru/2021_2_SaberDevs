@@ -26,18 +26,8 @@
 }
 
 @media (max-width: 900px) {
-  .sidebar {
-    position: absolute;
-    right: 0;
-    display: none;
-  }
-
   .action-btns__menu-icon {
     display: block;
-  }
-
-  .search__button {
-    right: 50px;
   }
 
   .background {

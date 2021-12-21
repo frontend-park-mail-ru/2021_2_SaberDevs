@@ -9,6 +9,7 @@
         .search__row_group_dropdown-item(data-search="tags") Теги
     .search__row_btn
       if relative
-        button.search__button.search-icon(style=`${relative ? 'position: relative;' : ''}`)
+        button.search__button.search-icon(style='position: relative;')
   if !relative
-    button.search__button.search-icon
+    button.search__button.search__button-mobile-move.search-icon-mobile-move
+    //- button.search__button.search__button-mobile-move.cross-icon

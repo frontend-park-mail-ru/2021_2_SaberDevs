@@ -111,7 +111,8 @@ linksController
         () => {
           if (window.history.length > 1) {
             // переходили с другой страницы
-            if (!document.referrer.includes('sabernews')) {
+            console.warn('referrer:', document.referrer);
+            if (document.referrer !== '') {
               redirect('/');  // на main
             } else {
               window.history.back();  // переход внутри spa

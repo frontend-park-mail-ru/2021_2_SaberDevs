@@ -37,10 +37,7 @@ $icon-margin: 15px;
 
     &-ok {
       @extend .icon__share;
-      // background-color: transparent;
-      // background-image: $logo-icon-ok;
       background-color: rgb(254, 152, 0);
-      // background-color: #ed812b;
       background-image: $logo-icon-ok;
       background-size: contain;
     }

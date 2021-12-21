@@ -48,5 +48,49 @@ export default function createPage(title, ...elements) {
   screenDiv.appendChild(pageDiv);
   screenDiv.appendChild(sidebar.render());
   bkgDiv.appendChild(screenDiv);
+
+  // связываем кнопку в хедере с отображением сайдбара для мобилки
+  const menuBtn = pageDiv
+      .querySelector('.header__search-btn-mobile-hideble');
+  const container = screenDiv.querySelector('.sidebar__overlay-container');
+  const sidebarDiv = screenDiv.querySelector('.sidebar');
+  const searchBtn = pageDiv.querySelector('.header__search-btn');
+  const overlay = screenDiv.querySelector('.sidebar__overlay');
+
+  menuBtn.addEventListener('click', (e) => {
+    e.preventDefault();
+
+    if (!searchBtn.classList.contains('hide')) {
+      container.style.display = 'flex';
+      overlay.style.display = 'flex';
+      sidebarDiv.style.display = 'flex';
+
+      e.currentTarget.style.display = 'none';
+      searchBtn.style.display = 'none';
+    }
+  });
+
+  const closeSideBar = () => {
+    container.style.display = 'none';
+    overlay.style.display = 'none';
+    sidebarDiv.style.display = 'none';
+
+    searchBtn.style.display = 'flex';
+    menuBtn.style.display = 'flex';
+  };
+
+  overlay.addEventListener('click', (e) => {
+    e.preventDefault();
+    closeSideBar();
+  });
+
+  const widthMatch = window.matchMedia('(min-width: 901px)');
+  widthMatch.addEventListener('change', (e) => {
+    closeSideBar();
+    // восттанови исходное состояние полностью, т.к.
+    container.style.display = '';
+    sidebarDiv.style.display = '';
+  });
+
   return bkgDiv;
 }

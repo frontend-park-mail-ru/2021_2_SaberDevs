@@ -58,6 +58,7 @@ $card-top-margin-bottom: calc($card-element-margin-bottom - $tag-margin-bottom);
     background-size: cover;
     background-repeat: no-repeat;
     min-height: $card-min-height;
+    margin-bottom: $card-element-margin-bottom;
   }
 
   &__image-top-shadow {
@@ -88,6 +89,7 @@ $card-top-margin-bottom: calc($card-element-margin-bottom - $tag-margin-bottom);
     @include title;
     @include row;
     margin: $card-title-margin-extra;
+    font-weight: 500;
   }
 
   &__description {
