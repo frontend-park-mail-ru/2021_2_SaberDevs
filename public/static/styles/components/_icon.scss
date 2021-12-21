@@ -13,7 +13,7 @@ $icon-margin: 15px;
 
   &__share {
     display: flex;
-    @include icon-share-size;
+    @include icon-size();
     background-position: center center;
     background-repeat: no-repeat;
     cursor: pointer;
@@ -45,7 +45,7 @@ $icon-margin: 15px;
       @extend .icon__share;
       background-color: $color-secondary;
       background-image: $logo-icon-email;
-      margin-right: 0;
+      background-size: auto;
     }
 
     &-idk {

@@ -235,21 +235,6 @@ $button-opacity: 0.5;
   @include icon-size-small-heigth();
 }
 
-@mixin icon-share-size-width() {
-  @media (min-width: 901px) {
-    width: 96px;
-  }
-
-  @media (max-width: 900px) {
-    width: 64px;
-  }
-}
-
-@mixin icon-share-size() {
-  @include icon-size-height();
-  @include icon-share-size-width();
-}
-
 $img-bg: url("Static/img/background-img.png");
 $img-bg-space: url("Static/img/background-space.png");
 $img-bg2: url("Static/img/background-img.png");
