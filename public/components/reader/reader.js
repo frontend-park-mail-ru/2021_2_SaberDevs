@@ -109,6 +109,18 @@ function createCommentAnswerListener(root, articleId, comment) {
             answer = translateServerComment(answer);
             answerDiv.innerHTML = commentComponent(answer);
 
+            // лайки
+            const likesComponent = new Likes(
+                1,
+                parseInt(answer.id, 10),
+                answer.likes,
+                answer.liked,
+                (id, sign, newLikesNum) => store.dispatch(readerActions.like(
+                    id, sign, newLikesNum,
+                )),
+            );
+            likesComponent.mountInPlace(answerDiv);
+
             // вешаем обработчики на только что созданный комментарий (ответ)
             createCommentChangeListener(answerDiv, answer);
             createCommentAnswerListener(answerDiv, articleId, answer);
@@ -423,12 +435,27 @@ export default class Reader extends BaseComponent {
       }
       // то же с ответами
       commentDiv.querySelector('.comment__answers')
-          .querySelectorAll(layoutDebug ? '.comment' :
-              `div[data-author="${authLogin}"]`)
+          .querySelectorAll('.comment')
           .forEach((element) => {
+            // информация о текущем перебираемом комментарии
             const elementComment =
-                comment.answers.filter((el) => (el.id + '') === element.id)[0];
-            createCommentChangeListener(element, elementComment);
+                comment.answers.find((el) => (el.id + '') === element.id);
+            // если ответ принадлежит авторизованному пользователю,
+            // активируем изменить
+            if (element.dataset.author === authLogin) {
+              createCommentChangeListener(element, elementComment);
+            }
+            // лайки
+            const likesComponent = new Likes(
+                1,
+                parseInt(elementComment.id, 10),
+                elementComment.likes,
+                elementComment.liked,
+                (id, sign, newLikesNum) => store.dispatch(
+                    readerActions.likeComment(id, sign, newLikesNum),
+                ),
+            );
+            likesComponent.mountInPlace(element);
           });
       commentsDiv.appendChild(commentDiv);
     });
@@ -550,7 +577,7 @@ function addCommentAction(root) {
           // если это был первый комментарий, активируем кнопку "скрыть"
           // показываем кнопку "скрыть комментарии"
           if (commentsDiv.childElementCount > 0) {
-            root.querySelector('comments-show').style.display = 'block';
+            root.querySelector('.comments-show').style.display = 'flex';
           }
         })
         .catch((err) => {

@@ -2,7 +2,6 @@
 
 $plate-padding: 30px;
 
-html,
 body,
 .background,
 .background-space,
@@ -11,13 +10,17 @@ body,
   overflow-y: hidden;
   margin: 0;
   padding: 0;
-  width: 100%;
+  width: 100vw;
   height: 100vh;
   font-family: $font-primary;
   color: $color-elements;
   cursor: default;
   display: flex;
   flex-direction: column;
+}
+
+body {
+  background-color: $color-primary;
 }
 
 .background {
