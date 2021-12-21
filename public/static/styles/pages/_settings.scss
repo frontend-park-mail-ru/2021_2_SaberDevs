@@ -23,8 +23,18 @@ $settings-row-margin-bottom: 20px;
   }
 
   &__photo {
+    @media (max-width: 400px) {
+      width: 150px;
+      height: 150px;  
+    }
     width: 300px;
     height: 300px;
+    border: $border;
+    border-radius: $border-radius;
+    pointer-events: all;
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-image: $img-icon-user-default;
   }
 
   &__links {
@@ -91,6 +101,13 @@ $settings-row-margin-bottom: 20px;
     justify-content: end;
     margin-right: $settings-label-margin-right;
     width: 20%;
+
+    &-photo {
+      @extend .settings__label;
+      @media (max-width: 400px) {
+        display: none;
+      }
+    }
   }
 
   &__input {

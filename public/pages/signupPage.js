@@ -1,6 +1,5 @@
 import BasePageMV from './basePageMV.js';
 import SignupPageView from './signupPageView.js';
-import SignupForm from '../components/signupForm/signupForm.js';
 import store from '../flux/store.js';
 import {changePageActions} from '../flux/actions.js';
 import {authorizationTypes} from '../flux/types.js';
@@ -34,9 +33,7 @@ export default class SignupPage extends BasePageMV {
 
     if (document.URL.includes('register')) {
       this.showRegister = true;
-      // switchFormType(this.showRegister);
-    }
-    else {
+    } else {
       this.showRegister = false;
     }
 
@@ -75,7 +72,6 @@ export default class SignupPage extends BasePageMV {
     const a = link?.pathname;
     if (a && a !== path) {
       this.showRegister = path === '/login';
-      console.warn(path, this.showRegister)
       this.view.appendForm(this.showRegister);
     }
     return '';

@@ -97,7 +97,17 @@ $comment-description-margin-left: 20px;
   }
 
   &__answers {
-    margin-left: 20px;
+    @media (min-width: 1201px) {
+      margin-left: 64px;
+    }
+  
+    @media (max-width: 1200px) {
+      margin-left: 59px;
+    }
+  
+    @media (max-width: 900px) {
+      margin-left: 39px;
+    }
   }
 
   &__time {

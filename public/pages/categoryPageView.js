@@ -63,6 +63,9 @@ export default class CategoryPageView extends BasePageView {
         this.pageComponents.feed,
     ));
 
+    this.root.querySelector('.categories__search-block').style
+        .margin = '20px 0 50px 0';
+
     this.root.querySelectorAll('a.header__nav-item').forEach((el) => {
       el.classList.remove('header__nav-item-active');
     });

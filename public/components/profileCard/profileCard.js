@@ -73,9 +73,9 @@ const addEventListeners = (root, user) => {
       redirect('/profile/settings');
     });
 
-    if (user.description === '') {
+    if (!user.description || user.description === '') {
       root.querySelector('.profile__aboutme')
-          .innerHTML = 'Поделительсь информацией о себе в настройках';
+          .innerHTML = 'Поделитесь информацией о себе в настройках';
     }
   }
 };

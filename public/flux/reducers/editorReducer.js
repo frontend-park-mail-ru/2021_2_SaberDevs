@@ -28,7 +28,6 @@ const InitialEditorState = {
 export default function editorReducer(state = InitialEditorState, action) {
   switch (action.type) {
     case editorTypes.EDIT_EXISTING_ARTICLE:
-      console.warn(action.payload, typeof action.payload.id)
       return {
         ...state,
         currentId: action.payload.id,
