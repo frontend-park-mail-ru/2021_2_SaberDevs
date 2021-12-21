@@ -133,7 +133,7 @@ $title-margin: 25px 0;
   }
 
   @media (max-width: 900px) {
-    min-width: 30%;
+    width: 82%;
     min-height: 15%;
   }
 }
@@ -261,6 +261,7 @@ $img-mail: url("Static/img/icons/mail.svg");
 $img-username: url("Static/img/icons/username.svg");
 $img-icon-like: url("Static/img/icons/up.png");
 $img-icon-dislike: url("Static/img/icons/down.png");
+$img-icon-user-default: url("Static/img/user_icon_loading.svg");
 // $img-icon-like: url("Static/img/icons/like.svg");
 // $img-icon-like-hover: url("Static/img/icons/like_hover.svg");
 $img-icon-comments: url("Static/img/icons/comment.svg");

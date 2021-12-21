@@ -18,6 +18,7 @@
     z-index: 12;
     height: 100vh;
     width: 100%;
+    background-color: #00000060;
 
     &-container {
       display: flex;
@@ -61,10 +62,28 @@
     cursor: default;
   }
 
+  &__page-item {
+    @extend .sidebar__item
+  }
+
   &__categories {
     @include col;
     align-items: flex-start;
     margin-bottom: 30px;
+
+    &-mobile-only {
+      @extend .sidebar__categories;
+      @include mobile-display-only();
+    }
+
+    &-mobile-hidable {
+      @extend .sidebar__categories;
+      @include mobile-display-none();
+    }
+
+    &-item-active {
+      text-decoration: underline;
+    }
   }
 
   &__title {
@@ -164,7 +183,7 @@
     align-items: flex-start;
     justify-content: space-between;
     overflow-y: scroll;
-    height: 100vh;
+    height: 100%;
     margin: 15px;
     width: 80%;
 

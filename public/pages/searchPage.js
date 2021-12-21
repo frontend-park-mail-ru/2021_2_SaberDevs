@@ -11,7 +11,6 @@ import Modal from '../components/modal/modal.js';
 import Ajax from '../modules/ajax.js';
 import {getUserWindowHeight} from '../common/utils.js';
 import {ajaxDebug} from '../globals.js';
-import {redirect} from '../common/utils.js';
 
 const searchGroups = {
   articles: ['articles', 'Статьи'],
@@ -50,7 +49,7 @@ function newsFeedEndReachEventAction({currentTarget}) {
 async function uploadNextCards() {
   const state = store.getState().search;
 
-  if (state.isEndFound || state.isLoading) {
+  if (state.isEndFound || state.isLoading || state.value === '') {
     if (ajaxDebug) {
       console.log('[Search Page] can\'t load news as' +
         'isEndFound state flag is true');
@@ -152,7 +151,7 @@ export default class SearchPage extends BasePageMV {
           history.pushState(
               null,
               '',
-              `/search?g?=${group}&q=${value}`,
+              `/search?g=${group}&q=${value}`,
           );
         },
     );
@@ -219,6 +218,11 @@ export default class SearchPage extends BasePageMV {
     }
 
     value = params.substr(queryBegin + 3);
+
+    if (value === '') {
+      emptyQueryParamsAction();
+      return;
+    }
 
     const groupBegin = params.indexOf('?g=');
     if (groupBegin === -1) {

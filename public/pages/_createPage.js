@@ -10,6 +10,8 @@ let sidebar = null;
   * Генерирует HTML-страницу проекта
   * Заполняет блок .content элементами elements в порядке следования
   * @param  {string} title
+  * @param  {boolean} containsFeed  // true - logo href = #top to scroll to top
+  * + add /back btn to top
   * @param  {...BaseComponent} elements
   * @return {HTMLElement}
   */
@@ -29,6 +31,9 @@ export default function createPage(title, ...elements) {
     pageTitleDiv.className = 'page_title';
     pageTitleDiv.textContent = title;
   }
+  const beginingAnchor = document.createElement('a');
+  beginingAnchor.name = 'top';
+
   const contentDiv = document.createElement('div');
   contentDiv.className = 'content';
 
@@ -42,6 +47,7 @@ export default function createPage(title, ...elements) {
     }
   });
 
+  pageTitleDiv.appendChild(beginingAnchor);
   pageDiv.appendChild(header.render());
   pageDiv.appendChild(pageTitleDiv);
   pageDiv.appendChild(contentDiv);
@@ -90,6 +96,7 @@ export default function createPage(title, ...elements) {
     // восттанови исходное состояние полностью, т.к.
     container.style.display = '';
     sidebarDiv.style.display = '';
+    menuBtn.style.display = '';
   });
 
   return bkgDiv;

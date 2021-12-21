@@ -42,19 +42,14 @@ export default class SignupPage extends BasePageMV {
 
     this.view.appendForm(this.showRegister);
 
-    // this.showRegister = false;
-    // this.unsubscribeLogin = store.subscribe(
-    //     authorizationTypes.LOGIN,
-    //     () => {
-    //       redirect('/');
-    //     },
-    // );
+    this.showRegister = false;
+    this.unsubscribeLogin = store.subscribe(
+        authorizationTypes.LOGIN,
+        () => {
+          redirect('/');
+        },
+    );
 
-    // this.view.changeFormTypeBtn.addEventListener('click', (e) => {
-    //   e.preventDefault();
-    //   this.showRegister = !this.showRegister;
-    //   this.view.switchFormType(this.showRegister);
-    // });
     store.dispatch(
         changePageActions.changePage(
             'signup',
@@ -66,10 +61,10 @@ export default class SignupPage extends BasePageMV {
   /**
    * Скрыть подконтрольную страницу
    */
-  // hide() {
-  //   super.hide();
-  //   this.unsubscribeLogin();
-  // }
+  hide() {
+    super.hide();
+    this.unsubscribeLogin();
+  }
 
   /**
    * @param {string} path

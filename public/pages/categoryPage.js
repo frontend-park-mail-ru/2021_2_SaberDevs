@@ -180,7 +180,7 @@ export default class CategoryPage extends BasePageMV {
     );
     this.lastSeenCardId = cardDivArray
         .find((el) => el.getBoundingClientRect().y<getUserWindowHeight() &&
-        el.getBoundingClientRect().y > 0).id;
+        el.getBoundingClientRect().y > 0)?.id || 0;  // если карточек нет
 
     super.hide();
 

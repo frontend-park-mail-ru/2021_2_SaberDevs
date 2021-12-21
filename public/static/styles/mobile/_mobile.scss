@@ -1,24 +1,3 @@
-@media (max-width: 1400px) {
-  .header__nav-items {
-    display: none;
-  }
-
-  .sidebar__nav-items {
-    display: flex;
-  }
-
-  .header__nav-item {
-    @include font-size-big;
-
-    margin: 10px 0;
-
-    &:hover {
-      text-decoration: underline;
-      background-color: $color-sidebar;
-    }
-  }
-}
-
 @media (min-width: 901px) {
   .sidebar {
     display: flex;

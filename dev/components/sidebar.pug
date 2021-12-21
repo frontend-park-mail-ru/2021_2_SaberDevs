@@ -5,12 +5,18 @@
       .sidebar__nav-buttons#sidebarTopBlockContent !{topBlockContent}
     .sidebar__content
       .sidebar__content-section
+        .sidebar__categories-mobile-only
+          .sidebar__title.sidebar__item Подборки
+            .sidebar__categories-item.sidebar__page-item
+              a(href='/') Новое
+            .sidebar__categories-item.sidebar__page-item
+              a(href=`/categories`) Категории
         .sidebar__categories
           .sidebar__title.sidebar__item Мнения
           .sidebar__streams !{streams}
-        .sidebar__categories
-          .sidebar__title.sidebar__item
-            a(href='/categories' style='text-decoration: underline;') Категории
+        .sidebar__categories-mobile-hidable
+          .sidebar__title.sidebar__item Категории
+            //- a(href='/categories' style='text-decoration: underline;') Категории
           if Array.isArray(categoriesList)
             each category, idx in categoriesList
               if (idx < limit)

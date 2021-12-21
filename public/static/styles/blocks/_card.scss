@@ -73,7 +73,9 @@ $card-top-margin-bottom: calc($card-element-margin-bottom - $tag-margin-bottom);
   &__description-layout {
     /* сверху | справа | снизу | слева */
     margin: 0 calc($card-outer-margin / 2) calc($card-outer-margin / 2) calc($card-outer-margin / 2);
-    width: calc(100% - $card-outer-margin);
+    // width: calc(100% - $card-outer-margin);
+    width: -webkit-fill-available;
+    @include card-margin;
   }
 
   &__top {

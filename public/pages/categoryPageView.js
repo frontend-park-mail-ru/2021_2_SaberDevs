@@ -62,5 +62,19 @@ export default class CategoryPageView extends BasePageView {
         this.pageComponents.categoryChoose,
         this.pageComponents.feed,
     ));
+
+    this.root.querySelectorAll('a.header__nav-item').forEach((el) => {
+      el.classList.remove('header__nav-item-active');
+    });
+    this.root.querySelector('a.header__nav-item[href="/categories"]')
+        .classList.add('header__nav-item-active');
+
+    const sidebarPages = this.root
+        .querySelector('.sidebar__categories-mobile-only');
+    sidebarPages.querySelectorAll('a.sidebar__page-item').forEach((el) => {
+      el.classList.remove('sidebar__page-item-active');
+    });
+    sidebarPages.querySelector('a[href="/categories"]')
+        .classList.add('sidebar__categories-item-active');
   }
 }

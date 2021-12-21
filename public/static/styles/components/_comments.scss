@@ -18,7 +18,7 @@ $comment-description-margin-left: 20px;
   @include row;
 
   justify-content: center;
-  margin-top: 1em;
+  margin: 1rem 0;
   cursor: pointer;
 
   &__text {
@@ -44,11 +44,14 @@ $comment-description-margin-left: 20px;
   }
 
   &__author-photo {
-    border: $comment-photo-border;
+    border: $border;
     border-radius: $border-radius;
-    width: $comment-photo-size;
-    height: $comment-photo-size;
-  }
+    pointer-events: all;
+    @include side-bar-user-icon-size;
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-image: $img-icon-user-default;
+    }
 
   &__description {
     @include col;

@@ -28,6 +28,8 @@
     display: flex;
     transition: all 1s;
     @include header-font-size;
+
+    @include mobile-display-none();
   }
 
   &__nav-item {
@@ -49,6 +51,10 @@
       background-color: $color-secondary;
       // cursor: pointer;
     }
+
+    &-active {
+      border-bottom: 2px solid $color-elements;
+    }
   }
 
   &__title {
@@ -56,6 +62,10 @@
 
     margin: auto 20px;
     font-family: $font-logo;
+
+    @media (max-width: 400px) {
+      margin: auto 10px;
+    }
   }
 
   &__title-block {
@@ -63,7 +73,9 @@
     height: 100%;
 
     &:hover {
-      animation: do-levitation 0.5s alternate ease-in-out infinite;
+      @media (min-width: 401px) {
+        animation: do-levitation 0.5s alternate ease-in-out infinite;
+      }
       cursor: pointer;
     }
   }
@@ -92,6 +104,7 @@
     color: $color-elements;
     background-color: $color-secondary;
     transition: 0.5s;
+    border-bottom: 2px solid $color-elements;
 
     &-sign {
       @include font-size-normal;

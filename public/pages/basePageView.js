@@ -12,6 +12,7 @@ export default class BasePageView {
     this.root = root;
     this.root.dataset.view = this.constructor.name;
     this.root.hidden = true;
+    this.root.style.display = 'none';
   }
 
   /**
@@ -27,6 +28,7 @@ export default class BasePageView {
    */
   hide() {
     this.root.hidden = true;
+    this.root.style.display = 'none';
   }
 
   /**
@@ -34,6 +36,7 @@ export default class BasePageView {
    * Должен быть вызван render() для обновления.
    */
   show() {
+    this.root.style.display = 'flex';
     this.root.hidden = false;
     this.render();
   }
