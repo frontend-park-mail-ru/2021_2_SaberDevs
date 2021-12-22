@@ -58,27 +58,29 @@ function createCommentChangeListener(commentDiv, comment) {
                     .editArticleComment(comment.id, newComment.text),
                 );
                 // TODO: проверить
-                const state = store.getState().reader;
-                const articleComments = state[state.currentId].commentsContent;
-                let newCommentTransformed = null;
-                // один из основных комментариев
-                if (commentDiv.parentElement.classList.contains('comments')) {
-                  newCommentTransformed = articleComments
-                      .find((el) => el.id === comment.id);
-                } else {
-                  // один из ответов
-                  for (let i = 0; i < articleComments.length; i++) {
-                    newCommentTransformed = articleComments[i].answers
-                        .find((ans) => ans.id === comment.id);
-                    if (newCommentTransformed) {
-                      break;
-                    }
-                  }
-                }
-                console.warn({newCommentTransformed})
-                if (newCommentTransformed) {
-                  commentDiv.innerHTML=commentComponent(newCommentTransformed);
-                }
+                commentDiv.querySelector('.comment__text').innerText =
+                    newComment.text;
+                // const state = store.getState().reader;
+                // const articleComments = state[state.currentId].commentsContent;
+                // let newCommentTransformed = null;
+                // // один из основных комментариев
+                // if (commentDiv.parentElement.classList.contains('comments')) {
+                //   newCommentTransformed = articleComments
+                //       .find((el) => el.id === comment.id);
+                // } else {
+                //   // один из ответов
+                //   for (let i = 0; i < articleComments.length; i++) {
+                //     newCommentTransformed = articleComments[i].answers
+                //         .find((ans) => ans.id === comment.id);
+                //     if (newCommentTransformed) {
+                //       break;
+                //     }
+                //   }
+                // }
+                // console.warn({newCommentTransformed})
+                // if (newCommentTransformed) {
+                //   commentDiv.innerHTML=commentComponent(newCommentTransformed);
+                // }
               })
               .catch((err) => {
                 if (responseStatus !== 0) {
