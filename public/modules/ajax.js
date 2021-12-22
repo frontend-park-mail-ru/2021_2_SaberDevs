@@ -10,6 +10,7 @@ import {ajaxDebug} from '../globals.js';
 const APIurl = 'https://sabernews.ru:8081/api/v1';
 // Локальная разработка
 // const APIurl = 'http://localhost:8081/api/v1';
+const CSRFCookieName = '_csrf';
 
 /**
  * Поддерживаемые методы: GET и POST
@@ -47,12 +48,16 @@ const ajaxStatuses = {
  */
 function ajax(requestParams) {
   const url = APIurl + (requestParams.url || '/');
+  const csrf = document.cookie.split(';')
+      .map((c) => c.trim())
+      .find((c) => c.startsWith(CSRFCookieName + '='));
   const fetchParams = {
     body: JSON.stringify(requestParams.body),
     mode: 'cors',
     credentials: 'include',
     headers: {
       'Content-Type': 'application/json',
+      'X-XSRF-TOKEN': csrf,
     },
     method: requestParams.method,
   };
