@@ -2,6 +2,8 @@
 const cacheName = 'SaberDevs-Project';
 const APIPrefix = '/api/v1/';
 const appUrlPM = 'https://sabernews.ru';
+const notifStringLenLimit = 36;
+const notifTextLenLimit = 5 * notifStringLenLimit;
 
 // /dev/createCachedList.js заполняет этот список автоматически
 const cacheUrls = [
@@ -118,11 +120,11 @@ self.addEventListener('push', (e) => {
     vibrate: [200, 300, 200, 300],
     body: 'Новое событие под одной из Ваших статей',
     actions: [
-      {action: 'explore', title: 'Explore this new world',
-        icon: 'images/checkmark.png'},
-      {action: 'close', title: 'Close notification',
-        icon: 'images/xmark.png'},
-    ]
+      {action: 'explore', title: 'Просмотреть',
+        icon: 'img/icons/comment_hover.svg'},
+    //   {action: 'close', title: 'Close notification',
+    //     icon: 'images/xmark.png'},
+    ],
   };
 
   /*
@@ -178,24 +180,24 @@ self.addEventListener('push', (e) => {
     case 1: {
       title = 'У Вашей статьи новый комментарий!';
       options.body = `
-      ${data.articleTitle}
+      ${data.articleTitle.substring(0, notifStringLenLimit)}
       ${data.firstName} ${data.lastName}:
-      ${data.commentText}
+      ${data.commentText.substring(0, 3*notifStringLenLimit)}
       `;
     }
     case 2: {
       title = 'Ваш комментарий кто-то оценил!';
       options.body = `
-      ${data.commentText}
+      ${data.commentText.substring(0, notifTextLenLimit)}
       `;
     }
     case 3: {
       title = 'На Ваш комментарий поступил ответ!';
+      // TODO: fix API ${data.answerText}
       options.body = `
-      ${data.commentText}
       ${data.firstName} ${data.lastName}:
-      ${data.answerText}
-      `;
+      ${data.commentText.substring(0, notifTextLenLimit - 30)}
+      `; // 30- примерно столько займет firstName lastName
     }
   }
 
@@ -208,7 +210,7 @@ self.addEventListener('notificationclick', (e) => {
   // const primaryKey = notification.data.primaryKey;
   const data = e.data.json()?.data;
   switch (e.action) {
-    case 'comment': {
+    case 'explore': {
       clients.openWindow(
           // TODO:
           // `${appUrlPM}/article/${data.articleId}#comments-id=${commentId}`,

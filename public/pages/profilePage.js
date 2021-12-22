@@ -138,10 +138,19 @@ export default class ProfilePage extends BasePageMV {
     const state = store.getState().profilePage;
     const authState = store.getState().authorization;
 
+    // случай со сменой пользователя если эта страница уже открыта
+    // isActive() вернет роутеру false и страница перерендерится
+    // иногда этого делать не нужно: проверка this.view.isActive()
+    // возвращает правду
+
     // берем login из урла и сверяемся, есть ли о юзере данные
     // или нужно загружать по сети
     // на странице /profile работаем только с авторизованным пользователем
     if (document.URL.indexOf('/profile') !== -1) {
+      // уже открыт профиль
+      if (this.view.isActive() && state.user.login === authState.login) {
+        return;
+      }
       store.dispatch(profilePageActions.setUserInfo(authState));
       store.dispatch(profilePageActions.clearArticles());
     } else {
@@ -151,6 +160,10 @@ export default class ProfilePage extends BasePageMV {
       // для пути с параметром. Но доп. валидация нелишняя
       if (userUrlParam === '') {
         Utils.redirect('/404');
+      }
+      // уже открыт профиль этого пользователя
+      if (this.view.isActive() && state.user.login === userUrlParam) {
+        return;
       }
       if (userUrlParam !== state.user.login) {
         if (userUrlParam === authState.login) {
@@ -194,6 +207,18 @@ export default class ProfilePage extends BasePageMV {
           newsFeedEndReachEventAction,
       );
     }
+  }
+
+  /**
+   * @return {boolean}
+   */
+  isActive() {
+    if (document.URL.indexOf('/profile') !== -1 ||
+        document.URL.indexOf('/user/') !== -1
+    ) {
+      return false;
+    }
+    return super.isActive();
   }
 
   /**

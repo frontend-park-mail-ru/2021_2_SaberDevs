@@ -33,9 +33,12 @@ export default function createPage(title, ...elements) {
   }
   const beginingAnchor = document.createElement('a');
   beginingAnchor.name = 'top';
+  const contentBeginAnchor = document.createElement('a');
+  contentBeginAnchor.name = 'feed-top';
 
   const contentDiv = document.createElement('div');
   contentDiv.className = 'content';
+  contentDiv.appendChild(contentBeginAnchor);
 
   elements.forEach((element) => {
     if (element instanceof BaseComponent) {

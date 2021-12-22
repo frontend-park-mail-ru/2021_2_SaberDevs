@@ -76,8 +76,7 @@ function upgradeCards(where, cards, dispatchLike) {
         (e) => {
           e.preventDefault();
           e.stopPropagation();
-          console.warn('TODO: клик по тегу', e.currentTarget.textContent);
-          // TODO: редирект на страницу с тегами
+          redirect('/search?g=tags&q=' + e.currentTarget.textContent);
         },
     ));
 
@@ -87,7 +86,6 @@ function upgradeCards(where, cards, dispatchLike) {
           e.stopPropagation();
           console.warn('клик по комментам');
           redirect('/article/'+ cardDiv.id.replace('card', '')+'#comments');
-          // TODO: апнуть роутер, чтобы он совершал переход по ссылке с якорем
         });
 
     // лайки

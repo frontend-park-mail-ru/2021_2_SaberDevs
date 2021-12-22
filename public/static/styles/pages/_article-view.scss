@@ -42,6 +42,7 @@ $article-view-title-margin-extra: calc(25px - $row-margin-bottom) 0 25px;
   &__title {
     @include title;
     margin: $article-view-title-margin-extra;
+    word-break: break-word;
   }
   
   &__main-picture {
@@ -51,7 +52,7 @@ $article-view-title-margin-extra: calc(25px - $row-margin-bottom) 0 25px;
 
   &__text {
     @include font-size-normal;
-
+    word-break: break-word;
     margin-bottom: $article-text-margin-bottom;
   }
 

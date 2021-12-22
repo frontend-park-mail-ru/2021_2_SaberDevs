@@ -20,8 +20,8 @@
   }
 
   .icon__img &__liked {
-    border-color: $color-elements;
-  }
+    border-color: $color-elements !important;
+  } 
 
   &__comments-icon {
     background: $img-icon-comments;

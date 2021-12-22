@@ -57,9 +57,10 @@ export default class ProfileSettingsPage extends BasePageMV {
     const form = this.view.root.querySelector('form');
 
     // вписываем текущие данные
-    form.querySelector('input[name="username"]').value = auth.firstName;
-    form.querySelector('input[name="surname"]').value = auth.lastName;
-    form.querySelector('textarea[name="description"]').value = auth.description;
+    form.querySelector('input[name="username"]').value = auth.firstName || '';
+    form.querySelector('input[name="surname"]').value = auth.lastName || '';
+    form.querySelector('textarea[name="description"]').value =
+        auth.description || '';
 
     const previewImg = form.querySelector('img');
     previewImg.addEventListener('error', (e) => {

@@ -7,6 +7,7 @@ import Likes from '../likes/likes.js';
 import ModalTemplates from '../../components/modal/modalTemplates.js';
 import Ajax from '../../modules/ajax.js';
 import {translateServerComment} from '../../common/transformApi.js';
+import {redirect} from '../../common/utils.js';
 
 import store from '../../flux/store.js';
 import {readerTypes, authorizationTypes} from '../../flux/types.js';
@@ -58,12 +59,26 @@ function createCommentChangeListener(commentDiv, comment) {
                 );
                 // TODO: проверить
                 const state = store.getState().reader;
-                const newCommentTransformed =
-                    state[state.currentId].commentsContent.find(
-                        (el) => el.id === comment.id,
-                    );
+                const articleComments = state[state.currentId].commentsContent;
+                let newCommentTransformed = null;
+                // один из основных комментариев
+                if (commentDiv.parentElement.classList.contains('comments')) {
+                  newCommentTransformed = articleComments
+                      .find((el) => el.id === comment.id);
+                } else {
+                  // один из ответов
+                  for (let i = 0; i < articleComments.length; i++) {
+                    newCommentTransformed = articleComments[i].answers
+                        .find((ans) => ans.id === comment.id);
+                    if (newCommentTransformed) {
+                      break;
+                    }
+                  }
+                }
                 console.warn({newCommentTransformed})
-                commentDiv.innerHTML = commentComponent(newCommentTransformed);
+                if (newCommentTransformed) {
+                  commentDiv.innerHTML=commentComponent(newCommentTransformed);
+                }
               })
               .catch((err) => {
                 if (responseStatus !== 0) {
@@ -196,7 +211,6 @@ function appendTextField(root, message, comment, isFieldClear, onClick) {
   sendBtn.addEventListener('click', (e) => {
     e.preventDefault();
     submitAction();
-    // TODO: проверить что после клика по кнопке сетится фокус-оут-листер
     input.focus();
   });
   // нажатие Enter
@@ -477,18 +491,18 @@ export default class Reader extends BaseComponent {
  */
 function addEventListenersToReader(root) {
   // переход на тег
-  // TODO: красивые теги / сейчас ссылка в шаблоне
-  // root.querySelectorAll('.article-view__tag').forEach((tag) => {
-  //   // TODO: search parameters from url
-  //   tag.href = '/categories';
-  // });
+  root.querySelectorAll('.tags__tag').forEach((tag) => {
+    tag.addEventListener('click', (e) => {
+      e.preventDefault();
+      redirect('/search?g=tags&q=' + tag.textContent);
+    });
+  });
 
   // переход на категорию
-  // TODO: красивые категории / сейчас ссылка в шаблоне
-  // root.querySelectorAll('.article-view__tag').forEach((tag) => {
-  //   // TODO: search parameters from url
-  //   tag.href = '/categories';
-  // });
+  root.querySelector('.category__content').addEventListener('click', (e) => {
+    e.preventDefault();
+    redirect('/categories/' + e.currentTarget.textContent);
+  });
 
   // обработчик: добавление комментария
   // нажатие Enter

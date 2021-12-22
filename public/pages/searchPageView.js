@@ -53,5 +53,12 @@ export default class SearchPageView extends BasePageView {
         this.pageComponents.searchBar,
         this.pageComponents.feed,
     ));
+
+    this.root.querySelector('.header__title-block')
+        .addEventListener('click', (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          this.root.querySelector(`a[name="feed-top"]`).scrollIntoView(true);
+        });
   }
 }
