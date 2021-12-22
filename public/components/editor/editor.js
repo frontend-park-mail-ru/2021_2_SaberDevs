@@ -12,7 +12,11 @@ import {
   redirect,
   getFileBrowserStorageUrl,
   recoverBlobWithUrl,
+  spanColor,
 } from '../../common/utils.js';
+
+import articleLimitations from '../../common/articleLimitations.js';
+
 import {ajaxDebug} from '../../globals.js';
 
 /**
@@ -110,6 +114,36 @@ export default class Editor extends BaseComponent {
     //
     // //////////////////////////////////
 
+    const textareaInput = this.root.querySelector('textarea');
+    const titleInput = this.root.querySelector('input[name="title"]');
+
+    // переключение между страницами
+    this.root.querySelector('#btn-to-first-stage').addEventListener(
+        'click',
+        (e) => {
+          e.preventDefault();
+          this.root.querySelector('.article-create__stage-1')
+              .style.display = 'flex';
+          this.root.querySelector('.article-create__stage-2')
+              .style.display = 'none';
+        },
+    );
+
+    this.root.querySelector('#btn-to-second-stage').addEventListener(
+        'click',
+        (e) => {
+          e.preventDefault();
+          // обновляем превью
+          this.view.changePreviewText(textareaInput.value.trim());
+          this.view.changePreviewTitle(titleInput.value.trim());
+
+          this.root.querySelector('.article-create__stage-2')
+              .style.display = 'block';
+          this.root.querySelector('.article-create__stage-1')
+              .style.display = 'none';
+        },
+    );
+
     // игнор клика ентер на инпутах
     this.root.querySelectorAll('input').forEach((el) => {
       el.addEventListener('keydown', (e) => {
@@ -130,6 +164,8 @@ export default class Editor extends BaseComponent {
                 () => store.dispatch(editorActions.removeTag(tag)),
             );
             ct.value = '';
+            // возвращаю фокус
+            ct.focus();
           }
         }
       });
@@ -142,10 +178,20 @@ export default class Editor extends BaseComponent {
         'click',
         (e) => {
           e.preventDefault();
+          const state = store.getState().editor;
+          const storedTags = state[state.currentId].tags;
           const tag = tagInput.value.trim().replace(/\s+/g, '_');
           // Проверка, а есть ли уже такой тег?
-          const state = store.getState().editor;
-          if (tag === '' || state[state.currentId].tags.includes(tag)) {
+          if (tag === '' || storedTags.includes(tag)) {
+            return;
+          }
+          // проверка, не превышено ли количество тегов
+          if (storedTags.length >= articleLimitations.tagsLenght) {
+            ModalTemplates.warn(
+                'Ух, сколько тегов!',
+                'Не следует добавлять больше, чем ' +
+                    articleLimitations.tagsLenght,
+            );
             return;
           }
           store.dispatch(editorActions.appendTag(tag));
@@ -154,33 +200,40 @@ export default class Editor extends BaseComponent {
               () => store.dispatch(editorActions.removeTag(tag)),
           );
           tagInput.value = '';
+          tagInput.focus();
         },
     );
-
-    const textareaInput = this.root.querySelector('textarea');
-    const titleInput = this.root.querySelector('input[name="title"]');
 
     // Сохранение введенного пользователем текста onChange
     // Этот евент не рейзится, если textValue меняется программой
     titleInput.addEventListener('input', (e) => {
-      store.dispatch(editorActions.saveTitle(titleInput.value));
+      const title = titleInput.value.trim();
+      if (title.length >= articleLimitations.headerLenght) {
+        ModalTemplates.informativeMsg(
+            'Длинные заголовки',
+            'не помогут привлечь читателей',
+        );
+        titleInput.value = titleInput.value
+            .slice(0, articleLimitations.headerLenght - 1);
+        return;
+      }
+      store.dispatch(editorActions.saveTitle(title));
     });
     textareaInput.addEventListener('change', (e) => {
-      store.dispatch(editorActions.saveText(textareaInput.value));
+      store.dispatch(editorActions.saveText(textareaInput.value.trim()));
     });
 
     // Дублирование измененного текста на превью
-    textareaInput.addEventListener('input', (e) => {
-      this.view.changePreviewText(textareaInput.value);
-    });
-
-    titleInput.addEventListener('input', (e) => {
-      const title = titleInput.value;
-      this.view.changePreviewTitle(title);
-    });
+    // textareaInput.addEventListener('input', (e) => {
+    //   this.view.changePreviewText(textareaInput.value);
+    // });
+    // titleInput.addEventListener('input', (e) => {
+    //   const title = titleInput.value;
+    //   this.view.changePreviewTitle(title);
+    // });
 
     // сброс полей статьи
-    this.root.querySelector('.article-create__clear-btn').addEventListener(
+    this.root.querySelector('#article-create__clear-btn').addEventListener(
         'click',
         (e) => {
           e.preventDefault();
@@ -194,7 +247,8 @@ export default class Editor extends BaseComponent {
         });
 
     // удаление статьи
-    this.root.querySelector('.article-create__del-btn').addEventListener(
+    const articleId = store.getState().editor.currentId;
+    this.root.querySelector('#article-create__del-btn').addEventListener(
         'click',
         (e) => {
           e.preventDefault();
@@ -204,12 +258,15 @@ export default class Editor extends BaseComponent {
               () => {
                 Ajax.post({
                   url:
-                    `/articles/delete?id=${store.getState().editor.currentId}`,
+                    `/articles/delete?id=${articleId}`,
                   body: {},
                 }).then(({status, response}) => {
                   if (status === Ajax.STATUS.ok) {
+                    // диспатчим общее событие для 4-х лент.
+                    // Все ленты отреагируют
+                    // одинаково за счет общего типа
                     store.dispatch(editorActions.deleteArticle(
-                        store.getState().editor.currentId,
+                        articleId,
                     ));
                     ModalTemplates.
                         informativeMsg('Успех!', 'Статья была удалена');
@@ -222,7 +279,9 @@ export default class Editor extends BaseComponent {
                     return;
                   }
                   // В случае ошибки
-                  ModalTemplates.netOrServerError(status, response.msg);
+                  // пусть модалка закроется
+                  setTimeout(() => ModalTemplates
+                      .netOrServerError(status, response.msg), 200);
                 });
               });
         },
@@ -234,10 +293,22 @@ export default class Editor extends BaseComponent {
 
       const text = this.root.querySelector('textarea')?.value.trim();
       const title= this.root.querySelector('input[name="title"]')?.value.trim();
+
+      if (!store.getState().authorization.firstName ||
+      !store.getState().authorization.lastName) {
+        const extraMsg = spanColor('Важно!', 'red') +
+            ' Если хотите сохранить статью не перезагружайте страницу!';
+        ModalTemplates.needFullRegConfirm(
+            'Только пользователи, указавшие имя и фамилию могут быть авторами.',
+            text !== '' ? extraMsg : '',
+        );
+        return;
+      }
+
       if (!text || !title || text === '' || title === '') {
         console.warn('{Editor} пустые статьи - это плохо:', {text}, {title});
         ModalTemplates.informativeMsg(
-            'Ошибка', 'Заголовок и текст статьи не должны быть пустыми',
+            'Что-то не так', 'Заголовок и текст статьи не должны быть пустыми',
         );
         return;
       }
@@ -247,7 +318,7 @@ export default class Editor extends BaseComponent {
 
       const category = state[state.currentId].category;
       if (state[state.currentId].category === '') {
-        ModalTemplates.informativeMsg(
+        ModalTemplates.warn(
             'Ошибка', 'Не забудьте указать одну из категорий, наиболее ' +
             'точно описывающую Вашу статью',
         );
@@ -266,7 +337,7 @@ export default class Editor extends BaseComponent {
       }
 
       let responseStatus = 0;
-      recoverBlobWithUrl(state[state.currentId].img)
+      recoverBlobWithUrl(state[state.currentId].previewUrl)
           .then((blob) => Ajax.postFile({url: '/img/upload', body: blob}))
           .then(({status, response}) => new Promise((resolve, reject) => {
             if (status === Ajax.STATUS.ok) {
@@ -325,7 +396,7 @@ export default class Editor extends BaseComponent {
           const file = e.currentTarget.files[0];
 
           if (!file.type.startsWith('image/')) {
-            ModalTemplates.warn('Ошибка', 'Выберите изображение');
+            ModalTemplates.warn('Что-то не так', 'Выберите изображение');
             return;
           }
           getFileBrowserStorageUrl(file).then((imgUrl) => {
@@ -358,17 +429,17 @@ export default class Editor extends BaseComponent {
     * @property {number?} likes
     * @property {number?} comments
     */
-  setContent({title, text, img, category}) {
+  setContent({title, text, previewUrl, category}) {
     if (title || text) {
       console.log('{EDITOR} set content');
     }
     this.view.setContent(title, text);
     this.view.changePreviewCategory(category);
-    if (!img) {
+    if (!previewUrl) {
       return;
     }
-    if (img !== '') {
-      this.view.changePreviewImage(img);
+    if (previewUrl !== '') {
+      this.view.changePreviewImage(previewUrl);
     } else {
       this.view.clearPreviewImage();
     }
@@ -382,7 +453,7 @@ export default class Editor extends BaseComponent {
     this.setContent({
       title: '',
       text: '',
-      img: '',
+      previewUrl: '',
       category: '',
     });
     this.view.clearTags();
@@ -403,7 +474,7 @@ export default class Editor extends BaseComponent {
     submitBtn.value = 'Создать';
     this.root.querySelector('.article-create__title').textContent =
       'Создание статьи';
-    this.root.querySelector('.article-create__del-btn').style.display = 'none';
+    this.root.querySelector('#article-create__del-btn').style.display = 'none';
     this.view.category.style.display = 'flex';
   }
 
@@ -422,7 +493,7 @@ export default class Editor extends BaseComponent {
     submitBtn.value = 'Изменить';
     this.root.querySelector('.article-create__title').textContent =
       'Изменение статьи';
-    this.root.querySelector('.article-create__del-btn').style.display = 'flex';
+    this.root.querySelector('#article-create__del-btn').style.display = 'flex';
     // запрещаем менять категории при редактировании
     this.view.category.style.display = 'none';
   }

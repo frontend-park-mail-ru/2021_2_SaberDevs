@@ -1,0 +1,16 @@
+div(style='display: flex;')
+  .icon
+    if (liked !== 1)
+      button.action-btns__likes-icon.icon__img
+    if (liked === 1)
+      button.action-btns__likes-icon.action-btns__liked.icon__img
+    if (likes)
+      .icon__text(id="likesNum") #{likes}
+    else
+      .icon__text(id="likesNum")
+      = ' '
+  .icon-margin-r
+    if (liked !== -1)
+      button.action-btns__dislike-icon.icon__img
+    if (liked === -1)
+      button.action-btns__dislike-icon.action-btns__liked.icon__img

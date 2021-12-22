@@ -3,18 +3,50 @@
 .sidebar {
   @include col;
 
-  z-index: 1;
+  z-index: 12;
   font-family: $font-secondary;
   background-color: $color-sidebar;
+  width: fit-content;
+
+  @media (max-width: 900px) {
+    min-width: 200px;
+    max-width: 90%;
+  }
+
+  // подложка под sidebar для трекинга кликов вне его
+  &__overlay {
+    z-index: 12;
+    height: 100%;
+    width: 100%;
+    background-color: #00000060;
+
+    &-container {
+      display: flex;
+      flex-direction: row;
+      width: fit-content;
+      height: 100%;
+
+      max-width: 20%;
+
+      @media (max-width: 900px) {
+        width: 100%;
+        max-width: 100%;
+        position: absolute;
+        display: none;
+        top: 0;
+        left: 0;
+      }
+    }
+  }
 
   &__nav-links {
     @include row;
+    @include header-height;
+    @include font-size-normal;
 
-    height: $header-size;
-    font-family: $font-primary;
-    font-size: $font-size-normal;
-    background-color: $color-secondary;
     width: 100%;
+    font-family: $font-primary;
+    background-color: $color-secondary;
   }
 
   &__nav-items {
@@ -22,6 +54,7 @@
 
     display: none;
     align-items: flex-start;
+    justify-content: center;
     margin-top: 10px;
   }
 
@@ -30,24 +63,38 @@
     cursor: default;
   }
 
-  &__categories {
-    @include col;
-
-    align-items: flex-start;
+  &__page-item {
+    @extend .sidebar__item
   }
 
-  &__categories-title {
-    margin-right: 5px;
-    font-size: $font-size-large;
+  &__categories {
+    @include col;
+    align-items: flex-start;
+    margin-bottom: 30px;
 
-    &:hover {
+    &-mobile-only {
+      @extend .sidebar__categories;
+      @include mobile-display-only();
+    }
+
+    &-mobile-hidable {
+      @extend .sidebar__categories;
+      @include mobile-display-none();
+    }
+
+    &-item-active {
       text-decoration: underline;
-      cursor: pointer;
     }
   }
 
+  &__title {
+    @include font-size-large();
+    margin-right: 5px;
+  }
+
   &__categories-item {
-    font-size: $font-size-normal;
+    @include font-size-normal;
+
     cursor: pointer;
 
     &:hover {
@@ -57,8 +104,8 @@
 
   &__categories-more {
     @include row;
+    @include font-size-small;
 
-    font-size: $font-size-small;
     cursor: pointer;
   }
 
@@ -75,13 +122,15 @@
   }
 
   &__nav-item {
+    @include font-size-normal;
+
     display: flex;
     align-items: center;
     justify-content: center;
     padding: 10px;
     height: -webkit-fill-available;
-    font-size: $font-size-normal;
     text-align: center;
+    width: 100%;
 
     &:hover {
       background-color: $color-selection;
@@ -89,10 +138,32 @@
     }
   }
 
-  &__nav-buttons {
+  &__login {
+    @include header-font-size;
+
     display: flex;
     align-items: center;
-    height: 100%;
+    justify-content: flex-end;
+    height: -webkit-fill-available;
+    text-align: center;
+    width: 100%;
+    text-align: right;
+    overflow: hidden;
+    padding: 10px;
+    text-overflow: ellipsis;
+  
+    &:hover {
+      background-color: $color-selection;
+      cursor: pointer;
+    }
+  }
+
+  &__nav-buttons {
+    @include header-height;
+
+    display: flex;
+    align-items: center;
+    width: 100%;
   }
 
   &__streams {
@@ -100,59 +171,52 @@
     flex-direction: column;
     overflow-y: scroll;
     margin-top: 10px;
-    margin-bottom: 30px;
-    height: 25rem;
+    max-height: 25rem;
 
     &::-webkit-scrollbar {
       width: 0;
     }
-  }
-
-  &__bottom {
-    position: relative;
-    bottom: 100px;
-    display: flex;
-    align-items: flex-end;
   }
 
   &__content {
     @include col;
 
+    align-items: flex-start;
     justify-content: space-between;
     overflow-y: scroll;
-    width: 90%;
-    height: 100vh;
+    height: 100%;
+    margin: 15px;
+    width: 80%;
 
     &::-webkit-scrollbar {
-      width: 0;
+      width: 0px;
+    }
+
+    &-section {
+      @include col;
+      align-items: flex-start;
+      width: 100%;
+      display: flex;
     }
   }
-}
 
-.sidebar-bottom {
-  &_right {
-    @include right;
-
+  &__contacts {
     margin-bottom: $sidebar-margin-bottom;
-  }
-}
-
-.contacts {
-  @include col;
-
-  align-items: flex-end;
-
-  &__title {
-    font-size: $font-size-large;
-    cursor: default;
-  }
-
-  &__developer {
-    font-size: $font-size-normal;
-    cursor: pointer;
-
-    &:hover {
-      text-decoration: underline;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  
+    &__developer {
+      @include header-font-size;
+  
+      cursor: pointer;
+  
+      &:hover {
+        text-decoration: underline;
+      }
     }
   }
 }
+
+

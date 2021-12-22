@@ -1,9 +1,9 @@
 $profile-username-font-size: 30px;
 $profile-aboutme-font-size: 18px;
 $profile-photo-size: 160px;
-$profile-info-margin: 40px;
 $profile-description-margin: 0 40px;
-$profile-username-margin-bottom: 15px;
+$profile-username-margin-bottom: 1rem;
+$profile-login-margin-bottom: 2rem;
 $profile-articles-title-font-size: 36px;
 $profile-articles-title-margin: 0 0 30px 40px;
 
@@ -12,6 +12,16 @@ $profile-articles-title-margin: 0 0 30px 40px;
 
   align-items: flex-start;
   width: 100%;
+
+  &__row {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: center;
+    flex-wrap: nowrap;
+    margin-top: 1.5rem;
+    width: 90%;
+  }
 
   &__photo {
     border-radius: $border-radius;
@@ -23,8 +33,11 @@ $profile-articles-title-margin: 0 0 30px 40px;
   &__info {
     display: flex;
     justify-content: flex-start;
-    margin: $profile-info-margin;
-    width: 90%;
+    margin: 2rem;
+    @media (max-width: 400px) {
+      margin: 2rem 0.5rem;
+    }
+    width: -webkit-fill-available;
   }
 
   &__description {
@@ -35,17 +48,26 @@ $profile-articles-title-margin: 0 0 30px 40px;
   }
 
   &__username {
+    @include font-size-normal;
+    font-weight: 600;
     margin-bottom: $profile-username-margin-bottom;
-    font-size: $font-size-normal;
+  }
+
+  &__login {
+    @include font-size-normal;
+    font-weight: 300;
+    margin-bottom: $profile-login-margin-bottom;
   }
 
   &__aboutme {
+    @include font-size-small;
+
     font-weight: $font-thin;
-    font-size: $font-size-small;
   }
 
   &__articles-title {
+    @include font-size-large;
+
     margin: $profile-articles-title-margin;
-    font-size: $font-size-large;
   }
 }

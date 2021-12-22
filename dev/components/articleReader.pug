@@ -1,37 +1,51 @@
+include categoryMixin
+include shareMixin
+mixin tagMixin(content, color, cross=false)
+  include tag.pug
+
 .article-view
-  .article-view__content
-    .article-view__top
-      a(id='article-change-btn' style='display:none').article-view__back-btn Изменить
-      a(data-section='back').article-view__back-btn Назад
-    .article-view__author-time
-      if typeof author === "object"
-        .article-view__author 
-          a(href=`/user/${author.login}`) #{author.login}
-      else
-        .article-view__author Ошибка
-      .article-view__time #{datetime}
-      .article-view__category
-        a(href=`/categories/${category}`) #{category}
-    .article-view__title #{title}
-    .article-view__info
-      .article-view__tags
+  .article-view__heading
+    .row.article-view__top-btns
+      a(data-section='back').btn-color-elementary Назад
+      a(id='article-change-btn' style='display:none').btn-color-elementary Изменить
+    .row.article-view__categories
+      +categoryMixin(category.content, category.color)
+      .category
+        .category__content
+          if typeof author === "object"
+            .article-view__author 
+              a(href=`/user/${author.login}`)
+                if (!author.firstName || !author.lastName)
+                  | #{author.login}
+                else
+                  | #{author.firstName} #{author.lastName}
+          else
+            .article-view__author Ошибка
+      .category
+        .category__content #{datetime}
+    .row
+      .article-view__title #{title}
+    .row.article-view__categories
+      .tags__row
         if Array.isArray(tags)
           each tag in tags.length ? tags : ['']
-            a.article-view__tag #{tag}
-      .action-btns
-        .icon.action-btns_m-right
-          .icon__text #{likes || ''}
-          .action-btns__likes-icon.icon__img
-        .icon.action-btns_m-right
-          .icon__text #{comments || ''}
-          .action-btns__comments-icon.icon__img
-        .icon
-          .action-btns__share-icon.icon__img
-  img(src=`${previewUrl}`).article-view__main-picture
+            +tagMixin(tag.content || tag, tag.color)
+    .row
+      div(data-inplace='place-for-likes')
+      .icon.icon-margin-r
+        .icon__text #{comments || ''}
+        a.action-btns__comments-icon.icon__img(href='#comments' data-router='outer')
+      .icon
+        +shareMixin('/article/' + id, `SaberNews | ${title}`)
+  img(src=`${previewUrl}` onerror=`
+  const img = document.querySelector('img[src="${previewUrl}"]');
+  img.style.visibility = 'hidden';`).article-view__main-picture
   .article-view__content
     .article-view__text #{text}
+    - const message = 'Комментарий'
     include articleAddComment.pug
-    .comments-show
+    .comments-show(style='display: none')
         button.action-btns__arrow-icon.icon-small__img.comments-show__btn.rotate-180
         .comments-show__text Скрыть комментарии
-    .comments(id='comments')
+    .comments(data-inplace='comments')
+    a(name='comments').hide

@@ -17,8 +17,11 @@ export default class CategoryChoiceBar extends BaseComponent {
    * @param {Action} clearSelection
    * @param {Type} SELECT_CATEGORY_TYPE
    */
-  constructor(getCurrentSelection, setSelection,
-      clearSelection, SELECT_CATEGORY_TYPE,
+  constructor(
+      getCurrentSelection,
+      setSelection,
+      clearSelection,
+      SELECT_CATEGORY_TYPE,
   ) {
     super();
     this.view = new CategoryChoiceBarView();
@@ -47,22 +50,21 @@ export default class CategoryChoiceBar extends BaseComponent {
   render() {
     super.render();
     this.root = this.view.render(categoriesList);
-    const categoriesBox = this.root.querySelector('div.tags');
+    const categoriesBox = this.root.querySelector('div.categories__row');
 
-    this.root.querySelectorAll('div.tags__tag-content').forEach((category) => {
-      category.addEventListener('click', ({target}) => {
-        const choosenCategory = this.getCurrentSelection();
-        if (target.innerHTML === choosenCategory) {
-          store.dispatch(this.clearSelection());
-        } else {
-          store.dispatch(this.setSelection(target.textContent));
-        }
-      });
-      if (category.textContent.trim() ===
-          this.getCurrentSelection()) {
-        category.classList.add('categories__choosen');
-      }
-    });
+    this.root.querySelectorAll('div.category').forEach(
+        (category) => {
+          category.addEventListener('click', ({target}) => {
+            const choosenCategory = this.getCurrentSelection();
+            if (target.textContent === choosenCategory) {
+              store.dispatch(this.clearSelection());
+            } else {
+              store.dispatch(this.setSelection(target.textContent));
+            }
+          });
+        });
+
+    this.markSelectedCategory(this.getCurrentSelection());
 
     // Выводятся нужные теги при вводе в поисковую строку (поиск)
     const showMatch = (elem, pos, len) => elem.slice(0, pos) +
@@ -101,15 +103,19 @@ export default class CategoryChoiceBar extends BaseComponent {
    * @param {string} currentCategory
    */
   markSelectedCategory(currentCategory) {
-    const categoriesBox = this.root.querySelector('div.tags');
+    const categoriesBox = this.root.querySelector('div.categories__row');
     if (!categoriesBox) {
       console.warn('{CategoryChoiceBar} component hasn\'t been rendered yet');
       return;
     }
     categoriesBox.childNodes.forEach((categoryDiv) => {
-      categoryDiv.classList.remove('categories__choosen');
-      if (categoryDiv.innerText === currentCategory) {
-        categoryDiv.classList.add('categories__choosen');
+      categoryDiv.style.borderColor = 'transparent';
+      categoryDiv.onmouseout = ({currentTarget}) => {
+        currentTarget.style.borderColor = 'transparent';
+      };
+      if (categoryDiv.textContent === currentCategory) {
+        categoryDiv.style.borderColor = categoryDiv.firstChild.style.color;
+        categoryDiv.onmouseout = undefined;
       }
     });
   }

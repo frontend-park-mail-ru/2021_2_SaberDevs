@@ -9,6 +9,7 @@ import Ajax from '../modules/ajax.js';
 import {showModalNetOrServerError} from '../components/modal/modalTemplates.js';
 
 import {translateServerComment} from '../common/transformApi.js';
+import {redirectOuter} from '../common/utils.js';
 
 /**
  * @class ReaderPage
@@ -35,7 +36,13 @@ export default class ReaderPage extends BasePageMV {
         ),
     );
     // берем id из урла
-    const idUrlParam = document.URL.slice(document.URL.indexOf('article/') + 8);
+    let idUrlParam = document.URL.slice(document.URL.indexOf('article/') + 8);
+    const anchorPos = idUrlParam.indexOf('#');
+    let anchor = '';
+    if (anchorPos !== -1) {
+      anchor = idUrlParam.slice(anchorPos);
+      idUrlParam = idUrlParam.slice(0, anchorPos);
+    }
     console.warn('[ArticleReaderPage] id from Url ', document.URL, idUrlParam);
     store.dispatch(readerActions.setArticleLoading({id: idUrlParam}));
     store.dispatch(readerActions.openArticle(idUrlParam));
@@ -53,6 +60,10 @@ export default class ReaderPage extends BasePageMV {
         .then((article) => {
           store.dispatch(readerActions.saveArticle(article));
           store.dispatch(readerActions.openArticle(article.id));
+          // После загрузки перекидываем на часть документа с якорем
+          if (anchor) {
+            redirectOuter(document.URL);
+          }
         })
         .then(() => Ajax.get({url: `/comments?id=${idUrlParam}`}))
         .then(({status, response}) => new Promise((resolve, reject) => {
@@ -66,23 +77,15 @@ export default class ReaderPage extends BasePageMV {
         }))
         // рисуем комменты
         .then((comments) => {
-          // TODO: приходят не строки. Хорошо бы, чтоы Леша пофиксил
           // здесь можно преобразовать типы при необходимости.
           comments = comments
               .map((element) => translateServerComment(element));
-          const baseComments = comments.filter((el) => el.parentId === 0);
+          const baseComments = comments.filter((el) => el.parentId === 0)
+              .sort((a, b) => a.datetimeMS < b.datetimeMS ? -1 : 1);
           baseComments.forEach((baseComment) => {
             baseComment.answers = comments
                 .filter((el) => el.parentId === baseComment.id)
-                // TODO: проверить
                 .sort((a, b) => a.datetimeMS < b.datetimeMS ? -1 : 1);
-            // .sort((a, b) => {
-            //   if (a.datetime < b.datetime) {
-            //     return -1;
-            //   } else {
-            //     return 1;
-            //   }
-            // });
           });
           store.dispatch(
               readerActions.saveArticleComments(idUrlParam, baseComments),

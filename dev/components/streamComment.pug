@@ -2,6 +2,12 @@ include _onAvatarErrorMixin
 
 .stream-comment(id=`${id}`)
     .stream-comment__author
-        +avatarMixin.stream-comment__author-photo(src=`${author.avatarUrl}`)
-        .stream-comment__author-name #{author.firstName} #{author.lastName}
-    .stream-comment__text #{text}
+      a(href=`/user/${author.login}`)
+        +avatarMixin.stream-comment__author-photo(src=`${author.avatarUrl}` data-router='ignore')
+      if (author.lastName !=='' || author.firstName !== '')
+        a(href=`/user/${author.login}`).stream-comment__author-name #{author.firstName} #{author.lastName}
+      else
+        a(href=`/user/${author.login}`).stream-comment__author-name #{author.login}
+    a(href=`/article/${articleId}#comments`).stream-comment__text #{text}
+    //- TODO: better anchors
+    //- a(href=`/article/${articleId}#comments`).stream-comment__text #{text}

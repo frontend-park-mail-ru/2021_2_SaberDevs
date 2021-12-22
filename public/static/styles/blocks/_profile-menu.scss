@@ -10,12 +10,14 @@ $profile-menu-min-width: 180px;
 
   position: relative;
   height: 100%;
+  width: 100%;
 
   &__links {
     @include row;
 
     justify-content: flex-end;
     height: 100%;
+    width: 100%;
     min-width: $profile-menu-min-width;
   }
 
@@ -33,8 +35,9 @@ $profile-menu-min-width: 180px;
 }
 
 .profile-menu {
+  @include header-height-offset;
+
   position: absolute;
-  top: $header-size;
   display: none;
   flex-direction: column;
   align-items: flex-start;
@@ -43,9 +46,10 @@ $profile-menu-min-width: 180px;
   background-color: $color-elements;
 
   &__item {
+    @include font-size-normal;
+
     padding: $profile-menu-item-padding;
     width: -webkit-fill-available;
-    font-size: $font-size-normal;
     color: $color-primary;
     cursor: pointer;
 

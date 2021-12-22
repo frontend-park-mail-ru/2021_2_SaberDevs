@@ -31,13 +31,18 @@ export default function composeCards(root, cards) {
     appendApiImg(element);
     appendApiImg(element.author);
     const cardWrapper = document.createElement('div');
-    const tags = element.tags.map((tag) => ({
+    const tags = Array.isArray(element.tags) ? element.tags.map((tag) => ({
       content: tag,
-      color: genRanHexColor(),
-    }));
+      color: genRanHexColor(tag),
+    })) : [];
+    const category = {
+      categoryContent: element.category,
+      categoryColor: genRanHexColor(element.category),
+    };
     cardWrapper.innerHTML = cardComponent({
       ...element,
       tags,
+      category,
     });
     root.appendChild(cardWrapper.firstChild);
   });

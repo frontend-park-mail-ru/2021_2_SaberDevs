@@ -27,7 +27,12 @@ const saveTo = {
   comment: 'reader',
   articleAddComment: 'reader',
   tag: 'editor',
-  tagMixin: '',  // будет игнорирован
+
+  // будут игнорировны
+  categoryMixin: '',
+  _onAvatarErrorMixin: '',
+  avatarMixin: '',
+  shareMixin: '',
 };
 
 const correctLaunchDir = '2021_2_SaberDevs';

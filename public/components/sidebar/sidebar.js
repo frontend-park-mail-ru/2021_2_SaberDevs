@@ -7,7 +7,6 @@ import buttonNavComponent from './buttonNav.pug.js';
 import store from '../../flux/store.js';
 import {mainPageActions} from '../../flux/actions.js';
 import {authorizationTypes, streamTypes} from '../../flux/types.js';
-import editorActions from '../../flux/actions/editorActions.js';
 
 import categoriesList from '../../common/categoriesList.js';
 
@@ -60,33 +59,17 @@ export default class Sidebar extends BaseComponent {
     super.render();
     const state = store.getState().authorization;
 
-    let topBlockContent = '';
-    if (!state.isAuthenticated) {
-      topBlockContent += buttonNavComponent({
-        data_section: 'loginModal',
-        name: 'Логин',
-      });
-      topBlockContent += buttonNavComponent({
-        data_section: 'signupModal',
-        name: 'Регистрация',
-      });
-    } else {
-      topBlockContent = userPreviewComponent({
-        login: state.login,
-        avatarUrl: state.avatarUrl,
-      });
-    }
     const comments = [...store.getState().stream.comments].reverse();
     this.root = this.view.render(
-        topBlockContent,
         categoriesList,
         displayedDefaultLimit,
         comments,
     );
-    this.view.root.querySelector('a.sidebar__nav-item').addEventListener(
-        'click',
-        () => store.dispatch(editorActions.createArticle()),
-    );
+    if (!state.isAuthenticated) {
+      this.setSidebarSignupButtons();
+    } else {
+      this.setSidebarUserPreview();
+    }
 
     const categoryItems = this.view.root
         .querySelectorAll('.sidebar__categories-item');
@@ -121,13 +104,14 @@ export default class Sidebar extends BaseComponent {
   setSidebarSignupButtons() {
     let topBlockContent = buttonNavComponent({
       data_section: 'loginModal',
-      name: 'Логин',
+      name: 'Войти',
     });
     topBlockContent += buttonNavComponent({
       data_section: 'signupModal',
       name: 'Регистрация',
     });
     this.view.setTopBlockContent(topBlockContent);
+    this.root.querySelector('[data-section="loginModal"]').style.width = '100%';
   }
 
   /**

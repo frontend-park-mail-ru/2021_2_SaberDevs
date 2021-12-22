@@ -2,7 +2,6 @@ import BasePageView from './basePageView.js';
 import createPage from './_createPage.js';
 
 import Editor from '../components/editor/editor.js';
-// import {genRanHexColor} from '../common/utils.js';
 
 // ///////////////////////////////// //
 //

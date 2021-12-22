@@ -1,8 +1,10 @@
 .tags {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: flex-start;
-  margin-bottom: $tags-margin-bottom;
+  &__row {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    overflow: hidden;
+  }
 
   &__tag-content {
     position: relative;
@@ -22,6 +24,8 @@
   }
 
   &__tag {
+    @include font-size-normal;
+
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -29,7 +33,6 @@
     border-radius: $border-radius;
     padding: $tag-padding;
     box-sizing: border-box;
-    font-size: $font-size-normal;
 
     &_clicked {
       border: 2px solid $color-elements;

@@ -1,6 +1,7 @@
 @mixin nav-item() {
+  @include font-size-normal;
+
   margin: auto 10px;
-  font-size: $font-size-normal;
   text-align: center;
 }
 

@@ -4,10 +4,13 @@
   "description": "vc.ru alike web-spa",
   "main": "index.js",
   "scripts": {
+    "lint": "npx eslint . && npx stylelint --fix **/*.scss",
     "debug-no-webpack": "node ./dev/toggleGlobals.js true && node ./dev/compileTemplates.js debug && npm run start-static",
     "debug": "node ./dev/toggleGlobals.js true && node ./dev/compileTemplates.js debug && npx webpack --mode development && npm run start-static",
-    "build": "npx eslint . && node ./dev/toggleGlobals.js false && node ./dev/compileTemplates.js && node ./dev/createCachedList && npx webpack && npm run start-static",
-    "nohup": "npx eslint . && node ./dev/toggleGlobals.js false && node ./dev/compileTemplates.js && node ./dev/createCachedList && npx webpack && nohup node server/server.js",
+    "debug-sw": "node ./dev/toggleGlobals.js true sw && node ./dev/compileTemplates.js debug && npx webpack --mode development && node ./dev/createCachedList && npm run start-static",
+    "build": "npx eslint . && node ./dev/toggleGlobals.js false && node ./dev/compileTemplates.js && npx webpack && node ./dev/createCachedList",
+    "prod": "npm run build && sudo systemctl stop nginx && echo 'server stopped' && sudo cp -r dist/* /var/www/sabernews/html/ && echo 'copied' && sudo systemctl start nginx && echo 'server started\nHave fun'",
+    "deploy": "node ./dev/toggleGlobals.js true sw && node ./dev/compileTemplates.js debug && npx webpack --mode development && node ./dev/createCachedList && sudo systemctl stop nginx && echo 'server stopped' && sudo cp -r dist/* /var/www/sabernews/html/ && echo 'copied' && sudo systemctl start nginx && echo 'server started\nHave fun'",
     "start": "concurrently --kill-others \"npm run start-static\" \"npm run start-api\"",
     "start-static": "node server/server.js",
     "start-api": "node server/server-api.js"
@@ -16,6 +19,7 @@
   "author": "Denis, Svetlana, Yuriy, Alexey",
   "license": "ISC",
   "dependencies": {
+    "ignore-webpack-plugin": "^0.3.0",
     "mime": "^2.5.2",
     "pug": "^3.0.2",
     "walk": "^2.3.15"

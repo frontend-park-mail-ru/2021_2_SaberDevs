@@ -5,8 +5,14 @@ $categories-margin: 20px;
 
   width: 50%;
 
+  &__row {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+  }
+
   &__title {
-    font-size: $font-size-large;
+    @include font-size-large;
   }
 
   &__search {
@@ -17,13 +23,14 @@ $categories-margin: 20px;
   }
 
   &__search-input {
+    @include font-size-normal;
+
     margin-right: 10px;
     border: $border;
     border-radius: $border-radius;
     padding: 5px 10px;
     width: 80%;
     height: 100%;
-    font-size: $font-size-normal;
     color: $color-primary;
     background-color: $color-elements;
   }
@@ -31,13 +38,7 @@ $categories-margin: 20px;
   &__search-block {
     @include col;
 
-    margin-top: 30px;
-    margin-bottom: $categories-margin;
-    width: 100%;
-  }
-
-  &__tags {
-    margin-top: 20px;
+    margin: $categories-margin 0;
     width: 100%;
   }
 
@@ -46,7 +47,7 @@ $categories-margin: 20px;
   }
 
   &__mark {
-    color: $color-secondary;
+    color: $color-elements;
   }
 
   &__choose-bar {

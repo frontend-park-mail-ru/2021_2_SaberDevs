@@ -88,4 +88,13 @@ export default class FeedView extends BaseComponentView {
   showLoadingAnimation() {
     this.root.querySelector('#feed__loading').style.display = 'block';
   }
+
+  /**
+   * стереть отметки о лайках
+   */
+  clearLikes() {
+    this.root.querySelectorAll('.action-btns__liked').forEach((el) => {
+      el.classList.remove('.action-btns__liked');
+    });
+  }
 }

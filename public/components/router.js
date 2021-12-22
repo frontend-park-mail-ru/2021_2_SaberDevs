@@ -81,9 +81,14 @@ export default class Router {
 
   /**
    * @param {string} link
+   * @param {Object?} params
+   * @property {string?} anchor  // якорь URL
+   * @property {string?} query   // query-параметры URL
+   * @property {string} href     // запись в историю
    */
-  open(link) {
+  open(link, params) {
     let path = link;
+    const {href, anchor} = params || {href: null, anchor: null};
     // Проверяем, является ли путь шаблонным
     this.routesPatterned.forEach((pattern) => {
       if (path.startsWith(pattern)) {
@@ -125,12 +130,13 @@ export default class Router {
       window.history.pushState(
           null,
           '',
-          link,
+          href || link,
       );
     }
 
-    console.log('[ROUTER] !page.isActive():', !page.isActive());
-    if (!page.isActive()) {
+    const isInactive = !page.isActive();
+    console.log('[ROUTER] !page.isActive():', isInactive);
+    if (isInactive) {
       Object.values(this.routes).forEach(({page}) => {
         if (page && page.isActive()) {
           page.hide();
@@ -138,6 +144,10 @@ export default class Router {
       });
 
       page.show();
+      if (anchor) {
+        console.warn('[ROUTER] поиск якоря', anchor);
+        root.querySelector(`a[name=${anchor}]`)?.scrollIntoView();
+      }
     }
 
     // сохраняем изменения в объекте не разрушая объекте
@@ -174,17 +184,23 @@ export default class Router {
 
       event.preventDefault();
       const link = target.pathname || target.parentElement.pathname;
-      console.warn('link:', link);
+      const anchor = target.hash?.substr(1);
+      const query = target.search;
+      const href = target.href;
 
       if (routerDebug) {
-        console.log({pathname: link || '[ROUTER] empty path (ignored)'});
+        console.warn(
+            '[ROUTER] link:', link || 'empty path (ignored)',
+            `${anchor ? ('anchor: ' + anchor) : ''}`,
+            `${query ? ('query: ' + query) : ''}`,
+        );
       }
 
       if (!link) {
         return;
       }
 
-      this.open(link);
+      this.open(link, {anchor, query, href});
     });
 
     window.addEventListener('popstate', () => {

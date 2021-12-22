@@ -1,7 +1,30 @@
+// рукоять лупы
+@mixin glass-handle-offset-left() {
+  @media (min-width: 901px) {
+    left: 19.5px;
+  }
+
+  @media (max-width: 900px) {
+    left: 15.2px;
+  }
+}
+
+// кружок лупы
+@mixin glass-lense-offset-left() {
+  @media (min-width: 901px) {
+    left: -12.5px;
+  }
+
+  @media (max-width: 900px) {
+    left: -9.1px;
+  }
+}
+
+// крестик диагональ
 @mixin search__button-before() {
   content: "";
   position: absolute;
-  left: 22px;
+  left: 0;
   right: 0;
   top: 22px;
   bottom: 0;
@@ -13,10 +36,11 @@
   transition: all 0.5s;
 }
 
+// крестик вторая диагональ
 @mixin search__button-after() {
   content: "";
   position: absolute;
-  left: -5px;
+  left: 0;
   right: 0;
   top: -5px;
   bottom: 0;
@@ -31,10 +55,24 @@
 .search-icon {
   &::before {
     @include search__button-before;
+    left: 19.5px;
   }
 
   &::after {
     @include search__button-after;
+    left: -12.5px;;
+  }
+
+  &-mobile-move {
+    &::before {
+      @include search__button-before;
+      @include glass-handle-offset-left;
+    }
+  
+    &::after {
+      @include search__button-after;
+      @include glass-lense-offset-left;
+    }
   }
 }
 
@@ -71,5 +109,9 @@
     &::after {
       background-color: $color-elements;
     }
+  }
+
+  &:hover {
+    background: $color-elements;
   }
 }

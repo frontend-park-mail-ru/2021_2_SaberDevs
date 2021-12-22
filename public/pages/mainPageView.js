@@ -36,6 +36,7 @@ export default class MainPageView extends BasePageView {
           mainPageTypes.ALLOW_CARDS_UPLOADING,
           mainPageActions.forbidCardsLoading,
           mainPageActions.allowCardsLoading,
+          mainPageActions.like,
       ),
     };
   }
@@ -46,5 +47,25 @@ export default class MainPageView extends BasePageView {
   render() {
     super.render();
     this.root.appendChild(createPage('', this.pageComponents.feed));
+    this.root.querySelectorAll('a.header__nav-item').forEach((el) => {
+      el.classList.remove('header__nav-item-active');
+    });
+    this.root.querySelector('a.header__nav-item[href="/"]')
+        .classList.add('header__nav-item-active');
+
+    const sidebarPages = this.root
+        .querySelector('.sidebar__categories-mobile-only');
+    sidebarPages.querySelectorAll('a.sidebar__page-item').forEach((el) => {
+      el.classList.remove('sidebar__page-item-active');
+    });
+    sidebarPages.querySelector('a[href="/"]')
+        .classList.add('sidebar__categories-item-active');
+
+    this.root.querySelector('.header__title-block')
+        .addEventListener('click', (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          this.root.querySelector(`a[name="feed-top"]`).scrollIntoView(true);
+        });
   }
 }

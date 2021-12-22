@@ -4,9 +4,11 @@ import FeedView from './feedView.js';
 import {redirect} from '../../common/utils.js';
 
 import store from '../../flux/store.js';
-import {profilePageActions} from '../../flux/actions.js';
+import profilePageActions from '../../flux/actions/profilePageActions.js';
 import readerActions from '../../flux/actions/readerActions.js';
+import {authorizationTypes} from '../../flux/types.js';
 import {ajaxDebug} from '../../globals.js';
+import Likes from '../likes/likes.js';
 
 /**
  * @typedef {Object} Card
@@ -28,12 +30,14 @@ const resetDoNotUploadTime = 6000;  // anti- brutforce
 
 /**
  * Создает обработчики клика на разные участки карточки
+ * Монтирует компонент лайков
  * @param {HTMLElement} where место, где искать смонтированные шаблонизатором
  * карточки
  * @param {Array<Card>} cards массив с данными, по которым
  * карточки монтировались
+ * @param {function} dispatchLike
  */
-function addClickListenersOnCards(where, cards) {
+function upgradeCards(where, cards, dispatchLike) {
   cards.forEach((card) => {
     const cardDiv = where.querySelector('#card' + card.id);
     if (cardDiv === null) {
@@ -48,7 +52,7 @@ function addClickListenersOnCards(where, cards) {
       redirect('/article/' + currentTarget.id.replace('card', ''));
     });
 
-    cardDiv.querySelector('.author-name').addEventListener(
+    cardDiv.querySelector('.card__author').addEventListener(
         'click',
         (e) => {
           e.preventDefault();
@@ -58,16 +62,41 @@ function addClickListenersOnCards(where, cards) {
         },
     );
 
+    cardDiv.querySelector('.category').addEventListener(
+        'click',
+        (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          redirect('/categories/' + card.category);
+        },
+    );
+
     cardDiv.querySelectorAll('.tags__tag').forEach((t) => t.addEventListener(
         'click',
         (e) => {
           e.preventDefault();
           e.stopPropagation();
-          console.warn('TODO: клик по тегу', e.currentTarget.textContent);
-          // TODO: редирект на страницу с тегами
-          // TODO: то же с категориями
+          redirect('/search?g=tags&q=' + e.currentTarget.textContent);
         },
     ));
+
+    cardDiv.querySelector('.action-btns__comments-icon')
+        .addEventListener('click', (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          console.warn('клик по комментам');
+          redirect('/article/'+ cardDiv.id.replace('card', '')+'#comments');
+        });
+
+    // лайки
+    const likesComponent = new Likes(
+        0,
+        parseInt(card.id, 10),
+        card.likes,
+        card.liked,
+        dispatchLike,
+    );
+    likesComponent.mountInPlace(cardDiv);
   });
 }
 /**
@@ -94,6 +123,7 @@ export default class Feed extends BaseComponent {
    * говорит, о том, что все данные загружены
    * @param {Action} allowCardsUploading - действие, которое
    * разрешает загрузку карточек снова через resetDoNotUploadTime
+   * @param {function<string, number, number>} like
    * @param {BaseComponent} previewComponent - компонент,
    * который будет вложен в .feed__preview в ленте
    */
@@ -106,6 +136,7 @@ export default class Feed extends BaseComponent {
       ALLOW_CARDS_UPLOADING_ACTION,
       forbidCardsUploading,
       allowCardsUploading,
+      like,
       previewComponent = new BaseComponent(),
   ) {
     console.log('{FEED} creation with params:');
@@ -114,6 +145,9 @@ export default class Feed extends BaseComponent {
     super();
     this.innerComponent = previewComponent;
     this.storeName = storeName;
+    this.dispatchLike = (id, sign, newLikesNum) => store.dispatch(
+        like(id, sign, newLikesNum),
+    );
     const cards = store.getState()[storeName].cards;
     this.view = new FeedView(
         composeCards,
@@ -138,9 +172,10 @@ export default class Feed extends BaseComponent {
           }
 
           this.view.addCards(cards);
-          addClickListenersOnCards(
+          upgradeCards(
               this.view.root.querySelector(`.feed__cards`),
               cards,
+              (id, sign, newLikesNum)=>this.dispatchLike(id, sign, newLikesNum),
           );
 
           const endFound = store.getState()[storeName].isEndFound;
@@ -174,6 +209,18 @@ export default class Feed extends BaseComponent {
             FORBID_CARDS_UPLOADING_ACTION,
             () => this.view.hideLoadingAnimation(),
         ),
+        // Отмечаем пролайканные карточки
+        // store.subscribe(
+        //     authorizationTypes.LOGIN,
+        //     // TODO: сделать апишку по которой я получу те карточки
+        //     // из текущей ленты, которые я лайкал
+        //     (userData) => this.view.setLikes(userData.login),
+        // ),
+        // Стираем отметки о лайках
+        store.subscribe(
+            authorizationTypes.LOGOUT,
+            () => this.view.clearLikes(),
+        ),
     );
   }
 
@@ -186,9 +233,11 @@ export default class Feed extends BaseComponent {
     const preview = this.innerComponent.render().outerHTML;
     const cards = store.getState()[this.storeName].cards;
     this.root = this.view.render(preview, cards);
-    addClickListenersOnCards(
+
+    upgradeCards(
         this.view.root.querySelector(`.feed__cards`),
         cards,
+        (id, sign, newLikesNum) => this.dispatchLike(id, sign, newLikesNum),
     );
 
     if (store.getState()[this.storeName].isEndFound) {

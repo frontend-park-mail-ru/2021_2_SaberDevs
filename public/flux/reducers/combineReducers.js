@@ -25,7 +25,8 @@ export default function combineReducers(reducers) {
         let printState = state[reducer];
         let printNewState = newState;
         if (fluxDebug) {
-          if (reducer === 'mainPage' ||
+          if (
+            reducer === 'mainPage' ||
               reducer === 'profilePage' ||
               reducer === 'search' ||
               reducer === 'categoryPage') {

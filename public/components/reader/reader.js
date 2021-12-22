@@ -2,17 +2,17 @@ import BaseComponent from '../_basic/baseComponent.js';
 import ReaderView from './readerView.js';
 import commentComponent from './comment.pug.js';
 import articleAddCommentComponent from './articleAddComment.pug.js';
+import Likes from '../likes/likes.js';
 
 import ModalTemplates from '../../components/modal/modalTemplates.js';
-
 import Ajax from '../../modules/ajax.js';
+import {translateServerComment} from '../../common/transformApi.js';
+import {redirect} from '../../common/utils.js';
 
 import store from '../../flux/store.js';
 import {readerTypes, authorizationTypes} from '../../flux/types.js';
 import readerActions from '../../flux/actions/readerActions.js';
 import editorActions from '../../flux/actions/editorActions.js';
-
-import {translateServerComment} from '../../common/transformApi.js';
 
 // true - поля ответа и изменения не убираются,
 // игнорируется авторизация для комментариев
@@ -54,10 +54,11 @@ function createCommentChangeListener(commentDiv, comment) {
                     newComment,
                     store.getState().authorization,
                 );
-                commentDiv.innerHTML = commentComponent(newComment);
                 store.dispatch(readerActions
                     .editArticleComment(comment.id, newComment.text),
                 );
+                commentDiv.querySelector('.comment__text').innerText =
+                    newComment.text;
               })
               .catch((err) => {
                 if (responseStatus !== 0) {
@@ -67,7 +68,6 @@ function createCommentChangeListener(commentDiv, comment) {
                   console.warn(err.message);
                 }
               });
-          // TODO: перейти на якорь добавленного коммента
         });
   });
 }
@@ -83,6 +83,12 @@ function createCommentAnswerListener(root, articleId, comment) {
   const answerBtns = root.querySelectorAll('.comment__answer-btn');
   answerBtns.forEach((el) => el.addEventListener('click', (e) => {
     e.preventDefault();
+
+    // проверяем авторизацию
+    if (!checkRootsToComment()) {
+      return;
+    }
+
     // рисуем чистое текстовое поле
     appendTextField(root, 'ответ на комментарий', comment, true, (value) => {
       let responseStatus = 0;
@@ -103,6 +109,18 @@ function createCommentAnswerListener(root, articleId, comment) {
             const answerDiv = document.createElement('div');
             answer = translateServerComment(answer);
             answerDiv.innerHTML = commentComponent(answer);
+
+            // лайки
+            const likesComponent = new Likes(
+                1,
+                parseInt(answer.id, 10),
+                answer.likes,
+                answer.liked,
+                (id, sign, newLikesNum) => store.dispatch(readerActions.like(
+                    id, sign, newLikesNum,
+                )),
+            );
+            likesComponent.mountInPlace(answerDiv);
 
             // вешаем обработчики на только что созданный комментарий (ответ)
             createCommentChangeListener(answerDiv, answer);
@@ -149,6 +167,12 @@ function appendTextField(root, message, comment, isFieldClear, onClick) {
     if (value === comment.text || value === '') {
       return;
     }
+    if (!checkRootsToComment()) {
+      return;
+    }
+
+    input.value = '';
+
     onClick(value);
     // мог быть уже убран если сработал focusout
     // focusout отключен, если нажимается кнопка
@@ -162,10 +186,17 @@ function appendTextField(root, message, comment, isFieldClear, onClick) {
   };
 
   const sendBtn = answerField.querySelector('.article-view__send-comment-btn');
-
+  // клик по кнопке
   sendBtn.addEventListener('click', (e) => {
     e.preventDefault();
     submitAction();
+    input.focus();
+  });
+  // нажатие Enter
+  input.addEventListener('keydown', ({keyCode, target}) => {
+    if (keyCode === 13) {
+      submitAction();
+    }
   });
   root.appendChild(answerField);
 
@@ -275,6 +306,20 @@ export default class Reader extends BaseComponent {
 
     const state = store.getState().reader;
     this.root = this.view.render(state[state.currentId]);
+
+    // при первом рендере стейт может быть пустым!!!
+    //
+    // const likesComponent = new Likes(
+    //     0,
+    //     parseInt(state[state.currentId]?.id || 0, 10),
+    //     state[state.currentId].likes,
+    //     state[state.currentId].liked,
+    //     (id, sign, newLikesNum) => store.dispatch(readerActions.like(
+    //         id, sign, newLikesNum,
+    //     )),
+    // );
+    // likesComponent.mountInPlace(this.root);
+
     addEventListenersToReader(this.root);
 
     // пока контент статьи не прогрузился, изменять статью не даем
@@ -297,6 +342,20 @@ export default class Reader extends BaseComponent {
     this.view.render(article).childNodes.forEach((node) => {
       this.root.appendChild(node.cloneNode(true));
     });
+
+    // лайки
+    const likesComponent = new Likes(
+        0,
+        parseInt(article.id, 10),
+        article.likes,
+        article.liked,
+        (id, sign, newLikesNum) => store.dispatch(readerActions.like(
+            id, sign, newLikesNum,
+        )),
+    );
+    likesComponent.mountInPlace(this.root);
+
+    // обработчики
     addEventListenersToReader(this.root);
 
     const authLogin = store.getState().authorization.login;
@@ -304,8 +363,7 @@ export default class Reader extends BaseComponent {
       const articleChangeBtn = this.root.querySelector('#article-change-btn');
       articleChangeBtn.style.display = 'block';
       articleChangeBtn.href = '/editor';
-      // TODO: проверить
-      // articleChangeBtn.addEventListener('click', editArticleAction);
+      articleChangeBtn.addEventListener('click', editArticleAction);
     }
   }
 
@@ -323,8 +381,13 @@ export default class Reader extends BaseComponent {
    * @param {Array<Comment>} comments
    */
   setComments(comments) {
-    const commentsDiv = this.root.querySelector('#comments');
+    const commentsDiv = this.root.querySelector('[data-inplace="comments"]');
     commentsDiv.innerHTML = '';
+
+    // показываем кнопку "скрыть комментарии"
+    if (comments.length > 0) {
+      this.root.querySelector('.comments-show').style.display = 'flex';
+    }
 
     comments.forEach((comment) => {
       const commentWrapper = document.createElement('div');
@@ -346,6 +409,18 @@ export default class Reader extends BaseComponent {
       });
       const commentDiv = commentWrapper.firstChild;
 
+      // лайки
+      const likesComponent = new Likes(
+          1,
+          parseInt(comment.id, 10),
+          comment.likes,
+          comment.liked,
+          (id, sign, newLikesNum) => store.dispatch(readerActions.likeComment(
+              id, sign, newLikesNum,
+          )),
+      );
+      likesComponent.mountInPlace(commentDiv);
+
       // активируем кнопку "ответить"
       createCommentAnswerListener(
           commentDiv,
@@ -354,19 +429,34 @@ export default class Reader extends BaseComponent {
       );
 
       // активируем кнопку изменения у комментариев, принадлежащих
-      // текущему юзеру});
+      // текущему юзеру;
       const authLogin = store.getState().authorization.login;
       if (authLogin === comment.author.login || layoutDebug) {
         createCommentChangeListener(commentDiv, comment);
       }
       // то же с ответами
       commentDiv.querySelector('.comment__answers')
-          .querySelectorAll(layoutDebug ? '.comment' :
-              `div[data-author="${authLogin}"]`)
+          .querySelectorAll('.comment')
           .forEach((element) => {
+            // информация о текущем перебираемом комментарии
             const elementComment =
-                comment.answers.filter((el) => (el.id + '') === element.id)[0];
-            createCommentChangeListener(element, elementComment);
+                comment.answers.find((el) => (el.id + '') === element.id);
+            // если ответ принадлежит авторизованному пользователю,
+            // активируем изменить
+            if (element.dataset.author === authLogin) {
+              createCommentChangeListener(element, elementComment);
+            }
+            // лайки
+            const likesComponent = new Likes(
+                1,
+                parseInt(elementComment.id, 10),
+                elementComment.likes,
+                elementComment.liked,
+                (id, sign, newLikesNum) => store.dispatch(
+                    readerActions.likeComment(id, sign, newLikesNum),
+                ),
+            );
+            likesComponent.mountInPlace(element);
           });
       commentsDiv.appendChild(commentDiv);
     });
@@ -379,26 +469,39 @@ export default class Reader extends BaseComponent {
  */
 function addEventListenersToReader(root) {
   // переход на тег
-  // TODO: красивые теги / сейчас ссылка в шаблоне
-  // root.querySelectorAll('.article-view__tag').forEach((tag) => {
-  //   // TODO: search parameters from url
-  //   tag.href = '/categories';
-  // });
+  root.querySelectorAll('.tags__tag').forEach((tag) => {
+    tag.addEventListener('click', (e) => {
+      e.preventDefault();
+      redirect('/search?g=tags&q=' + tag.textContent);
+    });
+  });
 
   // переход на категорию
-  // TODO: красивые категории / сейчас ссылка в шаблоне
-  // root.querySelectorAll('.article-view__tag').forEach((tag) => {
-  //   // TODO: search parameters from url
-  //   tag.href = '/categories';
-  // });
+  root.querySelector('.category__content').addEventListener('click', (e) => {
+    e.preventDefault();
+    redirect('/categories/' + e.currentTarget.textContent);
+  });
 
   // обработчик: добавление комментария
-  const commentBtn = root
-      .querySelector('.article-view__send-comment-btn');
-  commentBtn.addEventListener('click', (e) => {
-    e.preventDefault();
-    addCommentAction(root);
-  });
+  // нажатие Enter
+  root.querySelector('input')
+      .addEventListener('keydown', ({keyCode, target}) => {
+        if (keyCode === 13) {
+          if (!checkRootsToComment()) {
+            return;
+          }
+          addCommentAction(root);
+        }
+      });
+  // клик по кнопке
+  root.querySelector('.article-view__send-comment-btn')
+      .addEventListener('click', (e) => {
+        e.preventDefault();
+        if (!checkRootsToComment()) {
+          return;
+        }
+        addCommentAction(root);
+      });
 
   // обработчик: показать комментарии
   const btnShow = root
@@ -407,13 +510,6 @@ function addEventListenersToReader(root) {
     e.preventDefault();
     commentsShowAction(root);
   });
-
-  // обработчик: ответить на комментарий
-  const comments = root
-      .querySelectorAll('.comments__comment');
-  for (const comment of comments) {
-    answerOnComment(comment);
-  }
 }
 
 const editArticleAction = (e) => {
@@ -425,26 +521,20 @@ const editArticleAction = (e) => {
 
 /**
  * Добавление комментария
+ * визуал + обработчики
  * @param {Element} root
  */
 function addCommentAction(root) {
-  if (!store.getState().authorization.isAuthenticated) {
-    ModalTemplates.warn(
-        'Сначала авторизируйтесь',
-        'Чтобы оставить комментарий, выполните вход',
-    );
-    return;
-  }
-
   const input = root.querySelector('input.article-view__comment-input');
-  if (input.value.trim() != '') {
+  const text = input.value.trim();
+  if (text !== '') {
     let responseStatus = 0;
     const articleId = store.getState().reader.currentId;
     Ajax.post({url: '/comments/create', body: {
       // number
       articleId: parseInt(articleId, 10),
       parentId: 0,
-      text: input.value.trim(),
+      text,
     }})
         .then(({status, response}) => new Promise((resolve, reject) => {
           if (status === Ajax.STATUS.ok) {
@@ -455,11 +545,25 @@ function addCommentAction(root) {
           }
         }))
         .then((newComment) => {
+          input.value = '';
           newComment = translateServerComment(newComment);
 
           const commentWrapper = document.createElement('div');
           commentWrapper.innerHTML = commentComponent(newComment);
           const commentDiv = commentWrapper.firstChild;
+
+          // лайки
+          const likesComponent = new Likes(
+              1,
+              parseInt(newComment.id, 10),
+              0,
+              0,
+              (id, sign, newLikesNum)=>store.dispatch(readerActions.likeComment(
+                  id, sign, newLikesNum,
+              )),
+          );
+          likesComponent.mountInPlace(commentDiv);
+
           // обработчики
           createCommentAnswerListener(commentDiv, articleId, newComment);
           createCommentChangeListener(commentDiv, newComment);
@@ -468,7 +572,17 @@ function addCommentAction(root) {
               readerActions.addComment(newComment),
           );
 
-          root.querySelector('.comments').appendChild(commentDiv);
+          const commentsDiv = root.querySelector('.comments');
+          commentsDiv.appendChild(commentDiv);
+
+          // если это был первый комментарий, активируем кнопку "скрыть"
+          // показываем кнопку "скрыть комментарии"
+          if (commentsDiv.childElementCount > 0) {
+            root.querySelector('.comments-show').style.display = 'flex';
+          }
+
+          // переход к новому комментарию
+          commentDiv.scrollIntoView();
         })
         .catch((err) => {
           if (responseStatus !== 0) {
@@ -502,7 +616,36 @@ function commentsShowAction(root) {
 
   if (hide) {
     comments.classList.add('hide');
+    const delay = 550;
+    setTimeout(() => comments.style.position = 'absolute', delay);
   } else {
+    comments.style.position = 'relative';
     comments.classList.remove('hide');
   }
+}
+
+/**
+ * Проверяет авторизацию и наличие имени / фамилии
+ * у пользователя
+ * возвращает true, если права на добавление
+ * комментариев есть, иначе выводит модалку
+ * @return {boolean}
+ */
+function checkRootsToComment() {
+  if (!store.getState().authorization.isAuthenticated) {
+    ModalTemplates.signup(false);
+    return false;
+  }
+
+  if (!store.getState().authorization.firstName ||
+      !store.getState().authorization.lastName) {
+    ModalTemplates.needFullRegConfirm(
+        'Пользователи, не указавшие имя и фамилию, не могут оставлять' +
+        ' комментарии.',
+        '',
+    );
+    return false;
+  }
+
+  return true;
 }

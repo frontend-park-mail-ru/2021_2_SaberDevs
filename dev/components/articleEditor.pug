@@ -1,33 +1,40 @@
 .article-create
   .article-create__title Создание статьи
   form.article-create__form
-    .article-create__category_selector
-      .article-create__row
-        .article-create__label Выберите категорию
-    .article-create__right
-      button.btn_color-elementary.article-create__del-btn Удалить
-      button.btn_color-elementary.article-create__clear-btn Очистить
-    .article-create__rows
+    .article-create__stage-1
+      .article-create__btns-row-right
+        .article-create__btn-group
+          button.btn-color-elementary#article-create__del-btn(style = "margin-right: 4px;") Удалить
+          button.btn-color-elementary#article-create__clear-btn Очистить
       .article-create__row
         .article-create__label Заголовок
         .article-create__field
           input(type="text" name="title").article-create__input
-      .article-create__row
+      .article-create__row-text
         .article-create__label Текст статьи
-        .article-create__field
-          textarea(name="text").article-create__input.article-create__text
+        textarea(name="text").article-create__input.article-create__text
+      .article-create__btns-row
+        a(data-section='back').btn-color-elementary Назад
+        button.btn-color-elementary#btn-to-second-stage Далее
+
+    .article-create__stage-2(style="display: none;")
+      .article-create__row
+        .article-create__label Выберите изображение
+        .article-create__btns-row(style="margin: 0;")
+          input.btn-color-elementary(type='file' name='photo' value='Заставка')
+          input.btn-color-elementary(type='button' name='clear-photo' value='Удалить картинку')
+      .article-create__row#article-category-selector
+        .article-create__label Выберите категорию
       .article-create__row
         .article-create__label Теги
         .article-create__tags-actions
           input.article-create__input-tag(type="text" name="tag" maxlength=20)
           button.article-create__add-tag +
         .article-create__tags !{tags}
-    .article-create__right
-      input.btn_color-elementary(type='file' name='photo' value='Заставка')
-      input.btn_color-elementary(type='button' name='clear-photo' value='Удалить картинку')
-    .article-create__preview
-      .article-create__preview__title Предпросмотр:
-      .article-create__preview__content
-      .article-create__tags-actions
-    .article-create__right
-      input.btn_color-elementary(type='submit' name='btn-submit' value='Создать')
+      .article-create__row
+        .article-create__label Предпросмотр
+        .article-create__preview
+          .article-create__preview__content
+      .article-create__btns-row
+        input.btn-color-elementary(id='btn-to-first-stage' type='submit' name='btn-to-first-stage' value='Назад')
+        input.btn-color-elementary(type='submit' name='btn-submit' value='Создать')

@@ -12,10 +12,13 @@ const mime = require('mime/lite');
 const port = 8080;
 
 // Поменять тут, в public/modules/ajax.js, server/server-api.js (не забыть CORS)
+
+// Больше не используется. Сервер чисто для локальной разработки
 // тачка Дмитрия Дорофеева
-const ip = '192.168.0.31';
+// const ip = '192.168.0.31';
+//
 // локальная разработка
-// const ip = 'localhost';
+const ip = 'localhost';
 
 // ///////////////////////////////// //
 //
@@ -39,6 +42,7 @@ const appPages = [
   '/profile/settings',
   '/editor',
   '/login',
+  '/register',
   '/search',
 ];
 
@@ -47,6 +51,7 @@ const appPagesPatterned = [
   /^\/user\/([\w0-9_\-%&=\?\+]+)$/,
   /^\/article\/([\w0-9_\-%&=\?\+]+)$/,
   /^\/categories\/([\w0-9_\-%&=\?\+]+)$/,
+  /^\/search([\w0-9_\-%&=\?\+]+)$/,
 ];
 
 const subDomains = [

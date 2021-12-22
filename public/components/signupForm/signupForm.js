@@ -18,7 +18,6 @@ function wrapSubmitHandler(renderError) {
   return function(showRegister, login, password, email) {
     Ajax.post({
       url: showRegister ? '/user/signup' : '/user/login',
-      // TODO: encryption
       body: {
         login,
         email: email || '',

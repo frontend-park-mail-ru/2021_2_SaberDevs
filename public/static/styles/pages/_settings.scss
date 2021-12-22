@@ -16,9 +16,25 @@ $settings-row-margin-bottom: 20px;
   width: 80%;
 
   &__title {
+    @include font-size-large;
+
     margin-top: $settings-title-margin-top;
     margin-bottom: $settings-title-margin-bottom;
-    font-size: $font-size-large;
+  }
+
+  &__photo {
+    @media (max-width: 400px) {
+      width: 150px;
+      height: 150px;  
+    }
+    width: 300px;
+    height: 300px;
+    border: $border;
+    border-radius: $border-radius;
+    pointer-events: all;
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-image: $img-icon-user-default;
   }
 
   &__links {
@@ -26,8 +42,9 @@ $settings-row-margin-bottom: 20px;
   }
 
   &__other-page {
+    @include font-size-normal;
+
     margin-bottom: $settings-other-page-margin-bottom;
-    font-size: $font-size-normal;
 
     &:hover {
       text-decoration: underline;
@@ -35,13 +52,14 @@ $settings-row-margin-bottom: 20px;
   }
 
   &__warning {
+    @include font-size-normal;
+
     display: none;
     border: 2px solid $color-secondary;
     border-radius: $border-radius;
     padding: $settings-input-padding;
     width: 100%;
     box-shadow: 0 0 25px $color-warning;
-    font-size: $font-size-normal;
     hyphens: auto;
     color: $color-warning;
     background-color: $color-elements;
@@ -78,18 +96,27 @@ $settings-row-margin-bottom: 20px;
   }
 
   &__label {
+    @include font-size-normal;
+
     justify-content: end;
     margin-right: $settings-label-margin-right;
     width: 20%;
-    font-size: $font-size-normal;
+
+    &-photo {
+      @extend .settings__label;
+      @media (max-width: 400px) {
+        display: none;
+      }
+    }
   }
 
   &__input {
+    @include font-size-normal;
+
     border: $border;
     border-radius: $border-radius;
     padding: $settings-input-padding;
     width: 100%;
-    font-size: $font-size-normal;
     color: $color-primary;
     background-color: $color-elements;
 

@@ -12,6 +12,8 @@ import Ajax from '../modules/ajax.js';
 import {getUserWindowHeight} from '../common/utils.js';
 import {ajaxDebug} from '../globals.js';
 
+import categoriesList from '../common/categoriesList.js';
+
 // ///////////////////////////////// //
 //
 //             Category Page
@@ -102,6 +104,7 @@ export default class CategoryPage extends BasePageMV {
   constructor(root) {
     super(root);
     this.view = new CategoryPageView(root);
+    this.lastSeenCardId = 0;
 
     // /////////////////////////////////
     //
@@ -146,6 +149,12 @@ export default class CategoryPage extends BasePageMV {
   show() {
     super.show();
 
+    // скролим на последнюю запомненную позицию. Компонент уже перерендерен
+    if (this.lastSeenCardId !== 0) {
+      this.view.pageComponents.feed.root.querySelector('#'+this.lastSeenCardId)
+          ?.scrollIntoView(); // ?. если карточки с таким айди больше нет
+    }
+
     const scrollable = document.querySelector('.content');
     if (!scrollable) {
       console.warn('[Category Page] нет дивака .content');
@@ -161,7 +170,20 @@ export default class CategoryPage extends BasePageMV {
    * Скрыть подконтрольную страницу
    */
   hide() {
+    // ушли со страницы. Запоминаем айди последней карточки,
+    // которая была в поле зрения. Компонент еще не должен быть
+    // скрыт, иначе поизиция 0.
+    this.lastSeenCardId = 0;
+    // преобразует NodeList в Array
+    const cardDivArray = Array.prototype.slice.call(
+        this.view.pageComponents.feed.root.querySelectorAll('.card'),
+    );
+    this.lastSeenCardId = cardDivArray
+        .find((el) => el.getBoundingClientRect().y<getUserWindowHeight() &&
+        el.getBoundingClientRect().y > 0)?.id || 0;  // если карточек нет
+
     super.hide();
+
     const scrollable = document.querySelector('.content');
     if (!scrollable) {
       console.warn('[Category Page] нет дивака .content');
@@ -178,7 +200,11 @@ export default class CategoryPage extends BasePageMV {
    * @return {boolean}
    */
   isActive() {
+    // отслеживаем изменения в урле, чтобы обновить категорию, если поменялся
+    // урл. Актуально, если переходим с уже открытой категории на другую
+    // через клик по ссылке или при переходе по истории.
     let category = '';
+    const currentCategory = store.getState().categoryPage.currentCategory;
     const idx = document.URL.indexOf('categories/');
     if (idx !== -1) {
       try {
@@ -188,10 +214,19 @@ export default class CategoryPage extends BasePageMV {
       }
       console.log('[CategoryPage] (isActive) category from Url:',
           category);
-      store.dispatch(categoryPageActions.selectCategory(category));
+      // isActive вызывается роутером когда ему нужно!
+      // не надо менять сетить категорию, ходить в сеть (!), если
+      // она не поменялась, иначе дублирование запроса
+      if (category !== currentCategory) {
+        store.dispatch(categoryPageActions.selectCategory(category));
+      }
     } else if (document.URL.indexOf('categories') !== -1) {
       // Если была выбрана категория, но юзер перешел по урлу на categories
-      store.dispatch(categoryPageActions.clearSelectedCategory());
+      // store.dispatch(categoryPageActions.clearSelectedCategory());
+      // Если категория еще не была выбрана -> // категория по умолчанию
+      if (currentCategory === '') {
+        store.dispatch(categoryPageActions.selectCategory(categoriesList[0]));
+      }
     }
 
     // Чтобы спрятать анимацию загрузки, пока Category не выбранa

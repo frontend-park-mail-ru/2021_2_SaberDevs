@@ -5,6 +5,24 @@
 // ///////////////////////////////// //
 
 /**
+ * @param {string} str
+ * @return {string}
+ */
+export function spanUnderline(str) {
+  return '<span style="display: contents; text-decoration: underline;">' +
+  str + '</span>';
+}
+
+/**
+ * @param {string} str
+ * @param {string} color
+ * @return {string}
+ */
+export function spanColor(str, color) {
+  return '<span style="display: contents; color: ' + color + ';">' +
+  str + '</span>';
+}
+/**
  * @param {number} time
  * @return {string}
  */
@@ -70,6 +88,24 @@ export function redirect(to) {
 }
 
 /**
+ * Вызов Router.open(to) через имитацию клика
+ * Обязательно наличие элемента #root в DOM
+ * @param {string} to
+ */
+export function redirectOuter(to) {
+  const clickSimulator = document.createElement('a');
+  const root = document.querySelector('#root');
+
+  clickSimulator.id = 'clickSimulator';
+  clickSimulator.href = to;
+  clickSimulator.dataset.router = 'outer';
+
+  root.appendChild(clickSimulator);
+  clickSimulator.click();
+  root.removeChild(clickSimulator);
+}
+
+/**
  * Возврат содежимого в виде строки
  * @param {HTMLElement} el
  * @return {string}
@@ -92,18 +128,56 @@ export function genRanHex(size = 6) {
 }
 
 /**
+ * MurmurHash3 хеш-функция
+ * @param {string} str
+ * @return {number}
+ */
+function xmur3(str) {
+  let h = 1779033703 ^ str.length;
+  for (let i = 0; i < str.length; i++) {
+    h = Math.imul(h ^ str.charCodeAt(i), 3432918353),
+    h = h << 13 | h >>> 19;
+  }
+  return h;
+}
+
+/**
+ * псевдорандомный генератор
+ * @param {number} seed
+ */
+function* pseudoRandom(seed) {
+  let value = seed;
+
+  while (true) {
+    value = value * 16807 % 2147483647;
+    yield value;
+  }
+};
+
+/**
  * генерирует рандомный цвет
- * @param {number} size
+ * @param {string?} str
  * @return {string}
  */
-export function genRanHexColor() {
-  // https://stackoverflow.com/questions/12043187/how-to-check-if-hex-color-is-too-black
-  // функция из PHP
-  // цвет считается ярким, если яркость больше 155, тусклым, если < 40
+export function genRanHexColor(str = null) {
+  const generator = pseudoRandom(Math.abs(xmur3(str || '')));
+  const hash = typeof str !== 'string' ?
+    () => Math.floor(Math.random() * 255) :
+    () => generator.next().value % 255;
+
   while (true) {
-    const red = Math.floor(Math.random() * 255);
-    const green = Math.floor(Math.random() * 255);
-    const blue = Math.floor(Math.random() * 255);
+    let red = 0;
+    let green = 0;
+    let blue = 0;
+
+    red = hash();
+    green = hash();
+    blue = hash();
+
+    // https://stackoverflow.com/questions/12043187/how-to-check-if-hex-color-is-too-black
+    // функция из PHP
+    // цвет считается ярким, если яркость больше 155, тусклым, если < 40
+
     const brightness = ((red * 299) + (green * 587) + (blue * 114)) / 1000;
     // Самый светлый черный в проекте #313030.
     // пусть цвета тусклее #404040 (40h = 64) не пропускаются

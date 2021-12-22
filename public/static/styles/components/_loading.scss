@@ -1,4 +1,12 @@
-$loading-page-title-font-size: 96px;
+@mixin loading-font-size() {
+  @media (min-width: 901px) {
+    font-size: 6rem;
+  }
+
+  @media (max-width: 900px) {
+    font-size: 3rem;
+  }
+}
 
 .loading-page {
   @include col;
@@ -6,7 +14,7 @@ $loading-page-title-font-size: 96px;
   &__title {
     position: absolute;
     top: 40%;
-    font-size: $loading-page-title-font-size;
+    @include loading-font-size();
   }
 }
 

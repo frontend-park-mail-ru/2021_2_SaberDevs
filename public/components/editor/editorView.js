@@ -8,6 +8,7 @@ import CategoryChoiceBar from '../categoryChoiceBar/categoryChoiceBar.js';
 import {genRanHexColor} from '../../common/utils.js';
 
 const PREVIEW_TEXT_LIMIT = 350;
+const whiteTextColor = '#dee4ea';
 
 /**
  * @param {Date} d
@@ -24,12 +25,14 @@ function convertDate(d = new Date()) {
  * @return {string}
  */
 function fillCardImgStyle(url) {
-  return `background: -webkit-gradient(linear, left top, left bottom,` +
-  `from(rgba(0, 0, 0, 0.7)), to(rgba(0, 0, 0, 0.7))), url(${url});`+
-  `background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)),` +
-  `url(${url});
-  background-size: cover;
-  background-repeat: no-repeat;`;
+  // старый стиль. покрытие всей карточки затенением
+  // return `background: -webkit-gradient(linear, left top, left bottom,` +
+  // `from(rgba(0, 0, 0, 0.7)), to(rgba(0, 0, 0, 0.7))), url(${url});`+
+  // `background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)),` +
+  // `url(${url});
+  // background-size: cover;
+  // background-repeat: no-repeat;`;
+  return `background-image: url(${url});`;
 }
 
 /**
@@ -67,9 +70,8 @@ export default class EditorView extends BaseComponentView {
     editor.innerHTML = articleEditorComponent();
 
     this.category =
-        editor.firstChild.querySelector('.article-create__category_selector');
-    this.category.querySelector('.article-create__row')
-        .appendChild(this.innerComponents.categoryChoiceBar.render());
+        editor.firstChild.querySelector('#article-category-selector');
+    this.category.appendChild(this.innerComponents.categoryChoiceBar.render());
     // немного другие стили
     editor.firstChild.querySelector('.plate')
         .className = 'article-create__category_selector';
@@ -79,15 +81,24 @@ export default class EditorView extends BaseComponentView {
     this.previewBox.innerHTML = cardComponent({
       id: '-preview',
       datetime: convertDate(),
-      category: 'категория не выбрана',
+      category: {
+        categoryContent: 'категория не выбрана',
+        categoryColor: whiteTextColor,
+      },
       author,
       comments: '',
       likes: '',
-    })
-        .replace('card', 'article-create__preview__card')
-        .replace(/style=".*\n.*\n.*\n.*;"/, '');
+    });
+    // имитация лайков
+    this.previewBox.querySelector('.card__bottom')
+        .innerHTML = `
+          <div class="icon action-btns__likes-icon icon__img"></div>
+          <div class="icon-margin-r action-btns__dislike-icon icon__img"></div>
+          <div class="icon action-btns__comments-icon icon__img"></div>
+        `;
+    ;
 
-    this.tagBox = this.previewBox.querySelector('.tags');
+    this.tagBox = this.previewBox.querySelector('.tags__row');
     this.textAreaInput = editor.firstChild.querySelector('textarea');
     this.titleInput = editor.firstChild.querySelector('input[name="title"]');
     this.root = editor.firstChild;
@@ -110,7 +121,7 @@ export default class EditorView extends BaseComponentView {
     const wrapper = document.createElement('div');
     wrapper.innerHTML = tagComponent({
       content: tag,
-      color: genRanHexColor(),
+      color: genRanHexColor(tag),
       cross: true,
     });
     const tagDiv = wrapper.firstChild;
@@ -147,7 +158,7 @@ export default class EditorView extends BaseComponentView {
       return;
     }
 
-    this.previewBox.querySelector('.article-create__preview__card')
+    this.previewBox.querySelector('.card__image')
         .style.cssText = fillCardImgStyle(url);
   }
 
@@ -155,8 +166,8 @@ export default class EditorView extends BaseComponentView {
    * сброс фотографии
    */
   clearPreviewImage() {
-    this.previewBox.querySelector('.article-create__preview__card')
-        .style.cssText = '';
+    this.previewBox.querySelector('.card__image')
+        .style.cssText = 'background-image = ""; min-height: 0;';
   }
 
   /**
@@ -169,7 +180,11 @@ export default class EditorView extends BaseComponentView {
       );
       return;
     }
-    text = text.slice(0, PREVIEW_TEXT_LIMIT);
+
+    if (text.length > PREVIEW_TEXT_LIMIT) {
+      text = text.slice(0, PREVIEW_TEXT_LIMIT);
+      text = text.substring(0, text.lastIndexOf(' ')) + '...';
+    }
     this.previewBox.querySelector('.card__description').textContent = text;
   }
 
@@ -183,7 +198,7 @@ export default class EditorView extends BaseComponentView {
       );
       return;
     }
-    this.previewBox.querySelector('.preview__title').textContent = text;
+    this.previewBox.querySelector('.card__title').textContent = text;
   }
 
   /**
@@ -196,15 +211,16 @@ export default class EditorView extends BaseComponentView {
       );
       return;
     }
+    const categoryBoxPreview =
+          this.previewBox.querySelector('.category__content');
     if (text === '') {
-      this.previewBox.querySelector('.card__category').textContent =
-        'категория не выбрана';
-      this.root.querySelector('.article-create__label').innerHTML =
-        'Выберите категорию | <strong>категория не выбрана</strong>';
+      categoryBoxPreview.textContent = 'категория не выбрана';
+      categoryBoxPreview.style.color = whiteTextColor;
     } else {
-      this.previewBox.querySelector('.card__category').textContent = text;
-      this.root.querySelector('.article-create__label').innerHTML =
-        `Выберите категорию | <strong>${text}</strong>`;
+      categoryBoxPreview.textContent = text;
+      const categoryColor = genRanHexColor(text);
+      categoryBoxPreview.style.color = categoryColor;
+      categoryBoxPreview.style.textShadow = `${categoryColor} 0px 0px 10px`;
     }
   }
 

@@ -9,10 +9,19 @@
     background: $img-icon-like;
     background-size: cover;
 
-    &:hover {
-      background-image: $img-icon-like-hover;
-    }
+    // &:hover {
+    //   background-image: $img-icon-like-hover;
+    // }
   }
+
+  &__dislike-icon {
+    background: $img-icon-dislike;
+    background-size: cover;
+  }
+
+  &__liked {
+    border-color: $color-elements !important;
+  } 
 
   &__comments-icon {
     background: $img-icon-comments;
@@ -51,7 +60,9 @@
   }
 
   &__menu-icon {
-    position: absolute;
+    @include icon;
+    @include icon-size;
+
     right: 0;
     top: 0;
     bottom: 0;
@@ -59,8 +70,6 @@
     display: none;
     margin: auto;
     border-radius: $border-radius;
-    width: 50px;
-    height: 50px;
     background: $img-icon-menu;
     background-size: cover;
   }

@@ -1,3 +1,13 @@
+@mixin search-open-row-width() {
+  @media (min-width: 901px) {
+    width: calc(100% - 20px + 10px);
+  }
+
+  @media (max-width: 900px) {
+    width: 100%;
+  }
+}
+
 .search {
   position: absolute;
   right: 10px;
@@ -8,19 +18,26 @@
   height: 100%;
 
   &__button {
+    @include icon-size;
+    @include icon;
+
     position: absolute;
-    right: 0;
+    right: 5px;
     top: 0;
     bottom: 0;
     z-index: 4;
     margin: auto;
     border-radius: $border-radius;
-    width: 50px;
-    height: 50px;
     transition: all 1s;
 
     &:hover {
       cursor: pointer;
+    }
+
+    &-mobile-move {
+      @media (max-width: 900px) {
+        right: 50px;
+      }
     }
   }
 
@@ -41,16 +58,10 @@
     box-sizing: border-box;
     background-color: transparent;
 
-    // синенькая тень как на формах
-    // box-shadow:
-    //   0 0 25px 0 $color-secondary,
-    //   0 20px 25px 0 $color-selection;
-    // background: $color-secondary;
-    // opacity: 0;
-
     &_open {
+      @include search-open-row-width;
+
       left: 0;
-      width: calc(100% - 20px + 10px);
       opacity: 1;
       cursor: text;
     }
@@ -68,23 +79,25 @@
     }
 
     &_group_bar {
+      @include font-size-normal;
+
       padding-left: 10px;
       width: -webkit-fill-available;
       height: -webkit-fill-available;
       font-family: $font-secondary;
       font-weight: 200;
-      font-size: $font-size-normal;
       letter-spacing: 0.1em;
       text-shadow: 0 0 10px $color-secondary;
       color: $color-primary;
     }
 
     &_group_dropdown {
+      @include font-size-normal;
+
       position: relative;
       display: inline-block;
       width: 25%;
       height: -webkit-fill-available;
-      font-size: $font-size-normal;
       color: $color-primary;
     }
 
@@ -103,7 +116,7 @@
       display: none;
       padding: 0;
       width: -webkit-fill-available;
-      box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
+      // box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
       box-sizing: border-box;
       background-color: $color-elements;
     }
@@ -123,6 +136,8 @@
   }
 
   &__input {
+    @include font-size-normal;
+
     border-top-left-radius: $border-radius;
     border-bottom-left-radius: $border-radius;
     padding-left: 10px;
@@ -130,7 +145,6 @@
     height: -webkit-fill-available;
     font-family: $font-secondary;
     font-weight: 200;
-    font-size: $font-size-normal;
     letter-spacing: 0.1em;
     text-shadow: 0 0 10px $color-secondary;
     color: $color-primary;

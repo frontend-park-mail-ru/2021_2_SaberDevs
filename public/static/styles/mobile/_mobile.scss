@@ -1,36 +1,12 @@
-@media (max-width: 1400px) {
-  .header__nav-items {
-    display: none;
-  }
-
-  .sidebar__nav-items {
+@media (min-width: 901px) {
+  .sidebar {
     display: flex;
-  }
-
-  .header__nav-item {
-    margin: 10px 0;
-    font-size: $font-size-big;
-
-    &:hover {
-      text-decoration: underline;
-      background-color: $color-sidebar;
-    }
   }
 }
 
 @media (max-width: 900px) {
-  .sidebar {
-    display: none;
-    position: absolute;
-    right: 0;
-  }
-
   .action-btns__menu-icon {
     display: block;
-  }
-
-  .search__button {
-    right: 50px;
   }
 
   .background {
@@ -38,8 +14,12 @@
   }
 }
 
-@media (min-width: 900px) {
-  .sidebar {
-    display: flex;
+@media (max-width: 450px) {
+  .card__time {
+    display: none;
+  }
+
+  .tags__tag {
+    padding: 2px;
   }
 }

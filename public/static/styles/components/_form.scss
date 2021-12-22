@@ -26,11 +26,12 @@ $form-padding: 70px;
   }
 
   &__input {
+    @include font-size-normal;
+
     border: $border;
     border-radius: $border-radius;
     padding: $input-padding;
     width: -webkit-fill-available;
-    font-size: $font-size-normal;
     color: $color-primary;
     background-color: $color-elements;
 
@@ -41,11 +42,12 @@ $form-padding: 70px;
   }
 
   &__submit-btn {
+    @include font-size-normal;
+
     border-radius: $border-radius;
     padding: $submit-btn-padding;
     width: 100%;
     box-sizing: border-box;
-    font-size: $font-size-normal;
     color: $color-primary;
     background-color: $color-elements;
     cursor: pointer;
@@ -55,25 +57,54 @@ $form-padding: 70px;
     width: 100%;
   }
 
+  &__block {
+    display: flex;
+    flex-grow: 1;
+    flex-direction: column;
+    width: 100%;
+  }
+
+  &__link {
+    width: fit-content;
+    cursor: pointer;
+    @include font-size-normal;
+
+    @media (max-height: 400px) {
+      align-self: center;
+      display: flex;
+    }
+  }
+
   &__warning {
+    @include font-size-normal;
+
     display: none;
     border: 2px solid $color-secondary;
     border-radius: $border-radius;
     padding: $input-padding;
     width: -webkit-fill-available;
     box-shadow: 0 0 25px $color-warning;
-    font-size: $font-size-normal;
-    hyphens: auto;
     color: $color-warning;
     background-color: $color-elements;
+
+    &-label-show {
+      display: block;
+      @media (max-height: 400px) {
+        display: none;
+      }
+    }
   }
 
   &__label {
     margin-right: $label-margin;
   }
 
+  // #form-warning-label {
+  //   
+  // }
+
   &__title {
-    font-size: $font-size-large;
+    @include font-size-large;
   }
 
   &__page {

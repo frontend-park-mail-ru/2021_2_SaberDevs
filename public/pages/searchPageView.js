@@ -3,6 +3,7 @@ import createPage from './_createPage.js';
 
 import Feed from '../components/feed/feed.js';
 import composeUsers from '../components/feed/composeUsers.js';
+import SearchBar from '../components/feed/previews/searchBar.js';
 
 import {searchTypes} from '../flux/types.js';
 import searchActions from '../flux/actions/searchActions.js';
@@ -25,6 +26,7 @@ export default class SearchPageView extends BasePageView {
     // root не трогать
     super(root);
     this.pageComponents = {
+      searchBar: new SearchBar(),
       feed: new Feed(
           composeUsers,
           'search',
@@ -46,6 +48,17 @@ export default class SearchPageView extends BasePageView {
     */
   render() {
     super.render();
-    this.root.appendChild(createPage('', this.pageComponents.feed));
+    this.root.appendChild(createPage(
+        'Поиск',
+        this.pageComponents.searchBar,
+        this.pageComponents.feed,
+    ));
+
+    this.root.querySelector('.header__title-block')
+        .addEventListener('click', (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          this.root.querySelector(`a[name="feed-top"]`).scrollIntoView(true);
+        });
   }
 }

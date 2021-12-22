@@ -1,4 +1,38 @@
 $header-size: 75px;
+$header-size-mobile: 55px;
+
+@mixin header-height() {
+  @media (min-width: 901px) {
+    height: $header-size;
+  }
+
+  @media (max-width: 900px) {
+    height: $header-size-mobile;
+  }
+}
+
+@mixin header-search-btn-size() {
+  @media (min-width: 901px) {
+    width: $header-size;
+    height: $header-size;
+  }
+
+  @media (max-width: 900px) {
+    width: $header-size-mobile;
+    height: $header-size-mobile;
+  }
+}
+
+@mixin header-height-offset() {
+  @media (min-width: 901px) {
+    top: $header-size;
+  }
+
+  @media (max-width: 900px) {
+    top: $header-size-mobile;
+  }
+}
+
 $padding-nav-item: 10px;
 $title-font-size: 36px;
 $profile-menu-items: 30px;
@@ -8,10 +42,12 @@ $items-font-size: 24px;
 $button-font-size: 24px;
 $links-font-size: 20px;
 $text-font-size: 18px;
-$title-margin: auto 20px;
 $action-btns-margin-right: 15px;
 $sidebar-item-padding-top: 10px;
 $sidebar-margin-bottom: 50px;
 $tag-margin: 0 10px 10px 0;
+
+// для calc
+$tag-margin-bottom: 10px;
 $tag-padding: 5px;
 $tags-margin-bottom: 10px;

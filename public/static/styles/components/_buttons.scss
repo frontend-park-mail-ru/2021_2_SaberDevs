@@ -2,8 +2,9 @@ $btn-font-size: 18px;
 $btn-padding: 10px 20px;
 
 .btn-more {
+  @include font-size-normal;
+
   font-weight: $font-thin;
-  font-size: $font-size-normal;
   cursor: pointer;
 
   &:hover {
@@ -12,11 +13,12 @@ $btn-padding: 10px 20px;
 }
 
 .btn {
-  &_color-elementary {
+  &-color-elementary {
+    @include font-size-normal;
+
     border-radius: $border-radius;
     padding: $btn-padding;
     box-shadow: $box-shadow;
-    font-size: $font-size-normal;
     color: $color-elements;
     background-color: $color-secondary;
     cursor: pointer;

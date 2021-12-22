@@ -1,13 +1,17 @@
 .settings
-  .settings__links
-    a.settings__other-page(href = `${other_page_href}`) #{other_page_name}
+  .article-create__btns-row(style="display: none;")
+    button(href = `${other_page_href}`).settings__other-page #{other_page_name}
   form.settings__form
     .settings__rows !{form_rows}
       .settings__row
         .settings__label(id="settings-warning-label" style="color: transparent;") |
         .settings__field
           div.settings__input.settings__warning Поля заполнены неверно
-    .settings__footer
-      input.btn_color-elementary(type='submit' name='btn-submit' value='Сохранить')
-      a(href='/')
-        input.btn_color-elementary(data-router='ignore' type='button' value='Назад')
+      .settings__row
+        .settings__label
+        .settings__field
+          img.settings__photo
+    .article-create__btns-row
+      a(data-router='back')
+        input.btn-color-elementary(data-router='ignore' type='button' value='Назад')
+      input.btn-color-elementary(type='submit' name='btn-submit' value='Сохранить')

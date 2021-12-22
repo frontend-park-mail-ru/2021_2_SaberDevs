@@ -8,10 +8,12 @@ import {
   changePageActions,
   authorizationActions,
 } from '../flux/actions.js';
+import profilePageActions from '../flux/actions/profilePageActions.js';
 import {authorizationTypes} from '../flux/types.js';
+import {appendApiImg} from '../common/transformApi.js';
 
 import Ajax from '../modules/ajax.js';
-import {redirect} from '../common/utils.js';
+import {redirect, getFileBrowserStorageUrl} from '../common/utils.js';
 import regexp from '../common/regexp.js';
 import {ajaxDebug} from '../globals.js';
 
@@ -51,7 +53,39 @@ export default class ProfileSettingsPage extends BasePageMV {
   show() {
     super.show();
 
+    const auth = store.getState().authorization;
     const form = this.view.root.querySelector('form');
+
+    // вписываем текущие данные
+    form.querySelector('input[name="username"]').value = auth.firstName || '';
+    form.querySelector('input[name="surname"]').value = auth.lastName || '';
+    form.querySelector('textarea[name="description"]').value =
+        auth.description || '';
+
+    const previewImg = form.querySelector('img');
+    previewImg.addEventListener('error', (e) => {
+      console.warn('не удалось загрузить аватар', e.currentTarget.src);
+      e.currentTarget.src='img/user_icon_loading.svg';
+      e.currentTarget.onerror = undefined;
+    });
+    appendApiImg(auth);
+    previewImg.src = auth.avatarUrl;
+
+    const fileLoader = form.querySelector('input[type="file"]');
+    fileLoader.addEventListener(
+        'change',
+        (e) => {
+          const file = e.currentTarget.files[0];
+
+          if (!file.type.startsWith('image/')) {
+            ModalTemplates.warn('Что-то не так', 'Выберите изображение');
+            return;
+          }
+          getFileBrowserStorageUrl(file).then((imgUrl) => {
+            previewImg.src = imgUrl;
+          });
+        });
+
     form.addEventListener('submit', (e) => {
       e.preventDefault();
       // TODO: смена пароля
@@ -62,18 +96,41 @@ export default class ProfileSettingsPage extends BasePageMV {
           form.querySelector('input[name="surname"]')?.value.trim();
       const description =
           form.querySelector('textarea[name="description"]')?.value.trim();
-      const img = form.querySelector('input[type="file"]')?.files[0];
+      const img = fileLoader.files[0];
 
       if (firstName !== '' && !regexp.firstName.test(firstName)) {
+        let errorClass = 0;
+        if (/\d/.test(firstName)) {
+          errorClass = 1;
+        } else if (firstName.length >= 20) {
+          errorClass = 2;
+        } else if (firstName.length < 2) {
+          errorClass = 3;
+        }
         this.view.pageComponents.settingsForm.appendWarning(
-            'Такое имя выбрать нельзя',
+            'Такое имя выбрать нельзя' +
+            (errorClass === 1 ? '. Цифр быть не должно.' : '') +
+            (errorClass === 2? '. Слишком длинное.' : '') +
+            (errorClass === 3 ? '. Слишком короткое.' : ''),
         );
         return;
       }
 
-      if (lastName !== '' && !regexp.lastName.test(lastName)) {
+      if (lastName !== '' && !regexp.lastName.test(lastName) ||
+          lastName.length >= 20) {
+        let errorClass = 0;
+        if (/\d/.test(lastName)) {
+          errorClass = 1;
+        } else if (lastName.length >= 20) {
+          errorClass = 2;
+        } else if (lastName.length < 2) {
+          errorClass = 3;
+        }
         this.view.pageComponents.settingsForm.appendWarning(
-            'Такую фамилию выбрать нельзя',
+            'Такую фамилию выбрать нельзя' +
+            (errorClass === 1 ? '. Цифр быть не должно.' : '') +
+            (errorClass === 2? '. Слишком длинная.' : '') +
+            (errorClass === 3 ? '. Слишком короткая.' : ''),
         );
         return;
       }
@@ -145,6 +202,7 @@ export default class ProfileSettingsPage extends BasePageMV {
               userData.avatarUrl = Ajax.APIurl + '/img/' + avatarHash;
             }
             store.dispatch(authorizationActions.login(userData));
+            store.dispatch(profilePageActions.setUserInfo(userData));
             ModalTemplates.informativeMsg('Успех!', 'Профиль обновлен');
             redirect('/profile');
             return;
@@ -167,7 +225,8 @@ export default class ProfileSettingsPage extends BasePageMV {
               return;
             }
             // в случае провала валидации формы
-            this.view.pageComponents.settingsForm.appendWarning(msg);
+            // this.view.pageComponents.settingsForm.appendWarning(message);
+            ModalTemplates.warn('Что-то не так', message);
           });
     });
 

@@ -2,48 +2,75 @@
 
 $plate-padding: 30px;
 
-html,
-body,
-.background,
-.background-space,
-#root,
-.view {
+// body,
+// .background,
+// .background-space,
+#root, body {
   overflow-y: hidden;
   margin: 0;
   padding: 0;
-  width: 100%;
+  width: 100vw;
   height: 100vh;
   font-family: $font-primary;
   color: $color-elements;
   cursor: default;
+  display: flex;
+  flex-direction: column;
+}
+
+body {
+  background-color: $color-primary;
+}
+
+.view {
+  display: flex;
+  height: 100%;
+  width: 100%;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
 }
 
 .background {
-  padding-top: $page-top;
-  background: $img-bg bottom;
-  background-size: 100%;
+  align-items: center;
+  background: $img-bg;
+  background-repeat: no-repeat;
+  background-size: cover;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  height: 100%;
 }
 
 .background-space {
+  height: 100%;
+  width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding-top: $page-top;
-  background: $img-bg-space bottom;
+  background: $img-bg-space bottom, $img-bg bottom;
   background-size: cover;
   background-repeat: no-repeat;
 }
 
 .screen {
   display: flex;
-  justify-content: space-between;
-  margin-right: auto;
-  margin-left: auto;
-  height: 100%;
   max-width: $screen-width;
-  box-shadow: 20px 20px 20px rgba(0, 0, 0, 0.25);
-  background-color: $color-primary;
+  // box-shadow: 20px 20px 20px rgba(0, 0, 0, 0.25);
+
+  justify-content: flex-start;
+  align-items: flex-start;
+  overflow: hidden;
+  height: -webkit-fill-available;
+  flex-direction: row;
+  padding-top: $page-top;
+  @media (max-width: 900px) {
+    padding-top: 0;
+  }
+  @media (max-height: 400px) {
+    padding-top: 0;
+  }
 }
 
 .link {
@@ -54,19 +81,29 @@ body,
 }
 
 .page {
-  @include col;
-
-  // отступ, чтобы интерфейс винды не перекрывал низ страницы
-  margin-bottom: 2%;
+  display: flex;
+  flex-flow: nowrap;
+  flex-direction: column;
+  align-items: flex-start;
+  overflow: hidden;
   width: 100%;
+  height: 100%;
+  background-color: $color-primary;
 }
 
 .page_title {
   @include col;
 
   width: 100%;
-  font-size: $font-size-large;
-  margin-bottom: 15px;
+  @include font-size-large;
+  margin: 1rem 0;
+
+  @media (max-height: 400px) {
+    margin: 0;
+    height: 75px;
+    position: absolute;
+    top: 10px;  // padding on header
+  }
 }
 
 .content {
@@ -83,28 +120,22 @@ body,
 }
 
 .page-space {
-  position: fixed;
+  @include col;
+  justify-content: center;
   display: flex;
   height: 100%;
+  width: 80%;
   max-width: $screen-width;
   font-family: "Roboto", sans-serif;
   backdrop-filter: blur(5px);
 }
 
 .content-space {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  padding: 1.5%;
-  min-width: 15%;
-  min-height: 20%;
-  max-width: 55%;
-  max-height: 50%;
-  transform: translate(-50%, -50%) scale(1);
+  padding: 2% 4%;
+  @include col;
 }
 
 .hide {
-  position: absolute;
   opacity: 0;
   visibility: hidden;
   transition: 0.5s;
@@ -123,8 +154,22 @@ body,
   background-color: $color-sidebar;
 }
 
+.glass-plate {
+  display: flex;
+  flex-direction: column;
+  background-color: rgba(255, 255, 255, 0.045);
+}
+
 .rotate {
   &-180 {
     transform: rotate(180deg);
   }
+}
+
+.row {
+  @include row;
+}
+
+.cursor-pointer {
+  cursor: pointer;
 }

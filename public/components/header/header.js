@@ -1,10 +1,17 @@
 import BaseComponent from '../_basic/baseComponent.js';
 import HeaderView from './headerView.js';
+import SearchRow from '../searchRow/searchRow.js';
+
 
 import store from '../../flux/store.js';
+import editorActions from '../../flux/actions/editorActions.js';
+import {searchTypes} from '../../flux/types.js';
 import searchActions from '../../flux/actions/searchActions.js';
 
 import {redirect} from '../../common/utils.js';
+
+import MobileLayoutUtils from '../../common/mobileLayout.js';
+
 /**
  * ViewModel-компонент соответсвующего View
  * @class Header
@@ -16,8 +23,17 @@ export default class Header extends BaseComponent {
   constructor() {
     super();
     this.view = new HeaderView();
-    this.isBlur = false;
-    this.isOpen = false;
+
+    // communication
+    this.unsubscribes.push(
+        store.subscribe(
+            searchTypes.SUBMIT_ON_HEADER,
+            () => {
+              const state = store.getState().search;
+              redirect(`/search?g=${state.group}&q=${state.value}`);
+            },
+        ),
+    );
   }
 
   /**
@@ -28,153 +44,35 @@ export default class Header extends BaseComponent {
     super.render();
     this.root = this.view.render();
 
-    const searchBtn = this.root.querySelector('.search__button');
-    const menuBtn = this.root.querySelector('.action-btns__menu-icon');
-    const searchInput = this.root.querySelector('.search__input');
-    const searchRow = this.root.querySelector('.search__row');
-    const groupOptions = this.root.querySelector(
-        '.search__row_group_dropdown',
-    );
+    const navItems = this.root.querySelector('.header__nav-items');
+    const addArticleBtn = this.root.querySelector('a.header__add-article-btn');
+    const headerTitle = this.root.querySelector('.header__title-block');
 
-    groupOptions.querySelector('.search__row_group_dropdown-content').childNodes
-        .forEach((group) => group.addEventListener(
+    // устанавливаем поисковую строку
+    const sr = new SearchRow(
+        searchActions.submitOnHeader,
+        true,
+        () => {
+          addArticleBtn.classList.add('hide');
+          navItems.style.pointerEvents = 'none';
+          if (MobileLayoutUtils.isDevicePhone()) {
+            headerTitle.style.display = 'none';
+          }
+        },
+        () => {
+          addArticleBtn.classList.remove('hide');
+          navItems.style.pointerEvents = 'all';
+          headerTitle.style.display = 'flex';
+        },
+    );
+    sr.mountInPlace(this.root);
+
+    this.root.querySelector('.header__add-article-btn-sign')
+        .addEventListener(
             'click',
-            (e) => {
-              groupOptions.querySelector('.search__row_group_bar').value =
-                  e.target.textContent;
-              store.dispatch(searchActions.setSearchGroup(
-                  e.target.dataset.search,
-                  e.target.textContent,
-              ));
-              // восстанавливаем потерянный при клике фокус
-              searchInput.focus();
-            }),
+            () => store.dispatch(editorActions.createArticle()),
         );
-
-    groupOptions.addEventListener(
-        'mouseover',
-        (e) => searchInput.removeEventListener('focusout', focusOutListener),
-    );
-    groupOptions.addEventListener(
-        'mouseout',
-        (e) => searchInput.addEventListener('focusout', focusOutListener),
-    );
-
-    searchBtn.addEventListener('click', (e) => {
-      e.preventDefault();
-      if (!this.isBlur && !this.isOpen) {
-        this.openSearchField();
-      }
-    });
-
-    searchInput.addEventListener('keydown', ({keyCode, target}) => {
-      if (keyCode === 13) {
-        store.dispatch(searchActions.setSearchValue(searchInput.value));
-        searchInput.blur();
-        redirect('/search');
-        // явно записываем группу поиска в строку,
-        // а то мало ли что там в редьюсере
-        // Обязательно селектор т.к. хедер перендерится при переходе
-        this.root.querySelector('.search__row_group_bar').value =
-            store.getState().search.description;
-      }
-    });
-
-    const focusOutListener = (e) => {
-      console.log('{Header} searchField lost focus');
-      this.closeSearchField();
-      this.isBlur = true;
-      const delay = parseFloat(searchRow.style.transitionDuration) * 1000;
-      setTimeout(() => this.isBlur=false, delay);
-    };
-    searchInput.addEventListener('focusout', focusOutListener);
-
-    menuBtn?.addEventListener('click', (e) => {
-      e.preventDefault();
-
-      const sidebar = document.querySelector('.sidebar');
-      const searchBtn = document.querySelector('.search__button');
-      const menuBtnThis = document.querySelector('.action-btns__menu-icon');
-      const overlay = document.querySelector('.modal__overlay');
-
-      if (!searchBtn.classList.contains('hide')) {
-        searchBtn.classList.add('hide');
-        menuBtnThis.classList.add('hide');
-        overlay.style.opacity = '1';
-        overlay.style.visibility = 'visible';
-
-        sidebar.style.display = 'flex';
-        overlay.appendChild(sidebar);
-
-        overlay.addEventListener('click', (e) => {
-          e.preventDefault();
-          hideSidebar();
-        });
-
-        const widthMatch = window.matchMedia('(min-width: 900px)');
-        widthMatch.addEventListener('change', (e) => {
-          e.preventDefault();
-          hideSidebar();
-        });
-      }
-    });
 
     return this.root;
   }
-
-  /**
-   * closeSearchField
-   */
-  closeSearchField() {
-    const searchBtn = this.root.querySelector('.search__button');
-    const navItems = this.root.querySelector('.header__nav-items');
-    const searchRow = this.root.querySelector('.search__row');
-    console.log('{Header} searchField close');
-    navItems.style.pointerEvents = 'all';
-    searchBtn.classList.add('search-icon');
-    searchBtn.classList.remove('cross-icon');
-    searchRow.classList.add('search__row_close');
-    searchRow.classList.remove('search__row_open');
-    this.isOpen = false;
-  };
-
-  /**
-   * openSearchField
-   */
-  openSearchField() {
-    const searchBtn = this.root.querySelector('.search__button');
-    const navItems = this.root.querySelector('.header__nav-items');
-    const searchRow = this.root.querySelector('.search__row');
-    const searchInput = this.root.querySelector('.search__input');
-    console.log('{Header} searchField open');
-    navItems.style.pointerEvents = 'none';
-    searchBtn.classList.remove('search-icon');
-    searchBtn.classList.add('cross-icon');
-    searchRow.classList.remove('search__row_close');
-    searchRow.classList.add('search__row_open');
-    searchInput.focus();
-    searchInput.select();
-    this.isOpen = true;
-  };
-}
-
-/**
- * Прячет сайдбар
- */
-function hideSidebar() {
-  const searchBtn = document.querySelector('.search__button');
-  const menuBtnThis = document.querySelector('.action-btns__menu-icon');
-  const overlay = document.querySelector('.modal__overlay');
-  const screen = document.querySelector('.screen');
-  const sidebar = document.querySelector('.sidebar');
-
-  searchBtn.classList.remove('hide');
-  menuBtnThis.classList.remove('hide');
-  overlay.style.opacity = '0';
-  overlay.style.visibility = 'hidden';
-
-  if (sidebar) {
-    screen.appendChild(sidebar);
-  }
-  overlay.innerHTML = overlay.innerHTML;
-}
+};

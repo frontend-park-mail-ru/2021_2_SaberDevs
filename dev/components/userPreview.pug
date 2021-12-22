@@ -2,8 +2,10 @@ include _onAvatarErrorMixin
 
 .user-preview
   a.user-preview__links(href='/profile')
-    .sidebar__nav-item(data-router='ignore') #{login}
-    //- TODO: firstName
+    if (firstName !== '' && lastName !== '' && firstName !== 'UNAUTHORIZED')
+      .sidebar__login(data-router='ignore') #{firstName} #{lastName}
+    else
+      .sidebar__login(data-router='ignore') #{login}
     +avatarMixin.user-img.user-preview__user-img(src=`${avatarUrl}` data-router='ignore')
   .profile-menu
       a.profile-menu__item(href='/profile/settings') Настройки

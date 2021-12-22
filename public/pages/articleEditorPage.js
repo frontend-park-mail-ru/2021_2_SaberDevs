@@ -50,6 +50,13 @@ export default class EditorPage extends BasePageMV {
    * Отобразить подконтрольную страницу.
    */
   show() {
+    if (!store.getState().authorization.firstName ||
+        !store.getState().authorization.lastName) {
+      ModalTemplates.needFullRegConfirm(
+          'Только пользователи, указавшие имя и фамилию могут быть авторами.',
+          'Вы можете ознакомиться с интерфейсом, но статью создать не сможете.',
+      );
+    }
     super.show();
     store.dispatch(
         changePageActions.changePage(

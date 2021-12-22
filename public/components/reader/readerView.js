@@ -1,6 +1,8 @@
 import BaseComponentView from '../_basic/baseComponentView.js';
 import articleReaderComponent from './articleReader.pug.js';
 
+import {genRanHexColor} from '../../common/utils.js';
+
 /**
  * @class ReaderView
  */
@@ -25,9 +27,23 @@ export default class ReaderView extends BaseComponentView {
    * @return {HTMLElement}
    */
   render(article) {
+    const tags = article?.tags?.map((el) => ({
+      content: el,
+      color: genRanHexColor(el),
+    }));
     const reader = document.createElement('div');
-    reader.innerHTML = articleReaderComponent(article);
-    // TODO: рисовать комментарии из стора
+    reader.innerHTML = articleReaderComponent({
+      ...article,
+      category: article?.category ? {
+        content: article.category,
+        color: genRanHexColor(article.category),
+      } : {
+        content: '',
+        color: '',
+        message: 'Комментарий',
+      },
+      tags,
+    });
 
     return reader.firstChild;
   }

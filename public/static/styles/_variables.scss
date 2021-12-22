@@ -4,22 +4,237 @@ $color-sidebar: #313030;
 $color-elements: #dee4ea;
 $color-warning: #bb1717;
 $color-selection: rgba(0, 0, 0, 0.2);
+
+// ///////////////////////////////// //
+//
+//               Fonts
+//
+// ///////////////////////////////// //
 $font-primary: "Roboto", sans-serif;
 $font-secondary: "Roboto", sans-serif;
 $font-logo: "Signika Negative", sans-serif;
 $font-thin: 300;
 $font-thick: 400;
-$font-size-small: 1rem;
-$font-size-normal: 1.5rem;
-$font-size-big: 2rem;
-$font-size-large: 2.5rem;
-$font-size-extreme: 3rem;
+$title-margin: 25px 0;
+
+@mixin font-size-small() {
+  @media (min-width: 901px) {
+    font-size: 1rem;
+  }
+
+  @media (max-width: 900px) {
+    font-size: 0.7rem;
+  }
+}
+
+@mixin font-size-normal() {
+  @media (min-width: 901px) {
+    font-size: 1.5rem;
+  }
+
+  @media (max-width: 900px) {
+    font-size: 1rem;
+  }
+}
+
+@mixin font-size-big() {
+  @media (min-width: 901px) {
+    font-size: 2rem;
+  }
+
+  @media (max-width: 900px) {
+    font-size: 1.4rem;
+  }
+}
+
+@mixin font-size-large() {
+  @media (min-width: 901px) {
+    font-size: 2.5rem;
+  }
+
+  @media (max-width: 900px) {
+    font-size: 1.75rem;
+  }
+}
+
+@mixin font-size-extreme() {
+  @media (min-width: 901px) {
+    font-size: 3rem;
+  }
+
+  @media (max-width: 900px) {
+    font-size: 2rem;
+  }
+}
+
+@mixin font-size-small() {
+  @media (min-width: 901px) {
+    font-size: 1rem;
+  }
+
+  @media (max-width: 900px) {
+    font-size: 0.7rem;
+  }
+}
+
+@mixin header-font-size() {
+  @media (min-width: 1201px) {
+    font-size: 1.5rem;
+  }
+
+  @media (max-width: 1200px) {
+    font-size: 1.25rem;
+  }
+
+  @media (max-width: 900px) {
+    font-size: 1rem;
+  }
+}
+
+@mixin title() {
+  @include font-size-large;
+
+  margin: $title-margin;
+  font-weight: $font-thick;
+}
+
+// ///////////////////////////////// //
+//
+//         Main Blocks Layout
+//
+// ///////////////////////////////// //
+
+@mixin mobile-display-none() {
+  @media (min-width: 901px) {
+    display: flex;
+  }
+
+  @media (max-width: 900px) {
+    display: none;
+  }
+}
+
+@mixin mobile-display-only() {
+  @media (min-width: 901px) {
+    display: none;
+  }
+
+  @media (max-width: 900px) {
+    display: flex;
+  }
+}
+
+@mixin mobile-modal-size() {
+  max-height: 90%;
+  @media (min-width: 901px) {
+    min-width: 30%;
+    min-height: 15%;
+    max-width: 55%;
+  }
+
+  @media (max-width: 900px) {
+    width: 82%;
+    min-height: 15%;
+  }
+}
+
 $page-top: 30px;
 $screen-width: 1440px;
 $border-radius: 5px;
 $border: 2px solid $color-primary;
 $box-shadow: 0 0 5px rgba(0, 0, 0, 0.25);
 $button-opacity: 0.5;
+
+// ///////////////////////////////// //
+//
+//           Images & Icons
+//
+// ///////////////////////////////// //
+@mixin icon() {
+  background-position: center center;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+@mixin icon-size-width() {
+  @media (min-width: 901px) {
+    width: 40px;
+  }
+
+  @media (max-width: 900px) {
+    width: 30px;
+  }
+}
+
+@mixin side-bar-user-icon-size() {
+  @media (min-width: 1201px) {
+    width: 60px;
+    height: 60px;
+  }
+
+  @media (max-width: 1200px) {
+    width: 55px;
+    height: 55px;
+  }
+
+  @media (max-width: 900px) {
+    width: 35px;
+    height: 35px;
+  }
+}
+
+@mixin icon-size-height() {
+  @media (min-width: 901px) {
+    height: 40px;
+  }
+
+  @media (max-width: 900px) {
+    height: 30px;
+  }
+}
+
+@mixin icon-size() {
+  @include icon-size-width();
+  @include icon-size-height();
+}
+
+@mixin icon-size-tooltip-offset() {
+  @media (min-width: 901px) {
+    margin-left: 40px;
+    margin-top: -50px;
+  }
+
+  @media (max-width: 900px) {
+    margin-left: 30px;
+    margin-top: -35px;
+  }
+}
+
+@mixin icon-size-small-width() {
+  @media (min-width: 901px) {
+    width: 25px;
+  }
+
+  @media (max-width: 900px) {
+    width: 20px;
+  }
+}
+
+@mixin icon-size-small-heigth() {
+  @media (min-width: 901px) {
+    height: 25px;
+  }
+
+  @media (max-width: 900px) {
+    height: 20px;
+  }
+}
+
+@mixin icon-size-small() {
+  @include icon-size-small-width();
+  @include icon-size-small-heigth();
+}
+
 $img-bg: url("Static/img/background-img.png");
 $img-bg-space: url("Static/img/background-space.png");
 $img-bg2: url("Static/img/background-img.png");
@@ -29,8 +244,11 @@ $img-icon-eye-open: url("Static/img/icons/eye-open.svg");
 $img-key: url("Static/img/icons/key.svg");
 $img-mail: url("Static/img/icons/mail.svg");
 $img-username: url("Static/img/icons/username.svg");
-$img-icon-like: url("Static/img/icons/like.svg");
-$img-icon-like-hover: url("Static/img/icons/like_hover.svg");
+$img-icon-like: url("Static/img/icons/up.png");
+$img-icon-dislike: url("Static/img/icons/down.png");
+$img-icon-user-default: url("Static/img/user_icon_loading.svg");
+// $img-icon-like: url("Static/img/icons/like.svg");
+// $img-icon-like-hover: url("Static/img/icons/like_hover.svg");
 $img-icon-comments: url("Static/img/icons/comment.svg");
 $img-icon-comments-hover: url("Static/img/icons/comment_hover.svg");
 $img-icon-share: url("Static/img/icons/share.svg");
@@ -42,3 +260,9 @@ $img-icon-search-hover: url("Static/img/icons/search_hover.svg");
 $img-icon-arrow: url("Static/img/icons/arrow.svg");
 $img-icon-send: url("Static/img/icons/send.svg");
 $img-icon-menu: url("Static/img/icons/menu.svg");
+
+$logo-icon-vk: url("Static/img/share/VK.com-logo.svg");
+$logo-icon-tg: url("https://telegram.org/img/WidgetButton_LogoLarge.png");
+// $logo-icon-ok: url("Static/img/share/ok_logo.png");
+$logo-icon-ok: url("Static/img/share/odnoklassniki_PNG16.png");
+$logo-icon-email: url("http://png-2.findicons.com/files/icons/573/must_have/48/mail.png");

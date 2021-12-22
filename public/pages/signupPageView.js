@@ -1,5 +1,4 @@
 import BasePageView from './basePageView.js';
-
 import SignupForm from '../components/signupForm/signupForm.js';
 
 // ///////////////////////////////// //
@@ -33,51 +32,50 @@ export default class SignupPageView extends BasePageView {
     pageDiv.className = 'page-space';
     const contentDiv = document.createElement('div');
     contentDiv.className = 'content-space';
-    const formDiv = document.createElement('div');
+
+    // //////////////////////////////////
+
     const logoDiv = document.createElement('a');
     logoDiv.innerHTML = 'SaberNews';
-    logoDiv.className = 'header__title';
+    logoDiv.className = 'header__title card__lift-effect';
     logoDiv.href = '/';
-    logoDiv.style.cssText = 'position: absolute;';
 
     // //////////////////////////////////
 
-    // Элементы навигации
-    const changeFormTypeBtn = document.createElement('a');
-    changeFormTypeBtn.textContent = 'Создать аккаунт';
-    changeFormTypeBtn.dataset.router = 'ignore';
-
-    // форма
-    formDiv.appendChild(new SignupForm(false).render());
-
-    // //////////////////////////////////
-
-    this.formDiv = formDiv;
-    this.changeFormTypeBtn = changeFormTypeBtn;
-
-    // //////////////////////////////////
-
-    contentDiv.appendChild(formDiv);
-    contentDiv.appendChild(changeFormTypeBtn);
-    pageDiv.appendChild(logoDiv);
+    contentDiv.appendChild(logoDiv);
     pageDiv.appendChild(contentDiv);
     bkgDiv.appendChild(pageDiv);
     this.root.appendChild(bkgDiv);
   }
 
   /**
-   * Сменить форму логин / регистрация
-   * @param {bolean} showRegister true, чтобы отобразить форму регистрации
-   * flase - логина
+   * @param {boolean} showRegister
    */
-  switchFormType(showRegister) {
-    if (!this.formDiv || !this.changeFormTypeBtn) {
-      console.warn('[SignupPage] was not rendered yet');
-      return;
-    }
-    this.formDiv.innerHTML = '';
-    this.formDiv.appendChild(new SignupForm(showRegister).render());
-    this.changeFormTypeBtn.textContent =
-      showRegister ? 'У меня уже есть аккаунт' : 'Создать аккаунт';
+  appendForm(showRegister) {
+    const logoDiv = this.root.querySelector('.header__title');
+
+    // Элементы навигации
+    const changeFormTypeBtn = document.createElement('a');
+    changeFormTypeBtn.textContent =
+        showRegister ? 'У меня уже есть аккаунт' : 'Создать аккаунт';
+    changeFormTypeBtn.href = showRegister ? '/login' : '/register';
+    // changeFormTypeBtn.dataset.router = 'ignore';
+    changeFormTypeBtn.className = 'form__link';
+
+    changeFormTypeBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      // this.view.switchFormType(!this.showRegister);
+    });
+
+    // форма
+    const form = (new SignupForm(showRegister).render());
+    form.className = 'modal__form';
+    const contentDiv = this.root.querySelector('.content-space');
+    contentDiv.innerHTML = '';
+
+    contentDiv.appendChild(logoDiv);
+    contentDiv.appendChild(form);
+    contentDiv.querySelector('#form-warning-label').parentElement
+        .insertAdjacentElement('beforeBegin', changeFormTypeBtn);
   }
 }

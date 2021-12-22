@@ -1,41 +1,89 @@
-$icon-size: 40px;
-$icon-font-size: 24px;
-$icon-small-size: 25px;
-$user-img: 60px;
+$icon-margin: 15px;
 
 .icon {
   @include row;
 
   &__img {
-    width: $icon-size;
-    height: $icon-size;
+    @include icon-size;
+    box-sizing: border-box;
+    border-radius: $border-radius;
+    border: 2px solid transparent;
     cursor: pointer;
   }
 
-  &__text {
-    font-size: $font-size-normal;
+  &__share {
+    display: flex;
+    @include icon-size();
+    background-position: center center;
+    background-repeat: no-repeat;
+    cursor: pointer;
+    margin-right: 15px;
+    border-radius: $border-radius;
+
+    &-vk {
+      @extend .icon__share;
+      background-color: transparent;
+      background-image: $logo-icon-vk;
+      background-size: cover; 
+    }
+
+    &-tg {
+      @extend .icon__share;
+      background-color: #0088CC;
+      background-image: $logo-icon-tg;
+      background-size: contain;
+    }
+
+    &-ok {
+      @extend .icon__share;
+      background-color: rgb(254, 152, 0);
+      background-image: $logo-icon-ok;
+      background-size: contain;
+    }
+
+    &-email {
+      @extend .icon__share;
+      background-color: $color-secondary;
+      background-image: $logo-icon-email;
+      background-size: auto;
+    }
+
+    &-idk {
+      @extend .icon__share;
+      background-color: transparent;
+    }
   }
+
+  &__text {
+    @include font-size-normal;
+    margin: 0 5px;
+  }
+}
+
+.icon-margin-r {
+  margin-right: $icon-margin;
 }
 
 .icon-small {
   @include row;
 
   &__img {
-    width: $icon-small-size;
-    height: $icon-small-size;
-    background-size: cover;
+    @include icon-size-small;
+    @include icon;
+
     cursor: pointer;
   }
 
   &__text {
-    font-size: $font-size-normal;
+    @include font-size-normal;
   }
 }
 
 .user-img {
   border: $border;
   border-radius: $border-radius;
-  width: $user-img;
-  height: $user-img;
   pointer-events: all;
+  @include side-bar-user-icon-size;
+  background-position: center center;
+  background-repeat: no-repeat;
 }

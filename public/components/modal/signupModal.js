@@ -13,7 +13,7 @@ export function signupModal(showRegister) {
   changeFormTypeBtn.textContent =
     showRegister ? 'У меня уже есть аккаунт' : 'Создать аккаунт';
   changeFormTypeBtn.href = showRegister ? '/login' : '/register';
-  changeFormTypeBtn.classList.add('link');
+  changeFormTypeBtn.classList.add('form__link');
   changeFormTypeBtn.addEventListener('click', (e) => {
     e.preventDefault();
 
@@ -26,10 +26,13 @@ export function signupModal(showRegister) {
   // форма
   const signupForm = new SignupForm(showRegister);
   const form = signupForm.render();
+  form.className = 'modal__form';
 
   const contentDiv = document.createElement('div');
+  contentDiv.className = 'modal__content-inner';
   contentDiv.appendChild(form);
-  contentDiv.appendChild(changeFormTypeBtn);
+  contentDiv.querySelector('#form-warning-label').parentElement
+      .insertAdjacentElement('beforeBegin', changeFormTypeBtn);
 
   Modal.setDocTitle(`SaberProject | ${showRegister ? 'Sign Up' : 'Login'}`);
   Modal.setTitle(showRegister ? 'Регистрация' : 'Вход');

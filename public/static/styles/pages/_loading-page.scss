@@ -1,10 +1,11 @@
 /* border-radius nen не убирать - иначе стиль становится дефолтным */
 progress.progress__loading {
-  display: block;
-  margin-top: 80vh;
+  display: flex;
+  top: 80%;
   border-radius: 0;
   width: 100%;
   height: 10px;
+  position: absolute;
 }
 
 /* стилизация фона */

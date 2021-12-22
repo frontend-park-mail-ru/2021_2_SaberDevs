@@ -99,6 +99,44 @@ export default function profilePageReducer(
         cards: [],
         isEndFound: false,
       };
+    case profilePageTypes.DELETE_CARD: {
+      const idx = state.cards.findIndex((card) => card.id === action.payload);
+      if (idx !== -1) {
+        return {
+          ...state,
+          cards: state.cards.slice(0, idx).concat(state.cards.slice(idx + 1)),
+        };
+      } else {
+        return state;
+      }
+    }
+    case profilePageTypes.LIKE:
+      const idx = state.cards.findIndex((card) => card.id===action.payload.id);
+      if (idx !== -1) {
+        const likeCardCopy = JSON.parse(JSON.stringify(state.cards[idx]));
+        /*
+          liked 0  | sign 1  => liked 1
+          liked -1 | sign 1  => liked 1
+          liked 1  | sign 1  => liked 0
+          liked 0  | sign -1 => liked -1
+          liked -1 | sign -1 => liked 0
+          liked 1  | sign -1 => liked -1
+        */
+        if (likeCardCopy.liked ^ action.payload.sign === 0) {
+          likeCardCopy.liked = 0; // отменили оценку
+        } else {
+          likeCardCopy.liked = action.payload.sign;
+        }
+        likeCardCopy.likes = action.payload.likes;
+        return {
+          ...state,
+          cards: state.cards.slice(0, idx)
+              .concat([likeCardCopy])
+              .concat(state.cards.slice(idx + 1)),
+        };
+      } else {
+        return state;
+      }
   }
   return state;
 }

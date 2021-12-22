@@ -1,10 +1,15 @@
 include _onAvatarErrorMixin
 
 .comment(id=`${id}` data-author=`${author.login}`)
+  a(name=`#comments-id=${id}`)
   .comment__content
-    +avatarMixin.comment__author-photo(src=`${author.avatarUrl}`)
+    a(href=`/user/${author.login}`)
+      +avatarMixin.comment__author-photo(src=`${author.avatarUrl}` data-router='ignore')
     .comment__description
-      .comment__author-name #{author.lastName} #{author.firstName}
+      if (author.lastName !=='' || author.firstName !== '')
+        a(href=`/user/${author.login}`).comment__author-name #{author.lastName} #{author.firstName}
+      else
+        a(href=`/user/${author.login}`).comment__author-name #{author.login}
       .comment__text #{text}
   .comment__bottom
     .action-btns
@@ -14,7 +19,8 @@ include _onAvatarErrorMixin
         .comment__time #{datetime}
       button.comment__edit-btn(style='display: none') Изменить
       button.comment__answer-btn Ответить
-      .icon-small.action-btns_m-right
+      div(data-inplace='place-for-likes')
+      //- .icon-small.action-btns_m-right
         .icon-small__text #{likes}
         .action-btns__likes-icon.icon-small__img
   .comment__answers !{answers}

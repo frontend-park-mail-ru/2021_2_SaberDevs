@@ -1,0 +1,29 @@
+.category {
+  display: flex;
+
+  // flex-wrap: wrap;
+  // отступ справа + снизу, чтобы много тегов разбивались по строкам
+  margin: $tag-margin;
+  border: 2px solid transparent;
+  border-radius: $border-radius;
+  box-sizing: border-box;
+
+  &__content {
+    @include font-size-normal;
+
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    border: 2px solid transparent;
+    border-radius: $border-radius;
+    padding: $tag-padding;
+    box-sizing: border-box;
+    font-weight: 400;
+    white-space: break-spaces;
+  }
+
+  &-glass {
+    @extend .category;
+    background-color: rgba(255, 255, 255, 0.05);
+  }
+}

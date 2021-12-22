@@ -106,6 +106,7 @@ export default class MainPage extends BasePageMV {
   constructor(root) {
     super(root);
     this.view = new MainPageView(root);
+    this.lastSeenCardId = 0;
 
     // /////////////////////////////////
     //
@@ -134,6 +135,12 @@ export default class MainPage extends BasePageMV {
         ),
     );
 
+    // скролим на последнюю запомненную позицию. Компонент уже перерендерен
+    if (this.lastSeenCardId !== 0) {
+      this.view.pageComponents.feed.root.querySelector('#'+this.lastSeenCardId)
+          ?.scrollIntoView(); // ?. если карточки с таким айди больше нет
+    }
+
     if (store.getState().mainPage.cards.length === 0) {
       store.dispatch(uploadNextCards);
     }
@@ -153,7 +160,20 @@ export default class MainPage extends BasePageMV {
    * Скрыть подконтрольную страницу
    */
   hide() {
+    // ушли с главной. Запоминаем айди последней карточки,
+    // которая была в поле зрения. Компонент еще не должен быть
+    // скрыт, иначе поизиция 0.
+    this.lastSeenCardId = 0;
+    // преобразует NodeList в Array
+    const cardDivArray = Array.prototype.slice.call(
+        this.view.pageComponents.feed.root.querySelectorAll('.card'),
+    );
+    this.lastSeenCardId = cardDivArray
+        .find((el) => el.getBoundingClientRect().y<getUserWindowHeight() &&
+        el.getBoundingClientRect().y > 0)?.id || 0;  // если карточек нет
+
     super.hide();
+
     const scrollable = this.view.root.querySelector('.content');
     if (!scrollable) {
       console.warn('[MainPage] нет дивака .content');

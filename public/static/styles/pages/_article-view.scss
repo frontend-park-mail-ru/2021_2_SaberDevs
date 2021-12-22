@@ -4,6 +4,9 @@ $article-text-margin-bottom: 20px;
 $article-main-picture-margin: 15px 0;
 $article-tag-margin-right: 15px;
 $photo-size: 50px;
+$row-margin-bottom: 15px;
+$row-margin-bottom-tags-categories: calc(15px - $tag-margin-bottom);
+$article-view-title-margin-extra: calc(25px - $row-margin-bottom) 0 25px;
 
 .article-view {
   @include col;
@@ -14,62 +17,43 @@ $photo-size: 50px;
   min-height: 450px;
   font-weight: $font-thin;
 
+  &__heading {
+    width: 90%;
+  }
+
   &__content {
+    margin-top: 2rem;
     padding-bottom: 5%;
     width: 90%;
   }
 
-  &__top {
-    @include right;
+  &__top-btns {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: $row-margin-bottom;
   }
 
-  &__back-btn {
-    margin-left: 5px;
-    font-size: $font-size-normal;
-    cursor: pointer;
-
-    &:hover {
-      text-decoration: underline;
-      color: $color-secondary;
-      cursor: pointer;
-    }
+  &__categories {
+    margin-bottom: $row-margin-bottom-tags-categories;
   }
 
   &__title {
-    margin-bottom: $article-title-margin-bottom;
-    font-weight: $font-thick;
-    font-size: $font-size-large;
+    @include title;
+    margin: $article-view-title-margin-extra;
+    word-break: break-word;
   }
-
-  &__info {
-    @include row;
-
-    justify-content: space-between;
-  }
-
+  
   &__main-picture {
     margin: $article-main-picture-margin;
     width: 100%;
   }
 
   &__text {
+    @include font-size-normal;
+    word-break: break-word;
     margin-bottom: $article-text-margin-bottom;
-    font-size: $font-size-normal;
-  }
-
-  &__tags {
-    display: flex;
-  }
-
-  &__tag {
-    margin-right: $article-tag-margin-right;
-    font-size: $font-size-normal;
-
-    &:hover {
-      text-decoration: underline;
-      color: $color-secondary;
-      cursor: pointer;
-    }
   }
 
   &__author-time {
@@ -77,7 +61,7 @@ $photo-size: 50px;
   }
 
   &__author {
-    font-size: $font-size-normal;
+    @include font-size-normal;
 
     &:hover {
       text-decoration: underline;
@@ -87,16 +71,9 @@ $photo-size: 50px;
   }
 
   &__time {
+    @include font-size-normal;
+
     margin: 0 19px;
-    font-size: $font-size-normal;
-  }
-
-  &__category {
-    margin: 0 10px;
-
-    // font-weight: 200;
-
-    font-size: $font-size-normal;
   }
 
   &__add-comment {
@@ -115,11 +92,12 @@ $photo-size: 50px;
   }
 
   &__comment-input {
+    @include font-size-normal;
+
     border: 3px solid $color-elements;
     border-radius: $border-radius;
     padding: 15px;
     width: 100%;
-    font-size: $font-size-normal;
     background-color: $color-elements;
 
     &:hover {

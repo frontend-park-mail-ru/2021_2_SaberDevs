@@ -67,6 +67,17 @@ export default function searchPageReducer(state = InitialSearchState, action) {
         cards: state.cards.concat(cards),
         isEndFound,
       };
+    case searchTypes.DELETE_CARD: {
+      const idx = state.cards.findIndex((card) => card.id === action.payload);
+      if (idx !== -1) {
+        return {
+          ...state,
+          cards: state.cards.slice(0, idx).concat(state.cards.slice(idx + 1)),
+        };
+      } else {
+        return state;
+      }
+    }
     case searchTypes.CLEAR_CARDS:
       return {
         ...state,
@@ -76,6 +87,31 @@ export default function searchPageReducer(state = InitialSearchState, action) {
         lastScrollPos: 0,
         isEndFound: false,
       };
+    case searchTypes.LIKE:
+      const idx = state.cards.findIndex((card) => card.id===action.payload.id);
+      if (idx !== -1) {
+        const likeCardCopy = JSON.parse(JSON.stringify(state.cards[idx]));
+        if (likeCardCopy.liked ^ action.payload.sign === 0) {
+          likeCardCopy.liked = 0; // отменили оценку
+        } else {
+          likeCardCopy.liked = action.payload.sign;
+        }
+        likeCardCopy.likes = action.payload.likes;
+        return {
+          ...state,
+          cards: state.cards.slice(0, idx)
+              .concat([likeCardCopy])
+              .concat(state.cards.slice(idx + 1)),
+        };
+      } else {
+        return state;
+      }
+    case searchTypes.SHOW_EMPTY_FEED:
+      return state;
+    case searchTypes.SUBMIT:
+      return state;
+    case searchTypes.REQUEST:
+      return state;
   }
   return state;
 }

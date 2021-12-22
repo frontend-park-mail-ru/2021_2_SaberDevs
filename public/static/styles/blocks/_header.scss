@@ -12,10 +12,11 @@
 }
 
 .header {
+  @include header-height;
+
   display: flex;
   align-items: flex-start;
   width: 100%;
-  height: $header-size;
   font-family: $font-secondary;
   background-color: $color-primary;
 
@@ -24,11 +25,23 @@
 
     position: relative;
     z-index: 1;
+    display: flex;
     transition: all 1s;
+    @include header-font-size;
+
+    @include mobile-display-none();
   }
 
   &__nav-item {
-    @include nav-item;
+    display: flex;
+    align-items: center;
+    height: -webkit-fill-available;
+
+    &-sign {
+      @include nav-item;
+
+      display: flex;
+    }
 
     &_active {
       border-bottom: 2px solid $color-secondary;
@@ -36,13 +49,23 @@
 
     &:hover {
       background-color: $color-secondary;
+      // cursor: pointer;
+    }
+
+    &-active {
+      border-bottom: 2px solid $color-elements;
     }
   }
 
   &__title {
-    margin: $title-margin;
+    @include font-size-large;
+
+    margin: auto 20px;
     font-family: $font-logo;
-    font-size: $font-size-large;
+
+    @media (max-width: 400px) {
+      margin: auto 10px;
+    }
   }
 
   &__title-block {
@@ -50,9 +73,9 @@
     height: 100%;
 
     &:hover {
-      // transform: translateY(-10px);
-      // transition: transform 0.5s ease, -webkit-transform 0.5s ease, -moz-transform 0.5s ease;
-      animation: do-levitation 0.5s alternate ease-in-out infinite;
+      @media (min-width: 401px) {
+        animation: do-levitation 0.5s alternate ease-in-out infinite;
+      }
       cursor: pointer;
     }
   }
@@ -62,5 +85,51 @@
     display: flex;
     width: 100%;
     height: 100%;
+  }
+
+  &__right-block {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    width: 100%;
+    height: -webkit-fill-available;
+  }
+
+  &__add-article-btn {
+    @include font-size-normal;
+
+    z-index: 2;
+    display: flex;
+    height: 100%;
+    color: $color-elements;
+    background-color: $color-secondary;
+    transition: 0.5s;
+    border-bottom: 2px solid $color-elements;
+
+    &-sign {
+      @include font-size-normal;
+
+      display: flex;
+      padding: 10px;
+      width: -webkit-fill-available;
+      height: -webkit-fill-available;
+      text-align: center;
+
+      &:hover {
+        background-color: $color-selection;
+        cursor: pointer;
+      }
+    }
+  }
+
+  &__search-btn {
+    @include header-search-btn-size;
+
+    display: flex;
+
+    &-mobile-hideble {
+      @include header-search-btn-size;
+      @include mobile-display-only;
+    }
   }
 }

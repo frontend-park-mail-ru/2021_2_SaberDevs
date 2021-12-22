@@ -15,12 +15,28 @@ module.exports = {
     clean: true,
     assetModuleFilename: 'static/[name][ext][query]',
   },
+  optimization: {
+    minimize: true,
+  },
+
   plugins: [
+    // new WorkboxPlugin.GenerateSW({
+
     new CopyPlugin({
       patterns: [
         {
-          from: './public/static/img/user_icon_loading.svg',
+          from: './public/static/img/',
           to: 'img/',
+        },
+        {
+          from: './public/serviceWorker.js',
+          to: '.',
+          // Terser skip this file for minimization
+          info: {minimized: true},
+        },
+        {
+          from: './public/favicon.ico',
+          to: '.',
         },
       ],
     }),
@@ -38,9 +54,10 @@ module.exports = {
     }),
     new CleanWebpackPlugin(),
     new MiniCssExtractPlugin({
-      filename: '[name].[contenthash].css',
+      filename: '[name].css',
     }),
   ],
+
   module: {
     rules: [
       {
@@ -48,22 +65,28 @@ module.exports = {
         use: [MiniCssExtractPlugin.loader, 'css-loader', 'sass-loader'],
       },
       {
-        test: /\.(jpe?g|png|gif|svg|ico)$/i,
+        test: /\.(jpe?g|png|gif|svg|ico|webp)$/i,
         type: 'asset',
         generator: {
-          filename: 'img/[hash][ext][query]',
+          filename: 'img/[name][ext][query]',
         },
       },
       {
         test: /\.(ttf|woff|woff2|eot)$/,
         type: 'asset',
         generator: {
-          filename: 'fonts/[hash][ext][query]',
+          filename: 'fonts/[name][ext][query]',
         },
       },
       {
         test: /\.(js)$/,
-        use: 'babel-loader',
+        loader: 'babel-loader',
+        options: {
+          exclude: [
+            // \\ for Windows, \/ for Mac OS and Linux
+            /node_modules/,
+          ],
+        },
       },
     ],
   },
