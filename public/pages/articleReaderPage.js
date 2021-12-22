@@ -77,23 +77,15 @@ export default class ReaderPage extends BasePageMV {
         }))
         // рисуем комменты
         .then((comments) => {
-          // TODO: приходят не строки. Хорошо бы, чтоы Леша пофиксил
           // здесь можно преобразовать типы при необходимости.
           comments = comments
               .map((element) => translateServerComment(element));
-          const baseComments = comments.filter((el) => el.parentId === 0);
+          const baseComments = comments.filter((el) => el.parentId === 0)
+              .sort((a, b) => a.datetimeMS < b.datetimeMS ? -1 : 1);
           baseComments.forEach((baseComment) => {
             baseComment.answers = comments
                 .filter((el) => el.parentId === baseComment.id)
-                // TODO: проверить
                 .sort((a, b) => a.datetimeMS < b.datetimeMS ? -1 : 1);
-            // .sort((a, b) => {
-            //   if (a.datetime < b.datetime) {
-            //     return -1;
-            //   } else {
-            //     return 1;
-            //   }
-            // });
           });
           store.dispatch(
               readerActions.saveArticleComments(idUrlParam, baseComments),

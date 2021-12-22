@@ -184,7 +184,6 @@ export default function readerReducer(state = InitialReaderState, action) {
       }
       // поиск по комментариям 0 уровня или по ответам удался
       if (commentsIdx !== -1) {
-        console.warn('коментарий с айди найден', {commentsIdx, answerIdx});
         // глубокая копия комментариев к текущей статье
         const commentsDeepCopy =
             JSON.parse(JSON.stringify(state[state.currentId].commentsContent));
@@ -241,7 +240,6 @@ export default function readerReducer(state = InitialReaderState, action) {
       }
       // поиск по комментариям 0 уровня или по ответам удался
       if (commentsIdx !== -1) {
-        console.warn('коментарий с айди найден', {commentsIdx, answerIdx});
         // глубокая копия комментариев к текущей статье
         const commentsDeepCopy =
             JSON.parse(JSON.stringify(state[state.currentId].commentsContent));
@@ -257,7 +255,6 @@ export default function readerReducer(state = InitialReaderState, action) {
         } else {
           changeObj.liked = action.payload.sign;
         }
-        console.warn(commentsDeepCopy);
         return {
           ...state,
           [state.currentId]: {

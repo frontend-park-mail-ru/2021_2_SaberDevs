@@ -1,6 +1,7 @@
 include _onAvatarErrorMixin
 
 .comment(id=`${id}` data-author=`${author.login}`)
+  a(name=`#comments-id=${id}`)
   .comment__content
     a(href=`/user/${author.login}`)
       +avatarMixin.comment__author-photo(src=`${author.avatarUrl}` data-router='ignore')

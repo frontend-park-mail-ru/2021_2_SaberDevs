@@ -53,10 +53,17 @@ function createCommentChangeListener(commentDiv, comment) {
                     newComment,
                     store.getState().authorization,
                 );
-                commentDiv.innerHTML = commentComponent(newComment);
                 store.dispatch(readerActions
                     .editArticleComment(comment.id, newComment.text),
                 );
+                // TODO: проверить
+                const state = store.getState().reader;
+                const newCommentTransformed =
+                    state[state.currentId].commentsContent.find(
+                        (el) => el.id === comment.id,
+                    );
+                console.warn({newCommentTransformed})
+                commentDiv.innerHTML = commentComponent(newCommentTransformed);
               })
               .catch((err) => {
                 if (responseStatus !== 0) {
@@ -189,6 +196,8 @@ function appendTextField(root, message, comment, isFieldClear, onClick) {
   sendBtn.addEventListener('click', (e) => {
     e.preventDefault();
     submitAction();
+    // TODO: проверить что после клика по кнопке сетится фокус-оут-листер
+    input.focus();
   });
   // нажатие Enter
   input.addEventListener('keydown', ({keyCode, target}) => {

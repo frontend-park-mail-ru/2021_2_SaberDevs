@@ -1,6 +1,7 @@
 // не используется. Перешли на вебпак
 const cacheName = 'SaberDevs-Project';
 const APIPrefix = '/api/v1/';
+const appUrlPM = 'https://sabernews.ru';
 
 // /dev/createCachedList.js заполняет этот список автоматически
 const cacheUrls = [
@@ -9,6 +10,7 @@ const cacheUrls = [
   './favicon.ico',
   './index.html',
   './main.bandle.js',
+  './main.bandle.js.LICENSE.txt',
   './main.css',
   './serviceWorker.js',
   './img/background-img.png',
@@ -114,7 +116,13 @@ self.addEventListener('push', (e) => {
     image: 'logo-for-sharing.png',
     lang: 'ru-RU',
     vibrate: [200, 300, 200, 300],
-    body: 'Народ умнеет, милорд',
+    body: 'Новое событие под одной из Ваших статей',
+    actions: [
+      {action: 'explore', title: 'Explore this new world',
+        icon: 'images/checkmark.png'},
+      {action: 'close', title: 'Close notification',
+        icon: 'images/xmark.png'},
+    ]
   };
 
   /*
@@ -158,8 +166,9 @@ self.addEventListener('push', (e) => {
     }
   */
   // TODO: url, actions
-  const data = e.data.data;
-  switch (e.data.type) {
+  const data = e.data.json()?.data;
+  console.log('[Push Manager]', {'recieved': e.data.json()});
+  switch (e.data.json().type) {
     case 0: {
       title = 'У Вашей статьи новый лайк!';
       options.body = `
@@ -193,4 +202,21 @@ self.addEventListener('push', (e) => {
   e.waitUntil(
       self.registration.showNotification(title, options),
   );
+});
+
+self.addEventListener('notificationclick', (e) => {
+  // const primaryKey = notification.data.primaryKey;
+  const data = e.data.json()?.data;
+  switch (e.action) {
+    case 'comment': {
+      clients.openWindow(
+          // TODO:
+          // `${appUrlPM}/article/${data.articleId}#comments-id=${commentId}`,
+          `${appUrlPM}/article/${data.articleId}#comments`,
+      );
+    }
+    default: {
+      console.log('[PushManager] unregistered action', e.action);
+    }
+  }
 });

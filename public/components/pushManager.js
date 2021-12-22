@@ -24,7 +24,7 @@ export default class PushManager {
 }
 
 /**
- * проверяет подпиську и предлагает создать, если нет
+ * проверяет подписку и предлагает создать, если нет
  */
 function pushSubsribe() {
   navigator.serviceWorker.ready

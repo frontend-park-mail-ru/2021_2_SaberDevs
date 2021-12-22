@@ -54,6 +54,7 @@ if ('serviceWorker' in navigator && !disableSW) {
       .catch((err) => {
         console.error(err);
       });
+  PushManager.init();
 } else {
   if (disableSW) {
     console.warn('ServiceWorker disbled with disableSW set to true');
@@ -130,5 +131,4 @@ loadingScreen.start();
   await loadingScreen.end();
   linksController.enable();
   router.start();
-  PushManager.init();
 })();
