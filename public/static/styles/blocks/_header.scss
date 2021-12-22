@@ -62,6 +62,7 @@
 
     margin: auto 20px;
     font-family: $font-logo;
+    z-index: 2;
 
     @media (max-width: 400px) {
       margin: auto 10px;
@@ -73,7 +74,7 @@
     height: 100%;
 
     &:hover {
-      @media (min-width: 401px) {
+      @media (min-width: 901px) {
         animation: do-levitation 0.5s alternate ease-in-out infinite;
       }
       cursor: pointer;

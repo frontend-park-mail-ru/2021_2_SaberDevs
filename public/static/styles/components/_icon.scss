@@ -43,6 +43,7 @@ $icon-margin: 15px;
 
     &-email {
       @extend .icon__share;
+      margin-right: 0;
       background-color: $color-secondary;
       background-image: $logo-icon-email;
       background-size: auto;

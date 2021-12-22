@@ -37,6 +37,7 @@ $article-view-title-margin-extra: calc(25px - $row-margin-bottom) 0 25px;
 
   &__categories {
     margin-bottom: $row-margin-bottom-tags-categories;
+    flex-wrap: wrap;
   }
 
   &__title {
@@ -89,6 +90,12 @@ $article-view-title-margin-extra: calc(25px - $row-margin-bottom) 0 25px;
   &__send-comment-btn {
     width: 80px;
     height: 80px;
+    @media (max-width: 600px) {
+      width: 60px;
+      height: 60px;
+      margin-left: -60px;
+      z-index: 2;
+    }
   }
 
   &__comment-input {

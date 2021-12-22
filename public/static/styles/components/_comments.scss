@@ -38,6 +38,9 @@ $comment-description-margin-left: 20px;
 
 .comment {
   margin-bottom: 1rem;
+  @media (max-width: 600px) {
+    margin-bottom: 2.5rem;
+  }
 
   &__content {
     display: flex;
@@ -106,6 +109,10 @@ $comment-description-margin-left: 20px;
   
     @media (max-width: 900px) {
       margin-left: 39px;
+    }
+
+    @media (max-width: 600px) {
+      margin-top: 2.5rem;
     }
   }
 

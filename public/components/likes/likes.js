@@ -89,7 +89,11 @@ export default class Likes extends BaseComponent {
                 newLikesNum = parseInt(newLikesNum, 10);
                 this.dispatchLike(body.id, body.sign, newLikesNum);
                 console.warn('Успешно', this.liked === 1 ? 'отменил':'лайкнул');
-                likesNum.textContent = newLikesNum || ' ';
+                if (!newLikesNum || newLikesNum === '0') {
+                  likesNum.textContent = ' ';
+                } else {
+                  likesNum.textContent = newLikesNum;
+                }
                 this.likes = newLikesNum;
                 this.liked = sign;
                 if (sign === 1) {

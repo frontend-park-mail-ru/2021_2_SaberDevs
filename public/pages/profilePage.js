@@ -213,7 +213,7 @@ export default class ProfilePage extends BasePageMV {
    * @return {boolean}
    */
   isActive() {
-    if (document.URL.indexOf('/profile') !== -1 ||
+    if (document.URL.endsWith('/profile') ||
         document.URL.indexOf('/user/') !== -1
     ) {
       return false;
