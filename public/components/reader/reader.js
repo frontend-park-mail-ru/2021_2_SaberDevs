@@ -57,30 +57,8 @@ function createCommentChangeListener(commentDiv, comment) {
                 store.dispatch(readerActions
                     .editArticleComment(comment.id, newComment.text),
                 );
-                // TODO: проверить
                 commentDiv.querySelector('.comment__text').innerText =
                     newComment.text;
-                // const state = store.getState().reader;
-                // const articleComments = state[state.currentId].commentsContent;
-                // let newCommentTransformed = null;
-                // // один из основных комментариев
-                // if (commentDiv.parentElement.classList.contains('comments')) {
-                //   newCommentTransformed = articleComments
-                //       .find((el) => el.id === comment.id);
-                // } else {
-                //   // один из ответов
-                //   for (let i = 0; i < articleComments.length; i++) {
-                //     newCommentTransformed = articleComments[i].answers
-                //         .find((ans) => ans.id === comment.id);
-                //     if (newCommentTransformed) {
-                //       break;
-                //     }
-                //   }
-                // }
-                // console.warn({newCommentTransformed})
-                // if (newCommentTransformed) {
-                //   commentDiv.innerHTML=commentComponent(newCommentTransformed);
-                // }
               })
               .catch((err) => {
                 if (responseStatus !== 0) {
@@ -90,7 +68,6 @@ function createCommentChangeListener(commentDiv, comment) {
                   console.warn(err.message);
                 }
               });
-          // TODO: перейти на якорь добавленного коммента
         });
   });
 }
@@ -437,7 +414,6 @@ export default class Reader extends BaseComponent {
           1,
           parseInt(comment.id, 10),
           comment.likes,
-          // TODO: починить API
           comment.liked,
           (id, sign, newLikesNum) => store.dispatch(readerActions.likeComment(
               id, sign, newLikesNum,
@@ -604,6 +580,9 @@ function addCommentAction(root) {
           if (commentsDiv.childElementCount > 0) {
             root.querySelector('.comments-show').style.display = 'flex';
           }
+
+          // переход к новому комментарию
+          commentDiv.scrollIntoView();
         })
         .catch((err) => {
           if (responseStatus !== 0) {
