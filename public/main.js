@@ -23,7 +23,7 @@ import Router from './components/router.js';
 import SignupModal from './components/modal/signupModal.js';
 import Warning from './components/modal/serviceWarning.js';
 import ImgPreloader from './components/imgPreloader.js';
-import PushManager from './components/pushManager';
+import PushManager from './components/pushManager.js';
 
 // network
 import {logoutRequest} from './modules/ajaxRequests.js';

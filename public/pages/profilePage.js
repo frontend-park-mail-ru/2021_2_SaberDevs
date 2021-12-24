@@ -144,7 +144,7 @@ export default class ProfilePage extends BasePageMV {
     // на странице /profile работаем только с авторизованным пользователем
     if (document.URL.indexOf('/profile') !== -1) {
       // уже открыт профиль
-      if (this.view.isActive() && state.user.login === authState.login) {
+      if ( state.user.login === authState.login) {
         return;
       }
       store.dispatch(profilePageActions.setUserInfo(authState));

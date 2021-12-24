@@ -63,12 +63,12 @@ export default class CategoryPageView extends BasePageView {
         this.pageComponents.feed,
     ));
 
-    this.root.querySelector('.header__title-block')
-        .addEventListener('click', (e) => {
-          e.preventDefault();
-          e.stopPropagation();
-          this.root.querySelector(`a[name="feed-top"]`).scrollIntoView(true);
-        });
+    // this.root.querySelector('.header__title-block')
+    //     .addEventListener('click', (e) => {
+    //       e.preventDefault();
+    //       e.stopPropagation();
+    //       this.root.querySelector(`a[name="feed-top"]`).scrollIntoView(true);
+    //     });
 
     this.root.querySelector('.categories__search-block').style
         .margin = '20px 0 50px 0';

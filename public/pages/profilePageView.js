@@ -47,11 +47,11 @@ export default class ProfilePageView extends BasePageView {
         this.pageComponents.feed,
     ));
 
-    this.root.querySelector('.header__title-block')
-        .addEventListener('click', (e) => {
-          e.preventDefault();
-          e.stopPropagation();
-          this.root.querySelector(`a[name="feed-top"]`).scrollIntoView(true);
-        });
+    // this.root.querySelector('.header__title-block')
+    //     .addEventListener('click', (e) => {
+    //       e.preventDefault();
+    //       e.stopPropagation();
+    //       this.root.querySelector(`a[name="feed-top"]`).scrollIntoView(true);
+    //     });
   }
 }
