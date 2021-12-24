@@ -8,7 +8,7 @@ import {ajaxDebug} from '../globals.js';
 // const APIurl = 'http://87.228.2.178:8081/api/v1';
 // Тачка Дорофеева
 // const APIurl = 'http2://sabernews.ru:8081/api/v1';
-const APIurl = 'https://sabernews.ru:8081/api/v1';
+const APIurl = 'https://sabernews.ru/api/v1';
 // Локальная разработка
 // const APIurl = 'http://localhost:8081/api/v1';
 const CSRFCookieName = '_csrf';

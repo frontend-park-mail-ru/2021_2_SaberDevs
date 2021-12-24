@@ -138,21 +138,35 @@ export default class ProfileSettingsPage extends BasePageMV {
           errorClass = 2;
         } else if (lastName.length < 2) {
           errorClass = 3;
+        } else if (firstName.search(/\s/) !== -1) {
+          // та регулярка круче
+          errorClass = 4;
+        } else if (firstName.search(/\W/) !== -1) {
+          errorClass = 5;
         }
         this.view.pageComponents.settingsForm.appendWarning(
             'Такую фамилию выбрать нельзя' +
             (errorClass === 1 ? '. Цифр быть не должно.' : '') +
             (errorClass === 2 ? '. Слишком длинная.' : '') +
             (errorClass === 3 ? '. Слишком короткая.' : ''),
+            (errorClass === 4 ? '. Фамилия не должна содержать ' +
+                'пробельных символов.' : '') +
+            (errorClass === 5 ? '. Фамилия не должна содержать ' +
+                'разделителей и знаков пунктуации.' : '') +
             (errorClass === 0 ? `. Примеры фамилий:<br/>
             Смит<br/>
-            Доу-Смит<br/>
-            д'Аррас<br/>
-            Лютер Кинг<br/>
             Deniels<br/>
-            Ad-Din<br/>
-            Di Angelo
+            Ли
             ` : ''),
+            // (errorClass === 0 ? `. Примеры фамилий:<br/>
+            // Смит<br/>
+            // Доу-Смит<br/>
+            // д'Аррас<br/>
+            // Лютер Кинг<br/>
+            // Deniels<br/>
+            // Ad-Din<br/>
+            // Di Angelo
+            // ` : ''),
         );
         return;
       }
