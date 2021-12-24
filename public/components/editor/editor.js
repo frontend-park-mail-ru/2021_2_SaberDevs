@@ -319,7 +319,8 @@ export default class Editor extends BaseComponent {
       const category = state[state.currentId].category;
       if (state[state.currentId].category === '') {
         ModalTemplates.warn(
-            'Ошибка', 'Не забудьте указать одну из категорий, наиболее ' +
+            'Что-то не так',
+            'Не забудьте указать одну из категорий, наиболее ' +
             'точно описывающую Вашу статью',
         );
         return;

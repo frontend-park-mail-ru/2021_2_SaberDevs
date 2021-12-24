@@ -27,6 +27,7 @@ export default class PushManager {
  * проверяет подписку и предлагает создать, если нет
  */
 function pushSubsribe() {
+  console.log('[PushManager] Login reaction');
   navigator.serviceWorker.ready
       .then((reg) => {
         reg.pushManager.getSubscription();

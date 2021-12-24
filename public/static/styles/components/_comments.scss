@@ -70,6 +70,8 @@ $comment-description-margin-left: 20px;
 
   &__text {
     @include font-size-normal;
+    word-break: break-word;
+    overflow: hidden;
   }
 
   &__bottom {

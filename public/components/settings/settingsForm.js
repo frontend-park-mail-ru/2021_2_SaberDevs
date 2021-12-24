@@ -27,7 +27,7 @@ export default class SettingsForm extends BaseComponent {
 
   /**
    * Показать предупреждение в окне ошибок
-   * @param {string} msg
+   * @param {string | HTMLString} msg
    */
   appendWarning(msg) {
     const formWarning = this.root.querySelector('.settings__warning');
@@ -37,6 +37,6 @@ export default class SettingsForm extends BaseComponent {
     }
     formWarning.style.display = 'block';
     formWarning.style.margin = '3rem 0';
-    formWarning.textContent = msg;
+    formWarning.innerHTML = msg;
   }
 }

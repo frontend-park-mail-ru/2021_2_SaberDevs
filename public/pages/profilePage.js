@@ -102,24 +102,20 @@ export default class ProfilePage extends BasePageMV {
     //
     // /////////////////////////////////
     store.subscribe(authorizationTypes.LOGOUT, () => {
-      if (this.isActive()) {
-        console.log('[ProfilePage] Logout reaction');
-        if (document.URL.indexOf('/profile') !== -1) {
-          Utils.redirect('/');
-        }
+      console.log('[ProfilePage] Logout reaction');
+      if (document.URL.indexOf('/profile') !== -1) {
+        Utils.redirect('/');
       }
     });
 
-    // Если были на своей страницы и сделали вход,
+    // Если были на своей странице и сделали вход,
     // Перерисовываем страницу как профиль
     store.subscribe(authorizationTypes.LOGIN, () => {
-      if (this.isActive()) {
-        console.log('[ProfilePage] Login reaction');
-        if (document.URL.indexOf('/profile') === -1 &&
-            store.getState().profilePage.user.login ===
-            store.getState().authorization.login) {
-          Utils.redirect('/profile');
-        }
+      console.log('[ProfilePage] Login reaction');
+      if (document.URL.indexOf('/profile') === -1 &&
+          store.getState().profilePage.user.login ===
+          store.getState().authorization.login) {
+        Utils.redirect('/profile');
       }
     });
 

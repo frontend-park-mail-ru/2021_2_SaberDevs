@@ -105,7 +105,6 @@
     color: $color-elements;
     background-color: $color-secondary;
     transition: 0.5s;
-    border-bottom: 2px solid $color-elements;
 
     &-sign {
       @include font-size-normal;

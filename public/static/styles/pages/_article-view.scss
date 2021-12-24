@@ -55,6 +55,7 @@ $article-view-title-margin-extra: calc(25px - $row-margin-bottom) 0 25px;
     @include font-size-normal;
     word-break: break-word;
     margin-bottom: $article-text-margin-bottom;
+    overflow: hidden;
   }
 
   &__author-time {

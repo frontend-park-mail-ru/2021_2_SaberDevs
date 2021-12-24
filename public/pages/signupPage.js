@@ -43,6 +43,7 @@ export default class SignupPage extends BasePageMV {
     this.unsubscribeLogin = store.subscribe(
         authorizationTypes.LOGIN,
         () => {
+          console.log('[SignupPage] Login reaction');
           redirect('/');
         },
     );

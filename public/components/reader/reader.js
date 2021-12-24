@@ -262,6 +262,7 @@ export default class Reader extends BaseComponent {
         // даем возможность редактирования если статья принадлежит пользователю
         // и комментов
         store.subscribe(authorizationTypes.LOGIN, () => {
+          console.log('{Reader} Login reaction');
           const articleChangeBtn =
             this.root.querySelector('#article-change-btn');
           if (!articleChangeBtn) {

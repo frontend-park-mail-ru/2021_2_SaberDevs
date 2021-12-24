@@ -112,6 +112,8 @@ $article-labels-margin: 0 0 10px 0;
     display: block;
     min-height: 24rem;
     height: calc(100% - 2*$article-create-input-padding-vertical - $article-row-margin-vertical);
+    word-break: break-word;
+    overflow: hidden;
   }
 
   &__btns-row {

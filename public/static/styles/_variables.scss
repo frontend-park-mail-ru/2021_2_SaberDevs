@@ -235,9 +235,9 @@ $button-opacity: 0.5;
   @include icon-size-small-heigth();
 }
 
-$img-bg: url("Static/img/background-img.png");
-$img-bg-space: url("Static/img/background-space.png");
-$img-bg2: url("Static/img/background-img.png");
+$img-bg: url("Static/img/background-img.webp");
+$img-bg-space: url("Static/img/background-space.webp");
+$img-bg2: url("Static/img/background-img.webp");
 $img-icon-close: url("Static/img/icons/cross.svg");
 $img-icon-eye-closed: url("Static/img/icons/eye-closed.svg");
 $img-icon-eye-open: url("Static/img/icons/eye-open.svg");
@@ -247,8 +247,6 @@ $img-username: url("Static/img/icons/username.svg");
 $img-icon-like: url("Static/img/icons/up.png");
 $img-icon-dislike: url("Static/img/icons/down.png");
 $img-icon-user-default: url("Static/img/user_icon_loading.svg");
-// $img-icon-like: url("Static/img/icons/like.svg");
-// $img-icon-like-hover: url("Static/img/icons/like_hover.svg");
 $img-icon-comments: url("Static/img/icons/comment.svg");
 $img-icon-comments-hover: url("Static/img/icons/comment_hover.svg");
 $img-icon-share: url("Static/img/icons/share.svg");
@@ -263,6 +261,5 @@ $img-icon-menu: url("Static/img/icons/menu.svg");
 
 $logo-icon-vk: url("Static/img/share/VK.com-logo.svg");
 $logo-icon-tg: url("https://telegram.org/img/WidgetButton_LogoLarge.png");
-// $logo-icon-ok: url("Static/img/share/ok_logo.png");
-$logo-icon-ok: url("Static/img/share/odnoklassniki_PNG16.png");
+$logo-icon-ok: url("Static/img/share/odnoklassniki_PNG16.webp");
 $logo-icon-email: url("http://png-2.findicons.com/files/icons/573/must_have/48/mail.png");

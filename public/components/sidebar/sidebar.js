@@ -32,6 +32,7 @@ export default class Sidebar extends BaseComponent {
 
     this.unsubscribes.push(
         store.subscribe(authorizationTypes.LOGIN, () => {
+          console.log('{Sidebar} Login reaction');
           store.dispatch(
               (dispatch, getState) => dispatch(
                   mainPageActions.toggleLogin(true,

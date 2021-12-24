@@ -106,12 +106,25 @@ export default class ProfileSettingsPage extends BasePageMV {
           errorClass = 2;
         } else if (firstName.length < 2) {
           errorClass = 3;
+        } else if (firstName.search(/\s/) !== -1) {
+          errorClass = 4;
+        } else if (firstName.search(/\W/) !== -1) {
+          errorClass = 5;
         }
         this.view.pageComponents.settingsForm.appendWarning(
             'Такое имя выбрать нельзя' +
             (errorClass === 1 ? '. Цифр быть не должно.' : '') +
-            (errorClass === 2? '. Слишком длинное.' : '') +
-            (errorClass === 3 ? '. Слишком короткое.' : ''),
+            (errorClass === 2 ? '. Слишком длинное.' : '') +
+            (errorClass === 3 ? '. Слишком короткое.' : '') +
+            (errorClass === 4 ? '. Имя не должно содержать ' +
+                'пробельных символов.' : '') +
+            (errorClass === 5 ? '. Имя не должно содержать ' +
+                'разделителей и знаков пунктуации.' : '') +
+            (errorClass === 0 ? `. Примеры имён:<br/>
+            Мартин<br/>
+            Ай<br/>
+            Чао<br/>
+            Salah` : ''),
         );
         return;
       }
@@ -129,14 +142,23 @@ export default class ProfileSettingsPage extends BasePageMV {
         this.view.pageComponents.settingsForm.appendWarning(
             'Такую фамилию выбрать нельзя' +
             (errorClass === 1 ? '. Цифр быть не должно.' : '') +
-            (errorClass === 2? '. Слишком длинная.' : '') +
+            (errorClass === 2 ? '. Слишком длинная.' : '') +
             (errorClass === 3 ? '. Слишком короткая.' : ''),
+            (errorClass === 0 ? `. Примеры фамилий:<br/>
+            Смит<br/>
+            Доу-Смит<br/>
+            д'Аррас<br/>
+            Лютер Кинг<br/>
+            Deniels<br/>
+            Ad-Din<br/>
+            Di Angelo
+            ` : ''),
         );
         return;
       }
 
       if (img && !img.type.startsWith('image/')) {
-        ModalTemplates.warn('Ошибка', 'Выберите изображение');
+        ModalTemplates.warn('Что-то не так', 'Выберите изображение');
         return;
       }
 
