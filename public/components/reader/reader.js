@@ -124,10 +124,13 @@ function createCommentAnswerListener(root, articleId, comment) {
 
             // вешаем обработчики на только что созданный комментарий (ответ)
             createCommentChangeListener(answerDiv, answer);
-            createCommentAnswerListener(answerDiv, articleId, answer);
+            // поменял это
+            // createCommentAnswerListener(answerDiv, articleId, answer);
+            createCommentAnswerListener(answerDiv, articleId, comment);
 
             root.querySelector('.comment__answers').appendChild(answerDiv);
             store.dispatch(
+                // какая-то путаница. parentId найти не получается
                 readerActions.addAnswer(comment.id, answer),
             );
           })
