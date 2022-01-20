@@ -5,7 +5,7 @@
 
 [Репозиторий бекенда](https://github.com/go-park-mail-ru/2021_2_SaberDevs)
 #Деплой
-#[SaberNews](https://sabernews.ru)
+[SaberNews](https://sabernews.ru)
 
 ## Команда
 - [Турчин Денис](https://github.com/Denactive)
