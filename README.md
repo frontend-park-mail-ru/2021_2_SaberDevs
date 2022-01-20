@@ -2,9 +2,10 @@
 Команда: SaberDevs
 
 Проект: vc.ru
+[Деплой](https://sabernews.ru)
 
 [Репозиторий бекенда](https://github.com/go-park-mail-ru/2021_2_SaberDevs)
-[Деплой](https://sabernews.ru)
+
 
 ## Команда
 - [Турчин Денис](https://github.com/Denactive)
