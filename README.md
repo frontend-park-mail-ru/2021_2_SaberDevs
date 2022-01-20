@@ -4,8 +4,7 @@
 Проект: vc.ru
 
 [Репозиторий бекенда](https://github.com/go-park-mail-ru/2021_2_SaberDevs)
-#Деплой
-[SaberNews](https://sabernews.ru)
+[Деплой](https://sabernews.ru)
 
 ## Команда
 - [Турчин Денис](https://github.com/Denactive)
