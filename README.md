@@ -20,22 +20,22 @@
 
 ## Запуск
 **Обратить внимание на начало файла public/modules/ajax.js, public/modules/webSocket.js**
-  1. npm i
-  2. switch(желаемый режим):
-    **Локальный режим с mock-сервером**
-    npm run start
-    **Запуск только статического сервера с console log'ами. Использовать API настоящего сервера**
-    npm run debug
-    **То же с сервис-воркером**
-    npm run debug-sw
-    **Предрелизная сборка с линтером. Выполнять перед заливкой в репозиторий**
-    npm run build
-    **Запуск на сервере с NGINX**
-    npm run prod
-    **Запуск на сервере с NGINX с console log'ами**
-    npm run debug-prod
-    **Если по какой-то причине не нужен WebPack**
-    npm run debug-no-webpack
+1. npm i
+2. switch(желаемый режим):
+    -<p>**Локальный режим с mock-сервером**
+    npm run start</p>
+    -<p>**Запуск только статического сервера с console log'ами. Использовать API настоящего сервера**
+    npm run debug</p>
+    -<p>**То же с сервис-воркером**
+    npm run debug-sw</p>
+    -<p>**Предрелизная сборка с линтером. Выполнять перед заливкой в репозиторий**
+    npm run build</p>
+    -<p>**Запуск на сервере с NGINX**
+    npm run prod</p>
+    -<p>**Запуск на сервере с NGINX с console log'ами**
+    npm run debug-prod</p>
+    -<p>**Если по какой-то причине не нужен WebPack**
+    npm run debug-no-webpack</p>
 
 ## Структура проекта
 - public: все файлы, доступные клиенту
