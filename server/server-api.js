@@ -1,5 +1,5 @@
 const http = require('http'); // для работы с http
-
+const fs = require('fs'); // для работы с файловой системой
 // ///////////////////////////////// //
 //
 //            Globals
@@ -31,6 +31,7 @@ const APIUrls = [
   '/articles/tags',
   '/articles/author',
   '/user/logout',
+  '/img',
   '/',
 ];
 const feedChunkSize = 5;  // размер подгружаемой части ленты
@@ -97,81 +98,128 @@ const testData = [
     text: 'Our team was inspired by the seven skills of highly effective' +
     'programmers created by the TechLead. We wanted to provide our own'+
     'take on the topic. Here are our seven skills of effective programmers...',
-    authorUrl: '#',
-    authorName: 'Григорий',
-    authorAvatar: 'static/img/photo-elon-musk.jpg',
-    commentsUrl: '#',
+    author: {
+      login: 'string',
+      firstName: 'string',
+      lastName: 'string',
+      avatarUrl: 'string',
+      score: 0,
+    },
     comments: 97,
     likes: 10,
+    datetime: '',
+    category: 'Study',
   },
   {
+    author: {
+      login: 'string',
+      firstName: 'string',
+      lastName: 'string',
+      avatarUrl: 'string',
+      score: 0,
+    },
+    comments: 97,
+    likes: 10,
+    datetime: '',
+    category: 'Study',
     id: '2',
     previewUrl: 'static/img/computer.png',
     tags: ['IT-News', 'design'],
     title: 'Article 1',
     text: `hello`,
-    authorUrl: '#',
-    authorName: 'Tester-1',
-    authorAvatar: 'static/img/photo-elon-musk.jpg',
-    commentsUrl: '#',
-    comments: 1,
-    likes: 1002,
   },
   {
+    author: {
+      login: 'string',
+      firstName: 'string',
+      lastName: 'string',
+      avatarUrl: 'string',
+      score: 0,
+    },
+    datetime: '',
+    category: 'Study',
     id: '3',
     previewUrl: 'static/img/computer.png',
     tags: ['career', 'marketing'],
     title: 'Article 2',
     text: `hello`,
-    authorUrl: '#',
-    authorName: 'Tester-2',
-    authorAvatar: 'static/img/photo-elon-musk.jpg',
-    commentsUrl: '#',
     comments: 2,
     likes: 1002,
   },
   {
+    author: {
+      login: 'string',
+      firstName: 'string',
+      lastName: 'string',
+      avatarUrl: 'string',
+      score: 0,
+    },
+    comments: 97,
+    likes: 10,
+    datetime: '',
+    category: 'Study',
     id: '4',
     previewUrl: 'static/img/computer.png',
     tags: ['IT-News', 'Testing'],
     title: 'Article 3',
     text: `hello`,
-    authorUrl: '#',
-    authorName: 'Tester-3',
-    authorAvatar: 'static/img/photo-elon-musk.jpg',
-    commentsUrl: '#',
     comments: 3,
     likes: 1003,
   },
   {
+    author: {
+      login: 'string',
+      firstName: 'string',
+      lastName: 'string',
+      avatarUrl: 'string',
+      score: 0,
+    },
+    comments: 97,
+    likes: 10,
+    datetime: '',
+    category: 'Study',
     id: '5',
     previewUrl: 'static/img/computer.png',
     tags: ['marketing', 'design'],
     title: 'Article 5',
     text: `\tЧуть меньше текста\tЧуть Чуть
     \tЧуть меньше текста`,
-    authorUrl: '#',
-    authorName: 'Tester-5',
-    authorAvatar: 'static/img/photo-elon-musk.jpg',
-    commentsUrl: '#',
     comments: 5,
     likes: 1005,
   },
   {
+    author: {
+      login: 'string',
+      firstName: 'string',
+      lastName: 'string',
+      avatarUrl: 'string',
+      score: 0,
+    },
+    comments: 97,
+    likes: 10,
+    datetime: '',
+    category: 'Study',
     id: '6',
     previewUrl: 'static/img/computer.png',
     tags: ['personal', 'finance'],
     title: 'Article 6',
     text: `\tЧуть меньше текста\tЧуть меньше текста\tЧуть
     \tЧуть меньше текста`,
-    authorUrl: '#',
-    authorName: 'Tester-6',
-    authorAvatar: 'static/img/photo-elon-musk.jpg',
-    commentsUrl: '#',
     comments: 6,
     likes: 1006,
   },
   {
+    author: {
+      login: 'string',
+      firstName: 'string',
+      lastName: 'string',
+      avatarUrl: 'string',
+      score: 0,
+    },
+    comments: 97,
+    likes: 10,
+    datetime: '',
+    category: 'Study',
     id: '7',
     previewUrl: 'static/img/computer.png',
     tags: ['IT-News', 'finance'],
@@ -187,10 +235,6 @@ const testData = [
       \tОчень много текста\tОчень много текста\tОчень много текста
       \tОчень много текста\tОчень много текста\tОчень много текста
       \tОчень много текста\tОчень много текста\tОчень много текста`,
-    authorUrl: '#',
-    authorName: 'Tester-7',
-    authorAvatar: 'static/img/photo-elon-musk.jpg',
-    commentsUrl: '#',
     comments: 7,
     likes: 1007,
   },
@@ -211,6 +255,7 @@ const endOfFeed = {
 };
 
 const validCookies = [];
+const img = fs.readFileSync('./server/logo-for-sharing.webp');
 
 // ///////////////////////////////// //
 //
@@ -702,6 +747,11 @@ function executeAPICall(req, res) {
                   });
         }
 
+        if (path.slice(0, 5) === '/img/') {
+          res.write(img);
+          res.end();
+        }
+
         switch (path) {
           case '':
             break;
@@ -779,7 +829,8 @@ const server = http.createServer((req, res) => {
   if (APIUrls.indexOf(path) != -1 ||
       path.indexOf('/feed') !== -1 ||
       path.indexOf('/tags') !== -1 ||
-      path.indexOf('/author') !== -1
+      path.indexOf('/author') !== -1 ||
+      path.indexOf('/img') !== -1
       // path.indexOf('/author') !== -1 ||
   ) {
     console.log('\t\tAPI call: ', path, ' | method: ', req.method);

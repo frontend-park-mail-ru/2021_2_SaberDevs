@@ -16,7 +16,7 @@
     "start-api": "node server/server-api.js"
   },
   "keywords": [],
-  "author": "Denis, Svetlana, Yuriy, Alexey",
+  "author": "Kirillov Denis, Ocheretnaya Svetlana, Lubsky Yuriy, Aristov Alexey",
   "license": "ISC",
   "dependencies": {
     "ignore-webpack-plugin": "^0.3.0",
