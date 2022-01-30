@@ -49,11 +49,13 @@
 
 ## API
 - сервер всегда возвращает структуры вида:
+```javascript
     response: {
         msg: string?,      // текстовые сообщения/пояснения от сервера. Позволяет не нарушать http-rest Content-Type: application/json
         data: object?,     // произвольный объект, который пробрасывается в пропсы компонента по окончанию выполнения запроса
         status: number,    // дубль HTTP status
     }
+```
 API (касается только поля data) описано в swagger[v*].yaml в корне проекта и JSDoc. Просмотреть удобно [здесь](https://editor.swagger.io)
 - URL'ы web-приложения API описаны в server/server.js/APIUrls. По ним можно получить наш index.html
 
