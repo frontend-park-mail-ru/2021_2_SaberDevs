@@ -6,7 +6,7 @@
 
 // set to true
 
-const disableSW = false;
+const disableSW = true;
 
 const ajaxDebug = true;
 const modalsDebug = true;

@@ -7,11 +7,13 @@ import {ajaxDebug} from '../globals.js';
 // Тачка Алексея
 // const APIurl = 'http://87.228.2.178:8081/api/v1';
 // Тачка Дорофеева
-// const APIurl = 'http2://sabernews.ru:8081/api/v1';
-const APIurl = 'https://sabernews.ru/api/v1';
+const APIurl = 'https://sabernews.ru:8081/api/v1';
+// const APIurl = 'https://sabernews.ru/api/v1';
 // Локальная разработка
 // const APIurl = 'http://localhost:8081/api/v1';
-const CSRFCookieName = '_csrf';
+
+// CSRF guard
+// const CSRFCookieName = '_csrf';
 
 /**
  * Поддерживаемые методы: GET и POST
@@ -49,17 +51,20 @@ const ajaxStatuses = {
  */
 function ajax(requestParams) {
   const url = APIurl + (requestParams.url || '/');
-  const csrf = document.cookie.split(';')
-      .map((c) => c.trim())
-      .find((c) => c.startsWith(CSRFCookieName + '='))
-      ?.substring(CSRFCookieName.length + 1);  // skip _csrf=
+
+  // CSRF guard
+  // const csrf = document.cookie.split(';')
+  //     .map((c) => c.trim())
+  //     .find((c) => c.startsWith(CSRFCookieName + '='))
+  //     ?.substring(CSRFCookieName.length + 1);  // skip '_csrf='
+
   const fetchParams = {
     body: JSON.stringify(requestParams.body),
     mode: 'cors',
     credentials: 'include',
     headers: {
       'Content-Type': 'application/json',
-      'X-XSRF-TOKEN': csrf,
+      // 'X-XSRF-TOKEN': csrf,
     },
     method: requestParams.method,
   };
@@ -104,10 +109,6 @@ function postFile(requestParams) {
     body: formData,
     mode: 'cors',
     credentials: 'include',
-    // https://muffinman.io/blog/uploading-files-using-fetch-multipart-form-data/
-    // headers: {
-    //   'Content-Type': 'multipart/form-data',
-    // },
     method: ajaxMethods.post,
   };
 
