@@ -4,13 +4,13 @@ import ProfilePageView from './profilePageView.js';
 import store from '../flux/store.js';
 import {changePageActions} from '../flux/actions.js';
 import profilePageActions from '../flux/actions/profilePageActions.js';
-import {authorizationTypes, editorTypes} from '../flux/types.js';
+import {AuthorizationTypes, EditorTypes} from '../flux/types';
 
 import {showModalNetOrServerError} from '../components/modal/modalTemplates.js';
 
-import Ajax from '../modules/ajax.js';
+import Ajax from '../modules/ajax';
 import Utils from '../common/utils.js';
-import {ajaxDebug} from '../globals.js';
+import {ajaxDebug} from '../globals';
 
 // ///////////////////////////////// //
 //
@@ -101,7 +101,7 @@ export default class ProfilePage extends BasePageMV {
     //        Communication
     //
     // /////////////////////////////////
-    store.subscribe(authorizationTypes.LOGOUT, () => {
+    store.subscribe(AuthorizationTypes.LOGOUT, () => {
       console.log('[ProfilePage] Logout reaction');
       if (document.URL.indexOf('/profile') !== -1) {
         Utils.redirect('/');
@@ -110,7 +110,7 @@ export default class ProfilePage extends BasePageMV {
 
     // Если были на своей странице и сделали вход,
     // Перерисовываем страницу как профиль
-    store.subscribe(authorizationTypes.LOGIN, () => {
+    store.subscribe(AuthorizationTypes.LOGIN, () => {
       console.log('[ProfilePage] Login reaction');
       if (document.URL.indexOf('/profile') === -1 &&
           store.getState().profilePage.user.login ===
@@ -121,7 +121,7 @@ export default class ProfilePage extends BasePageMV {
 
     // Обновить ленту, если есть изменения в статье или пользователь
     // опубликовал новую
-    store.subscribe(editorTypes.PUBLISH_ARTICLE, () => {
+    store.subscribe(EditorTypes.PUBLISH_ARTICLE, () => {
       store.dispatch(profilePageActions.clearArticles());
     });
   }

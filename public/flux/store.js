@@ -1,4 +1,4 @@
-import createStore from './createStore.js';
+import createStore from './createStore';
 
 import authorizeReducer from './reducers/authorizeReducer.js';
 import changePageReducer from './reducers/changePageReducer.js';
@@ -6,7 +6,7 @@ import mainPageReducer from './reducers/mainPageReducer.js';
 import profilePageReducer from './reducers/profilePageReducer.js';
 import categoryPageReducer from './reducers/categoryPageReducer.js';
 import signupFormReducer from './reducers/signupFormReducer.js';
-import apiReducer from './reducers/apiReducer.js';
+import apiReducer from './reducers/apiReducer';
 import editorReducer from './reducers/editorReducer.js';
 import readerReducer from './reducers/readerReducer.js';
 import routerReducer from './reducers/routerReducer.js';

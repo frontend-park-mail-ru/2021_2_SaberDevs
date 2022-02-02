@@ -1,4 +1,4 @@
-import {profilePageTypes} from '../types.js';
+import {ProfilePageTypes, FluxStateObject, FluxAction} from '../types';
 
 const endOfFeedMarkerID = 'end';
 
@@ -35,22 +35,22 @@ export default function profilePageReducer(
     action,
 ) {
   switch (action.type) {
-    case profilePageTypes.SET_USER_ARTICLES_LOADING:
+    case ProfilePageTypes.SET_USER_ARTICLES_LOADING:
       return {
         ...state,
         isLoading: true,
       };
-    case profilePageTypes.FORBID_USER_ARTICLES_UPLOADING:
+    case ProfilePageTypes.FORBID_USER_ARTICLES_UPLOADING:
       return {
         ...state,
         isEndFound: true,
       };
-    case profilePageTypes.ALLOW_USER_ARTICLES_UPLOADING:
+    case ProfilePageTypes.ALLOW_USER_ARTICLES_UPLOADING:
       return {
         ...state,
         isEndFound: false,
       };
-    case profilePageTypes.SAVE_NEW_USER_ARTICLES:
+    case ProfilePageTypes.SAVE_NEW_USER_ARTICLES:
       const cards = action.payload.cards;
       if (cards.length === 0) {
         return {
@@ -71,7 +71,7 @@ export default function profilePageReducer(
         cards: state.cards.concat(cards),
         isEndFound,
       };
-    case profilePageTypes.CLEAR_USER_ARTICLES:
+    case ProfilePageTypes.CLEAR_USER_ARTICLES:
       return {
         ...state,
         cards: [],
@@ -79,7 +79,7 @@ export default function profilePageReducer(
         idLastLoaded: '',
         isEndFound: false,
       };
-    case profilePageTypes.SET_USER_INFO: // смена пользователя
+    case ProfilePageTypes.SET_USER_INFO: // смена пользователя
       return {
         ...state,
         user: action.payload,
@@ -90,7 +90,7 @@ export default function profilePageReducer(
         cards: [],
         isEndFound: false,
       };
-    case profilePageTypes.SET_USER_LOADING: // смена пользователя
+    case ProfilePageTypes.SET_USER_LOADING: // смена пользователя
       return {
         ...state,
         user: action.payload,
@@ -99,7 +99,7 @@ export default function profilePageReducer(
         cards: [],
         isEndFound: false,
       };
-    case profilePageTypes.DELETE_CARD: {
+    case ProfilePageTypes.DELETE_CARD: {
       const idx = state.cards.findIndex((card) => card.id === action.payload);
       if (idx !== -1) {
         return {
@@ -110,7 +110,7 @@ export default function profilePageReducer(
         return state;
       }
     }
-    case profilePageTypes.LIKE:
+    case ProfilePageTypes.LIKE:
       const idx = state.cards.findIndex((card) => card.id===action.payload.id);
       if (idx !== -1) {
         const likeCardCopy = JSON.parse(JSON.stringify(state.cards[idx]));

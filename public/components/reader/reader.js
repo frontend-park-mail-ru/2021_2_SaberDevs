@@ -5,12 +5,12 @@ import articleAddCommentComponent from './articleAddComment.pug.js';
 import Likes from '../likes/likes.js';
 
 import ModalTemplates from '../../components/modal/modalTemplates.js';
-import Ajax from '../../modules/ajax.js';
+import Ajax from '../../modules/ajax';
 import {translateServerComment} from '../../common/transformApi.js';
 import {redirect} from '../../common/utils.js';
 
 import store from '../../flux/store.js';
-import {readerTypes, authorizationTypes} from '../../flux/types.js';
+import {ReaderTypes, AuthorizationTypes} from '../../flux/types';
 import readerActions from '../../flux/actions/readerActions.js';
 import editorActions from '../../flux/actions/editorActions.js';
 
@@ -250,13 +250,13 @@ export default class Reader extends BaseComponent {
     //
     // /////////////////////////////////
     this.unsubscribes.push(
-        store.subscribe(readerTypes.OPEN_ARTICLE, (id) => {
+        store.subscribe(ReaderTypes.OPEN_ARTICLE, (id) => {
           const state = store.getState().reader;
           this.openArticle(state[id]);
         }),
 
         // Если подгрузили комментарии к текущей статье - отрисовать
-        store.subscribe(readerTypes.SAVE_ARTICLE_COMMENTS, ({id, comments}) => {
+        store.subscribe(ReaderTypes.SAVE_ARTICLE_COMMENTS, ({id, comments}) => {
           if (store.getState().reader.currentId === id) {
             this.setComments(comments);
           }
@@ -264,7 +264,7 @@ export default class Reader extends BaseComponent {
 
         // даем возможность редактирования если статья принадлежит пользователю
         // и комментов
-        store.subscribe(authorizationTypes.LOGIN, () => {
+        store.subscribe(AuthorizationTypes.LOGIN, () => {
           console.log('{Reader} Login reaction');
           const articleChangeBtn =
             this.root.querySelector('#article-change-btn');
@@ -287,7 +287,7 @@ export default class Reader extends BaseComponent {
         }),
 
         // забираем возможность изменения статьи, если пропадает авторизация
-        store.subscribe(authorizationTypes.LOGOUT, () => {
+        store.subscribe(AuthorizationTypes.LOGOUT, () => {
           const articleChangeBtn =
             this.root.querySelector('#article-change-btn');
           if (!articleChangeBtn) {

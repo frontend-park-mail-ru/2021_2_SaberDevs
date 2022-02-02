@@ -9,13 +9,13 @@ import {
   authorizationActions,
 } from '../flux/actions.js';
 import profilePageActions from '../flux/actions/profilePageActions.js';
-import {authorizationTypes} from '../flux/types.js';
+import {AuthorizationTypes} from '../flux/types';
 import {appendApiImg} from '../common/transformApi.js';
 
-import Ajax from '../modules/ajax.js';
+import Ajax from '../modules/ajax';
 import {redirect, getFileBrowserStorageUrl} from '../common/utils.js';
 import regexp from '../common/regexp.js';
-import {ajaxDebug} from '../globals.js';
+import {ajaxDebug} from '../globals';
 
 // ///////////////////////////////// //
 //
@@ -39,7 +39,7 @@ export default class ProfileSettingsPage extends BasePageMV {
     //        Communication
     //
     // /////////////////////////////////
-    store.subscribe(authorizationTypes.LOGOUT, () => {
+    store.subscribe(AuthorizationTypes.LOGOUT, () => {
       if (this.isActive()) {
         console.log('[ProfileSettingsPage] Logout reaction');
         redirect('/');

@@ -1,14 +1,14 @@
-import Ajax from './ajax.js';
+import Ajax from './ajax';
 
 import store from '../flux/store.js';
 import {authorizationActions} from '../flux/actions.js';
 import {apiActions} from '../flux/actions.js';
-import {ajaxDebug} from '../globals.js';
+import {ajaxDebug} from '../globals';
 
 const RETRY_DELAY = 30000;
 /**
  * Выполняет logout-запрос на сервер. При успешном выполнении вызывает
- * событие authorizationTypes.LOGOUT
+ * событие AuthorizationTypes.LOGOUT
  */
 export function logoutRequest() {
   Ajax.post({
@@ -22,7 +22,7 @@ export function logoutRequest() {
  * Попытка аутентификации пользователя
  * через куки, например, при загрузке приложения
  * При успешном выполнении вызывает
- * событие authorizationTypes.LOGIN
+ * событие AuthorizationTypes.LOGIN
  * @return {Promise}
  */
 export function cookieLogin() {

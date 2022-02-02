@@ -8,7 +8,7 @@ const fs = require('fs'); // для работы с файловой систе�
 
 
 const port = 8081; // не забудь про CORS
-// Поменять тут, в server/server.js, public/modules/ajax.js
+// Поменять тут, в server/server.js, public/modules/ajax
 // Сервер zапускается у Алексея
 // const ip = '192.168.0.104';
 

@@ -1,4 +1,4 @@
-import {searchTypes} from '../types.js';
+import {SearchTypes} from '../types';
 import {appendApiImg} from '../../common/transformApi.js';
 
 // ////////////////
@@ -19,7 +19,7 @@ function saveNewCards(idLastLoaded, cards) {
     appendApiImg(card);
   });
   return {
-    type: searchTypes.SAVE_NEW_CARDS,
+    type: SearchTypes.SAVE_NEW_CARDS,
     payload: {idLastLoaded, cards},
   };
 }
@@ -31,7 +31,7 @@ function saveNewCards(idLastLoaded, cards) {
  */
 function setSearchGroup(group, description = '') {
   return {
-    type: searchTypes.SET_SEARCH_GROUP,
+    type: SearchTypes.SET_SEARCH_GROUP,
     payload: {group, description},
   };
 }
@@ -42,7 +42,7 @@ function setSearchGroup(group, description = '') {
  */
 function setSearchValue(value) {
   return {
-    type: searchTypes.SET_SEARCH_VALUE,
+    type: SearchTypes.SET_SEARCH_VALUE,
     payload: value,
   };
 }
@@ -52,7 +52,7 @@ function setSearchValue(value) {
  */
 function setLoadingFlag() {
   return {
-    type: searchTypes.SET_LOADING_FLAG,
+    type: SearchTypes.SET_LOADING_FLAG,
   };
 }
 
@@ -61,7 +61,7 @@ function setLoadingFlag() {
  */
 function unsetLoadingFlag() {
   return {
-    type: searchTypes.UNSET_LOADING_FLAG,
+    type: SearchTypes.UNSET_LOADING_FLAG,
   };
 }
 
@@ -70,7 +70,7 @@ function unsetLoadingFlag() {
  */
 function forbidCardsLoading() {
   return {
-    type: searchTypes.FORBID_CARDS_UPLOADING,
+    type: SearchTypes.FORBID_CARDS_UPLOADING,
   };
 }
 
@@ -79,7 +79,7 @@ function forbidCardsLoading() {
  */
 function allowCardsLoading() {
   return {
-    type: searchTypes.ALLOW_CARDS_UPLOADING,
+    type: SearchTypes.ALLOW_CARDS_UPLOADING,
   };
 }
 
@@ -88,7 +88,7 @@ function allowCardsLoading() {
  */
 function clearCards() {
   return {
-    type: searchTypes.CLEAR_CARDS,
+    type: SearchTypes.CLEAR_CARDS,
   };
 }
 
@@ -97,7 +97,7 @@ function clearCards() {
  */
 function askNewCards() {
   return {
-    type: searchTypes.ASK_NEW_CARDS,
+    type: SearchTypes.ASK_NEW_CARDS,
   };
 }
 
@@ -107,7 +107,7 @@ function askNewCards() {
  */
 function deleteCard(id) {
   return {
-    type: searchTypes.DELETE_CARD,
+    type: SearchTypes.DELETE_CARD,
     payload: id,
   };
 }
@@ -120,7 +120,7 @@ function deleteCard(id) {
  */
 function like(id, sign, newLikesNum) {
   return {
-    type: searchTypes.LIKE,
+    type: SearchTypes.LIKE,
     payload: {id: id + '', sign, likes: newLikesNum},
   };
 }
@@ -130,7 +130,7 @@ function like(id, sign, newLikesNum) {
  */
 function showEmptyFeed() {
   return {
-    type: searchTypes.SHOW_EMPTY_FEED,
+    type: SearchTypes.SHOW_EMPTY_FEED,
   };
 }
 
@@ -139,7 +139,7 @@ function showEmptyFeed() {
  */
 function submit() {
   return {
-    type: searchTypes.SUBMIT,
+    type: SearchTypes.SUBMIT,
   };
 }
 
@@ -148,7 +148,7 @@ function submit() {
  */
 function submitOnHeader() {
   return {
-    type: searchTypes.SUBMIT_ON_HEADER,
+    type: SearchTypes.SUBMIT_ON_HEADER,
   };
 }
 
@@ -157,7 +157,7 @@ function submitOnHeader() {
  */
 function upload() {
   return {
-    type: searchTypes.REQUEST,
+    type: SearchTypes.REQUEST,
   };
 }
 

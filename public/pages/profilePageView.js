@@ -5,7 +5,7 @@ import Feed from '../components/feed/feed.js';
 import composeCards from '../components/feed/composeCardStandart.js';
 import ProfileCard from '../components/profileCard/profileCard.js';
 
-import {profilePageTypes} from '../flux/types.js';
+import {ProfilePageTypes} from '../flux/types';
 import profilePageActions from '../flux/actions/profilePageActions.js';
 
 /**
@@ -23,10 +23,10 @@ export default class ProfilePageView extends BasePageView {
       feed: new Feed(
           composeCards,
           'profilePage',
-          profilePageTypes.SAVE_NEW_USER_ARTICLES,
-          profilePageTypes.CLEAR_USER_ARTICLES,
-          profilePageTypes.FORBID_USER_ARTICLES_UPLOADING,
-          profilePageTypes.ALLOW_USER_ARTICLES_UPLOADING,
+          ProfilePageTypes.SAVE_NEW_USER_ARTICLES,
+          ProfilePageTypes.CLEAR_USER_ARTICLES,
+          ProfilePageTypes.FORBID_USER_ARTICLES_UPLOADING,
+          ProfilePageTypes.ALLOW_USER_ARTICLES_UPLOADING,
           profilePageActions.forbidArticlesLoading,
           () => {
             console.log('{profilePage feed} isEndFound is not been reset');

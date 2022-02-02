@@ -4,13 +4,13 @@ import SearchPageView from './searchPageView.js';
 import store from '../flux/store.js';
 import {changePageActions} from '../flux/actions.js';
 import searchActions from '../flux/actions/searchActions.js';
-import {searchTypes} from '../flux/types.js';
+import {SearchTypes} from '../flux/types';
 
 import Modal from '../components/modal/modal.js';
 
-import Ajax from '../modules/ajax.js';
+import Ajax from '../modules/ajax';
 import {getUserWindowHeight} from '../common/utils.js';
-import {ajaxDebug} from '../globals.js';
+import {ajaxDebug} from '../globals';
 
 const searchGroups = {
   articles: ['articles', 'Статьи'],
@@ -135,7 +135,7 @@ export default class SearchPage extends BasePageMV {
 
     // обновить ленту если параметры поиска изменились
     store.subscribe(
-        searchTypes.REQUEST,
+        SearchTypes.REQUEST,
         () => {
           store.dispatch(searchActions.clearCards());
           store.dispatch(searchActions.allowCardsLoading());
@@ -160,15 +160,15 @@ export default class SearchPage extends BasePageMV {
     // эту страницу. Если эта страница открыта, страница не перендерится
     // url не спарсится, нужно вызывать upload-action вручную, но тогда
     // поиск не сохранится в HISTORY API. запись в хистори в update-subscribe
-    store.subscribe(searchTypes.SUBMIT_ON_HEADER, () => {
+    store.subscribe(SearchTypes.SUBMIT_ON_HEADER, () => {
       if (this.isActive()) {
         store.dispatch(searchActions.upload());
       }
     });
-    store.subscribe(searchTypes.SUBMIT, () => {
+    store.subscribe(SearchTypes.SUBMIT, () => {
       store.dispatch(searchActions.upload());
     });
-    store.subscribe(searchTypes.SHOW_EMPTY_FEED, () => {
+    store.subscribe(SearchTypes.SHOW_EMPTY_FEED, () => {
       this.view.pageComponents.searchBar.showMessage(
           'Мы не нашли ничего подходящего',
           'Попробуйте изменить параметры запроса',

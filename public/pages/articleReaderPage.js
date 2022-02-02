@@ -5,7 +5,7 @@ import store from '../flux/store.js';
 import readerActions from '../flux/actions/readerActions.js';
 import {changePageActions} from '../flux/actions.js';
 
-import Ajax from '../modules/ajax.js';
+import Ajax from '../modules/ajax';
 import {showModalNetOrServerError} from '../components/modal/modalTemplates.js';
 
 import {translateServerComment} from '../common/transformApi.js';

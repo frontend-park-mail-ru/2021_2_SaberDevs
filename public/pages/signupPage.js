@@ -2,7 +2,7 @@ import BasePageMV from './basePageMV.js';
 import SignupPageView from './signupPageView.js';
 import store from '../flux/store.js';
 import {changePageActions} from '../flux/actions.js';
-import {authorizationTypes} from '../flux/types.js';
+import {AuthorizationTypes} from '../flux/types';
 
 import {redirect} from '../common/utils.js';
 // ///////////////////////////////// //
@@ -41,7 +41,7 @@ export default class SignupPage extends BasePageMV {
 
     this.showRegister = false;
     this.unsubscribeLogin = store.subscribe(
-        authorizationTypes.LOGIN,
+        AuthorizationTypes.LOGIN,
         () => {
           console.log('[SignupPage] Login reaction');
           redirect('/');

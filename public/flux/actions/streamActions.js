@@ -1,4 +1,4 @@
-import {streamTypes} from '../types.js';
+import {StreamTypes} from '../types';
 import {appendApiImg} from '../../common/transformApi.js';
 
 // ////////////////
@@ -14,7 +14,7 @@ function saveNewComments(comments) {
     appendApiImg(comment.author);
   });
   return {
-    type: streamTypes.SAVE_NEW_COMMENTS,
+    type: StreamTypes.SAVE_NEW_COMMENTS,
     payload: comments,
   };
 }
@@ -24,7 +24,7 @@ function saveNewComments(comments) {
  */
 function clearComments() {
   return {
-    type: streamTypes.CLEAR_COMMENTS,
+    type: StreamTypes.CLEAR_COMMENTS,
   };
 }
 
@@ -33,7 +33,7 @@ function clearComments() {
  */
 function askNewComments() {
   return {
-    type: streamTypes.ASK_NEW_COMMENTS,
+    type: StreamTypes.ASK_NEW_COMMENTS,
   };
 }
 

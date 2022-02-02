@@ -1,0 +1,18 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "target": "es6",
+    "sourceMap": true,
+    "isolatedModules": true,
+  },
+  "include": [
+    "./public/**/*"
+  ],
+  "exclude": [
+    "./public/static/**/*"
+    // "node_modules",
+    // "dev",
+    // "dist",
+    // "certificate"
+  ],
+}

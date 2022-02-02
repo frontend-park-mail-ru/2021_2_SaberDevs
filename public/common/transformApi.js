@@ -1,5 +1,5 @@
 import {getRusDateTime} from './utils.js';
-import Ajax from '../modules/ajax.js';
+import Ajax from '../modules/ajax';
 
 /**
  * @param {object} obj

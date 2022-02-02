@@ -3,13 +3,13 @@ import MainPageView from './mainPageView.js';
 
 import store from '../flux/store.js';
 import {changePageActions, mainPageActions} from '../flux/actions.js';
-import {editorTypes} from '../flux/types.js';
+import {EditorTypes} from '../flux/types';
 
 import Modal from '../components/modal/modal.js';
 
-import Ajax from '../modules/ajax.js';
+import Ajax from '../modules/ajax';
 import {getUserWindowHeight} from '../common/utils.js';
-import {ajaxDebug} from '../globals.js';
+import {ajaxDebug} from '../globals';
 
 // ///////////////////////////////// //
 //
@@ -118,7 +118,7 @@ export default class MainPage extends BasePageMV {
     // не скачивать ленту еще раз. Во всех лентах.
     // Обновить ленту, если есть изменения в статье или пользователь
     // опубликовал новую
-    store.subscribe(editorTypes.PUBLISH_ARTICLE, () => {
+    store.subscribe(EditorTypes.PUBLISH_ARTICLE, () => {
       store.dispatch(mainPageActions.clearCards());
     });
   }

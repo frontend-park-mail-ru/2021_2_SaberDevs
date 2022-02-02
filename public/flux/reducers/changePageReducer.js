@@ -1,4 +1,4 @@
-import {changePageTypes} from '../types.js';
+import {ChangePageTypes, FluxStateObject, FluxAction} from '../types';
 
 const InitialPageState = {
   page: 'main',
@@ -10,9 +10,9 @@ const InitialPageState = {
  * @param {Action} action
  * @return {Object}
  */
-export default function changePageReducer(state = InitialPageState, action) {
+export default function changePageReducer(state: FluxStateObject = InitialPageState, action: FluxAction): FluxStateObject {
   switch (action.type) {
-    case changePageTypes.CHANGE_PAGE:
+    case ChangePageTypes.CHANGE_PAGE:
       document.title = action.payload.docTitle;
       // очень хитро кидаю предыдущую страницу
       action.payload.prev = state.page;
@@ -21,7 +21,7 @@ export default function changePageReducer(state = InitialPageState, action) {
         page: action.payload.page,
         docTitle: action.payload.docTitle,
       };
-    case changePageTypes.CHANGE_DOC_TITLE:
+    case ChangePageTypes.CHANGE_DOC_TITLE:
       document.title = action.payload.docTitle;
       return {
         ...state,

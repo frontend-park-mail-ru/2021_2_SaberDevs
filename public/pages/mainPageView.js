@@ -6,7 +6,7 @@ import composeCards from '../components/feed/composeCardStandart.js';
 // import MainPagePreviewBar from
 //   '../components/feed/previews/mainPagePreviewBar.js';
 
-import {mainPageTypes} from '../flux/types.js';
+import {MainPageTypes} from '../flux/types';
 import {mainPageActions} from '../flux/actions.js';
 // ///////////////////////////////// //
 //
@@ -30,10 +30,10 @@ export default class MainPageView extends BasePageView {
       feed: new Feed(
           composeCards,
           'mainPage',
-          mainPageTypes.SAVE_NEW_CARDS,
-          mainPageTypes.CLEAR_CARDS,
-          mainPageTypes.FORBID_CARDS_UPLOADING,
-          mainPageTypes.ALLOW_CARDS_UPLOADING,
+          MainPageTypes.SAVE_NEW_CARDS,
+          MainPageTypes.CLEAR_CARDS,
+          MainPageTypes.FORBID_CARDS_UPLOADING,
+          MainPageTypes.ALLOW_CARDS_UPLOADING,
           mainPageActions.forbidCardsLoading,
           mainPageActions.allowCardsLoading,
           mainPageActions.like,

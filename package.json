@@ -3,6 +3,11 @@
   "version": "1.0.0",
   "description": "vc.ru alike web-spa",
   "main": "index.js",
+  "babel": {
+    "presets": [
+      "@babel/preset-typescript"
+    ]
+  },
   "scripts": {
     "lint": "npx eslint . && npx stylelint --fix **/*.scss",
     "debug-no-webpack": "node ./dev/toggleGlobals.js true && node ./dev/compileTemplates.js debug && npm run start-static",
@@ -10,7 +15,7 @@
     "debug-sw": "node ./dev/toggleGlobals.js true sw && node ./dev/compileTemplates.js debug && npx webpack --mode development && node ./dev/createCachedList && npm run start-static",
     "build": "npx eslint . && node ./dev/toggleGlobals.js false && node ./dev/compileTemplates.js && npx webpack && node ./dev/createCachedList",
     "prod": "npm run build && sudo systemctl stop nginx && echo 'server stopped' && sudo cp -r dist/* /var/www/sabernews/html/ && echo 'copied' && sudo systemctl start nginx && echo 'server started\nHave fun'",
-    "deploy": "node ./dev/toggleGlobals.js true sw && node ./dev/compileTemplates.js debug && npx webpack --mode development && node ./dev/createCachedList && sudo systemctl stop nginx && echo 'server stopped' && sudo cp -r dist/* /var/www/sabernews/html/ && echo 'copied' && sudo systemctl start nginx && echo 'server started\nHave fun'",
+    "debug-prod": "node ./dev/toggleGlobals.js true sw && node ./dev/compileTemplates.js debug && npx webpack --mode development && node ./dev/createCachedList && sudo systemctl stop nginx && echo 'server stopped' && sudo cp -r dist/* /var/www/sabernews/html/ && echo 'copied' && sudo systemctl start nginx && echo 'server started\nHave fun'",
     "start": "concurrently --kill-others \"npm run start-static\" \"npm run start-api\"",
     "start-static": "node server/server.js",
     "start-api": "node server/server-api.js"
@@ -19,12 +24,15 @@
   "author": "Kirillov Denis, Ocheretnaya Svetlana, Lubsky Yuriy, Aristov Alexey",
   "license": "ISC",
   "dependencies": {
+    "awesome-typescript-loader": "^5.2.1",
     "ignore-webpack-plugin": "^0.3.0",
     "mime": "^2.5.2",
     "pug": "^3.0.2",
+    "typescript": "^4.5.5",
     "walk": "^2.3.15"
   },
   "devDependencies": {
+    "@babel/preset-typescript": "^7.16.7",
     "babel-loader": "^8.2.3",
     "clean-webpack-plugin": "^4.0.0",
     "concurrently": "^6.3.0",

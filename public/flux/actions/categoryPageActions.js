@@ -1,4 +1,4 @@
-import {categoryPageTypes} from '../types.js';
+import {CategoryPageTypes} from '../types';
 import {appendApiImg} from '../../common/transformApi.js';
 
 // ////////////////
@@ -16,7 +16,7 @@ function saveNewCategoryArticles(idLastLoaded, cards) {
     appendApiImg(card.author);
   });
   return {
-    type: categoryPageTypes.SAVE_NEW_CATEGORY_ARTICLES,
+    type: CategoryPageTypes.SAVE_NEW_CATEGORY_ARTICLES,
     payload: {idLastLoaded, cards},
   };
 }
@@ -26,7 +26,7 @@ function saveNewCategoryArticles(idLastLoaded, cards) {
  */
 function clearCategoryArticles() {
   return {
-    type: categoryPageTypes.CLEAR_CATEGORY_ARTICLES,
+    type: CategoryPageTypes.CLEAR_CATEGORY_ARTICLES,
   };
 }
 
@@ -35,7 +35,7 @@ function clearCategoryArticles() {
  */
 function setCategoryArticlesLoadingFlag() {
   return {
-    type: categoryPageTypes.SET_CATEGORY_ARTICLES_LOADING,
+    type: CategoryPageTypes.SET_CATEGORY_ARTICLES_LOADING,
   };
 }
 
@@ -44,7 +44,7 @@ function setCategoryArticlesLoadingFlag() {
  */
 function unsetCategoryArticlesLoadingFlag() {
   return {
-    type: categoryPageTypes.UNSET_CATEGORY_ARTICLES_LOADING,
+    type: CategoryPageTypes.UNSET_CATEGORY_ARTICLES_LOADING,
   };
 }
 
@@ -53,7 +53,7 @@ function unsetCategoryArticlesLoadingFlag() {
  */
 function forbidCategoryArticlesLoading() {
   return {
-    type: categoryPageTypes.FORBID_CATEGORY_ARTICLES_UPLOADING,
+    type: CategoryPageTypes.FORBID_CATEGORY_ARTICLES_UPLOADING,
   };
 }
 
@@ -62,7 +62,7 @@ function forbidCategoryArticlesLoading() {
  */
 function allowCategoryArticlesLoading() {
   return {
-    type: categoryPageTypes.ALLOW_CATEGORY_ARTICLES_UPLOADING,
+    type: CategoryPageTypes.ALLOW_CATEGORY_ARTICLES_UPLOADING,
   };
 }
 
@@ -71,7 +71,7 @@ function allowCategoryArticlesLoading() {
  */
 function askNewCategoryArticles() {
   return {
-    type: categoryPageTypes.ASK_NEW_CATEGORY_ARTICLES,
+    type: CategoryPageTypes.ASK_NEW_CATEGORY_ARTICLES,
   };
 }
 
@@ -81,7 +81,7 @@ function askNewCategoryArticles() {
  */
 function deleteArticle(id) {
   return {
-    type: categoryPageTypes.DELETE_CARD,
+    type: CategoryPageTypes.DELETE_CARD,
     payload: id,
   };
 }
@@ -93,7 +93,7 @@ function deleteArticle(id) {
  */
 function selectCategory(category) {
   return {
-    type: categoryPageTypes.SELECT_CATEGORY,
+    type: CategoryPageTypes.SELECT_CATEGORY,
     payload: category,
   };
 }
@@ -103,7 +103,7 @@ function selectCategory(category) {
  */
 function clearSelectedCategory() {
   return {
-    type: categoryPageTypes.SELECT_CATEGORY,
+    type: CategoryPageTypes.SELECT_CATEGORY,
     payload: '',
   };
 }
@@ -116,7 +116,7 @@ function clearSelectedCategory() {
  */
 function like(id, sign, newLikesNum) {
   return {
-    type: categoryPageTypes.LIKE,
+    type: CategoryPageTypes.LIKE,
     payload: {id: id + '', sign, likes: newLikesNum},
   };
 }

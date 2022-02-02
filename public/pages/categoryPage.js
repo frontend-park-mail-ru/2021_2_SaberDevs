@@ -4,13 +4,13 @@ import CategoryPageView from './categoryPageView.js';
 import store from '../flux/store.js';
 import {changePageActions} from '../flux/actions.js';
 import categoryPageActions from '../flux/actions/categoryPageActions.js';
-import {categoryPageTypes, editorTypes} from '../flux/types.js';
+import {CategoryPageTypes, EditorTypes} from '../flux/types';
 
 import Modal from '../components/modal/modal.js';
 
-import Ajax from '../modules/ajax.js';
+import Ajax from '../modules/ajax';
 import {getUserWindowHeight} from '../common/utils.js';
-import {ajaxDebug} from '../globals.js';
+import {ajaxDebug} from '../globals';
 
 import categoriesList from '../common/categoriesList.js';
 
@@ -113,7 +113,7 @@ export default class CategoryPage extends BasePageMV {
     // /////////////////////////////////
 
     // обновить ленту в соответствии с фильтром
-    store.subscribe(categoryPageTypes.SELECT_CATEGORY, (category) => {
+    store.subscribe(CategoryPageTypes.SELECT_CATEGORY, (category) => {
       if (category !== '') {
         store.dispatch(categoryPageActions.clearCategoryArticles());
         store.dispatch(categoryPageActions.allowCategoryArticlesLoading());
@@ -138,7 +138,7 @@ export default class CategoryPage extends BasePageMV {
 
     // Обновить ленту, если есть изменения в статье или пользователь
     // опубликовал новую
-    store.subscribe(editorTypes.PUBLISH_ARTICLE, () => {
+    store.subscribe(EditorTypes.PUBLISH_ARTICLE, () => {
       store.dispatch(categoryPageActions.clearCategoryArticles());
     });
   }

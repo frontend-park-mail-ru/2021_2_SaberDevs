@@ -1,7 +1,7 @@
 import ServiceWarning from './serviceWarning/serviceWarning.js';
 
 import store from '../../flux/store.js';
-import {apiTypes} from '../../flux/types.js';
+import {ApiTypes} from '../../flux/types';
 
 const serviceWarning = new ServiceWarning();
 document.getElementById('warningroot').appendChild(serviceWarning.render());
@@ -21,11 +21,11 @@ const Warning = {
   },
   init() {
     store.subscribe(
-        apiTypes.SET_UNAVAILABLE,
+        ApiTypes.SET_UNAVAILABLE,
         () => Warning.show('Сервис недоступен'),
     );
     store.subscribe(
-        apiTypes.SET_AVAILABLE,
+        ApiTypes.SET_AVAILABLE,
         () => {
           if (Warning.getMessage() === 'Сервис недоступен') {
             Warning.setMessage('');

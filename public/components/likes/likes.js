@@ -2,10 +2,10 @@ import BaseComponent from '../_basic/baseComponent.js';
 import LikesView from './likesView.js';
 
 import store from '../../flux/store.js';
-import Ajax from '../../modules/ajax.js';
+import Ajax from '../../modules/ajax';
 import ModalTemplates from '../modal/modalTemplates.js';
 
-import {ajaxDebug} from '../../globals.js';
+import {ajaxDebug} from '../../globals';
 
 const likeAnimationDuration = 800;
 const colorInitial = '#dee4ea';

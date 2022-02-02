@@ -1,4 +1,4 @@
-import {profilePageTypes} from '../types.js';
+import {ProfilePageTypes} from '../types';
 import {appendApiImg} from '../../common/transformApi.js';
 
 // ////////////////
@@ -16,7 +16,7 @@ function saveNewArticles(idLastLoaded, cards) {
     appendApiImg(card.author);
   });
   return {
-    type: profilePageTypes.SAVE_NEW_USER_ARTICLES,
+    type: ProfilePageTypes.SAVE_NEW_USER_ARTICLES,
     payload: {idLastLoaded, cards},
   };
 }
@@ -26,7 +26,7 @@ function saveNewArticles(idLastLoaded, cards) {
  */
 function clearArticles() {
   return {
-    type: profilePageTypes.CLEAR_USER_ARTICLES,
+    type: ProfilePageTypes.CLEAR_USER_ARTICLES,
   };
 }
 
@@ -35,7 +35,7 @@ function clearArticles() {
  */
 function setArticlesLoadingFlag() {
   return {
-    type: profilePageTypes.SET_USER_ARTICLES_LOADING,
+    type: ProfilePageTypes.SET_USER_ARTICLES_LOADING,
   };
 }
 
@@ -44,7 +44,7 @@ function setArticlesLoadingFlag() {
  */
 function unsetArticlesLoadingFlag() {
   return {
-    type: profilePageTypes.UNSET_USER_ARTICLES_LOADING,
+    type: ProfilePageTypes.UNSET_USER_ARTICLES_LOADING,
   };
 }
 
@@ -53,7 +53,7 @@ function unsetArticlesLoadingFlag() {
  */
 function forbidArticlesLoading() {
   return {
-    type: profilePageTypes.FORBID_USER_ARTICLES_UPLOADING,
+    type: ProfilePageTypes.FORBID_USER_ARTICLES_UPLOADING,
   };
 }
 
@@ -62,7 +62,7 @@ function forbidArticlesLoading() {
  */
 function allowArticlesLoading() {
   return {
-    type: profilePageTypes.ALLOW_USER_ARTICLES_UPLOADING,
+    type: ProfilePageTypes.ALLOW_USER_ARTICLES_UPLOADING,
   };
 }
 
@@ -71,7 +71,7 @@ function allowArticlesLoading() {
  */
 function askNewArticles() {
   return {
-    type: profilePageTypes.ASK_NEW_USER_ARTICLES,
+    type: ProfilePageTypes.ASK_NEW_USER_ARTICLES,
   };
 }
 
@@ -81,7 +81,7 @@ function askNewArticles() {
  */
 function deleteArticle(id) {
   return {
-    type: profilePageTypes.DELETE_CARD,
+    type: ProfilePageTypes.DELETE_CARD,
     payload: id,
   };
 }
@@ -98,7 +98,7 @@ function deleteArticle(id) {
  */
 function setUserLoading(user) {
   return {
-    type: profilePageTypes.SET_USER_LOADING,
+    type: ProfilePageTypes.SET_USER_LOADING,
     payload: {
       firstName: 'загрузка',
       lastName: 'загрузка',
@@ -122,7 +122,7 @@ function setUserLoading(user) {
 function setUserInfo(user) {
   appendApiImg(user);
   return {
-    type: profilePageTypes.SET_USER_INFO,
+    type: ProfilePageTypes.SET_USER_INFO,
     payload: user,
   };
 }
@@ -135,7 +135,7 @@ function setUserInfo(user) {
  */
 function like(id, sign, newLikesNum) {
   return {
-    type: profilePageTypes.LIKE,
+    type: ProfilePageTypes.LIKE,
     payload: {id: id + '', sign, likes: newLikesNum},
   };
 }

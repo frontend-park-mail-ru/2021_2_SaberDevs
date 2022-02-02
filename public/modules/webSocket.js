@@ -3,7 +3,7 @@ import {appendApiImg} from '../common/transformApi.js';
 import store from '../flux/store.js';
 import streamActions from '../flux/actions/streamActions.js';
 
-import {wsDebug} from '../globals.js';
+import {wsDebug} from '../globals';
 // Тачка Дорофеева
 const APIurl = 'wss://sabernews.ru/api/v1/ws';
 // Локальная разработка (Запусти node server/serverWs.js)

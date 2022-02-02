@@ -3,7 +3,7 @@ import SignupFormView from './signupFormView.js';
 
 import Modal from '../modal/modal.js';
 
-import Ajax from '../../modules/ajax.js';
+import Ajax from '../../modules/ajax';
 
 import store from '../../flux/store.js';
 import {authorizationActions} from '../../flux/actions.js';

@@ -1,4 +1,4 @@
-import {mainPageTypes} from '../types.js';
+import {MainPageTypes, FluxStateObject, FluxAction} from '../types';
 
 const endOfFeedMarkerID = 'end';
 
@@ -20,7 +20,6 @@ const endOfFeedMarkerID = 'end';
  *                                    на MainPage
  */
 const InitialMainPageState = {
-  isAuthenticated: false,
   isLoading: false,              // отправлен ли запрос на сервер
   idLastLoaded: '',              // запоминаем последнюю загруженную запись
   lastScrollPos: 0,              // скрол для возврата к той же записи
@@ -33,24 +32,24 @@ const InitialMainPageState = {
  * @param {Action} action
  * @return {Object}
  */
-export default function mainPageReducer(state = InitialMainPageState, action) {
+export default function mainPageReducer(state: FluxStateObject = InitialMainPageState, action: FluxAction): FluxStateObject {
   switch (action.type) {
-    case mainPageTypes.SET_LOADING_FLAG:
+    case MainPageTypes.SET_LOADING_FLAG:
       return {
         ...state,
         isLoading: true,
       };
-    case mainPageTypes.FORBID_CARDS_UPLOADING:
+    case MainPageTypes.FORBID_CARDS_UPLOADING:
       return {
         ...state,
         isEndFound: true,
       };
-    case mainPageTypes.ALLOW_CARDS_UPLOADING:
+    case MainPageTypes.ALLOW_CARDS_UPLOADING:
       return {
         ...state,
         isEndFound: false,
       };
-    case mainPageTypes.SAVE_NEW_CARDS:
+    case MainPageTypes.SAVE_NEW_CARDS:
       const cards = action.payload.cards;
       cards.forEach((element) => {
         if (!Array.isArray(element.tags)) {
@@ -78,7 +77,7 @@ export default function mainPageReducer(state = InitialMainPageState, action) {
         cards: state.cards.concat(cards),
         isEndFound,
       };
-    case mainPageTypes.CLEAR_CARDS:
+    case MainPageTypes.CLEAR_CARDS:
       return {
         ...state,
         cards: [],
@@ -87,7 +86,7 @@ export default function mainPageReducer(state = InitialMainPageState, action) {
         lastScrollPos: 0,
         isEndFound: false,
       };
-    case mainPageTypes.DELETE_CARD: {
+    case MainPageTypes.DELETE_CARD: {
       const idx = state.cards.findIndex((card) => card.id === action.payload);
       if (idx !== -1) {
         return {
@@ -98,7 +97,7 @@ export default function mainPageReducer(state = InitialMainPageState, action) {
         return state;
       }
     }
-    case mainPageTypes.LIKE: {  // TODO: распространить на другие ленты, ридер
+    case MainPageTypes.LIKE: {  // TODO: распространить на другие ленты, ридер
       const idx = state.cards.findIndex((card) => card.id===action.payload.id);
       if (idx !== -1) {
         const likeCardCopy = JSON.parse(JSON.stringify(state.cards[idx]));

@@ -13,7 +13,7 @@
     },
     "ignorePatterns": [
       "*.pug.js",
-      "globals.js",
+      "globals.ts",
       "public/components/_template/*.js",
       "public/flux/reducers/template.js",
       "dist/*.js"

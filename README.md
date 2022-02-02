@@ -7,10 +7,10 @@
 [SaberNews](https://sabernews.ru)
 
 ## Команда SaberDevs
-### Front-end
+**Front-end**
 - [Турчин Денис](https://github.com/Denactive)
 - [Очеретная Светлана](https://github.com/Svetlanlka)
-### Back-end
+**Back-end**
 - [Любский Юрий](https://github.com/yurij-lyubskij)
 - [Аристов Алексей](https://github.com/MollenAR)
 
@@ -19,7 +19,7 @@
 - [Екатерина Придиус](https://github.com/pringleskate)
 
 ## Запуск
-**Обратить внимание на начало файла public/modules/ajax.js, public/modules/webSocket.js**
+**Обратить внимание на начало файла public/modules/ajax, public/modules/webSocket.js**
 1. npm i
 2. switch(желаемый режим):
     - **<p>Локальный режим с mock-сервером</p>**

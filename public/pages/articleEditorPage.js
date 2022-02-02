@@ -3,7 +3,7 @@ import EditorView from './articleEditorView.js';
 
 import store from '../flux/store.js';
 import ModalTemplates from '../components/modal/modalTemplates.js';
-import {authorizationTypes} from '../flux/types.js';
+import {AuthorizationTypes} from '../flux/types';
 import {changePageActions} from '../flux/actions.js';
 import {redirect} from '../common/utils.js';
 
@@ -34,7 +34,7 @@ export default class EditorPage extends BasePageMV {
     //
     // /////////////////////////////////
 
-    store.subscribe(authorizationTypes.LOGOUT, () => {
+    store.subscribe(AuthorizationTypes.LOGOUT, () => {
       console.log('[ArticleEditorPage] Logout reaction');
       if (this.isActive()) {
         ModalTemplates.warn(

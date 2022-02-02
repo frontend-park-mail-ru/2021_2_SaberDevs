@@ -1,4 +1,4 @@
-import {fluxDebug} from '../../globals.js';
+import {fluxDebug} from '../../globals';
 
 /**
  * @param {function(StateObject, Action)} reducers

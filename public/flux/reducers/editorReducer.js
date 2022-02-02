@@ -1,4 +1,4 @@
-import {editorTypes} from '../types.js';
+import {EditorTypes, FluxStateObject, FluxAction} from '../types';
 
 const InitialEditorState = {
   currentId: 0,
@@ -25,9 +25,9 @@ const InitialEditorState = {
  * @param {Action} action
  * @return {State}
  */
-export default function editorReducer(state = InitialEditorState, action) {
+export default function editorReducer(state: FluxStateObject = InitialEditorState, action: FluxAction): FluxStateObject {
   switch (action.type) {
-    case editorTypes.EDIT_EXISTING_ARTICLE:
+    case EditorTypes.EDIT_EXISTING_ARTICLE:
       return {
         ...state,
         currentId: action.payload.id,
@@ -40,7 +40,7 @@ export default function editorReducer(state = InitialEditorState, action) {
         },
       };
 
-    case editorTypes.CLEAR_ARTICLE:
+    case EditorTypes.CLEAR_ARTICLE:
       return {
         ...state,
         [state.currentId]: {
@@ -52,14 +52,14 @@ export default function editorReducer(state = InitialEditorState, action) {
         },
       };
 
-    case editorTypes.DELETE_ARTICLE:
+    case EditorTypes.DELETE_ARTICLE:
       const stateCopyDel = {};
       Object.assign(stateCopyDel, state);
       delete stateCopyDel[action.payload];
       stateCopyDel.currentId = 0;
       return stateCopyDel;
 
-    case editorTypes.CREATE_ARTICLE:
+    case EditorTypes.CREATE_ARTICLE:
       const stateCopy = Object.assign({}, state);
       // обнуление только если до этого не создавали статью
       // иначе данные, введенные ранее должны быть сохранены
@@ -75,7 +75,7 @@ export default function editorReducer(state = InitialEditorState, action) {
       stateCopy.currentId = 0;
       return stateCopy;
 
-    case editorTypes.SAVE_TEXT:
+    case EditorTypes.SAVE_TEXT:
       const saveTextStateCopy = Object.assign({}, state[state.currentId]);
       saveTextStateCopy.text = action.payload;
       return {
@@ -83,7 +83,7 @@ export default function editorReducer(state = InitialEditorState, action) {
         [state.currentId]: saveTextStateCopy,
       };
 
-    case editorTypes.SAVE_TITLE:
+    case EditorTypes.SAVE_TITLE:
       const saveTitleStateCopy = Object.assign({}, state[state.currentId]);
       saveTitleStateCopy.title = action.payload;
       return {
@@ -91,7 +91,7 @@ export default function editorReducer(state = InitialEditorState, action) {
         [state.currentId]: saveTitleStateCopy,
       };
 
-    case editorTypes.PUBLISH_ARTICLE:
+    case EditorTypes.PUBLISH_ARTICLE:
       return {
         ...state,
         // сохраняем только что созданную запись
@@ -106,7 +106,7 @@ export default function editorReducer(state = InitialEditorState, action) {
         currentId: 0,
       };
 
-    case editorTypes.APPEND_TAG:
+    case EditorTypes.APPEND_TAG:
       const currentIdStateCopy = Object.assign({}, state[state.currentId]);
       currentIdStateCopy.tags.push(action.payload);
       return {
@@ -114,7 +114,7 @@ export default function editorReducer(state = InitialEditorState, action) {
         [state.currentId]: currentIdStateCopy,
       };
 
-    case editorTypes.REMOVE_TAG:
+    case EditorTypes.REMOVE_TAG:
       const currentStateCopyRemove = Object.assign({}, state[state.currentId]);
       currentStateCopyRemove.tags =
           currentStateCopyRemove.tags.filter((el) => el != action.payload);
@@ -123,7 +123,7 @@ export default function editorReducer(state = InitialEditorState, action) {
         [state.currentId]: currentStateCopyRemove,
       };
 
-    case editorTypes.SAVE_PREVIEW:
+    case EditorTypes.SAVE_PREVIEW:
       const currentStateCopySavePreview = {...state[state.currentId]};
       currentStateCopySavePreview.previewUrl = action.payload;
       return {
@@ -131,7 +131,7 @@ export default function editorReducer(state = InitialEditorState, action) {
         [state.currentId]: currentStateCopySavePreview,
       };
 
-    case editorTypes.SAVE_CATEGORY:
+    case EditorTypes.SAVE_CATEGORY:
       const currentStateCopySaveCategory = {...state[state.currentId]};
       currentStateCopySaveCategory.category = action.payload;
       return {

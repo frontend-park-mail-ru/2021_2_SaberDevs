@@ -6,7 +6,7 @@ import buttonNavComponent from './buttonNav.pug.js';
 
 import store from '../../flux/store.js';
 import {mainPageActions} from '../../flux/actions.js';
-import {authorizationTypes, streamTypes} from '../../flux/types.js';
+import {AuthorizationTypes, StreamTypes} from '../../flux/types';
 
 import categoriesList from '../../common/categoriesList.js';
 
@@ -31,22 +31,17 @@ export default class Sidebar extends BaseComponent {
     // /////////////////////////////////
 
     this.unsubscribes.push(
-        store.subscribe(authorizationTypes.LOGIN, () => {
+        store.subscribe(AuthorizationTypes.LOGIN, () => {
           console.log('{Sidebar} Login reaction');
-          store.dispatch(
-              (dispatch, getState) => dispatch(
-                  mainPageActions.toggleLogin(true,
-                      getState().authorization.login),
-              ));
           this.setSidebarUserPreview();
         }),
-        store.subscribe(authorizationTypes.LOGOUT, () => {
-          store.dispatch(mainPageActions.toggleLogin(false, ''));
+        store.subscribe(AuthorizationTypes.LOGOUT, () => {
+          console.log('{Sidebar} Logout reaction');
           this.setSidebarSignupButtons();
         }));
 
     this.unsubscribes.push(
-        store.subscribe(streamTypes.SAVE_NEW_COMMENTS, (comments) => {
+        store.subscribe(StreamTypes.SAVE_NEW_COMMENTS, (comments) => {
           this.addComments(comments);
         }),
     );

@@ -3,14 +3,15 @@ const HTMLWebpackPlugin = require('html-webpack-plugin');
 const {CleanWebpackPlugin} = require('clean-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CopyPlugin = require('copy-webpack-plugin');
+const {CheckerPlugin} = require('awesome-typescript-loader');
 
 module.exports = {
   mode: 'production',
   entry: {
-    main: path.resolve(__dirname, './public/main.js'),
+    main: path.resolve(__dirname, './public/main.ts'),
   },
   output: {
-    filename: '[name].bandle.js',
+    filename: '[name].bundle.js',
     path: path.resolve(__dirname, 'dist'),
     clean: true,
     assetModuleFilename: 'static/[name][ext][query]',
@@ -20,8 +21,6 @@ module.exports = {
   },
 
   plugins: [
-    // new WorkboxPlugin.GenerateSW({
-
     new CopyPlugin({
       patterns: [
         {
@@ -56,6 +55,7 @@ module.exports = {
     new MiniCssExtractPlugin({
       filename: '[name].css',
     }),
+    new CheckerPlugin(),
   ],
 
   module: {
@@ -79,19 +79,22 @@ module.exports = {
         },
       },
       {
-        test: /\.(js)$/,
+        test: /\.(js|ts)x?$/,
         loader: 'babel-loader',
         options: {
           exclude: [
             // \\ for Windows, \/ for Mac OS and Linux
             /node_modules/,
           ],
+          presets: [
+            '@babel/preset-typescript',
+          ],
         },
       },
     ],
   },
   resolve: {
-    extensions: ['.js'],
+    extensions: ['.ts', '.tsx', '.js', '.jsx'],
     fallback: {
       'fs': false,
     },

@@ -6,7 +6,7 @@ import composeCards from '../components/feed/composeCardStandart.js';
 import CategoryChoiceBar from
   '../components/categoryChoiceBar/categoryChoiceBar.js';
 
-import {categoryPageTypes} from '../flux/types.js';
+import {CategoryPageTypes} from '../flux/types';
 import categoryPageActions from '../flux/actions/categoryPageActions.js';
 import store from '../flux/store.js';
 
@@ -33,15 +33,15 @@ export default class CategoryPageView extends BasePageView {
           () => store.getState().categoryPage.currentCategory,
           categoryPageActions.selectCategory,
           categoryPageActions.clearSelectedCategory,
-          categoryPageTypes.SELECT_CATEGORY,
+          CategoryPageTypes.SELECT_CATEGORY,
       ),
       feed: new Feed(
           composeCards,
           'categoryPage',
-          categoryPageTypes.SAVE_NEW_CATEGORY_ARTICLES,
-          categoryPageTypes.CLEAR_CATEGORY_ARTICLES,
-          categoryPageTypes.FORBID_CATEGORY_ARTICLES_UPLOADING,
-          categoryPageTypes.ALLOW_CATEGORY_ARTICLES_UPLOADING,
+          CategoryPageTypes.SAVE_NEW_CATEGORY_ARTICLES,
+          CategoryPageTypes.CLEAR_CATEGORY_ARTICLES,
+          CategoryPageTypes.FORBID_CATEGORY_ARTICLES_UPLOADING,
+          CategoryPageTypes.ALLOW_CATEGORY_ARTICLES_UPLOADING,
           categoryPageActions.forbidCategoryArticlesLoading,
           () => {
             console.log('{CategoryPage feed} isEndFound is not been reset');

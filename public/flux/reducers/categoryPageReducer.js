@@ -1,4 +1,4 @@
-import {categoryPageTypes} from '../types.js';
+import {CategoryPageTypes, FluxStateObject, FluxAction} from '../types';
 
 const endOfFeedMarkerID = 'end';
 
@@ -43,27 +43,27 @@ export default function categoryPageReducer(
     action,
 ) {
   switch (action.type) {
-    case categoryPageTypes.SET_CATEGORY_ARTICLES_LOADING:
+    case CategoryPageTypes.SET_CATEGORY_ARTICLES_LOADING:
       return {
         ...state,
         isLoading: true,
       };
-    case categoryPageTypes.UNSET_CATEGORY_ARTICLES_LOADING:
+    case CategoryPageTypes.UNSET_CATEGORY_ARTICLES_LOADING:
       return {
         ...state,
         isLoading: false,
       };
-    case categoryPageTypes.FORBID_CATEGORY_ARTICLES_UPLOADING:
+    case CategoryPageTypes.FORBID_CATEGORY_ARTICLES_UPLOADING:
       return {
         ...state,
         isEndFound: true,
       };
-    case categoryPageTypes.ALLOW_CATEGORY_ARTICLES_UPLOADING:
+    case CategoryPageTypes.ALLOW_CATEGORY_ARTICLES_UPLOADING:
       return {
         ...state,
         isEndFound: false,
       };
-    case categoryPageTypes.SAVE_NEW_CATEGORY_ARTICLES:
+    case CategoryPageTypes.SAVE_NEW_CATEGORY_ARTICLES:
       const cards = action.payload.cards;
       if (cards.length === 0) {
         return {
@@ -84,7 +84,7 @@ export default function categoryPageReducer(
         cards: state.cards.concat(cards),
         isEndFound,
       };
-    case categoryPageTypes.DELETE_CARD: {
+    case CategoryPageTypes.DELETE_CARD: {
       const idx = state.cards.findIndex((card) => card.id === action.payload);
       if (idx !== -1) {
         return {
@@ -95,7 +95,7 @@ export default function categoryPageReducer(
         return state;
       }
     }
-    case categoryPageTypes.CLEAR_CATEGORY_ARTICLES:
+    case CategoryPageTypes.CLEAR_CATEGORY_ARTICLES:
       return {
         ...state,
         cards: [],
@@ -104,12 +104,12 @@ export default function categoryPageReducer(
         lastScrollPos: 0,
         isEndFound: false,
       };
-    case categoryPageTypes.SELECT_CATEGORY:
+    case CategoryPageTypes.SELECT_CATEGORY:
       return {
         ...state,
         currentCategory: action.payload,
       };
-    case categoryPageTypes.LIKE:
+    case CategoryPageTypes.LIKE:
       const idx = state.cards.findIndex((card) => card.id===action.payload.id);
       if (idx !== -1) {
         const likeCardCopy = JSON.parse(JSON.stringify(state.cards[idx]));

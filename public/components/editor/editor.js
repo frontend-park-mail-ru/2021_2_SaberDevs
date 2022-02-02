@@ -4,9 +4,9 @@ import EditorView from './editorView.js';
 import store from '../../flux/store.js';
 import editorActions from '../../flux/actions/editorActions.js';
 import {authorizationActions} from '../../flux/actions.js';
-import {editorTypes} from '../../flux/types.js';
+import {EditorTypes} from '../../flux/types';
 
-import Ajax from '../../modules/ajax.js';
+import Ajax from '../../modules/ajax';
 import ModalTemplates from '../modal/modalTemplates.js';
 import {
   redirect,
@@ -17,7 +17,7 @@ import {
 
 import articleLimitations from '../../common/articleLimitations.js';
 
-import {ajaxDebug} from '../../globals.js';
+import {ajaxDebug} from '../../globals';
 
 /**
    * Проверяет состояние editor
@@ -46,7 +46,7 @@ export default class Editor extends BaseComponent {
         },
         editorActions.saveCategory,
         editorActions.clearCategory,
-        editorTypes.SAVE_CATEGORY,
+        EditorTypes.SAVE_CATEGORY,
     );
 
     // /////////////////////////////////
@@ -56,21 +56,21 @@ export default class Editor extends BaseComponent {
     // /////////////////////////////////
 
     this.unsubscribes.push(
-        store.subscribe(editorTypes.CLEAR_ARTICLE, () => {
+        store.subscribe(EditorTypes.CLEAR_ARTICLE, () => {
           this.clear();
         }),
-        store.subscribe(editorTypes.PUBLISH_ARTICLE, () => {
+        store.subscribe(EditorTypes.PUBLISH_ARTICLE, () => {
           this.clear();
         }),
-        store.subscribe(editorTypes.CREATE_ARTICLE, () => {
+        store.subscribe(EditorTypes.CREATE_ARTICLE, () => {
           this.changeToCreate();
           this.setContent(store.getState().editor[0]);
         }),
-        store.subscribe(editorTypes.EDIT_EXISTING_ARTICLE, ({id}) => {
+        store.subscribe(EditorTypes.EDIT_EXISTING_ARTICLE, ({id}) => {
           this.changeToUpdate();
           this.setContent(store.getState().editor[id]);
         }),
-        store.subscribe(editorTypes.SAVE_CATEGORY, (category) => {
+        store.subscribe(EditorTypes.SAVE_CATEGORY, (category) => {
           this.view.changePreviewCategory(category);
         }),
     );

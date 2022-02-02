@@ -1,9 +1,9 @@
 import modalComponent from './modal.pug.js';
 
 import store from '../../flux/store.js';
-import {modalTypes} from '../../flux/types.js';
+import {ModalTypes} from '../../flux/types';
 import {modalActions} from '../../flux/actions.js';
-import {modalsDebug} from '../../globals.js';
+import {modalsDebug} from '../../globals';
 
 const animationTime = 200;
 const informationWindowOpenTime = 2000;
@@ -88,11 +88,11 @@ function _createModal(props) {
     cancelBtn.removeEventListener('click', activeCancelEventListener);
   };
 
-  store.subscribe(modalTypes.MODAL_CLOSE, () => {
+  store.subscribe(ModalTypes.MODAL_CLOSE, () => {
     document.title = store.getState().page.docTitle;
   });
 
-  store.subscribe(modalTypes.MODAL_OPEN, () => {
+  store.subscribe(ModalTypes.MODAL_OPEN, () => {
     document.title = docTitle;
   });
 

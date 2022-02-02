@@ -5,7 +5,7 @@ import SearchRow from '../searchRow/searchRow.js';
 
 import store from '../../flux/store.js';
 import editorActions from '../../flux/actions/editorActions.js';
-import {searchTypes} from '../../flux/types.js';
+import {SearchTypes} from '../../flux/types';
 import searchActions from '../../flux/actions/searchActions.js';
 
 import {redirect} from '../../common/utils.js';
@@ -27,7 +27,7 @@ export default class Header extends BaseComponent {
     // communication
     this.unsubscribes.push(
         store.subscribe(
-            searchTypes.SUBMIT_ON_HEADER,
+            SearchTypes.SUBMIT_ON_HEADER,
             () => {
               const state = store.getState().search;
               redirect(`/search?g=${state.group}&q=${state.value}`);

@@ -11,7 +11,7 @@ const mime = require('mime/lite');
 
 const port = 8080;
 
-// Поменять тут, в public/modules/ajax.js, server/server-api.js (не забыть CORS)
+// Поменять тут, в public/modules/ajax, server/server-api.js (не забыть CORS)
 
 // Больше не используется. Сервер чисто для локальной разработки
 // тачка Дмитрия Дорофеева

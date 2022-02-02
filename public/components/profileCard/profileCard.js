@@ -2,7 +2,7 @@ import BaseComponent from '../_basic/baseComponent.js';
 import ProfileCardView from './profileCardView.js';
 
 import store from '../../flux/store.js';
-import {profilePageTypes} from '../../flux/types.js';
+import {ProfilePageTypes} from '../../flux/types';
 import {redirect} from '../../common/utils.js';
 
 /**
@@ -23,10 +23,10 @@ export default class ProfileCard extends BaseComponent {
     // /////////////////////////////////
 
     this.unsubscribes.push(
-        store.subscribe(profilePageTypes.SET_USER_LOADING, (user) => {
+        store.subscribe(ProfilePageTypes.SET_USER_LOADING, (user) => {
           this.setUser(user);
         }),
-        store.subscribe(profilePageTypes.SET_USER_INFO, (user) => {
+        store.subscribe(ProfilePageTypes.SET_USER_INFO, (user) => {
           this.setUser(user);
         }),
     );

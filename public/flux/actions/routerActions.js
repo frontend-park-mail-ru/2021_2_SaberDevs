@@ -1,4 +1,4 @@
-import {routerTypes} from '../types.js';
+import {RouterTypes} from '../types';
 
 /**
  * @param {string} to путь, куда нужно совершить переход
@@ -6,7 +6,7 @@ import {routerTypes} from '../types.js';
  */
 function redirect(to) {
   return {
-    type: routerTypes.REDIRECT,
+    type: RouterTypes.REDIRECT,
     payload: to,
   };
 }

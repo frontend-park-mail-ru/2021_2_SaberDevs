@@ -1,4 +1,4 @@
-import {pageDebug} from '../globals.js';
+import {pageDebug} from '../globals';
 
 /**
  * View для соответсвующих страниц

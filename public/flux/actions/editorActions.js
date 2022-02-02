@@ -1,4 +1,4 @@
-import {editorTypes} from '../types.js';
+import {EditorTypes} from '../types';
 import {appendApiImg} from '../../common/transformApi.js';
 
 // ////////////////
@@ -10,7 +10,7 @@ import {appendApiImg} from '../../common/transformApi.js';
 //  */
 // function template() {
 //   return {
-//     type: editorTypes,
+//     type: EditorTypes,
 //   };
 // }
 
@@ -20,7 +20,7 @@ import {appendApiImg} from '../../common/transformApi.js';
  */
 function clearArticle() {
   return {
-    type: editorTypes.CLEAR_ARTICLE,
+    type: EditorTypes.CLEAR_ARTICLE,
   };
 }
 
@@ -29,7 +29,7 @@ function clearArticle() {
  */
 function createArticle() {
   return {
-    type: editorTypes.CREATE_ARTICLE,
+    type: EditorTypes.CREATE_ARTICLE,
   };
 }
 
@@ -52,7 +52,7 @@ function editArticle(id, article) {
   appendApiImg(article);
   appendApiImg(article.author);
   return {
-    type: editorTypes.EDIT_EXISTING_ARTICLE,
+    type: EditorTypes.EDIT_EXISTING_ARTICLE,
     payload: {
       id,
       ...article,
@@ -67,7 +67,7 @@ function editArticle(id, article) {
  */
 function publishArticle(id) {
   return {
-    type: editorTypes.PUBLISH_ARTICLE,
+    type: EditorTypes.PUBLISH_ARTICLE,
     payload: {id},
   };
 }
@@ -78,7 +78,7 @@ function publishArticle(id) {
  */
 function deleteArticle(id) {
   return {
-    type: editorTypes.DELETE_ARTICLE,
+    type: EditorTypes.DELETE_ARTICLE,
     payload: id,
   };
 }
@@ -89,7 +89,7 @@ function deleteArticle(id) {
  */
 function saveTitle(title) {
   return {
-    type: editorTypes.SAVE_TITLE,
+    type: EditorTypes.SAVE_TITLE,
     payload: title,
   };
 }
@@ -100,7 +100,7 @@ function saveTitle(title) {
  */
 function saveText(text) {
   return {
-    type: editorTypes.SAVE_TEXT,
+    type: EditorTypes.SAVE_TEXT,
     payload: text,
   };
 }
@@ -111,7 +111,7 @@ function saveText(text) {
  */
 function removeTag(tag) {
   return {
-    type: editorTypes.REMOVE_TAG,
+    type: EditorTypes.REMOVE_TAG,
     payload: tag,
   };
 }
@@ -122,7 +122,7 @@ function removeTag(tag) {
  */
 function appendTag(tag) {
   return {
-    type: editorTypes.APPEND_TAG,
+    type: EditorTypes.APPEND_TAG,
     payload: tag,
   };
 }
@@ -133,7 +133,7 @@ function appendTag(tag) {
  */
 function saveImg(url) {
   return {
-    type: editorTypes.SAVE_PREVIEW,
+    type: EditorTypes.SAVE_PREVIEW,
     payload: url,
   };
 }
@@ -143,7 +143,7 @@ function saveImg(url) {
  */
 function clearImg() {
   return {
-    type: editorTypes.SAVE_PREVIEW,
+    type: EditorTypes.SAVE_PREVIEW,
     payload: '',
   };
 }
@@ -154,7 +154,7 @@ function clearImg() {
  */
 function saveCategory(category) {
   return {
-    type: editorTypes.SAVE_CATEGORY,
+    type: EditorTypes.SAVE_CATEGORY,
     payload: category,
   };
 }
@@ -164,7 +164,7 @@ function saveCategory(category) {
  */
 function clearCategory() {
   return {
-    type: editorTypes.SAVE_CATEGORY,
+    type: EditorTypes.SAVE_CATEGORY,
     payload: '',
   };
 }

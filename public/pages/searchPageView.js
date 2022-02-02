@@ -5,7 +5,7 @@ import Feed from '../components/feed/feed.js';
 import composeUsers from '../components/feed/composeUsers.js';
 import SearchBar from '../components/feed/previews/searchBar.js';
 
-import {searchTypes} from '../flux/types.js';
+import {SearchTypes} from '../flux/types';
 import searchActions from '../flux/actions/searchActions.js';
 // ///////////////////////////////// //
 //
@@ -30,10 +30,10 @@ export default class SearchPageView extends BasePageView {
       feed: new Feed(
           composeUsers,
           'search',
-          searchTypes.SAVE_NEW_CARDS,
-          searchTypes.CLEAR_CARDS,
-          searchTypes.FORBID_CARDS_UPLOADING,
-          searchTypes.ALLOW_CARDS_UPLOADING,
+          SearchTypes.SAVE_NEW_CARDS,
+          SearchTypes.CLEAR_CARDS,
+          SearchTypes.FORBID_CARDS_UPLOADING,
+          SearchTypes.ALLOW_CARDS_UPLOADING,
           searchActions.forbidCardsLoading,
           () => {
             console.log('{SearchPage feed} isEndFound is not been reset');
