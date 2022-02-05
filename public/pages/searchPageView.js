@@ -6,7 +6,7 @@ import composeUsers from '../components/feed/composeUsers.js';
 import SearchBar from '../components/feed/previews/searchBar.js';
 
 import {SearchTypes} from '../flux/types';
-import searchActions from '../flux/actions/searchActions.js';
+import searchActions from '../flux/actions/searchActions';
 // ///////////////////////////////// //
 //
 //              Search Page

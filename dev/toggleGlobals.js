@@ -21,8 +21,8 @@ const sw = process.argv[3] === 'sw';
 
 console.log(
     `[START] ===============================
-    \t=      Console.log > ${mode}${mode === 'true' ? ' ' : ''}    =
-    \t=      Командa SaberDevs      =
+    \t=      Console.log > ${mode}${mode === true ? ' ' : ''}    =
+    \t=      ${mode !== true ? ' ' : ''}Командa SaberDevs     =
     \t===============================`,
 );
 

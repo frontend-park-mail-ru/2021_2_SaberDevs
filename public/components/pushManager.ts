@@ -1,4 +1,4 @@
-import store from '../flux/store.js';
+import store from '../flux/store';
 import {AuthorizationTypes} from '../flux/types';
 import Ajax from '../modules/ajax';
 

@@ -3,12 +3,10 @@ import ProfileSettingsPageView from './profileSettingsPageView.js';
 
 import ModalTemplates from '../components/modal/modalTemplates.js';
 
-import store from '../flux/store.js';
-import {
-  changePageActions,
-  authorizationActions,
-} from '../flux/actions.js';
-import profilePageActions from '../flux/actions/profilePageActions.js';
+import store from '../flux/store';
+import changePageActions from '../flux/actions/changePageActions';
+import profilePageActions from '../flux/actions/profilePageActions';
+import authorizationActions from '../flux/actions/authorizationActions';
 import {AuthorizationTypes} from '../flux/types';
 import {appendApiImg} from '../common/transformApi.js';
 

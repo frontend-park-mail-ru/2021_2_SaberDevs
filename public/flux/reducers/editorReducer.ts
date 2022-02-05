@@ -1,4 +1,12 @@
-import {EditorTypes, FluxStateObject, FluxAction} from '../types';
+import {EditorTypes, CommonTypes, FluxStateObject, FluxAction} from '../types';
+import {Article} from './readerReducer';
+
+export interface EditorStateObject extends FluxStateObject {
+  currentId: number,
+  [key: number]: Article,
+};
+
+export type EditorAction = FluxAction<EditorTypes | CommonTypes>;
 
 const InitialEditorState = {
   currentId: 0,
@@ -21,17 +29,17 @@ const InitialEditorState = {
 };
 
 /**
- * @param {Object} state
- * @param {Action} action
- * @return {State}
+ * @param {EditorStateObject} state
+ * @param {EditorAction} action
+ * @return {EditorStateObject}
  */
-export default function editorReducer(state: FluxStateObject = InitialEditorState, action: FluxAction): FluxStateObject {
+export default function editorReducer(state: EditorStateObject = InitialEditorState, action: EditorAction): EditorStateObject {
   switch (action.type) {
     case EditorTypes.EDIT_EXISTING_ARTICLE:
       return {
         ...state,
         currentId: action.payload.id,
-        [action.payload.id]: {
+        [action.payload.id]: <Article>{
           title: action.payload.title,
           text: action.payload.text,
           tags: action.payload.tags,
@@ -43,7 +51,7 @@ export default function editorReducer(state: FluxStateObject = InitialEditorStat
     case EditorTypes.CLEAR_ARTICLE:
       return {
         ...state,
-        [state.currentId]: {
+        [state.currentId]: <Article>{
           title: '',
           text: '',
           tags: [],
@@ -52,8 +60,8 @@ export default function editorReducer(state: FluxStateObject = InitialEditorStat
         },
       };
 
-    case EditorTypes.DELETE_ARTICLE:
-      const stateCopyDel = {};
+    case CommonTypes.DELETE_CARD:
+      const stateCopyDel = <EditorStateObject>{};
       Object.assign(stateCopyDel, state);
       delete stateCopyDel[action.payload];
       stateCopyDel.currentId = 0;
@@ -64,7 +72,7 @@ export default function editorReducer(state: FluxStateObject = InitialEditorStat
       // обнуление только если до этого не создавали статью
       // иначе данные, введенные ранее должны быть сохранены
       if (!(0 in stateCopy)) {
-        stateCopy[0] = {
+        stateCopy[0] = <Article>{
           title: '',
           text: '',
           tags: [],
@@ -96,7 +104,7 @@ export default function editorReducer(state: FluxStateObject = InitialEditorStat
         ...state,
         // сохраняем только что созданную запись
         [action.payload.id]: Object.assign({}, state[0]),
-        0: {
+        0: <Article>{
           title: '',
           text: '',
           tags: [],

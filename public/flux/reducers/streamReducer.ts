@@ -1,9 +1,11 @@
 import {StreamTypes, FluxStateObject, FluxAction} from '../types';
 import {Comment} from './readerReducer';
 
-type StreamStateObject = FluxStateObject & {
+export interface StreamStateObject extends FluxStateObject {
   comments: Comment[],
 }
+
+export type StreamAction = FluxAction<StreamTypes>;
 
 const InitialStreamState: StreamStateObject = {
   comments: [],                     // массив загруженных новостей
@@ -14,10 +16,10 @@ const InitialStreamState: StreamStateObject = {
  * @param {Action} action
  * @return {Object}
  */
-export default function streamReducer(state: StreamStateObject = InitialStreamState, action: FluxAction): FluxStateObject {
+export default function streamReducer(state: StreamStateObject = InitialStreamState, action: StreamAction): StreamStateObject {
   switch (action.type) {
     case StreamTypes.SAVE_NEW_COMMENTS:
-      const comments = <Comment[]>action.payload;
+      const comments = action.payload;
       if (comments.length === 0) {
         return state;
       }

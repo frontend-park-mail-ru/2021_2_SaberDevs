@@ -1,4 +1,7 @@
-import {ProfilePageTypes} from '../types';
+import {ProfilePageTypes, CommonTypes} from '../types';
+import {ProfileAction} from '../reducers/profilePageReducer';
+import {Article} from '../reducers/readerReducer';
+import {User} from '../reducers/authorizeReducer';
 import {appendApiImg} from '../../common/transformApi.js';
 
 // ////////////////
@@ -6,11 +9,11 @@ import {appendApiImg} from '../../common/transformApi.js';
 // ////////////////
 
 /**
- * @param {string} idLastLoaded
- * @param {Array<Card>} cards
- * @return {Action}
+ * @param {number} idLastLoaded
+ * @param {Array<Article>} cards
+ * @return {ProfileAction}
  */
-function saveNewArticles(idLastLoaded, cards) {
+function saveNewArticles(idLastLoaded: number, cards: Article[]): ProfileAction {
   cards.forEach((card) => {
     appendApiImg(card);
     appendApiImg(card.author);
@@ -22,66 +25,66 @@ function saveNewArticles(idLastLoaded, cards) {
 }
 
 /**
- * @return {Action}
+ * @return {ProfileAction}
  */
-function clearArticles() {
+function clearArticles(): ProfileAction {
   return {
     type: ProfilePageTypes.CLEAR_USER_ARTICLES,
   };
 }
 
 /**
- * @return {Action}
+ * @return {ProfileAction}
  */
-function setArticlesLoadingFlag() {
+function setArticlesLoadingFlag(): ProfileAction {
   return {
     type: ProfilePageTypes.SET_USER_ARTICLES_LOADING,
   };
 }
 
 /**
- * @return {Action}
+ * @return {ProfileAction}
  */
-function unsetArticlesLoadingFlag() {
+function unsetArticlesLoadingFlag(): ProfileAction {
   return {
     type: ProfilePageTypes.UNSET_USER_ARTICLES_LOADING,
   };
 }
 
 /**
- * @return {Action}
+ * @return {ProfileAction}
  */
-function forbidArticlesLoading() {
+function forbidArticlesLoading(): ProfileAction {
   return {
     type: ProfilePageTypes.FORBID_USER_ARTICLES_UPLOADING,
   };
 }
 
 /**
- * @return {Action}
+ * @return {ProfileAction}
  */
-function allowArticlesLoading() {
+function allowArticlesLoading(): ProfileAction {
   return {
     type: ProfilePageTypes.ALLOW_USER_ARTICLES_UPLOADING,
   };
 }
 
 /**
- * @return {Action}
+ * @return {ProfileAction}
  */
-function askNewArticles() {
+function askNewArticles(): ProfileAction {
   return {
     type: ProfilePageTypes.ASK_NEW_USER_ARTICLES,
   };
 }
 
 /**
- * @param {string} id
- * @return {Action}
+ * @param {number} id
+ * @return {ProfileAction}
  */
-function deleteArticle(id) {
+function deleteArticle(id: number) {
   return {
-    type: ProfilePageTypes.DELETE_CARD,
+    type: CommonTypes.DELETE_CARD,
     payload: id,
   };
 }
@@ -94,7 +97,7 @@ function deleteArticle(id) {
  * @property {string?} lastName
  * @property {string?} avatarUrl
  * @property {number?} score
- * @return {Action}
+ * @return {ProfileAction}
  */
 function setUserLoading(user) {
   return {
@@ -110,16 +113,10 @@ function setUserLoading(user) {
 }
 
 /**
- * @param {Object} user
- * @property {string} login
- * @property {string?} firstName
- * @property {string?} lastName
- * @property {email?} email
- * @property {string?} avatarUrl
- * @property {number?} score
- * @return {Action}
+ * @param {User} user
+ * @return {ProfileAction}
  */
-function setUserInfo(user) {
+function setUserInfo(user: User) {
   appendApiImg(user);
   return {
     type: ProfilePageTypes.SET_USER_INFO,
@@ -128,15 +125,15 @@ function setUserInfo(user) {
 }
 
 /**
- * @param {string} id
+ * @param {number} id
  * @param {number} sign
  * @param {number} newLikesNum
- * @return {Action}
+ * @return {ProfileAction}
  */
-function like(id, sign, newLikesNum) {
+function like(id: number, sign: number, newLikesNum: number) {
   return {
-    type: ProfilePageTypes.LIKE,
-    payload: {id: id + '', sign, likes: newLikesNum},
+    type: CommonTypes.LIKE_CARD,
+    payload: {id, sign, likes: newLikesNum},
   };
 }
 

@@ -1,10 +1,11 @@
 import {RouterTypes} from '../types';
+import {RouterAction} from '../reducers/routerReducer';
 
 /**
  * @param {string} to путь, куда нужно совершить переход
  * @return {Action}
  */
-function redirect(to) {
+function redirect(to): RouterAction {
   return {
     type: RouterTypes.REDIRECT,
     payload: to,

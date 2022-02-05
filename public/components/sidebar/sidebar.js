@@ -4,8 +4,7 @@ import SidebarView from './sidebarView.js';
 import userPreviewComponent from './userPreview.pug.js';
 import buttonNavComponent from './buttonNav.pug.js';
 
-import store from '../../flux/store.js';
-import {mainPageActions} from '../../flux/actions.js';
+import store from '../../flux/store';
 import {AuthorizationTypes, StreamTypes} from '../../flux/types';
 
 import categoriesList from '../../common/categoriesList.js';

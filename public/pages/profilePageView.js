@@ -6,7 +6,7 @@ import composeCards from '../components/feed/composeCardStandart.js';
 import ProfileCard from '../components/profileCard/profileCard.js';
 
 import {ProfilePageTypes} from '../flux/types';
-import profilePageActions from '../flux/actions/profilePageActions.js';
+import profilePageActions from '../flux/actions/profilePageActions';
 
 /**
  * Страница содержит главный компонент - ленту новостей, хедер, сайдбар.

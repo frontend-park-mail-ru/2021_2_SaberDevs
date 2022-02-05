@@ -3,9 +3,9 @@ import FeedView from './feedView.js';
 
 import {redirect} from '../../common/utils.js';
 
-import store from '../../flux/store.js';
-import profilePageActions from '../../flux/actions/profilePageActions.js';
-import readerActions from '../../flux/actions/readerActions.js';
+import store from '../../flux/store';
+import profilePageActions from '../../flux/actions/profilePageActions';
+import readerActions from '../../flux/actions/readerActions';
 import {AuthorizationTypes} from '../../flux/types';
 import {ajaxDebug} from '../../globals';
 import Likes from '../likes/likes.js';

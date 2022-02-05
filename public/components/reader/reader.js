@@ -9,10 +9,10 @@ import Ajax from '../../modules/ajax';
 import {translateServerComment} from '../../common/transformApi.js';
 import {redirect} from '../../common/utils.js';
 
-import store from '../../flux/store.js';
+import store from '../../flux/store';
 import {ReaderTypes, AuthorizationTypes} from '../../flux/types';
-import readerActions from '../../flux/actions/readerActions.js';
-import editorActions from '../../flux/actions/editorActions.js';
+import readerActions from '../../flux/actions/readerActions';
+import editorActions from '../../flux/actions/editorActions';
 
 // true - поля ответа и изменения не убираются,
 // игнорируется авторизация для комментариев

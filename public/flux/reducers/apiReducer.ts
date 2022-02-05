@@ -4,12 +4,14 @@ const InitialAPIState = {
   isAvailable: true,
 };
 
+export type ApiAction = FluxAction<ApiTypes>;
+
 /**
  * @param {Object} state
- * @param {Action} action
+ * @param {ApiAction} action
  * @return {State}
  */
-export default function apiReducer(state: FluxStateObject = InitialAPIState, action: FluxAction): FluxStateObject {
+export default function apiReducer(state: FluxStateObject = InitialAPIState, action: ApiAction): FluxStateObject {
   switch (action.type) {
     case ApiTypes.SET_AVAILABLE:
       return {

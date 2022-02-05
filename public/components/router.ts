@@ -1,4 +1,4 @@
-import store from '../flux/store.js';
+import store from '../flux/store';
 import {RouterTypes} from '../flux/types';
 import {routerDebug} from '../globals';
 
@@ -190,7 +190,7 @@ export default class Router {
       event.preventDefault();
 
       let link: string | undefined = target instanceof HTMLAnchorElement ? target.pathname : undefined;
-      if (!target && target.parentElement instanceof HTMLAnchorElement) {
+      if (!link && target.parentElement instanceof HTMLAnchorElement) {
         link = target.parentElement.pathname;
       }
 

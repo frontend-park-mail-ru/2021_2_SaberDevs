@@ -1,8 +1,8 @@
 import Ajax from './ajax';
 
-import store from '../flux/store.js';
-import {authorizationActions} from '../flux/actions.js';
-import {apiActions} from '../flux/actions.js';
+import store from '../flux/store';
+import authorizationActions from '../flux/actions/authorizationActions';
+import apiActions from '../flux/actions/apiActions';
 import {ajaxDebug} from '../globals';
 
 const RETRY_DELAY = 30000;

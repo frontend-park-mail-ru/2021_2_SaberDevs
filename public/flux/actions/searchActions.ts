@@ -1,4 +1,5 @@
-import {SearchTypes} from '../types';
+import {SearchTypes, CommonTypes} from '../types';
+import {SearchAction} from '../reducers/searchPageReducer';
 import {appendApiImg} from '../../common/transformApi.js';
 
 // ////////////////
@@ -8,12 +9,12 @@ import {appendApiImg} from '../../common/transformApi.js';
 /**
  * @param {string} idLastLoaded
  * @param {Array<Object>} cards
- * @return {Action}
+ * @return {SearchAction}
  */
-function saveNewCards(idLastLoaded, cards) {
+function saveNewCards(idLastLoaded, cards): SearchAction {
   cards.forEach((card) => {
     // только для статей
-    if (!'login' in card) {
+    if (!('login' in card)) {
       appendApiImg(card.author);
     }
     appendApiImg(card);
@@ -27,9 +28,9 @@ function saveNewCards(idLastLoaded, cards) {
 /**
  * @param {string} group
  * @param {string} description
- * @return {Action}
+ * @return {SearchAction}
  */
-function setSearchGroup(group, description = '') {
+function setSearchGroup(group, description = ''): SearchAction {
   return {
     type: SearchTypes.SET_SEARCH_GROUP,
     payload: {group, description},
@@ -38,9 +39,9 @@ function setSearchGroup(group, description = '') {
 
 /**
  * @param {string} value
- * @return {Action}
+ * @return {SearchAction}
  */
-function setSearchValue(value) {
+function setSearchValue(value): SearchAction {
   return {
     type: SearchTypes.SET_SEARCH_VALUE,
     payload: value,
@@ -48,54 +49,54 @@ function setSearchValue(value) {
 }
 
 /**
- * @return {Action}
+ * @return {SearchAction}
  */
-function setLoadingFlag() {
+function setLoadingFlag(): SearchAction {
   return {
     type: SearchTypes.SET_LOADING_FLAG,
   };
 }
 
 /**
- * @return {Action}
+ * @return {SearchAction}
  */
-function unsetLoadingFlag() {
+function unsetLoadingFlag(): SearchAction {
   return {
     type: SearchTypes.UNSET_LOADING_FLAG,
   };
 }
 
 /**
- * @return {Action}
+ * @return {SearchAction}
  */
-function forbidCardsLoading() {
+function forbidCardsLoading(): SearchAction {
   return {
     type: SearchTypes.FORBID_CARDS_UPLOADING,
   };
 }
 
 /**
- * @return {Action}
+ * @return {SearchAction}
  */
-function allowCardsLoading() {
+function allowCardsLoading(): SearchAction {
   return {
     type: SearchTypes.ALLOW_CARDS_UPLOADING,
   };
 }
 
 /**
- * @return {Action}
+ * @return {SearchAction}
  */
-function clearCards() {
+function clearCards(): SearchAction {
   return {
     type: SearchTypes.CLEAR_CARDS,
   };
 }
 
 /**
- * @return {Action}
+ * @return {SearchAction}
  */
-function askNewCards() {
+function askNewCards(): SearchAction {
   return {
     type: SearchTypes.ASK_NEW_CARDS,
   };
@@ -103,11 +104,11 @@ function askNewCards() {
 
 /**
  * @param {string} id
- * @return {Action}
+ * @return {SearchAction}
  */
-function deleteCard(id) {
+function deleteCard(id): SearchAction {
   return {
-    type: SearchTypes.DELETE_CARD,
+    type: CommonTypes.DELETE_CARD,
     payload: id,
   };
 }
@@ -118,44 +119,44 @@ function deleteCard(id) {
  * @param {number} newLikesNum
  * @return {Action}
  */
-function like(id, sign, newLikesNum) {
+function like(id, sign, newLikesNum): SearchAction {
   return {
-    type: SearchTypes.LIKE,
+    type: CommonTypes.LIKE_CARD,
     payload: {id: id + '', sign, likes: newLikesNum},
   };
 }
 
 /**
- * @return {Action}
+ * @return {SearchAction}
  */
-function showEmptyFeed() {
+function showEmptyFeed(): SearchAction {
   return {
     type: SearchTypes.SHOW_EMPTY_FEED,
   };
 }
 
 /**
- * @return {Action}
+ * @return {SearchAction}
  */
-function submit() {
+function submit(): SearchAction {
   return {
     type: SearchTypes.SUBMIT,
   };
 }
 
 /**
- * @return {Action}
+ * @return {SearchAction}
  */
-function submitOnHeader() {
+function submitOnHeader(): SearchAction {
   return {
     type: SearchTypes.SUBMIT_ON_HEADER,
   };
 }
 
 /**
- * @return {Action}
+ * @return {SearchAction}
  */
-function upload() {
+function upload(): SearchAction {
   return {
     type: SearchTypes.REQUEST,
   };

@@ -1,9 +1,9 @@
 import BasePageMV from './basePageMV.js';
 import SearchPageView from './searchPageView.js';
 
-import store from '../flux/store.js';
-import {changePageActions} from '../flux/actions.js';
-import searchActions from '../flux/actions/searchActions.js';
+import store from '../flux/store';
+import changePageActions from '../flux/actions/categoryPageActions';
+import searchActions from '../flux/actions/searchActions';
 import {SearchTypes} from '../flux/types';
 
 import Modal from '../components/modal/modal.js';

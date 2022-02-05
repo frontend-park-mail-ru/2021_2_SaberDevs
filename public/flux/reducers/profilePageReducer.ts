@@ -1,63 +1,73 @@
-import {MainPageTypes, FluxStateObject, FluxAction} from '../types';
+import {ProfilePageTypes, CommonTypes, FluxStateObject, FluxAction} from '../types';
+import {Article} from './readerReducer';
+import {User} from './authorizeReducer';
 
 const endOfFeedMarkerID = 'end';
 
 /**
- * Объект состояния на главной странице
- * @typedef {Object} MainCardState
- * @property {string} idLastLoaded  - ID последней загруженной карточки
- * @property {string} login         - пользователь, для которого запрашивается
- *                                    подборка новостей
+ * Объект состояния для ленты
+ * @typedef {Object} ProfileStateObject
  * @property {boolean} isLoading    - Идет ли загрузка сейчас. true запрещает
  *                                    отправку запросов на обновлении ленты,
  *                                    чтобы не спамить сервер
- * @property {number} lastScrollPos - Позиция скролла при покидании mainPage
- * @property {boolean} isEndFound   - Запрещает загрузку при обнаружении конца
+ * @property {boolean} isEndFound  - Запрещает загрузку при обнаружении конца
  *                                    ленты, чтобы не спамить сервер.
  *                                    Сбразывется через resetDoNotUploadTime мс
- * @property {Array.Card} cards     - Массив загруженных карточек для
+ * @property {Array<Article>} cards - Массив загруженных карточек для
  *                                    восстановления состояния при возвращении
  *                                    на MainPage
+ * @property {number | 'end'} idLastLoaded
+ * @property {User} user
  */
-const InitialMainPageState = {
+
+export interface ProfileStateObject extends FluxStateObject {
+  user: User,
+  isLoading: boolean,
+  idLastLoaded: number | 'end',
+  cards: Article[],
+  isEndFound: boolean,
+}
+
+const InitialProfilePageState: ProfileStateObject = {
+  user: {
+    login: '',
+    avatarUrl: '',
+  },
   isLoading: false,              // отправлен ли запрос на сервер
-  idLastLoaded: '',              // запоминаем последнюю загруженную запись
-  lastScrollPos: 0,              // скрол для возврата к той же записи
+  idLastLoaded: 0,              // запоминаем последнюю загруженную запись
   cards: [],                     // массив загруженных новостей
   isEndFound: false,
 };
+
+export type ProfileAction = FluxAction<ProfilePageTypes | CommonTypes>;
 
 /**
  * @param {Object} state
  * @param {Action} action
  * @return {Object}
  */
-export default function mainPageReducer(state: FluxStateObject = InitialMainPageState, action: FluxAction): FluxStateObject {
+export default function profilePageReducer(
+    state: ProfileStateObject = InitialProfilePageState,
+    action: ProfileAction,
+): ProfileStateObject {
   switch (action.type) {
-    case MainPageTypes.SET_LOADING_FLAG:
+    case ProfilePageTypes.SET_USER_ARTICLES_LOADING:
       return {
         ...state,
         isLoading: true,
       };
-    case MainPageTypes.FORBID_CARDS_UPLOADING:
+    case ProfilePageTypes.FORBID_USER_ARTICLES_UPLOADING:
       return {
         ...state,
         isEndFound: true,
       };
-    case MainPageTypes.ALLOW_CARDS_UPLOADING:
+    case ProfilePageTypes.ALLOW_USER_ARTICLES_UPLOADING:
       return {
         ...state,
         isEndFound: false,
       };
-    case MainPageTypes.SAVE_NEW_CARDS:
+    case ProfilePageTypes.SAVE_NEW_USER_ARTICLES:
       const cards = action.payload.cards;
-      cards.forEach((element) => {
-        if (!Array.isArray(element.tags)) {
-          console.warn('API Error | server return ' +
-            'tags which do not represent an array');
-          element.tags = [];
-        }
-      });
       if (cards.length === 0) {
         return {
           ...state,
@@ -77,16 +87,35 @@ export default function mainPageReducer(state: FluxStateObject = InitialMainPage
         cards: state.cards.concat(cards),
         isEndFound,
       };
-    case MainPageTypes.CLEAR_CARDS:
+    case ProfilePageTypes.CLEAR_USER_ARTICLES:
       return {
         ...state,
         cards: [],
         isLoading: false,
-        idLastLoaded: '',
-        lastScrollPos: 0,
+        idLastLoaded: 0,
         isEndFound: false,
       };
-    case MainPageTypes.DELETE_CARD: {
+    case ProfilePageTypes.SET_USER_INFO: // смена пользователя
+      return {
+        ...state,
+        user: action.payload,
+        // Сброс загруженных карточек
+        // TODO: сделать кеширование для кажлого юзера
+        isLoading: false,
+        idLastLoaded: 0,
+        cards: [],
+        isEndFound: false,
+      };
+    case ProfilePageTypes.SET_USER_LOADING: // смена пользователя
+      return {
+        ...state,
+        user: action.payload,
+        isLoading: false,
+        idLastLoaded: 0,
+        cards: [],
+        isEndFound: false,
+      };
+    case CommonTypes.DELETE_CARD: {
       const idx = state.cards.findIndex((card) => card.id === action.payload);
       if (idx !== -1) {
         return {
@@ -97,7 +126,7 @@ export default function mainPageReducer(state: FluxStateObject = InitialMainPage
         return state;
       }
     }
-    case MainPageTypes.LIKE: {  // TODO: распространить на другие ленты, ридер
+    case CommonTypes.LIKE_CARD:
       const idx = state.cards.findIndex((card) => card.id===action.payload.id);
       if (idx !== -1) {
         const likeCardCopy = JSON.parse(JSON.stringify(state.cards[idx]));
@@ -109,7 +138,7 @@ export default function mainPageReducer(state: FluxStateObject = InitialMainPage
           liked -1 | sign -1 => liked 0
           liked 1  | sign -1 => liked -1
         */
-        if (likeCardCopy.liked ^ action.payload.sign === 0) {
+        if ((likeCardCopy.liked ^ action.payload.sign) === 0) {
           likeCardCopy.liked = 0; // отменили оценку
         } else {
           likeCardCopy.liked = action.payload.sign;
@@ -124,7 +153,6 @@ export default function mainPageReducer(state: FluxStateObject = InitialMainPage
       } else {
         return state;
       }
-    }
   }
   return state;
 }

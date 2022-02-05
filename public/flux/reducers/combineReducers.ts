@@ -1,20 +1,33 @@
 import {fluxDebug} from '../../globals';
+import {FluxStateObject, FluxAction, FluxReducer} from '../types';
+
+type WithBigArray = {cards: any[]};
+type FluxReducerMap = {
+  [name: string]: FluxReducer,
+}
 
 /**
- * @param {function(StateObject, Action)} reducers
- * @return {function(StateObject, Action)}
+ * возвращает редьюсер, работающий с объектом вида
+ * {
+ *  reducer1: stateObject1
+ *  reducer2: stateObject2
+ *           ...
+ *  reducerN: stateObjectN
+ * }
+ * @param {Reducer} reducers
+ * @return {Reducer}
  */
-export default function combineReducers(reducers) {
+export default function combineReducers(reducers: FluxReducerMap): FluxReducer {
   for (const reducer in reducers) {
     if (typeof(reducers[reducer]) !== 'function') {
       console.warn(
           `Reducers Combiner: ${reducer} is not a function.
           It will not be called. It is a ${typeof(reducers[reducer])}.`,
       );
-      delete reducers[reducer.name];
+      delete reducers[reducer];
     }
   }
-  return function(state, action) {
+  return function(state: FluxStateObject, action: FluxAction<any>): FluxStateObject {
     if (!state) {
       state = {};
     }
@@ -35,7 +48,7 @@ export default function combineReducers(reducers) {
             delete printState.cards;
             printNewState = {};
             Object.assign(printNewState, newState);
-            delete printNewState.cards;
+            delete (<WithBigArray>printNewState).cards;
           }
           if (reducer === 'editor') {
             printState = {};

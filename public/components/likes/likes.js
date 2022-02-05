@@ -1,7 +1,7 @@
 import BaseComponent from '../_basic/baseComponent.js';
 import LikesView from './likesView.js';
 
-import store from '../../flux/store.js';
+import store from '../../flux/store';
 import Ajax from '../../modules/ajax';
 import ModalTemplates from '../modal/modalTemplates.js';
 

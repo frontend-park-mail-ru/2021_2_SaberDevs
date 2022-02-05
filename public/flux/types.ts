@@ -1,25 +1,29 @@
-// export type FluxActionType = SYSTYPES | AuthorizationTypes | ChangePageTypes | ModalTypes | SignupFormTypes | CommonPageTypes | MainPageTypes | ProfilePageTypes | CategoryPageTypes | SearchTypes | StreamTypes | ApiTypes | EditorTypes | ReaderTypes | RouterTypes;
 export type FluxActionType = string;
-export type FluxAction = {
-  type: FluxActionType,
+export interface FluxAction<T = FluxActionType> {
+  type: T,
   payload?: any,
-  // payload?: {
-  //   [key: string]: any
-  // },
-}
-export type FluxStateObject = object;
-export type FluxReducer = (state: FluxStateObject, action: FluxAction) => FluxStateObject;
-export type FluxMiddleWare = Function;
-// TODO; v combine reducers
-// type FluxStateObject = {
-//   [key: string]: FluxLocalState;
-// };
+};
+export type FluxStateObject = {
+  [key: string]: any,
+};
+export type FluxReducer = (state: FluxStateObject, action: FluxAction<string>) => FluxStateObject;
+export type FluxStoreCreationFunction = (rootReducer: FluxReducer, initialState: FluxStateObject, ...middlewares: FluxMiddleWare[]) => FluxStore;
 
 export type FluxStore = {
-  dispatch: (action: FluxAction) => void;
-  subscribe: (actionType: FluxActionType, callback: () => void) => void;
+  dispatch: (action: any, props?: any) => void;
+  subscribe: (actionType: FluxActionType, callback: (props?: any) => void) => void;
+  getState: () => FluxStateObject;
+}
+
+// С помощью миддлварей изменияются эти 2 функции
+export type FluxEnchancedStore = {
+  dispatch: (action: any, props?: any) => void;
   getState: FluxStateObject;
 }
+
+export type FluxMiddleWare = (store: FluxEnchancedStore) => (next: FluxMiddleWare) => (action: any) => void;
+export type FluxEnchancedStoreCreationFunction = (createStore: FluxStoreCreationFunction) => FluxEnchancedStore;
+
 
 
 

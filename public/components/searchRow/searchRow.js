@@ -1,8 +1,8 @@
 import BaseComponent from '../_basic/baseComponent.js';
 import SearchRowView from './searchRowView.js';
 
-import store from '../../flux/store.js';
-import searchActions from '../../flux/actions/searchActions.js';
+import store from '../../flux/store';
+import searchActions from '../../flux/actions/searchActions';
 
 /**
  * @class SearchRow

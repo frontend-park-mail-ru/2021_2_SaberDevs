@@ -5,8 +5,8 @@ import Modal from '../modal/modal.js';
 
 import Ajax from '../../modules/ajax';
 
-import store from '../../flux/store.js';
-import {authorizationActions} from '../../flux/actions.js';
+import store from '../../flux/store';
+import authorizationActions from '../../flux/actions/authorizationActions';
 
 /**
  * Возвращает метод отправки звпроса на вход или регистрацию

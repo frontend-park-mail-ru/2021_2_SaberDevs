@@ -2,7 +2,7 @@ import BaseComponent from '../../_basic/baseComponent.js';
 import SearchBarView from './searchBarView.js';
 import SearchRow from '../../searchRow/searchRow.js';
 
-import searchActions from '../../../flux/actions/searchActions.js';
+import searchActions from '../../../flux/actions/searchActions';
 
 /**
  * @class SearchBar

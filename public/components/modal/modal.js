@@ -1,8 +1,8 @@
 import modalComponent from './modal.pug.js';
 
-import store from '../../flux/store.js';
+import store from '../../flux/store';
 import {ModalTypes} from '../../flux/types';
-import {modalActions} from '../../flux/actions.js';
+import modalActions from '../../flux/actions/modalActions';
 import {modalsDebug} from '../../globals';
 
 const animationTime = 200;

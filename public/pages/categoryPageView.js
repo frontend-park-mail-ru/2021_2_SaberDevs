@@ -7,8 +7,8 @@ import CategoryChoiceBar from
   '../components/categoryChoiceBar/categoryChoiceBar.js';
 
 import {CategoryPageTypes} from '../flux/types';
-import categoryPageActions from '../flux/actions/categoryPageActions.js';
-import store from '../flux/store.js';
+import categoryPageActions from '../flux/actions/categoryPageActions';
+import store from '../flux/store';
 
 // ///////////////////////////////// //
 //

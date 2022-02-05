@@ -23,41 +23,42 @@ export type Comment = {
   author: User,
 };
 
+export type ArticleId = number | 'end';
+
+/**
+ * @typedef {Object} Article
+ * @property {number} id
+ * @property {string} title
+ * @property {string} text
+ * @property {string} previewUrl
+ * @property {string} category
+ * @property {User} author
+ * @property {string} dateTime
+ * @property {number} likes
+ * @property {Array<string>} tags
+ * @property {Array<Comment & {answers: Comment[]}>} commentsContent
+ */
+
 export type Article = {
-    previewUrl: string,
-    title: string,
-    text: string,
-    category: string,
-    author: User,
-    datetime: string
-    comments: number,
-    likes: number,
-    tags: string[],
-    commentsContent: (Comment & {answers: Comment[]})[],
+  id: ArticleId,
+  previewUrl: string,
+  title: string,
+  text: string,
+  category: string,
+  author: User,
+  datetime: string
+  comments: number,
+  likes: number,
+  tags: string[],
+  commentsContent: (Comment & {answers: Comment[]})[],
 };
 
-type ReaderStateObject = FluxStateObject & {
+export interface ReaderStateObject extends FluxStateObject {
   currentId: number,
   [key: number]: Article,
 };
 
-export type ReaderAction = {
-  type: ReaderTypes,
-  payload: {
-    id: number,
-    comments: Comment[],
-   } | {
-    id: number,
-    text: string,
-   } | {
-    parentId: number,
-    answer: Comment,
-   } | {
-     id: number,
-     sign: number,
-     likes: number,
-   } | Article | Comment | number
- }
+export type ReaderAction = FluxAction<ReaderTypes | CommonTypes>;
 
  const InitialReaderState: ReaderStateObject = {
   currentId: 0,
@@ -107,11 +108,11 @@ export type ReaderAction = {
 };
 
 /**
- * @param {Object} state
- * @param {Action} action
- * @return {State}
+ * @param {ReaderStateObject} state
+ * @param {ReaderAction} action
+ * @return {ReaderStateObject}
  */
-export default function readerReducer(state: ReaderStateObject = InitialReaderState, action: ReaderAction): FluxStateObject {
+export default function readerReducer(state: ReaderStateObject = InitialReaderState, action: ReaderAction): ReaderStateObject {
   switch (action.type) {
     case ReaderTypes.SAVE_ARTICLE:
       return {
@@ -189,11 +190,11 @@ export default function readerReducer(state: ReaderStateObject = InitialReaderSt
     case ReaderTypes.ADD_COMMENT_ANSWER:
       const thisComments2 = state[state.currentId].commentsContent || [];
       if (action.payload.parentId === 0) {
-        return {
+        return <ReaderStateObject>{
           ...state,
           [state.currentId]: {
             ...[state.currentId],
-            commentsContent: [...thisComments2, action.payload.comment],
+            commentsContent: thisComments2.concat(action.payload.comment),
           },
         };
       } else {

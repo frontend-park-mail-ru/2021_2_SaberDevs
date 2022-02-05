@@ -1,8 +1,9 @@
 import BasePageMV from './basePageMV.js';
 import MainPageView from './mainPageView.js';
 
-import store from '../flux/store.js';
-import {changePageActions, mainPageActions} from '../flux/actions.js';
+import store from '../flux/store';
+import changePageActions from '../flux/actions/changePageActions';
+import mainPageActions from '../flux/actions/mainPageActions';
 import {EditorTypes} from '../flux/types';
 
 import Modal from '../components/modal/modal.js';

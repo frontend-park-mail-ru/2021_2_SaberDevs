@@ -95,6 +95,7 @@ fs.readdir(devRoot + templatesDir, (err, files) => {
     }
     if (componentDir === '') {
       console.warn(`Шаблон ${filename} игнорируется`);
+      return;
     }
     const JSFilename = outDir + componentDir + '/' + filename + '.js';
 

@@ -1,16 +1,25 @@
 import {ChangePageTypes, FluxStateObject, FluxAction} from '../types';
 
-const InitialPageState = {
+
+
+export interface ChangePageStateObject extends FluxStateObject {
+  page: string,
+  docTitle: string,
+};
+
+const InitialPageState: ChangePageStateObject = {
   page: 'main',
   docTitle: 'SaberProject',
 };
 
+export type ChangePageAction = FluxAction<ChangePageTypes>;
+
 /**
- * @param {Object} state
+ * @param {ChangePageStateObject} state
  * @param {Action} action
- * @return {Object}
+ * @return {ChangePageStateObject}
  */
-export default function changePageReducer(state: FluxStateObject = InitialPageState, action: FluxAction): FluxStateObject {
+export default function changePageReducer(state: ChangePageStateObject = InitialPageState, action: ChangePageAction): ChangePageStateObject {
   switch (action.type) {
     case ChangePageTypes.CHANGE_PAGE:
       document.title = action.payload.docTitle;

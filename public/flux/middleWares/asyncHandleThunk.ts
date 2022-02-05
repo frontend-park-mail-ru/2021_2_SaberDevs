@@ -1,10 +1,12 @@
+import {FluxMiddleWare, FluxEnchancedStore} from '../types';
+
 /**
- * @param {Object} Объект, удовлетворяющий Redux Middleware API
+ * @param {FluxMiddleWare} Объект, удовлетворяющий Redux Middleware API
  * @property {Function} getState
  * @property {Function} dispatch
  * @return {Function} next
  */
-export default function thunk({getState, dispatch}) {
+ const thunk: FluxMiddleWare = ({getState, dispatch}) => {
   return function(next) {
     return function(action) {
       if (typeof action === 'function') {
@@ -15,3 +17,4 @@ export default function thunk({getState, dispatch}) {
   };
 };
 
+export default thunk;

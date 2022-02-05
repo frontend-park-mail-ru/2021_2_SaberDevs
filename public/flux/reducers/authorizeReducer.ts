@@ -8,7 +8,7 @@ export type User = {
   score?: number,
 };
 
-type AuthorizationStateObject = FluxStateObject & {
+export interface AuthorizationStateObject extends FluxStateObject {
   isAuthenticated: boolean,
   login: string,
   avatarUrl: string,
@@ -17,6 +17,8 @@ type AuthorizationStateObject = FluxStateObject & {
   email: 'UNAUTHORIZED' | string,
   score: number,
 };
+
+export type AuthorizationAction = FluxAction<AuthorizationTypes>
 
 const InitialUserState: AuthorizationStateObject = {
   isAuthenticated: false,
@@ -33,7 +35,7 @@ const InitialUserState: AuthorizationStateObject = {
  * @param {Action} action
  * @return {Object}
  */
-export default function authorizeReducer(state: AuthorizationStateObject = InitialUserState, action: FluxAction): FluxStateObject {
+export default function authorizeReducer(state: AuthorizationStateObject = InitialUserState, action: AuthorizationAction): AuthorizationStateObject {
   switch (action.type) {
     case AuthorizationTypes.LOGIN:
       if (action.payload.login === '') {

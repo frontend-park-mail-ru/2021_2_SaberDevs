@@ -1,9 +1,9 @@
 import BasePageMV from './basePageMV.js';
 import ReaderPageView from './articleReaderPageView.js';
 
-import store from '../flux/store.js';
-import readerActions from '../flux/actions/readerActions.js';
-import {changePageActions} from '../flux/actions.js';
+import store from '../flux/store';
+import readerActions from '../flux/actions/readerActions';
+import changePageActions from '../flux/actions/changePageActions';
 
 import Ajax from '../modules/ajax';
 import {showModalNetOrServerError} from '../components/modal/modalTemplates.js';

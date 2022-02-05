@@ -31,7 +31,7 @@ import {cookieLogin} from './modules/ajaxRequests.js';
 import WS from './modules/webSocket.js';
 
 // flux store
-import store from './flux/store.js';
+import store from './flux/store';
 
 // utils
 import {redirect} from './common/utils.js';

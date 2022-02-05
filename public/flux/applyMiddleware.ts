@@ -1,3 +1,5 @@
+import {FluxReducer, FluxEnchancedStore, FluxStore, FluxStateObject, FluxStoreCreationFunction, FluxMiddleWare} from './types';
+
 /**
  * @param  {...Function} funcs
  * @return {Function}
@@ -17,24 +19,23 @@ function compose(...funcs: Function[]): Function {
   );
 }
 
-type FluxMiddleWare = Function;
 /**
  * extends (wraps) default store
  * @param  {...FluxMiddleWare} middlewares
  * @return {any}
  */
-export default function applyMiddleware(...middlewares: FluxMiddleWare[]) {
+export default function applyMiddleware(...middlewares: FluxMiddleWare[]): (createStore: FluxStoreCreationFunction) => FluxStoreCreationFunction {
   return function(createStore: FluxStoreCreationFunction) {
-    return function(reducer, preloadedState) {
+    return function(reducer: FluxReducer, preloadedState: FluxStateObject): FluxStore {
       const store = createStore(reducer, preloadedState);
-      let dispatch = () => {
+      let dispatch: ((action: any, props?: any) => void) = (action: any) => {
         console.error(
             'Dispatching while constructing your middleware is not allowed. ' +
             'Other middleware would not be applied to this dispatch.',
         );
       };
 
-      const middlewareAPI = {
+      const middlewareAPI: FluxEnchancedStore = {
         getState: store.getState,
         dispatch: (action, ...args) => dispatch(action, ...args),
       };
@@ -47,4 +48,4 @@ export default function applyMiddleware(...middlewares: FluxMiddleWare[]) {
       };
     };
   };
-}
+};

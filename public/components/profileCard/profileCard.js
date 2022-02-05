@@ -1,7 +1,7 @@
 import BaseComponent from '../_basic/baseComponent.js';
 import ProfileCardView from './profileCardView.js';
 
-import store from '../../flux/store.js';
+import store from '../../flux/store';
 import {ProfilePageTypes} from '../../flux/types';
 import {redirect} from '../../common/utils.js';
 

@@ -1,10 +1,10 @@
 import BasePageMV from './basePageMV.js';
 import EditorView from './articleEditorView.js';
 
-import store from '../flux/store.js';
+import store from '../flux/store';
 import ModalTemplates from '../components/modal/modalTemplates.js';
 import {AuthorizationTypes} from '../flux/types';
-import {changePageActions} from '../flux/actions.js';
+import changePageActions from '../flux/actions/changePageActions';
 import {redirect} from '../common/utils.js';
 
 /**

@@ -1,7 +1,7 @@
 import {appendApiImg} from '../common/transformApi.js';
 
-import store from '../flux/store.js';
-import streamActions from '../flux/actions/streamActions.js';
+import store from '../flux/store';
+import streamActions from '../flux/actions/streamActions';
 
 import {wsDebug} from '../globals';
 // Тачка Дорофеева

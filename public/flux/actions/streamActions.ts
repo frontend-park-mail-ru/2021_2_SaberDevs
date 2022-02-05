@@ -1,4 +1,6 @@
 import {StreamTypes} from '../types';
+import {StreamAction} from '../reducers/streamReducer';
+import {Comment} from '../reducers/readerReducer';
 import {appendApiImg} from '../../common/transformApi.js';
 
 // ////////////////
@@ -6,10 +8,10 @@ import {appendApiImg} from '../../common/transformApi.js';
 // ////////////////
 
 /**
- * @param {Array<Object>} comments
+ * @param {Array<Comment>} comments
  * @return {Action}
  */
-function saveNewComments(comments) {
+function saveNewComments(comments: Comment[]): StreamAction {
   comments.forEach((comment) => {
     appendApiImg(comment.author);
   });
@@ -22,7 +24,7 @@ function saveNewComments(comments) {
 /**
  * @return {Action}
  */
-function clearComments() {
+function clearComments(): StreamAction {
   return {
     type: StreamTypes.CLEAR_COMMENTS,
   };
@@ -31,7 +33,7 @@ function clearComments() {
 /**
  * @return {Action}
  */
-function askNewComments() {
+function askNewComments(): StreamAction {
   return {
     type: StreamTypes.ASK_NEW_COMMENTS,
   };

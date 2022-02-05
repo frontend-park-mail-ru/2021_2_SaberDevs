@@ -1,4 +1,6 @@
-import {CategoryPageTypes} from '../types';
+import {CategoryPageTypes, CommonTypes} from '../types';
+import {Article} from '../reducers/readerReducer';
+import {CategoryPageAction} from '../reducers/categoryPageReducer';
 import {appendApiImg} from '../../common/transformApi.js';
 
 // ////////////////
@@ -6,11 +8,11 @@ import {appendApiImg} from '../../common/transformApi.js';
 // ////////////////
 
 /**
- * @param {string} idLastLoaded
- * @param {Array<Card>} cards
- * @return {Action}
+ * @param {number} idLastLoaded
+ * @param {Array<Article>} cards
+ * @return {CategoryPageAction}
  */
-function saveNewCategoryArticles(idLastLoaded, cards) {
+function saveNewCategoryArticles(idLastLoaded: number, cards: Article[]): CategoryPageAction {
   cards.forEach((card) => {
     appendApiImg(card);
     appendApiImg(card.author);
@@ -22,66 +24,66 @@ function saveNewCategoryArticles(idLastLoaded, cards) {
 }
 
 /**
- * @return {Action}
+ * @return {CategoryPageAction}
  */
-function clearCategoryArticles() {
+function clearCategoryArticles(): CategoryPageAction {
   return {
     type: CategoryPageTypes.CLEAR_CATEGORY_ARTICLES,
   };
 }
 
 /**
- * @return {Action}
+ * @return {CategoryPageAction}
  */
-function setCategoryArticlesLoadingFlag() {
+function setCategoryArticlesLoadingFlag(): CategoryPageAction {
   return {
     type: CategoryPageTypes.SET_CATEGORY_ARTICLES_LOADING,
   };
 }
 
 /**
- * @return {Action}
+ * @return {CategoryPageAction}
  */
-function unsetCategoryArticlesLoadingFlag() {
+function unsetCategoryArticlesLoadingFlag(): CategoryPageAction {
   return {
     type: CategoryPageTypes.UNSET_CATEGORY_ARTICLES_LOADING,
   };
 }
 
 /**
- * @return {Action}
+ * @return {CategoryPageAction}
  */
-function forbidCategoryArticlesLoading() {
+function forbidCategoryArticlesLoading(): CategoryPageAction {
   return {
     type: CategoryPageTypes.FORBID_CATEGORY_ARTICLES_UPLOADING,
   };
 }
 
 /**
- * @return {Action}
+ * @return {CategoryPageAction}
  */
-function allowCategoryArticlesLoading() {
+function allowCategoryArticlesLoading(): CategoryPageAction {
   return {
     type: CategoryPageTypes.ALLOW_CATEGORY_ARTICLES_UPLOADING,
   };
 }
 
 /**
- * @return {Action}
+ * @return {CategoryPageAction}
  */
-function askNewCategoryArticles() {
+function askNewCategoryArticles(): CategoryPageAction {
   return {
     type: CategoryPageTypes.ASK_NEW_CATEGORY_ARTICLES,
   };
 }
 
 /**
- * @param {string} id
- * @return {Action}
+ * @param {number} id
+ * @return {CategoryPageAction}
  */
-function deleteArticle(id) {
+function deleteArticle(id: number): CategoryPageAction {
   return {
-    type: CategoryPageTypes.DELETE_CARD,
+    type: CommonTypes.DELETE_CARD,
     payload: id,
   };
 }
@@ -89,9 +91,9 @@ function deleteArticle(id) {
 
 /**
  * @param {string} category
- * @return {Action}
+ * @return {CategoryPageAction}
  */
-function selectCategory(category) {
+function selectCategory(category: string): CategoryPageAction {
   return {
     type: CategoryPageTypes.SELECT_CATEGORY,
     payload: category,
@@ -99,9 +101,9 @@ function selectCategory(category) {
 }
 
 /**
- * @return {Action}
+ * @return {CategoryPageAction}
  */
-function clearSelectedCategory() {
+function clearSelectedCategory(): CategoryPageAction {
   return {
     type: CategoryPageTypes.SELECT_CATEGORY,
     payload: '',
@@ -109,15 +111,15 @@ function clearSelectedCategory() {
 }
 
 /**
- * @param {string} id
+ * @param {number} id
  * @param {number} sign
  * @param {number} newLikesNum
- * @return {Action}
+ * @return {CategoryPageAction}
  */
-function like(id, sign, newLikesNum) {
+function like(id: number, sign: number, newLikesNum: number): CategoryPageAction {
   return {
-    type: CategoryPageTypes.LIKE,
-    payload: {id: id + '', sign, likes: newLikesNum},
+    type: CommonTypes.LIKE_CARD,
+    payload: {id, sign, likes: newLikesNum},
   };
 }
 

@@ -1,6 +1,12 @@
-import {SYSTYPES, FluxActionType, FluxAction, FluxStateObject, FluxReducer, FluxStore} from './types';
+import {SYSTYPES, FluxActionType, FluxAction, FluxStateObject, FluxReducer, FluxStore, FluxMiddleWare} from './types';
 import applyMiddleware from './applyMiddleware';
 import {fluxDebug} from '../globals';
+
+type FluxSubscriber = (payload?: any) => void;
+type FluxSubscriptionsMap = {
+  [key: string]: FluxSubscriber[],
+};
+
 
 /**
  * @param {function(StateObject, Action)} rootReducer
@@ -10,12 +16,13 @@ import {fluxDebug} from '../globals';
  */
 export default function createStore(rootReducer: FluxReducer, initialState: FluxStateObject, ...middlewares: FluxMiddleWare[]): FluxStore {
   console.log('[STORE] createStore: ', middlewares.map((el) => el.name));
-  let state = rootReducer(initialState, {type: SYSTYPES.INIT});
-  const subscribers = {};
+  const init = {type: SYSTYPES.INIT};
+  let state: FluxStateObject = rootReducer(initialState, init);
+  const subscribers: FluxSubscriptionsMap = {};
 
   if (middlewares.length !== 0) {
     return applyMiddleware(...middlewares)(createStore)(
-        rootReducer, initialState,
+      rootReducer, initialState,
     );
   }
 
@@ -24,12 +31,12 @@ export default function createStore(rootReducer: FluxReducer, initialState: Flux
      * Сначала вызывается соответсвующий reducer,
      * затем выполняются подписки.
      * В колбеки подписок передается payload
-     * @param {Action} action
+     * @param {FluxAction} action
      */
-    dispatch(action) {
+    dispatch(action: FluxAction<FluxActionType>) {
       state = rootReducer(state, action);
       subscribers[action.type] = subscribers[action.type] || [];
-      subscribers[action.type].forEach((subscriber) => {
+      subscribers[action.type].forEach((subscriber: FluxSubscriber) => {
         if (fluxDebug) {
           console.log('subscribe trigger on', action.type);
         }
@@ -39,11 +46,11 @@ export default function createStore(rootReducer: FluxReducer, initialState: Flux
 
     /**
      * оформить подписку на событие стора
-     * @param {Action} actionType событие
-     * @param {Function.Payload?} callback реакция на событие
+     * @param {FluxActionType} actionType событие
+     * @param {FluxSubscriber} callback реакция на событие
      * @return {Function} метод function() для отмены подписки
      */
-    subscribe(actionType, callback) {
+    subscribe(actionType: FluxActionType, callback: FluxSubscriber): () => void {
       if (fluxDebug) {
         console.log('create subscription to', actionType);
       }
@@ -55,7 +62,10 @@ export default function createStore(rootReducer: FluxReducer, initialState: Flux
             .splice(subscribers[actionType].indexOf(callback));
       };
     },
-    getState() {
+    /**
+     * @return {FluxStateObject}
+     */
+    getState(): FluxStateObject {
       return state;
     },
   };

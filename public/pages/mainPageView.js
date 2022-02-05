@@ -7,7 +7,7 @@ import composeCards from '../components/feed/composeCardStandart.js';
 //   '../components/feed/previews/mainPagePreviewBar.js';
 
 import {MainPageTypes} from '../flux/types';
-import {mainPageActions} from '../flux/actions.js';
+import mainPageActions from '../flux/actions/mainPageActions';
 // ///////////////////////////////// //
 //
 //              Main Page

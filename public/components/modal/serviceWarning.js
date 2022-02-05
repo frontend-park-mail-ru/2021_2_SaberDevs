@@ -1,6 +1,6 @@
 import ServiceWarning from './serviceWarning/serviceWarning.js';
 
-import store from '../../flux/store.js';
+import store from '../../flux/store';
 import {ApiTypes} from '../../flux/types';
 
 const serviceWarning = new ServiceWarning();

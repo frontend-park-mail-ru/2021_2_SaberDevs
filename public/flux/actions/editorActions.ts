@@ -1,4 +1,6 @@
-import {EditorTypes} from '../types';
+import {EditorTypes, CommonTypes} from '../types';
+import {EditorAction} from '../reducers/editorReducer';
+import {Article} from '../reducers/readerReducer';
 import {appendApiImg} from '../../common/transformApi.js';
 
 // ////////////////
@@ -6,9 +8,9 @@ import {appendApiImg} from '../../common/transformApi.js';
 // ////////////////
 
 // /**
-//  * @return {Action}
+//  * @return {EditorAction}
 //  */
-// function template() {
+// function template(): EditorAction {
 //   return {
 //     type: EditorTypes,
 //   };
@@ -16,18 +18,18 @@ import {appendApiImg} from '../../common/transformApi.js';
 
 /**
  * @param {string} id
- * @return {Action}
+ * @return {EditorAction}
  */
-function clearArticle() {
+function clearArticle(): EditorAction {
   return {
     type: EditorTypes.CLEAR_ARTICLE,
   };
 }
 
 /**
- * @return {Action}
+ * @return {EditorAction}
  */
-function createArticle() {
+function createArticle(): EditorAction {
   return {
     type: EditorTypes.CREATE_ARTICLE,
   };
@@ -36,19 +38,10 @@ function createArticle() {
 /**
  * previewUrl кладешь опционально, если менял картинку.
  * @param {number} id
- * @param {Object?} article
- * @property {string} title
- * @property {string} text
- * @property {Array<string>} tags
- * @property {string}  category
- * @property {string}  previewUrl
- * @property {string?} dateTime
- * @property {string?} author
- * @property {number?} likes
- * @property {number?} comments
- * @return {Action}
+ * @param {Article} article
+ * @return {EditorAction}
  */
-function editArticle(id, article) {
+function editArticle(id: number, article: Article): EditorAction {
   appendApiImg(article);
   appendApiImg(article.author);
   return {
@@ -63,9 +56,9 @@ function editArticle(id, article) {
 
 /**
  * @param {number} id - id, присвоенный записи на сервере
- * @return {Action}
+ * @return {EditorAction}
  */
-function publishArticle(id) {
+function publishArticle(id: number): EditorAction {
   return {
     type: EditorTypes.PUBLISH_ARTICLE,
     payload: {id},
@@ -73,21 +66,21 @@ function publishArticle(id) {
 }
 
 /**
- * @param {string} id - id, присвоенный записи на сервере
- * @return {Action}
+ * @param {number} id - id, присвоенный записи на сервере
+ * @return {EditorAction}
  */
-function deleteArticle(id) {
+function deleteArticle(id: number): EditorAction {
   return {
-    type: EditorTypes.DELETE_ARTICLE,
+    type: CommonTypes.DELETE_CARD,
     payload: id,
   };
 }
 
 /**
  * @param {string} title
- * @return {Action}
+ * @return {EditorAction}
  */
-function saveTitle(title) {
+function saveTitle(title: string): EditorAction {
   return {
     type: EditorTypes.SAVE_TITLE,
     payload: title,
@@ -96,9 +89,9 @@ function saveTitle(title) {
 
 /**
  * @param {string} text
- * @return {Action}
+ * @return {EditorAction}
  */
-function saveText(text) {
+function saveText(text: string): EditorAction {
   return {
     type: EditorTypes.SAVE_TEXT,
     payload: text,
@@ -107,9 +100,9 @@ function saveText(text) {
 
 /**
  * @param {string} tag
- * @return {Action}
+ * @return {EditorAction}
  */
-function removeTag(tag) {
+function removeTag(tag: string): EditorAction {
   return {
     type: EditorTypes.REMOVE_TAG,
     payload: tag,
@@ -118,9 +111,9 @@ function removeTag(tag) {
 
 /**
  * @param {string} tag
- * @return {Action}
+ * @return {EditorAction}
  */
-function appendTag(tag) {
+function appendTag(tag: string): EditorAction {
   return {
     type: EditorTypes.APPEND_TAG,
     payload: tag,
@@ -129,9 +122,9 @@ function appendTag(tag) {
 
 /**
  * @param {string} url присвоенный записи в браузере
- * @return {Action}
+ * @return {EditorAction}
  */
-function saveImg(url) {
+function saveImg(url: string): EditorAction {
   return {
     type: EditorTypes.SAVE_PREVIEW,
     payload: url,
@@ -139,9 +132,9 @@ function saveImg(url) {
 }
 
 /**
- * @return {Action}
+ * @return {EditorAction}
  */
-function clearImg() {
+function clearImg(): EditorAction {
   return {
     type: EditorTypes.SAVE_PREVIEW,
     payload: '',
@@ -150,9 +143,9 @@ function clearImg() {
 
 /**
  * @param {string} category
- * @return {Action}
+ * @return {EditorAction}
  */
-function saveCategory(category) {
+function saveCategory(category: string): EditorAction {
   return {
     type: EditorTypes.SAVE_CATEGORY,
     payload: category,
@@ -160,9 +153,9 @@ function saveCategory(category) {
 }
 
 /**
- * @return {Action}
+ * @return {EditorAction}
  */
-function clearCategory() {
+function clearCategory(): EditorAction {
   return {
     type: EditorTypes.SAVE_CATEGORY,
     payload: '',

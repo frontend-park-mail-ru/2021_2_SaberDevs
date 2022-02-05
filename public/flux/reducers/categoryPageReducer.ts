@@ -1,46 +1,50 @@
-import {CategoryPageTypes, FluxStateObject, FluxAction} from '../types';
+import {CategoryPageTypes, CommonTypes, FluxStateObject, FluxAction} from '../types';
+import {Article, ArticleId} from './readerReducer';
 
 const endOfFeedMarkerID = 'end';
 
+
+export type CategoryPageAction = FluxAction<CommonTypes | CategoryPageTypes>;
+
 /**
  * Объект состояния на главной странице
- * @typedef {Object} CategoryPageState
- *                                    вызовет подгрузку новостей
- * @property {string} idLastLoaded  - ID последней загруженной карточки
- * @property {boolean} isLoading    - Идет ли загрузка сейчас. true запрещает
- *                                    отправку запросов на обновлении ленты,
- *                                    чтобы не спамить сервер
- * @property {number} lastScrollPos - Позиция скролла при покидании mainPage
- * @property {boolean} isEndFound  - Запрещает загрузку при обнаружении конца
- *                                    ленты, чтобы не спамить сервер.
- *                                    Сбразывется через resetDoNotUploadTime мс
- * @property {Array.NewsCard} cards - Массив загруженных карточек для
- *                                    восстановления состояния при возвращении
- *                                    на MainPage
+ * @typedef {Object} CategoryPageStateObject
+ * @property {ArticleId} idLastLoaded  - ID последней загруженной карточки
+ * @property {boolean} isLoading       - Идет ли загрузка сейчас. true запрещает
+ *                                       отправку запросов на обновлении ленты,
+ *                                       чтобы не спамить сервер
+ * @property {boolean} isEndFound      - Запрещает загрузку при обнаружении конца
+ *                                       ленты, чтобы не спамить сервер.
+ *                                       Сбразывется через resetDoNotUploadTime мс
+ * @property {Array<Article>} cards    - Массив загруженных карточек для
+ *                                       восстановления состояния при возвращении
+ *                                       на MainPage
  */
-const InitialCategoryPageState = {
+
+export interface CategoryPageStateObject extends FluxStateObject {
+  currentCategory: string,
+  isLoading: boolean,
+  idLastLoaded: ArticleId,
+  cards: Article[],
+  isEndFound: boolean,
+};
+
+const InitialCategoryPageState: CategoryPageStateObject = {
   currentCategory: '',            // категория, по которой фильтруются записи
-  isLoading: false,              // отправлен ли запрос на сервер
-  idLastLoaded: '',              // запоминаем последнюю загруженную запись
-  lastScrollPos: 0,              // скрол для возврата к той же записи
-  cards: [],                     // массив загруженных новостей
-  isEndFound: false,
-  tags: {
-    // category: {
-    //  tag1: false,
-    //  tag2: true,
-    // }
-  },
+  isLoading: false,               // отправлен ли запрос на сервер
+  idLastLoaded: 0,                // запоминаем последнюю загруженную запись
+  cards: [],                      // массив загруженных новостей
+  isEndFound: false,              // достигнут ли конец подборки
 };
 
 /**
- * @param {Object} state
- * @param {Action} action
- * @return {Object}
+ * @param {CategoryPageStateObject} state
+ * @param {CategoryPageAction} action
+ * @return {CategoryPageStateObject}
  */
 export default function categoryPageReducer(
-    state = InitialCategoryPageState,
-    action,
+    state: CategoryPageStateObject = InitialCategoryPageState,
+    action: CategoryPageAction,
 ) {
   switch (action.type) {
     case CategoryPageTypes.SET_CATEGORY_ARTICLES_LOADING:
@@ -84,7 +88,7 @@ export default function categoryPageReducer(
         cards: state.cards.concat(cards),
         isEndFound,
       };
-    case CategoryPageTypes.DELETE_CARD: {
+    case CommonTypes.DELETE_CARD: {
       const idx = state.cards.findIndex((card) => card.id === action.payload);
       if (idx !== -1) {
         return {
@@ -109,11 +113,11 @@ export default function categoryPageReducer(
         ...state,
         currentCategory: action.payload,
       };
-    case CategoryPageTypes.LIKE:
+    case CommonTypes.LIKE_CARD:
       const idx = state.cards.findIndex((card) => card.id===action.payload.id);
       if (idx !== -1) {
         const likeCardCopy = JSON.parse(JSON.stringify(state.cards[idx]));
-        if (likeCardCopy.liked ^ action.payload.sign === 0) {
+        if ((likeCardCopy.liked ^ action.payload.sign) === 0) {
           likeCardCopy.liked = 0; // отменили оценку
         } else {
           likeCardCopy.liked = action.payload.sign;

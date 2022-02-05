@@ -1,7 +1,7 @@
 import BasePageMV from './basePageMV.js';
 import SignupPageView from './signupPageView.js';
-import store from '../flux/store.js';
-import {changePageActions} from '../flux/actions.js';
+import store from '../flux/store';
+import changePageActions from '../flux/actions/categoryPageActions';
 import {AuthorizationTypes} from '../flux/types';
 
 import {redirect} from '../common/utils.js';

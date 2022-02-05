@@ -7,16 +7,7 @@ import {appendApiImg} from '../../common/transformApi.js';
 // ////////////////
 
 /**
- * @param {Object} article
- * @property {string} id
- * @property {string} title
- * @property {string} text
- * @property {Array<string>} tags
- * @property {number} datetime
- * @property {Object} author
- * @property {number} likes
- * @property {number} comments
- * @property {string} previewUrl
+ * @param {Article} article
  * @return {ReaderAction}
  */
 function saveArticle(article: Article): ReaderAction {
@@ -29,15 +20,7 @@ function saveArticle(article: Article): ReaderAction {
 }
 
 /**
- * @param {Object} article
- * @property {string} id
- * @property {string?} title
- * @property {Array<string>?} tags
- * @property {number?} datetime
- * @property {Object?} author
- * @property {number?} likes
- * @property {number?} comments
- * @property {string?} previewUrl
+ * @param {Article} article
  * @return {ReaderAction}
  */
 function setArticleLoading(article: Article): ReaderAction {
@@ -55,7 +38,7 @@ function setArticleLoading(article: Article): ReaderAction {
  * @param {number} id - id, присвоенный записи на сервере
  * @return {ReaderAction}
  */
-function openArticle(id): ReaderAction {
+function openArticle(id: number): ReaderAction {
   return {
     type: ReaderTypes.OPEN_ARTICLE,
     payload: id,
@@ -67,7 +50,7 @@ function openArticle(id): ReaderAction {
  * @param {Array<Comment>} comments
  * @return {ReaderAction}
  */
-function saveArticleComments(id, comments): ReaderAction {
+function saveArticleComments(id: number, comments: Comment[]): ReaderAction {
   if (!Array.isArray(comments)) {
     console.warn('API error. Server returned ', typeof comments,
         'instead of comments');
@@ -123,7 +106,7 @@ function addComment(comment: Comment): ReaderAction {
  * @param {number} newLikesNum
  * @return {ReaderAction}
  */
-function like(id, sign, newLikesNum): ReaderAction {
+function like(id: number, sign: number, newLikesNum: number): ReaderAction {
   return {
     type: CommonTypes.LIKE_CARD,
     payload: {id, sign, likes: newLikesNum},
@@ -136,7 +119,7 @@ function like(id, sign, newLikesNum): ReaderAction {
  * @param {number} newLikesNum
  * @return {ReaderAction}
  */
-function likeComment(id, sign, newLikesNum): ReaderAction {
+function likeComment(id: number, sign: number, newLikesNum: number): ReaderAction {
   return {
     type: CommonTypes.LIKE_COMMENT,
     payload: {id, sign, likes: newLikesNum},

@@ -27,7 +27,9 @@ function logout(): AuthorizationAction {
   };
 }
 
-export const authorizationActions = {
+const authorizationActions = {
   login,
   logout,
 };
+
+export default authorizationActions;

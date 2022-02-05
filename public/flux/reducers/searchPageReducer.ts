@@ -1,8 +1,23 @@
-import {SearchTypes, FluxStateObject, FluxAction} from '../types';
+import {SearchTypes, CommonTypes, FluxStateObject, FluxAction} from '../types';
+import {Article} from './readerReducer';
+import {User} from './authorizeReducer';
 
 const endOfFeedMarkerID = 'end';
 
-const InitialSearchState = {
+type SearchResult = Article | User;
+export interface SearchStateObject extends FluxStateObject {
+  isLoading: boolean,
+  idLastLoaded: string,
+  lastScrollPos: number,
+  // TODO: rename cards
+  cards: SearchResult[],
+  isEndFound: boolean,
+  value: string,
+  group: 'articles' | 'tags' | 'users',
+  description: string,
+}
+
+const InitialSearchState: SearchStateObject = {
   isLoading: false,              // отправлен ли запрос на сервер
   idLastLoaded: '',              // запоминаем последнюю загруженную запись
   lastScrollPos: 0,              // скрол для возврата к той же записи
@@ -13,12 +28,14 @@ const InitialSearchState = {
   description: 'Статьи',
 };
 
+export type SearchAction = FluxAction<SearchTypes | CommonTypes>;
+
 /**
- * @param {Object} state
- * @param {Action} action
- * @return {Object}
+ * @param {SearchStateObject} state
+ * @param {SearchAction} action
+ * @return {SearchStateObject}
  */
-export default function searchPageReducer(state: FluxStateObject = InitialSearchState, action: FluxAction): FluxStateObject {
+export default function searchPageReducer(state: SearchStateObject = InitialSearchState, action: SearchAction): SearchStateObject {
   switch (action.type) {
     case SearchTypes.SET_SEARCH_GROUP:
       return {
@@ -60,15 +77,26 @@ export default function searchPageReducer(state: FluxStateObject = InitialSearch
         // Удаляем последнюю запись с end'ом
         cards.splice(cards.length - 1, 1);
       }
-      return {
-        ...state,
-        isLoading: false,
-        idLastLoaded: cards[cards.length - 1]?.id || state.idLastLoaded,
-        cards: state.cards.concat(cards),
-        isEndFound,
-      };
-    case SearchTypes.DELETE_CARD: {
-      const idx = state.cards.findIndex((card) => card.id === action.payload);
+      if (state.group !== 'users') {
+        return {
+          ...state,
+          isLoading: false,
+          idLastLoaded: cards[cards.length - 1]?.id || state.idLastLoaded,
+          cards: state.cards.concat(cards),
+          isEndFound,
+        };
+      } else {
+        return {
+          ...state,
+          isLoading: false,
+          idLastLoaded: cards[cards.length - 1]?.login || state.idLastLoaded,
+          cards: state.cards.concat(cards),
+          isEndFound,
+        };
+      }
+      
+    case CommonTypes.DELETE_CARD: {
+      const idx = (<Article[]>state.cards).findIndex((card) => card.id === action.payload);
       if (idx !== -1) {
         return {
           ...state,
@@ -87,11 +115,11 @@ export default function searchPageReducer(state: FluxStateObject = InitialSearch
         lastScrollPos: 0,
         isEndFound: false,
       };
-    case SearchTypes.LIKE:
-      const idx = state.cards.findIndex((card) => card.id===action.payload.id);
+    case CommonTypes.LIKE_CARD:
+      const idx = (<Article[]>state.cards).findIndex((card) => card.id===action.payload.id);
       if (idx !== -1) {
         const likeCardCopy = JSON.parse(JSON.stringify(state.cards[idx]));
-        if (likeCardCopy.liked ^ action.payload.sign === 0) {
+        if ((likeCardCopy.liked ^ action.payload.sign) === 0) {
           likeCardCopy.liked = 0; // отменили оценку
         } else {
           likeCardCopy.liked = action.payload.sign;

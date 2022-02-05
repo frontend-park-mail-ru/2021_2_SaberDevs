@@ -1,7 +1,7 @@
 import BaseComponent from '../_basic/baseComponent.js';
 import CategoryChoiceBarView from './categoryChoiceBarView.js';
 
-import store from '../../flux/store.js';
+import store from '../../flux/store';
 
 import categoriesList from '../../common/categoriesList.js';
 

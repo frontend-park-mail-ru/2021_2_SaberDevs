@@ -1,9 +1,9 @@
 import BaseComponent from '../_basic/baseComponent.js';
 import EditorView from './editorView.js';
 
-import store from '../../flux/store.js';
-import editorActions from '../../flux/actions/editorActions.js';
-import {authorizationActions} from '../../flux/actions.js';
+import store from '../../flux/store';
+import editorActions from '../../flux/actions/editorActions';
+import authorizationActions from '../../flux/actions/authorizationActions';
 import {EditorTypes} from '../../flux/types';
 
 import Ajax from '../../modules/ajax';

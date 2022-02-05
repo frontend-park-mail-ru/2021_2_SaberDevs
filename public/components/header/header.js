@@ -3,10 +3,10 @@ import HeaderView from './headerView.js';
 import SearchRow from '../searchRow/searchRow.js';
 
 
-import store from '../../flux/store.js';
-import editorActions from '../../flux/actions/editorActions.js';
+import store from '../../flux/store';
+import editorActions from '../../flux/actions/editorActions';
 import {SearchTypes} from '../../flux/types';
-import searchActions from '../../flux/actions/searchActions.js';
+import searchActions from '../../flux/actions/searchActions';
 
 import {redirect} from '../../common/utils.js';
 
