@@ -1,30 +1,19 @@
-import BaseComponent from '../_basic/baseComponent.js';
-import FeedView from './feedView.js';
+import BaseComponent from '../_basic/baseComponent';
+import FeedView from './feedView';
 
 import {redirect} from '../../common/utils.js';
 
 import store from '../../flux/store';
 import profilePageActions from '../../flux/actions/profilePageActions';
 import readerActions from '../../flux/actions/readerActions';
-import {AuthorizationTypes} from '../../flux/types';
+import {AuthorizationTypes, FluxActionType} from '../../flux/types';
 import {ajaxDebug} from '../../globals';
-import Likes from '../likes/likes.js';
+import Likes from '../likes/likes';
 
-/**
- * @typedef {Object} Card
- * @property {string} id           - ID записи
- * @property {string} previewUrl   - ссылка не главную картинку
- * @property {string} title        - заголовок
- * @property {string} text         - содержание записи
- * @property {string} authorUrl    - ссылка на страницу автора
- * @property {string} authorName   - имя автора
- * @property {string} authorAvatar - ссылка на аватар автора
- * @property {string} commentsUrl  - ссылка на комменарии к записи
- * @property {number} comments     - число комментариев к записи
- * @property {number} likes        - рейтинг записи
- * @property {Array.string} tags   - отмеченные автором темы сообщений
- * @return {HTMLElement}
- */
+import {KeyElementsMapFeed} from './FeedView';
+import {FluxAction} from '../../flux/types';
+import {FeedCard} from './feedView';
+import {ComposeFunction} from './composeCardStandart';
 
 const resetDoNotUploadTime = 6000;  // anti- brutforce
 
@@ -33,28 +22,28 @@ const resetDoNotUploadTime = 6000;  // anti- brutforce
  * Монтирует компонент лайков
  * @param {HTMLElement} where место, где искать смонтированные шаблонизатором
  * карточки
- * @param {Array<Card>} cards массив с данными, по которым
+ * @param {Array<FeedCard>} cards массив с данными, по которым
  * карточки монтировались
- * @param {function} dispatchLike
+ * @param {Function<number, number, number>} dispatchLike
  */
-function upgradeCards(where, cards, dispatchLike) {
+function upgradeCards(where: HTMLElement, cards: FeedCard[], dispatchLike: (id: number, sign: number, newLikesNum: number) => void) {
   cards.forEach((card) => {
-    const cardDiv = where.querySelector('#card' + card.id);
+    const cardDiv = <HTMLElement> where.querySelector('#card' + card.id);
     if (cardDiv === null) {
       console.warn('{Feed} card with id', card.id, 'has mounted with error');
       return;
     }
 
-    cardDiv.addEventListener('click', (e) => {
+    cardDiv.addEventListener('click', (e: Event) => {
       e.preventDefault();
-      const currentTarget = e.currentTarget;
+      const currentTarget = <HTMLElement>e.currentTarget;
       store.dispatch(readerActions.setArticleLoading(card));
       redirect('/article/' + currentTarget.id.replace('card', ''));
     });
 
     cardDiv.querySelector('.card__author').addEventListener(
         'click',
-        (e) => {
+        (e: Event) => {
           e.preventDefault();
           e.stopPropagation();
           store.dispatch(profilePageActions.setUserInfo(card.author));
@@ -64,7 +53,7 @@ function upgradeCards(where, cards, dispatchLike) {
 
     cardDiv.querySelector('.category').addEventListener(
         'click',
-        (e) => {
+        (e: Event) => {
           e.preventDefault();
           e.stopPropagation();
           redirect('/categories/' + card.category);
@@ -73,15 +62,15 @@ function upgradeCards(where, cards, dispatchLike) {
 
     cardDiv.querySelectorAll('.tags__tag').forEach((t) => t.addEventListener(
         'click',
-        (e) => {
+        (e: Event) => {
           e.preventDefault();
           e.stopPropagation();
-          redirect('/search?g=tags&q=' + e.currentTarget.textContent);
+          redirect('/search?g=tags&q=' + (<HTMLElement>e.currentTarget).textContent);
         },
     ));
 
     cardDiv.querySelector('.action-btns__comments-icon')
-        .addEventListener('click', (e) => {
+        .addEventListener('click', (e: Event) => {
           e.preventDefault();
           e.stopPropagation();
           console.warn('клик по комментам');
@@ -91,7 +80,9 @@ function upgradeCards(where, cards, dispatchLike) {
     // лайки
     const likesComponent = new Likes(
         0,
-        parseInt(card.id, 10),
+        // TODO: разобраться с АПИ
+        // parseInt(card.id, 10),
+        card.id,
         card.likes,
         card.liked,
         dispatchLike,
@@ -104,9 +95,15 @@ function upgradeCards(where, cards, dispatchLike) {
  * @class Feed
  */
 export default class Feed extends BaseComponent {
+  preview: BaseComponent | null = null;
+  storeName: string;
+  dispatchLike: (id: number, sign: number, newLikesNum: number) => void;
+  cards: FeedCard[];
+  view: FeedView;
+
   /**
    * Универсальный компонент ленты
-   * @param {function} composeCards принимает root - HTMLElement, к которому
+   * @param {Function} composeCards принимает root - HTMLElement, к которому
    * аппендятся карточки и массив данных, по которому строятся шаблоны
    * @param {string} storeName - имя редьюсера
    * @param {Type} SAVE_NEW_CARDS_ACTION - событие, на которое
@@ -123,37 +120,31 @@ export default class Feed extends BaseComponent {
    * говорит, о том, что все данные загружены
    * @param {Action} allowCardsUploading - действие, которое
    * разрешает загрузку карточек снова через resetDoNotUploadTime
-   * @param {function<string, number, number>} like
-   * @param {BaseComponent} previewComponent - компонент,
-   * который будет вложен в .feed__preview в ленте
+   * @param {Function<number, number, number> => FluxAction} like - метод, который
+   * формирует
+   * @param {BaseComponent? = <string> null} previewComponent - компонент,
+   * который будет вложен в .feed__preview в начало ленты
    */
   constructor(
-      composeCards,
-      storeName,
-      SAVE_NEW_CARDS_ACTION,
-      CLEAR_CARDS_ACTION,
-      FORBID_CARDS_UPLOADING_ACTION,
-      ALLOW_CARDS_UPLOADING_ACTION,
-      forbidCardsUploading,
-      allowCardsUploading,
-      like,
-      previewComponent = new BaseComponent(),
+      composeCards: ComposeFunction,
+      storeName: string,
+      SAVE_NEW_CARDS_ACTION: FluxActionType,
+      CLEAR_CARDS_ACTION: FluxActionType,
+      FORBID_CARDS_UPLOADING_ACTION: FluxActionType,
+      ALLOW_CARDS_UPLOADING_ACTION: FluxActionType,
+      forbidCardsUploading: () => void,
+      allowCardsUploading: () => void,
+      like: (id: number, sign: number, numLikes: number) => FluxAction,
+      previewComponent: BaseComponent = null,
   ) {
-    console.log('{FEED} creation with params:');
-    console.log({storeName});
-
     super();
-    this.innerComponent = previewComponent;
+
+    this.preview = previewComponent;
     this.storeName = storeName;
     this.dispatchLike = (id, sign, newLikesNum) => store.dispatch(
         like(id, sign, newLikesNum),
     );
-    const cards = store.getState()[storeName].cards;
-    this.view = new FeedView(
-        composeCards,
-        previewComponent.render().outerHTML,
-        cards,
-    );
+    this.view = new FeedView(composeCards);
 
     // /////////////////////////////////
     //
@@ -162,20 +153,12 @@ export default class Feed extends BaseComponent {
     // /////////////////////////////////
 
     this.unsubscribes.push(
-        store.subscribe(SAVE_NEW_CARDS_ACTION, ({idLastLoaded, cards}) => {
-          if (!Array.isArray(cards)) {
-            if (ajaxDebug) {
-              console.warn('API ERROR! Server must return array of Cards',
-                  'but returned', typeof cards, ':', {cards});
-            }
-            return;
-          }
-
+        store.subscribe(SAVE_NEW_CARDS_ACTION, ({cards}: {cards: FeedCard[]}) => {
           this.view.addCards(cards);
           upgradeCards(
               this.view.root.querySelector(`.feed__cards`),
               cards,
-              (id, sign, newLikesNum)=>this.dispatchLike(id, sign, newLikesNum),
+              (id, sign, newLikesNum) => this.dispatchLike(id, sign, newLikesNum),
           );
 
           const endFound = store.getState()[storeName].isEndFound;
@@ -224,20 +207,23 @@ export default class Feed extends BaseComponent {
     );
   }
 
+  get keyElems(): KeyElementsMapFeed {
+    return this.view.keyElems;
+  }
+  
   /**
   * @return {HTMLElement}
   */
-  render() {
+  render(): HTMLElement {
     super.render();
 
-    const preview = this.innerComponent.render().outerHTML;
-    const cards = store.getState()[this.storeName].cards;
-    this.root = this.view.render(preview, cards);
+    const cards = <FeedCard[]>store.getState()[this.storeName].cards;
+    this.root = this.view.render(cards, this.preview?.render());
 
     upgradeCards(
-        this.view.root.querySelector(`.feed__cards`),
+      this.keyElems.cardsBox,
         cards,
-        (id, sign, newLikesNum) => this.dispatchLike(id, sign, newLikesNum),
+        (id: number, sign: number, newLikesNum: number) => this.dispatchLike(id, sign, newLikesNum),
     );
 
     if (store.getState()[this.storeName].isEndFound) {

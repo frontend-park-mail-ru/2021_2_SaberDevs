@@ -1,10 +1,10 @@
-import BasePageView from './basePageView.js';
+import BasePageView from './basePageView';
 import createPage from './_createPage.js';
 
-import Feed from '../components/feed/feed.js';
-import composeCards from '../components/feed/composeCardStandart.js';
+import Feed from '../components/feed/feed';
+import composeCards from '../components/feed/composeCardStandart';
 import CategoryChoiceBar from
-  '../components/categoryChoiceBar/categoryChoiceBar.js';
+  '../components/categoryChoiceBar/categoryChoiceBar';
 
 import {CategoryPageTypes} from '../flux/types';
 import categoryPageActions from '../flux/actions/categoryPageActions';
@@ -64,7 +64,7 @@ export default class CategoryPageView extends BasePageView {
     ));
 
     // this.root.querySelector('.header__title-block')
-    //     .addEventListener('click', (e) => {
+    //     .addEventListener('click', (e/*: Event*/) => {
     //       e.preventDefault();
     //       e.stopPropagation();
     //       this.root.querySelector(`a[name="feed-top"]`).scrollIntoView(true);

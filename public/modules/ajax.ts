@@ -59,7 +59,11 @@ interface RequestParams extends RequestParamsNoMethod {
 
 interface AjaxResponse {
   status: number,
-  response: object,
+  response: {
+    data: any,
+    msg?: string,
+    status: number,
+  },
 }
 
 /**
@@ -122,7 +126,7 @@ function ajax(requestParams: RequestParams): Promise<AjaxResponse> {
  * @property {any} body
  * @return {Promise}
  */
-function postFile(requestParams: RequestParams): Promise<AjaxResponse> {
+function postFile(requestParams: RequestParamsNoMethod): Promise<AjaxResponse> {
   const url = APIurl + (requestParams.url || '/');
   const formData = new FormData();
   formData.append('img', <Blob>requestParams.body);

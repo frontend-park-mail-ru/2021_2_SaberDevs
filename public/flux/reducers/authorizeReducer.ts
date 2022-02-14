@@ -1,12 +1,5 @@
 import {AuthorizationTypes, FluxStateObject, FluxAction} from '../types';
-
-export type User = {
-  login: string,
-  avatarUrl: string,
-  firstName?: string,
-  lastName?: string,
-  score?: number,
-};
+import {User} from '../../common/types';
 
 export interface AuthorizationStateObject extends FluxStateObject {
   isAuthenticated: boolean,

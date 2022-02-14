@@ -1,6 +1,7 @@
 import {SearchTypes, CommonTypes} from '../types';
 import {SearchAction} from '../reducers/searchPageReducer';
 import {appendApiImg} from '../../common/transformApi.js';
+import {Article, ArticleId} from '../../common/types';
 
 // ////////////////
 // searchPageActions
@@ -8,10 +9,10 @@ import {appendApiImg} from '../../common/transformApi.js';
 
 /**
  * @param {string} idLastLoaded
- * @param {Array<Object>} cards
+ * @param {Array<Article>} cards
  * @return {SearchAction}
  */
-function saveNewCards(idLastLoaded, cards): SearchAction {
+function saveNewCards(idLastLoaded: ArticleId, cards: Article[]): SearchAction {
   cards.forEach((card) => {
     // только для статей
     if (!('login' in card)) {
@@ -30,7 +31,7 @@ function saveNewCards(idLastLoaded, cards): SearchAction {
  * @param {string} description
  * @return {SearchAction}
  */
-function setSearchGroup(group, description = ''): SearchAction {
+function setSearchGroup(group: string, description: string = ''): SearchAction {
   return {
     type: SearchTypes.SET_SEARCH_GROUP,
     payload: {group, description},
@@ -41,7 +42,7 @@ function setSearchGroup(group, description = ''): SearchAction {
  * @param {string} value
  * @return {SearchAction}
  */
-function setSearchValue(value): SearchAction {
+function setSearchValue(value: string): SearchAction {
   return {
     type: SearchTypes.SET_SEARCH_VALUE,
     payload: value,
@@ -103,10 +104,10 @@ function askNewCards(): SearchAction {
 }
 
 /**
- * @param {string} id
+ * @param {number} id
  * @return {SearchAction}
  */
-function deleteCard(id): SearchAction {
+function deleteCard(id: number): SearchAction {
   return {
     type: CommonTypes.DELETE_CARD,
     payload: id,
@@ -114,12 +115,12 @@ function deleteCard(id): SearchAction {
 }
 
 /**
- * @param {string} id
+ * @param {number} id
  * @param {number} sign
  * @param {number} newLikesNum
  * @return {Action}
  */
-function like(id, sign, newLikesNum): SearchAction {
+function like(id: number, sign: number, newLikesNum: number): SearchAction {
   return {
     type: CommonTypes.LIKE_CARD,
     payload: {id: id + '', sign, likes: newLikesNum},

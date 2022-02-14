@@ -1,13 +1,14 @@
-import BasePageView from './basePageView.js';
+import BasePageView from './basePageView';
 import createPage from './_createPage.js';
 
-import Feed from '../components/feed/feed.js';
-import composeCards from '../components/feed/composeCardStandart.js';
+import Feed from '../components/feed/feed';
+import composeCards from '../components/feed/composeCardStandart';
 // import MainPagePreviewBar from
 //   '../components/feed/previews/mainPagePreviewBar.js';
 
 import {MainPageTypes} from '../flux/types';
 import mainPageActions from '../flux/actions/mainPageActions';
+
 // ///////////////////////////////// //
 //
 //              Main Page
@@ -62,7 +63,7 @@ export default class MainPageView extends BasePageView {
         .classList.add('sidebar__categories-item-active');
 
     this.root.querySelector('.header__title-block')
-        .addEventListener('click', (e) => {
+        .addEventListener('click', (e/*: Event*/) => {
           e.preventDefault();
           e.stopPropagation();
           this.root.querySelector(`a[name="feed-top"]`).scrollIntoView(true);

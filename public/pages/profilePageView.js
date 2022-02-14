@@ -1,9 +1,9 @@
-import BasePageView from './basePageView.js';
+import BasePageView from './basePageView';
 import createPage from './_createPage.js';
 
-import Feed from '../components/feed/feed.js';
-import composeCards from '../components/feed/composeCardStandart.js';
-import ProfileCard from '../components/profileCard/profileCard.js';
+import Feed from '../components/feed/feed';
+import composeCards from '../components/feed/composeCardStandart';
+import ProfileCard from '../components/profileCard/profileCard';
 
 import {ProfilePageTypes} from '../flux/types';
 import profilePageActions from '../flux/actions/profilePageActions';
@@ -48,7 +48,7 @@ export default class ProfilePageView extends BasePageView {
     ));
 
     // this.root.querySelector('.header__title-block')
-    //     .addEventListener('click', (e) => {
+    //     .addEventListener('click', (e/*: Event*/) => {
     //       e.preventDefault();
     //       e.stopPropagation();
     //       this.root.querySelector(`a[name="feed-top"]`).scrollIntoView(true);

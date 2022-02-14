@@ -1,5 +1,5 @@
 import {CategoryPageTypes, CommonTypes} from '../types';
-import {Article} from '../reducers/readerReducer';
+import {Article} from '../../common/types';
 import {CategoryPageAction} from '../reducers/categoryPageReducer';
 import {appendApiImg} from '../../common/transformApi.js';
 

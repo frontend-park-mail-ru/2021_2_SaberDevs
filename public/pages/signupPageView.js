@@ -1,5 +1,5 @@
-import BasePageView from './basePageView.js';
-import SignupForm from '../components/signupForm/signupForm.js';
+import BasePageView from './basePageView';
+import SignupForm from '../components/signupForm/signupForm';
 
 // ///////////////////////////////// //
 //
@@ -53,6 +53,8 @@ export default class SignupPageView extends BasePageView {
    */
   appendForm(showRegister) {
     const logoDiv = this.root.querySelector('.header__title');
+//     {/* const logoDiv = <HTMLElement> this.root.querySelector('.header__title'); */}
+    {/* const logoDiv =  this.root.querySelector('.header__title'); */}
 
     // Элементы навигации
     const changeFormTypeBtn = document.createElement('a');
@@ -63,6 +65,7 @@ export default class SignupPageView extends BasePageView {
     changeFormTypeBtn.className = 'form__link';
 
     changeFormTypeBtn.addEventListener('click', (e) => {
+    // changeFormTypeBtn.addEventListener('click', (e/*: Event*/) => {
       e.preventDefault();
       // this.view.switchFormType(!this.showRegister);
     });
@@ -70,7 +73,8 @@ export default class SignupPageView extends BasePageView {
     // форма
     const form = (new SignupForm(showRegister).render());
     form.className = 'modal__form';
-    const contentDiv = this.root.querySelector('.content-space');
+//     const contentDiv = <HTMLElement> this.root.querySelector('.content-space');
+    const contentDiv =  this.root.querySelector('.content-space');
     contentDiv.innerHTML = '';
 
     contentDiv.appendChild(logoDiv);

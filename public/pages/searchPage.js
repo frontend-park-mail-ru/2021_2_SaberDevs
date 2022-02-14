@@ -2,7 +2,7 @@ import BasePageMV from './basePageMV.js';
 import SearchPageView from './searchPageView.js';
 
 import store from '../flux/store';
-import changePageActions from '../flux/actions/categoryPageActions';
+import changePageActions from '../flux/actions/changePageActions';
 import searchActions from '../flux/actions/searchActions';
 import {SearchTypes} from '../flux/types';
 
@@ -31,6 +31,8 @@ const searchGroups = {
 function newsFeedEndReachEventAction({currentTarget}) {
   const state = store.getState().search;
   const trackedCard = currentTarget.querySelector('#feed__loading');
+//   {/* const trackedCard = <HTMLElement> currentTarget.querySelector('#feed__loading'); */}
+  {/* const trackedCard =  currentTarget.querySelector('#feed__loading'); */}
   // работаем, только если отслеживаемый элемент
   // находися в области видимости пользователя.
   // При этом не находимся в состоянии ожидания запроса
@@ -189,6 +191,8 @@ export default class SearchPage extends BasePageMV {
     );
 
     const scrollable = this.view.root.querySelector('.content');
+//     {/* const scrollable = <HTMLElement> this.view.root.querySelector('.content'); */}
+    {/* const scrollable =  this.view.root.querySelector('.content'); */}
     if (!scrollable) {
       console.warn('[Search Page] нет дивака .content');
     } else {
@@ -269,7 +273,8 @@ export default class SearchPage extends BasePageMV {
    */
   hide() {
     super.hide();
-    const scrollable = this.view.root.querySelector('.content');
+//     const scrollable = <HTMLElement> this.view.root.querySelector('.content');
+    const scrollable =  this.view.root.querySelector('.content');
     if (!scrollable) {
       console.warn('[SearchPage] нет дивака .content');
     } else {

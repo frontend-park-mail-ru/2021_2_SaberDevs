@@ -2,7 +2,7 @@ import BasePageMV from './basePageMV.js';
 import ProfilePageView from './profilePageView.js';
 
 import store from '../flux/store';
-import changePageActions from '../flux/actions/categoryPageActions';
+import changePageActions from '../flux/actions/changePageActions';
 import profilePageActions from '../flux/actions/profilePageActions';
 import {AuthorizationTypes, EditorTypes} from '../flux/types';
 
@@ -26,6 +26,8 @@ import {ajaxDebug} from '../globals';
 function newsFeedEndReachEventAction({currentTarget}) {
   const state = store.getState().profilePage;
   const trackedElement = currentTarget.querySelector('#feed__loading');
+//   {/* const trackedElement = <HTMLElement> currentTarget.querySelector('#feed__loading'); */}
+  {/* const trackedElement =  currentTarget.querySelector('#feed__loading'); */}
   // работаем, только если отслеживаемый элемент
   // находися в области видимости пользователя
   if (state.isLoading || state.isEndFound ||
@@ -194,7 +196,8 @@ export default class ProfilePage extends BasePageMV {
       store.dispatch(uploadNextArticles);
     }
 
-    const scrollable = this.view.root.querySelector('.content');
+//     const scrollable = <HTMLElement> this.view.root.querySelector('.content');
+    const scrollable =  this.view.root.querySelector('.content');
     if (!scrollable) {
       console.warn('[ProfilePage] нет дивака .content');
     } else {
@@ -222,7 +225,8 @@ export default class ProfilePage extends BasePageMV {
    */
   hide() {
     super.hide();
-    const scrollable = this.view.root.querySelector('.content');
+//     const scrollable = <HTMLElement> this.view.root.querySelector('.content');
+    const scrollable =  this.view.root.querySelector('.content');
     if (!scrollable) {
       console.warn('[ProfilePage] нет дивака .content');
     } else {

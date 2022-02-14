@@ -1,4 +1,4 @@
-import BasePageView from './basePageView.js';
+import BasePageView from './basePageView';
 import {pageDebug} from '../globals';
 /**
  * ModalView-контроллер для соответсвующих страниц

@@ -1282,7 +1282,7 @@ components:
 
         id:
 
-          type: string
+          type: string // TODO: number | 'end'
 
         title:
 
@@ -1474,15 +1474,15 @@ components:
 
         articleId:
 
-          type: string
+          type: string // TODO: number
 
         parentId:
 
-          type: string
+          type: string // TODO: number
 
         id:
 
-          type: string
+          type: string // TODO: number
 
         dateTime:
 
@@ -1499,6 +1499,10 @@ components:
         likes:
 
           type: number
+
+        liked:
+
+          type: boolean // TODO: 0, 1 или -1? 
 
     CommentCreate:
 
@@ -1556,7 +1560,7 @@ components:
 
           format: int64
 
-          description: 1 - article 2 - comment
+          description: 0 - article 1 - comment
 
         id:
 

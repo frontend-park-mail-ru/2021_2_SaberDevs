@@ -26,6 +26,8 @@ import {ajaxDebug} from '../globals';
 function newsFeedEndReachEventAction({currentTarget}) {
   const state = store.getState().mainPage;
   const trackedCard = currentTarget.querySelector('#feed__loading');
+//   {/* const trackedCard = <HTMLElement> currentTarget.querySelector('#feed__loading'); */}
+  {/* const trackedCard =  currentTarget.querySelector('#feed__loading'); */}
   // работаем, только если отслеживаемый элемент
   // находися в области видимости пользователя.
   // При этом не находимся в состоянии ожидания запроса
@@ -146,7 +148,8 @@ export default class MainPage extends BasePageMV {
       store.dispatch(uploadNextCards);
     }
 
-    const scrollable = this.view.root.querySelector('.content');
+//     const scrollable = <HTMLElement> this.view.root.querySelector('.content');
+    const scrollable =  this.view.root.querySelector('.content');
     if (!scrollable) {
       console.warn('[Main Page] нет дивака .content');
     } else {
@@ -175,7 +178,8 @@ export default class MainPage extends BasePageMV {
 
     super.hide();
 
-    const scrollable = this.view.root.querySelector('.content');
+//     const scrollable = <HTMLElement> this.view.root.querySelector('.content');
+    const scrollable =  this.view.root.querySelector('.content');
     if (!scrollable) {
       console.warn('[MainPage] нет дивака .content');
     } else {

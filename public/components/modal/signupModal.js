@@ -1,5 +1,5 @@
 import Modal from './modal.js';
-import SignupForm from '../signupForm/signupForm.js';
+import SignupForm from '../signupForm/signupForm';
 
 /**
  * Страница содержит главный компонент - форму регистрации
@@ -14,7 +14,7 @@ export function signupModal(showRegister) {
     showRegister ? 'У меня уже есть аккаунт' : 'Создать аккаунт';
   changeFormTypeBtn.href = showRegister ? '/login' : '/register';
   changeFormTypeBtn.classList.add('form__link');
-  changeFormTypeBtn.addEventListener('click', (e) => {
+  changeFormTypeBtn.addEventListener('click', (e/*: Event*/) => {
     e.preventDefault();
 
     Modal.close();

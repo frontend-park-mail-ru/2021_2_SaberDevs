@@ -65,7 +65,7 @@ export function recoverBlobWithUrl(url) {
 export function getFileBrowserStorageUrl(file) {
   return new Promise((r) => {
     const reader = new FileReader();
-    reader.onload = (e) => r(e.target.result);
+    reader.onload = (e/*: Event*/) => r(e.target.result);
     reader.readAsDataURL(file);
   });
 }
@@ -77,7 +77,8 @@ export function getFileBrowserStorageUrl(file) {
  */
 export function redirect(to) {
   const clickSimulator = document.createElement('a');
-  const root = document.querySelector('#root');
+//   const root = <HTMLElement> document.querySelector('#root');
+  const root =  document.querySelector('#root');
 
   clickSimulator.id = 'clickSimulator';
   clickSimulator.href = to;
@@ -94,7 +95,8 @@ export function redirect(to) {
  */
 export function redirectOuter(to) {
   const clickSimulator = document.createElement('a');
-  const root = document.querySelector('#root');
+//   const root = <HTMLElement> document.querySelector('#root');
+  const root =  document.querySelector('#root');
 
   clickSimulator.id = 'clickSimulator';
   clickSimulator.href = to;

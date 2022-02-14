@@ -1,23 +1,27 @@
-import BaseComponentView from '../_basic/baseComponentView.js';
+import BaseComponentView from '../_basic/baseComponentView';
 import signupFormComponent from './signupForm.pug.js';
 import formRowComponent from './formRow.pug.js';
 
 import regexp from '../../common/regexp.js';
 
+export type SubmitFunction = (showRegister: boolean, login: string, password: string, email: string) => void;
 
 /**
  * @class SignupFormView
  */
 export default class SignupFormView extends BaseComponentView {
+  root: HTMLElement;
+  appendWarning: (msg: string) => void;
+
   /**
    * Изменяемый элемент
    */
   constructor() {
     super();
     this.root = document.createElement('div');
-    this.appendWarning = (msg) => {
-      const formWarning = this.root.querySelector('.form__warning');
-      const formWarningLabel = this.root.querySelector('#form-warning-label');
+    this.appendWarning = (msg: string) => {
+      const formWarning = <HTMLElement> this.root.querySelector('.form__warning');
+      const formWarningLabel = <HTMLElement> this.root.querySelector('#form-warning-label');
       if (!formWarning) {
         console.warn(`[SignupFormView]
           appendWarning call while SignupForm was not rendered`);
@@ -33,13 +37,13 @@ export default class SignupFormView extends BaseComponentView {
    * Содает форму регистрации
    * @param {boolean} showRegister - true, если нужно отобразить
    * форму для регистрации, false - для входа
-   * @param {Function} submitHandler
+   * @param {SubmitFunction} submitHandler
    * @return {HTMLFormElement}
    */
-  render(showRegister, submitHandler) {
-    let formRows = '';
+  render(showRegister: boolean, submitHandler: SubmitFunction): HTMLFormElement {
+    let formRows: string = '';
 
-    const loginRow = formRowComponent({
+    const loginRow = <string> formRowComponent({
       label: 'Логин',
       type: 'text',
       name: 'login',
@@ -48,7 +52,7 @@ export default class SignupFormView extends BaseComponentView {
     formRows += loginRow;
 
     if (showRegister) {
-      const emailRow = formRowComponent({
+      const emailRow = <string> formRowComponent({
         label: 'e-mail',
         type: 'email',
         name: 'email',
@@ -57,7 +61,7 @@ export default class SignupFormView extends BaseComponentView {
       formRows += emailRow;
     }
 
-    const passwordRow = formRowComponent({
+    const passwordRow = <string> formRowComponent({
       label: 'Пароль',
       type: 'password',
       name: 'password',
@@ -67,7 +71,7 @@ export default class SignupFormView extends BaseComponentView {
     formRows += passwordRow;
 
     if (showRegister) {
-      const passwordRepeatRow = formRowComponent({
+      const passwordRepeatRow = <string> formRowComponent({
         label: 'Повтор пароля',
         type: 'password',
         name: 'password-repeat',
@@ -78,40 +82,41 @@ export default class SignupFormView extends BaseComponentView {
     }
 
     const formWrapper = document.createElement('div');
-    formWrapper.innerHTML = signupFormComponent({
+    formWrapper.innerHTML = <string> signupFormComponent({
       title: showRegister ? 'Регистрация' : 'Вход',
       form_rows: formRows,
       submit_btn_placeholder: showRegister ? 'Зарегистрироваться' : 'Войти',
     });
-    const form = formWrapper.firstChild;
+    const form = <HTMLFormElement> formWrapper.firstElementChild;
 
     form.querySelector('.control-password').addEventListener('click',
-        ({target}) => {
-          const passwordInput = form.querySelector('input[name="password"]');
-          if (passwordInput.getAttribute('type') === 'password') {
-            target.classList.add('password__show');
-            passwordInput.type = 'text';
-          } else {
-            target.classList.remove('password__show');
-            passwordInput.type ='password';
-          }
-        });
+      (e: Event) => {
+        const target = <HTMLElement> e.target; 
+        const passwordInput = <HTMLInputElement> form.querySelector('input[name="password"]');
+        if (passwordInput.getAttribute('type') === 'password') {
+          target.classList.add('password__show');
+          passwordInput.type = 'text';
+        } else {
+          target.classList.remove('password__show');
+          passwordInput.type ='password';
+        }
+      });
 
-    form.addEventListener('submit', (e) => {
+    form.addEventListener('submit', (e: Event) => {
       e.preventDefault();
 
       // убираем сообщения об ошибках от предыдущих попыток
-      const formWarning = form.querySelector('.form__warning');
-      const formWarningLabel = this.root.querySelector('#form-warning-label');
+      const formWarning = <HTMLElement> form.querySelector('.form__warning');
+      const formWarningLabel = <HTMLElement> this.root.querySelector('#form-warning-label');
       formWarning.style.display = 'none';
       formWarning.textContent = '';
       formWarningLabel.classList.remove('form__warning-label-show');
 
-      const login = form.querySelector('input[name="login"]').value;
-      const password = form.querySelector('input[name="password"]').value;
-      const emailInput = form.querySelector('input[name="email"]');
+      const login = (<HTMLInputElement>form.querySelector('input[name="login"]'))?.value;
+      const password = (<HTMLInputElement>form.querySelector('input[name="password"]'))?.value;
+      const emailInput = <HTMLInputElement> form.querySelector('input[name="email"]');
       const email = emailInput?.value;
-      const passRepInput = form.querySelector('input[name="password-repeat"]');
+      const passRepInput = <HTMLInputElement> form.querySelector('input[name="password-repeat"]');
       const passwordRepeated = passRepInput?.value;
 
       if (!regexp.login.test(login)) {

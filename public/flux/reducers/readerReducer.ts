@@ -1,57 +1,6 @@
 import {ReaderTypes, CommonTypes, FluxStateObject, FluxAction} from '../types';
-import {User} from './authorizeReducer';
-
-/**
- * @typedef {Object} Comment
- * @property {string} text
- * @property {number} articleId
- * @property {number} id
- * @property {number} parentId
- * @property {string} dateTime
- * @property {boolean} isEdited
- * @property {User} author
- */
-
-export type Comment = {
-  text: string,
-  articleId: number,
-  parentId: number,
-  id: number,
-  datetime: string,
-  datetimeMS: number,
-  isEdited: true,
-  author: User,
-};
-
-export type ArticleId = number | 'end';
-
-/**
- * @typedef {Object} Article
- * @property {number} id
- * @property {string} title
- * @property {string} text
- * @property {string} previewUrl
- * @property {string} category
- * @property {User} author
- * @property {string} dateTime
- * @property {number} likes
- * @property {Array<string>} tags
- * @property {Array<Comment & {answers: Comment[]}>} commentsContent
- */
-
-export type Article = {
-  id: ArticleId,
-  previewUrl: string,
-  title: string,
-  text: string,
-  category: string,
-  author: User,
-  datetime: string
-  comments: number,
-  likes: number,
-  tags: string[],
-  commentsContent: (Comment & {answers: Comment[]})[],
-};
+import {Comment} from '../../common/types';
+import {User, Article} from '../../common/types';
 
 export interface ReaderStateObject extends FluxStateObject {
   currentId: number,
@@ -82,7 +31,7 @@ export type ReaderAction = FluxAction<ReaderTypes | CommonTypes>;
   //   "tags": [
   //     "string"
   //   ]
-  //   commentsContent: [] || [
+  //   commentsContent: [
   //     {
   //       answers: [
   //         Comment,

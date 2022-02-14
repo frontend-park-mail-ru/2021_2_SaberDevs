@@ -1,6 +1,6 @@
-import BaseComponent from '../components/_basic/baseComponent.js';
-import Header from '../components/header/header.js';
-import Sidebar from '../components/sidebar/sidebar.js';
+import BaseComponent from '../components/_basic/baseComponent';
+import Header from '../components/header/header';
+import Sidebar from '../components/sidebar/sidebar';
 
 // синглтоны
 let header = null;
@@ -61,12 +61,16 @@ export default function createPage(title, ...elements) {
   // связываем кнопку в хедере с отображением сайдбара для мобилки
   const menuBtn = pageDiv
       .querySelector('.header__search-btn-mobile-hideble');
-  const container = screenDiv.querySelector('.sidebar__overlay-container');
-  const sidebarDiv = screenDiv.querySelector('.sidebar');
-  const searchBtn = pageDiv.querySelector('.header__search-btn');
-  const overlay = screenDiv.querySelector('.sidebar__overlay');
+//   const container = <HTMLElement> screenDiv.querySelector('.sidebar__overlay-container');
+  const container =  screenDiv.querySelector('.sidebar__overlay-container');
+//   const sidebarDiv = <HTMLElement> screenDiv.querySelector('.sidebar');
+  const sidebarDiv =  screenDiv.querySelector('.sidebar');
+//   const searchBtn = <HTMLElement> pageDiv.querySelector('.header__search-btn');
+  const searchBtn =  pageDiv.querySelector('.header__search-btn');
+//   const overlay = <HTMLElement> screenDiv.querySelector('.sidebar__overlay');
+  const overlay =  screenDiv.querySelector('.sidebar__overlay');
 
-  menuBtn.addEventListener('click', (e) => {
+  menuBtn.addEventListener('click', (e/*: Event*/) => {
     e.preventDefault();
 
     if (!searchBtn.classList.contains('hide')) {
@@ -88,13 +92,13 @@ export default function createPage(title, ...elements) {
     menuBtn.style.display = 'flex';
   };
 
-  overlay.addEventListener('click', (e) => {
+  overlay.addEventListener('click', (e/*: Event*/) => {
     e.preventDefault();
     closeSideBar();
   });
 
   const widthMatch = window.matchMedia('(min-width: 901px)');
-  widthMatch.addEventListener('change', (e) => {
+  widthMatch.addEventListener('change', (e/*: Event*/) => {
     closeSideBar();
     // восттанови исходное состояние полностью, т.к.
     container.style.display = '';

@@ -1,5 +1,6 @@
 import {ReaderTypes, CommonTypes} from '../types';
-import {ReaderAction, Article, Comment} from '../reducers/readerReducer';
+import {ReaderAction} from '../reducers/readerReducer';
+import {Article, Comment} from '../../common/types';
 import {appendApiImg} from '../../common/transformApi.js';
 
 // ////////////////

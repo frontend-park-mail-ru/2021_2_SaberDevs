@@ -3,7 +3,7 @@ const path = require('path');
 
 const correctLaunchDir = '2021_2_SaberDevs';
 const root = 'public';
-const targetFile = 'globals';
+const targetFile = 'globals.ts';
 
 const currentDir = path.basename(path.resolve('.'));
 if (currentDir !== correctLaunchDir) {

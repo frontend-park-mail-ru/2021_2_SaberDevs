@@ -1,6 +1,6 @@
-import BaseComponent from '../_basic/baseComponent.js';
-import HeaderView from './headerView.js';
-import SearchRow from '../searchRow/searchRow.js';
+import BaseComponent from '../_basic/baseComponent';
+import HeaderView from './headerView';
+import SearchRow from '../searchRow/searchRow';
 
 
 import store from '../../flux/store';
@@ -12,11 +12,16 @@ import {redirect} from '../../common/utils.js';
 
 import MobileLayoutUtils from '../../common/mobileLayout.js';
 
+import {KeyElementsMapHeader} from './HeaderView';
+
 /**
  * ViewModel-компонент соответсвующего View
  * @class Header
  */
 export default class Header extends BaseComponent {
+
+  view: HeaderView;
+
   /**
    * Универсальный компонент заголовка
    */
@@ -24,7 +29,11 @@ export default class Header extends BaseComponent {
     super();
     this.view = new HeaderView();
 
-    // communication
+    // /////////////////////////////////
+    //
+    //        Communication
+    //
+    // /////////////////////////////////
     this.unsubscribes.push(
         store.subscribe(
             SearchTypes.SUBMIT_ON_HEADER,
@@ -36,41 +45,45 @@ export default class Header extends BaseComponent {
     );
   }
 
+  get keyElems(): KeyElementsMapHeader {
+    return this.view.keyElems;
+  }
+
   /**
    * Перерисовка подконтрольного элемента
    * @return {HTMLElement}
    */
-  render() {
+  render(): HTMLElement {
     super.render();
-    this.root = this.view.render();
 
-    const navItems = this.root.querySelector('.header__nav-items');
-    const addArticleBtn = this.root.querySelector('a.header__add-article-btn');
-    const headerTitle = this.root.querySelector('.header__title-block');
+    this.root = this.view.render();
+    if (!this.keyElems) {
+      return document.createElement('div');
+    }
 
     // устанавливаем поисковую строку
-    const sr = new SearchRow(
+    const sr: SearchRow = new SearchRow(
         searchActions.submitOnHeader,
         true,
         () => {
-          addArticleBtn.classList.add('hide');
-          navItems.style.pointerEvents = 'none';
+          this.keyElems.addArticleBtn.classList.add('hide');
+          this.keyElems.navItems.style.pointerEvents = 'none';
           if (MobileLayoutUtils.isDevicePhone()) {
-            headerTitle.style.display = 'none';
+            this.keyElems.headerTitle.style.display = 'none';
           }
         },
         () => {
-          addArticleBtn.classList.remove('hide');
-          navItems.style.pointerEvents = 'all';
-          headerTitle.style.display = 'flex';
+          this.keyElems.addArticleBtn.classList.remove('hide');
+          this.keyElems.navItems.style.pointerEvents = 'all';
+          this.keyElems.headerTitle.style.display = 'flex';
         },
     );
     sr.mountInPlace(this.root);
 
     this.root.querySelector('.header__add-article-btn-sign')
         .addEventListener(
-            'click',
-            () => store.dispatch(editorActions.createArticle()),
+          'click',
+          () => store.dispatch(editorActions.createArticle()),
         );
 
     return this.root;

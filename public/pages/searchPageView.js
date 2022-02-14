@@ -1,9 +1,9 @@
-import BasePageView from './basePageView.js';
+import BasePageView from './basePageView';
 import createPage from './_createPage.js';
 
-import Feed from '../components/feed/feed.js';
-import composeUsers from '../components/feed/composeUsers.js';
-import SearchBar from '../components/feed/previews/searchBar.js';
+import Feed from '../components/feed/feed';
+import composeUsers from '../components/feed/composeUsers';
+import SearchBar from '../components/feed/previews/searchBar';
 
 import {SearchTypes} from '../flux/types';
 import searchActions from '../flux/actions/searchActions';
@@ -55,7 +55,7 @@ export default class SearchPageView extends BasePageView {
     ));
 
     // this.root.querySelector('.header__title-block')
-    //     .addEventListener('click', (e) => {
+    //     .addEventListener('click', (e/*: Event*/) => {
     //       e.preventDefault();
     //       e.stopPropagation();
     //       this.root.querySelector(`a[name="feed-top"]`).scrollIntoView(true);

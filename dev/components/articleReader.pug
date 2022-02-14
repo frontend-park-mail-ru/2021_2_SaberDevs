@@ -6,6 +6,7 @@ mixin tagMixin(content, color, cross=false)
 .article-view
   .article-view__heading
     .row.article-view__top-btns
+      //- TODO: button
       a(data-section='back').btn-color-elementary Назад
       a(id='article-change-btn' style='display:none').btn-color-elementary Изменить
     .row.article-view__categories
@@ -38,7 +39,7 @@ mixin tagMixin(content, color, cross=false)
       .icon
         +shareMixin('/article/' + id, `SaberNews | ${title}`)
   img(src=`${previewUrl}` onerror=`
-  const img = document.querySelector('img[src="${previewUrl}"]');
+  const img = <HTMLElement> document.querySelector('img[src="${previewUrl}"]');
   img.style.visibility = 'hidden';`).article-view__main-picture
   .article-view__content
     .article-view__text #{text}

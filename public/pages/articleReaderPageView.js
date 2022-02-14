@@ -1,7 +1,7 @@
-import BasePageView from './basePageView.js';
+import BasePageView from './basePageView';
 import createPage from './_createPage.js';
 
-import Reader from '../components/reader/reader.js';
+import Reader from '../components/reader/reader';
 
 // ///////////////////////////////// //
 //

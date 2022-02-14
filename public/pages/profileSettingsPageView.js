@@ -1,7 +1,7 @@
-import BasePageView from './basePageView.js';
+import BasePageView from './basePageView';
 import createPage from './_createPage.js';
 
-import SettingsForm from '../components/settings/settingsForm.js';
+import SettingsForm from '../components/settings/settingsForm';
 
 // ///////////////////////////////// //
 //

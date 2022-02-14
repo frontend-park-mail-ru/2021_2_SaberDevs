@@ -1,6 +1,6 @@
 import {ProfilePageTypes, CommonTypes, FluxStateObject, FluxAction} from '../types';
-import {Article} from './readerReducer';
-import {User} from './authorizeReducer';
+import {Article} from '../../common/types';
+import {User} from '../../common/types';
 
 const endOfFeedMarkerID = 'end';
 

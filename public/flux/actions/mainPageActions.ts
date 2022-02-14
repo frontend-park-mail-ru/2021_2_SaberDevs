@@ -1,7 +1,9 @@
 import {MainPageTypes, CommonTypes} from '../types';
 import {MainPageAction} from '../reducers/mainPageReducer';
-import {Article} from '../reducers/readerReducer';
+import {Article} from '../../common/types';
 import {appendApiImg} from '../../common/transformApi.js';
+
+import {RateToSrvr} from '../../common/types';
 
 // ////////////////
 // mainPageActions
@@ -94,7 +96,7 @@ function deleteCard(id: number): MainPageAction {
  * @param {number} newLikesNum
  * @return {MainPageAction}
  */
-function like(id: number, sign: number, newLikesNum: number): MainPageAction {
+function like(id: number, sign: RateToSrvr, newLikesNum: number): MainPageAction {
   return {
     type: CommonTypes.LIKE_CARD,
     payload: {id, sign, likes: newLikesNum},

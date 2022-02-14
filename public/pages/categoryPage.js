@@ -12,7 +12,7 @@ import Ajax from '../modules/ajax';
 import {getUserWindowHeight} from '../common/utils.js';
 import {ajaxDebug} from '../globals';
 
-import categoriesList from '../common/categoriesList.js';
+import categoriesList from '../common/categoriesList';
 
 // ///////////////////////////////// //
 //
@@ -28,6 +28,8 @@ import categoriesList from '../common/categoriesList.js';
 function newsFeedEndReachEventAction({currentTarget}) {
   const state = store.getState().categoryPage;
   const trackedElement = currentTarget.querySelector('#feed__loading');
+//   {/* const trackedElement = <HTMLElement> currentTarget.querySelector('#feed__loading'); */}
+  {/* const trackedElement =  currentTarget.querySelector('#feed__loading'); */}
   // работаем, только если отслеживаемый элемент
   // находися в области видимости пользователя
   if (state.isLoading || state.isEndFound ||
@@ -155,7 +157,8 @@ export default class CategoryPage extends BasePageMV {
           ?.scrollIntoView(); // ?. если карточки с таким айди больше нет
     }
 
-    const scrollable = document.querySelector('.content');
+//     const scrollable = <HTMLElement> document.querySelector('.content');
+    const scrollable =  document.querySelector('.content');
     if (!scrollable) {
       console.warn('[Category Page] нет дивака .content');
     } else {
@@ -184,7 +187,8 @@ export default class CategoryPage extends BasePageMV {
 
     super.hide();
 
-    const scrollable = document.querySelector('.content');
+//     const scrollable = <HTMLElement> document.querySelector('.content');
+    const scrollable =  document.querySelector('.content');
     if (!scrollable) {
       console.warn('[Category Page] нет дивака .content');
     } else {

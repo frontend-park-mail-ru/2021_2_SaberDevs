@@ -11,7 +11,7 @@ export type FluxStoreCreationFunction = (rootReducer: FluxReducer, initialState:
 
 export type FluxStore = {
   dispatch: (action: any, props?: any) => void;
-  subscribe: (actionType: FluxActionType, callback: (props?: any) => void) => void;
+  subscribe: (actionType: FluxActionType, callback: (props?: any) => void) => () => void;
   getState: () => FluxStateObject;
 }
 

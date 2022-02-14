@@ -1,4 +1,4 @@
-import BaseComponentView from '../_basic/baseComponentView.js';
+import BaseComponentView from '../_basic/baseComponentView';
 import notificationComponent from './notification.pug.js';
 
 /**
@@ -15,13 +15,13 @@ export default class NotificationView extends BaseComponentView {
   */
   render(id, title, content, bkColor, duration) {
     const notifWrapper = document.createElement('div');
-    notifWrapper.innerHTML = notificationComponent({
+    notifWrapper.innerHTML = /*<string>*/ notificationComponent({
       id,
       title,
       content,
       bkColor,
       duration,
     });
-    return notifWrapper.firstChild;
+    return notifwrapper.firstElementChild;
   }
 }

@@ -1,4 +1,4 @@
-import BaseComponentView from '../../_basic/baseComponentView.js';
+import BaseComponentView from '../../_basic/baseComponentView';
 import mainPagePreviewBarComponent from './mainPagePreviewBar.pug.js';
 
 // захочешь вернуть, глянь шаблон. Там другие поля
@@ -23,7 +23,7 @@ export default class MainPagePreviewBarView extends BaseComponentView {
     */
   render() {
     const wrapper = document.createElement('div');
-    wrapper.innerHTML = mainPagePreviewBarComponent(loadingCard);
-    return wrapper.firstChild;
+    wrapper.innerHTML = /*<string>*/ mainPagePreviewBarComponent(loadingCard);
+    return wrapper.firstElementChild;
   }
 }

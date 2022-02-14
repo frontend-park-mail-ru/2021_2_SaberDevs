@@ -33,7 +33,7 @@ function fillDefaultModal(props) {
   if (modalsDebug) {
     console.log('[Modal] modal filling: ' + JSON.stringify(props));
   }
-  const modal = modalComponent({
+  const modal = /*<string>*/ modalComponent({
     title: props.title || '',
     content: props.content || '',
     ok_sign: props.btnOkSign || 'Понятно',
@@ -59,8 +59,9 @@ function _createModal(props) {
   const modalDiv = document.getElementById('modalroot');
   modalDiv.innerHTML = fillDefaultModal(props);
 
-  const okBtn = modalDiv.querySelector('#modal__btn-ok');
-  const activeOkEventListener = (e) => {
+//   const okBtn = <HTMLElement> modalDiv.querySelector('#modal__btn-ok');
+  const okBtn =  modalDiv.querySelector('#modal__btn-ok');
+  const activeOkEventListener = (e/*: Event*/) => {
     e.preventDefault();
     if (typeof props.onConfirm === 'function') {
       props.onConfirm();
@@ -74,8 +75,9 @@ function _createModal(props) {
     okBtn.removeEventListener('click', activeOkEventListener);
   };
 
-  const cancelBtn = modalDiv.querySelector('#modal__btn-cancel');
-  const activeCancelEventListener = (e) => {
+//   const cancelBtn = <HTMLElement> modalDiv.querySelector('#modal__btn-cancel');
+  const cancelBtn =  modalDiv.querySelector('#modal__btn-cancel');
+  const activeCancelEventListener = (e/*: Event*/) => {
     e.preventDefault();
     if (typeof props.onDecline === 'function') {
       props.onDecline();
@@ -122,7 +124,8 @@ const Modal = {
     store.dispatch(modalActions.modalClose());
 
     inClosing = true;
-    const modalOverlay = modalDiv.querySelector('.modal__overlay');
+//     const modalOverlay = <HTMLElement> modalDiv.querySelector('.modal__overlay');
+    const modalOverlay =  modalDiv.querySelector('.modal__overlay');
     modalOverlay.classList.add('modal_close');
     modalOverlay.classList.remove('modal_open');
     setTimeout(() => {
@@ -145,8 +148,10 @@ const Modal = {
       return;
     }
 
-    const okBtn = modalDiv.querySelector('#modal__btn-ok');
-    const cancelBtn = modalDiv.querySelector('#modal__btn-cancel');
+//     const okBtn = <HTMLElement> modalDiv.querySelector('#modal__btn-ok');
+    const okBtn =  modalDiv.querySelector('#modal__btn-ok');
+//     const cancelBtn = <HTMLElement> modalDiv.querySelector('#modal__btn-cancel');
+    const cancelBtn =  modalDiv.querySelector('#modal__btn-cancel');
     okBtn.className = 'modal__btn-ok';
     okBtn.classList.add('modal__btn');
     cancelBtn.className = 'modal__btn-cancel';
@@ -157,7 +162,8 @@ const Modal = {
       cancelBtn.style.display = 'none';
     }
 
-    const modalOverlay = modalDiv.querySelector('.modal__overlay');
+//     const modalOverlay = <HTMLElement> modalDiv.querySelector('.modal__overlay');
+    const modalOverlay =  modalDiv.querySelector('.modal__overlay');
     modalOverlay.classList.remove('modal_close');
     modalOverlay.classList.add('modal_open');
 
@@ -178,7 +184,8 @@ const Modal = {
   },
 
   getContent() {
-    const contentDiv = modalDiv.querySelector('.modal__content');
+//     const contentDiv = <HTMLElement> modalDiv.querySelector('.modal__content');
+    const contentDiv =  modalDiv.querySelector('.modal__content');
     if (!contentDiv) {
       console.warn('[Modal] no .modal__content found');
     }
@@ -189,7 +196,8 @@ const Modal = {
     if (modalsDebug) {
       console.log('[Modal]: setContent to ', content);
     }
-    const contentDiv = modalDiv.querySelector('.modal__content');
+//     const contentDiv = <HTMLElement> modalDiv.querySelector('.modal__content');
+    const contentDiv =  modalDiv.querySelector('.modal__content');
     if (typeof content === 'string') {
       contentDiv.innerHTML = content;
     }
@@ -203,7 +211,8 @@ const Modal = {
     if (modalsDebug) {
       console.log('[Modal]: appendContent:', content);
     }
-    const contentDiv = modalDiv.querySelector('.modal__content');
+//     const contentDiv = <HTMLElement> modalDiv.querySelector('.modal__content');
+    const contentDiv =  modalDiv.querySelector('.modal__content');
     if (typeof content === 'string') {
       contentDiv.innerHTML += content;
     }
@@ -216,7 +225,8 @@ const Modal = {
     if (modalsDebug) {
       console.log('[Modal]: setTitle to ', title);
     }
-    let titleDiv = modalDiv.querySelector('.modal__header');
+//     let titleDiv = <HTMLElement> modalDiv.querySelector('.modal__header');
+    let titleDiv =  modalDiv.querySelector('.modal__header');
     if (typeof title === 'string') {
       titleDiv.innerHTML = title;
     }
@@ -244,8 +254,9 @@ const Modal = {
   configurate(props) {
     modalDiv.innerHTML = fillDefaultModal(props);
 
-    const okBtn = modalDiv.querySelector('#modal__btn-ok');
-    const activeOkEventListener = (e) => {
+//     const okBtn = <HTMLElement> modalDiv.querySelector('#modal__btn-ok');
+    const okBtn =  modalDiv.querySelector('#modal__btn-ok');
+    const activeOkEventListener = (e/*: Event*/) => {
       e.preventDefault();
       if (typeof props.onConfirm === 'function') {
         props.onConfirm();
@@ -258,8 +269,9 @@ const Modal = {
     clearOkListener = () => {
       okBtn.removeEventListener('click', activeOkEventListener);
     };
-    const cancelBtn = modalDiv.querySelector('#modal__btn-cancel');
-    const activeCancelEventListener = (e) => {
+//     const cancelBtn = <HTMLElement> modalDiv.querySelector('#modal__btn-cancel');
+    const cancelBtn =  modalDiv.querySelector('#modal__btn-cancel');
+    const activeCancelEventListener = (e/*: Event*/) => {
       e.preventDefault();
       if (typeof props.onDecline === 'function') {
         props.onDecline();
@@ -284,43 +296,50 @@ const Modal = {
   },
 
   enableOkBtn() {
-    const okBtn = modalDiv.querySelector('#modal__btn-ok');
+//     const okBtn = <HTMLElement> modalDiv.querySelector('#modal__btn-ok');
+    const okBtn =  modalDiv.querySelector('#modal__btn-ok');
     okBtn.style.display = 'block';
     okBtnDispay = true;
   },
 
   disableOkBtn() {
-    const okBtn = modalDiv.querySelector('#modal__btn-ok');
+//     const okBtn = <HTMLElement> modalDiv.querySelector('#modal__btn-ok');
+    const okBtn =  modalDiv.querySelector('#modal__btn-ok');
     okBtn.style.display = 'none';
     okBtnDispay = false;
   },
 
   enableCancelBtn() {
-    const cancelBtn = modalDiv.querySelector('#modal__btn-cancel');
+//     const cancelBtn = <HTMLElement> modalDiv.querySelector('#modal__btn-cancel');
+    const cancelBtn =  modalDiv.querySelector('#modal__btn-cancel');
     cancelBtn.style.display = 'block';
     cancelBtnDispay = true;
   },
 
   disableCancelBtn() {
-    const cancelBtn = modalDiv.querySelector('#modal__btn-cancel');
+//     const cancelBtn = <HTMLElement> modalDiv.querySelector('#modal__btn-cancel');
+    const cancelBtn =  modalDiv.querySelector('#modal__btn-cancel');
     cancelBtn.style.display = 'none';
     cancelBtnDispay = false;
   },
 
   changeBtnOkSign(text) {
-    const okBtn = modalDiv.querySelector('#modal__btn-ok');
+//     const okBtn = <HTMLElement> modalDiv.querySelector('#modal__btn-ok');
+    const okBtn =  modalDiv.querySelector('#modal__btn-ok');
     okBtn.innerText = text;
   },
 
   changeBtnCancelSign(text) {
-    const cancelBtn = modalDiv.querySelector('#modal__btn-cancel');
+//     const cancelBtn = <HTMLElement> modalDiv.querySelector('#modal__btn-cancel');
+    const cancelBtn =  modalDiv.querySelector('#modal__btn-cancel');
     cancelBtn.innerText = text;
   },
 
   setOkBtnAction(onConfirm) {
     clearOkListener();
-    const okBtn = modalDiv.querySelector('#modal__btn-ok');
-    const activeOkEventListener = (e) => {
+//     const okBtn = <HTMLElement> modalDiv.querySelector('#modal__btn-ok');
+    const okBtn =  modalDiv.querySelector('#modal__btn-ok');
+    const activeOkEventListener = (e/*: Event*/) => {
       e.preventDefault();
       if (typeof onConfirm === 'function') {
         onConfirm();
@@ -337,8 +356,9 @@ const Modal = {
 
   setCancelBtnAction(onDecline) {
     clearCancelListener();
-    const cancelBtn = modalDiv.querySelector('#modal__btn-cancel');
-    const activeCancelEventListener = (e) => {
+//     const cancelBtn = <HTMLElement> modalDiv.querySelector('#modal__btn-cancel');
+    const cancelBtn =  modalDiv.querySelector('#modal__btn-cancel');
+    const activeCancelEventListener = (e/*: Event*/) => {
       e.preventDefault();
       if (typeof onDecline === 'function') {
         onDecline();

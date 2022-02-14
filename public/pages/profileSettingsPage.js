@@ -53,6 +53,8 @@ export default class ProfileSettingsPage extends BasePageMV {
 
     const auth = store.getState().authorization;
     const form = this.view.root.querySelector('form');
+//     {/* const form = <HTMLElement> this.view.root.querySelector('form'); */}
+    {/* const form =  this.view.root.querySelector('form'); */}
 
     // вписываем текущие данные
     form.querySelector('input[name="username"]').value = auth.firstName || '';
@@ -60,8 +62,9 @@ export default class ProfileSettingsPage extends BasePageMV {
     form.querySelector('textarea[name="description"]').value =
         auth.description || '';
 
-    const previewImg = form.querySelector('img');
-    previewImg.addEventListener('error', (e) => {
+//     const previewImg = <HTMLElement> form.querySelector('img');
+    const previewImg =  form.querySelector('img');
+    previewImg.addEventListener('error', (e/*: Event*/) => {
       console.warn('не удалось загрузить аватар', e.currentTarget.src);
       e.currentTarget.src='img/user_icon_loading.svg';
       e.currentTarget.onerror = undefined;
@@ -69,10 +72,11 @@ export default class ProfileSettingsPage extends BasePageMV {
     appendApiImg(auth);
     previewImg.src = auth.avatarUrl;
 
-    const fileLoader = form.querySelector('input[type="file"]');
+//     const fileLoader = <HTMLElement> form.querySelector('input[type="file"]');
+    const fileLoader =  form.querySelector('input[type="file"]');
     fileLoader.addEventListener(
         'change',
-        (e) => {
+        (e/*: Event*/) => {
           const file = e.currentTarget.files[0];
 
           if (!file.type.startsWith('image/')) {
@@ -84,10 +88,11 @@ export default class ProfileSettingsPage extends BasePageMV {
           });
         });
 
-    form.addEventListener('submit', (e) => {
+    form.addEventListener('submit', (e/*: Event*/) => {
       e.preventDefault();
       // TODO: смена пароля
-      // const password = form.querySelector('input[name="password"]');
+//       // const password = <HTMLElement> form.querySelector('input[name="password"]');
+      // const password =  form.querySelector('input[name="password"]');
       const firstName =
           form.querySelector('input[name="username"]')?.value.trim();
       const lastName =

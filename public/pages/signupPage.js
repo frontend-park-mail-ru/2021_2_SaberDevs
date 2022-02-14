@@ -1,7 +1,7 @@
 import BasePageMV from './basePageMV.js';
 import SignupPageView from './signupPageView.js';
 import store from '../flux/store';
-import changePageActions from '../flux/actions/categoryPageActions';
+import changePageActions from '../flux/actions/changePageActions';
 import {AuthorizationTypes} from '../flux/types';
 
 import {redirect} from '../common/utils.js';
@@ -69,6 +69,8 @@ export default class SignupPage extends BasePageMV {
    * @return {string}
    */
   redirect(path) {
+//     // const link = <HTMLElement> this.view.root.querySelector('a.form__link');
+    // const link =  this.view.root.querySelector('a.form__link');
     const link = this.view.root.querySelector('a.form__link');
     const a = link?.pathname;
     if (a && a !== path) {

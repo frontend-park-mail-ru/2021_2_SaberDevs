@@ -17,10 +17,13 @@ export default class LoadingPage {
     this.progressValue = 0;
     this.root = document.createElement('div');
     this.root.className = 'background';
+    // this.root.innerHTML = /*<string>*/ loadingComponent({
     this.root.innerHTML = loadingComponent({
       progressValue: this.progressValue,
     });
     this.progressBar = this.root.querySelector('progress');
+//     {/* this.progressBar = <HTMLElement> this.root.querySelector('progress'); */}
+    {/* this.progressBar =  this.root.querySelector('progress'); */}
     this.animationId = 0;
   }
 

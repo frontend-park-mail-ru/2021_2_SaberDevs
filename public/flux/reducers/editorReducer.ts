@@ -1,5 +1,5 @@
 import {EditorTypes, CommonTypes, FluxStateObject, FluxAction} from '../types';
-import {Article} from './readerReducer';
+import {Article} from '../../common/types';
 
 export interface EditorStateObject extends FluxStateObject {
   currentId: number,

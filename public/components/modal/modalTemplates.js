@@ -39,7 +39,7 @@ export function showModalNetOrServerError(status, msg) {
  * Информационное окно, требующее подтверждения
  * @param {string} header
  * @param {string | HTMLElement} content
- * @param {function} onConfirm
+ * @param {Function} onConfirm
  */
 export function showModalWarn(header, content, onConfirm = () => {}) {
   Modal.setTitle(header);
@@ -55,7 +55,7 @@ export function showModalWarn(header, content, onConfirm = () => {}) {
  * Информационное окно, требующее подтверждения
  * @param {string} header
  * @param {string | HTMLElement} content
- * @param {function} onConfirm
+ * @param {Function} onConfirm
  */
 export function modalTest(header, content, onConfirm = () => {}) {
   Modal.setTitle(header);
@@ -71,8 +71,8 @@ export function modalTest(header, content, onConfirm = () => {}) {
  * Информационное окно, требующее подтверждения
  * @param {string} header
  * @param {string | HTMLElement} content
- * @param {function} onConfirm
- * @param {function} onDecline
+ * @param {Function} onConfirm
+ * @param {Function} onDecline
  */
 export function showModalConfirm(
     header, content, onConfirm, onDecline = () => {},
@@ -120,8 +120,8 @@ export function showModalNeedFullReg(msgBefore, msgMain) {
  * @param {string | HTMLElement} content
  * @param {string} confirmSign
  * @param {string} declineSign
- * @param {function} onConfirm
- * @param {function} onDecline
+ * @param {Function} onConfirm
+ * @param {Function} onDecline
  */
 export function showModalConfirmCustom(
     header, content, confirmSign, declineSign, onConfirm, onDecline = () => {},
@@ -170,8 +170,8 @@ export default class ModalTemplates {
    * Информационное окно с двумя кнопками, требующее подтверждения
    * @param {string} header
    * @param {string | HTMLElement} content
-   * @param {function} onConfirm
-   * @param {function} onDecline
+   * @param {Function} onConfirm
+   * @param {Function} onDecline
    */
   static confirm(header, content, onConfirm, onDecline) {
     showModalConfirm(header, content, onConfirm, onDecline);
@@ -184,8 +184,8 @@ export default class ModalTemplates {
    * @param {string | HTMLElement} content
    * @param {string} confirmSign
    * @param {string} declineSign
-   * @param {function} onConfirm
-   * @param {function} onDecline
+   * @param {Function} onConfirm
+   * @param {Function} onDecline
    */
   static confirmCustom(
       header, content, confirmSign,
@@ -198,7 +198,7 @@ export default class ModalTemplates {
    * Информационное окно с одной кнопкой, требующее подтверждения
    * @param {string} header
    * @param {string | HTMLElement} content
-   * @param {function} onConfirm
+   * @param {Function} onConfirm
    */
   static warn(header, content, onConfirm) {
     showModalWarn(header, content, onConfirm);

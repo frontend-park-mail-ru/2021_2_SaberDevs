@@ -1,4 +1,4 @@
-import BaseComponent from '../../_basic/baseComponent.js';
+import BaseComponent from '../../_basic/baseComponent';
 import MainPagePreviewBarView from './mainPagePreviewBarView.js';
 
 // TODO: MainPagePreviewBar -динамическая подборка популярых записей

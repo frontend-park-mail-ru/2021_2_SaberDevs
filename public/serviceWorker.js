@@ -110,7 +110,7 @@ self.addEventListener('fetch', (event) => {
 });
 
 // Обработчик для пушей
-self.addEventListener('push', (e) => {
+self.addEventListener('push', (e/*: Event*/) => {
   console.warn('[PushManager]: push event');
   let title = e.data.title || 'Это Ваш SaberNews!';
   const options = {
@@ -206,7 +206,7 @@ self.addEventListener('push', (e) => {
   );
 });
 
-self.addEventListener('notificationclick', (e) => {
+self.addEventListener('notificationclick', (e/*: Event*/) => {
   // const primaryKey = notification.data.primaryKey;
   const data = e.data.json()?.data;
   switch (e.action) {

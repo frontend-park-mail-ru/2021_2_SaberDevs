@@ -2,7 +2,7 @@
 
 mixin avatarMixin()
   img(data-avatarId=`${avatarId}` onerror=`
-  const img = document.querySelector('img[data-avatarId="${avatarId}"]');
+  const img = <HTMLElement> document.querySelector('img[data-avatarId="${avatarId}"]');
   console.warn('не удалось загрузить аватар', img.src);
   img.src="img/user_icon_loading.svg";
   img.onerror = undefined;

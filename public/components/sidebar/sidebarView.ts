@@ -1,11 +1,15 @@
-import BaseComponentView from '../_basic/baseComponentView.js';
+import BaseComponentView from '../_basic/baseComponentView';
 import sidebarComponent from './sidebar.pug.js';
 import streamCommentComponent from './streamComment.pug.js';
+
+import {Comment} from '../../common/types';
 
 /**
  * @class sidebarView
  */
 export default class SidebarView extends BaseComponentView {
+  root: HTMLElement;
+
   /**
    * Полоса интерфейса справа от основного контента страницы
    */
@@ -15,26 +19,23 @@ export default class SidebarView extends BaseComponentView {
   }
 
   /**
-    * @param {string} categoriesList
-    * @param {string} limit
+    * @param {Array<string>} categoriesList
+    * @param {number} limit
     * @param {Array<Comment>} comments
     * @return {HTMLElement}
     */
-  render(categoriesList, limit, comments) {
-    let streams = '';
-    comments.forEach((element) => {
-      const streamComment = streamCommentComponent(element);
-      streams += streamComment;
-    });
+  render(categoriesList: string[], limit: number, comments: Comment[]) {
+    let streams: string = '';
+    comments.forEach((element) => streams += <string> streamCommentComponent(element));
 
     const wrapper = document.createElement('div');
-    wrapper.innerHTML = sidebarComponent({
+    wrapper.innerHTML = <string> sidebarComponent({
       categoriesList,
       limit,
       streams,
     });
 
-    this.root = wrapper.firstChild;
+    this.root = <HTMLElement> wrapper.firstElementChild;
     return this.root;
   }
 
@@ -42,22 +43,17 @@ export default class SidebarView extends BaseComponentView {
    * Заполнить верхний блок сайдбара произвольным HTML
    * @param {string} topBlockContent - вид верхнего блока
    */
-  setTopBlockContent(topBlockContent) {
-    const contentDiv = this.root.querySelector('#sidebarTopBlockContent');
-    if (contentDiv) {
-      contentDiv.innerHTML = topBlockContent;
-    } else {
-      this.render(topBlockContent);
-    }
+  setTopBlockContent(topBlockContent: string) {
+    this.root.querySelector('#sidebarTopBlockContent').innerHTML = topBlockContent;
   }
 
   /**
    * @param {Array<Comment>} comments
    */
-  addComments(comments) {
-    const streamComments = this.root.querySelector('.sidebar__streams');
+  addComments(comments: Comment[]) {
+    const streamComments = <HTMLElement> <HTMLElement> this.root.querySelector('.sidebar__streams');
     comments.forEach((element) => {
-      const streamComment = streamCommentComponent(element);
+      const streamComment = <string> streamCommentComponent(element);
       streamComments.insertAdjacentHTML('afterbegin', streamComment);
     });
   }

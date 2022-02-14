@@ -1,6 +1,6 @@
 import {EditorTypes, CommonTypes} from '../types';
 import {EditorAction} from '../reducers/editorReducer';
-import {Article} from '../reducers/readerReducer';
+import {Article} from '../../common/types';
 import {appendApiImg} from '../../common/transformApi.js';
 
 // ////////////////
@@ -17,7 +17,6 @@ import {appendApiImg} from '../../common/transformApi.js';
 // }
 
 /**
- * @param {string} id
  * @return {EditorAction}
  */
 function clearArticle(): EditorAction {

@@ -36,7 +36,7 @@ export default class ReaderPage extends BasePageMV {
         ),
     );
     // берем id из урла
-    let idUrlParam = document.URL.slice(document.URL.indexOf('article/') + 8);
+    let idUrlParam = parseInt(document.URL.slice(document.URL.indexOf('article/') + 8));
     const anchorPos = idUrlParam.indexOf('#');
     let anchor = '';
     if (anchorPos !== -1) {

@@ -1,5 +1,6 @@
 import {AuthorizationTypes} from '../types';
-import {AuthorizationAction, User} from '../reducers/authorizeReducer';
+import {AuthorizationAction} from '../reducers/authorizeReducer';
+import {User} from '../../common/types';
 import {appendApiImg} from '../../common/transformApi.js';
 
 // ////////////////

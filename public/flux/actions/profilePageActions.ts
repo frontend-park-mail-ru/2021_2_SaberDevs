@@ -1,7 +1,7 @@
 import {ProfilePageTypes, CommonTypes} from '../types';
 import {ProfileAction} from '../reducers/profilePageReducer';
-import {Article} from '../reducers/readerReducer';
-import {User} from '../reducers/authorizeReducer';
+import {Article} from '../../common/types';
+import {User} from '../../common/types';
 import {appendApiImg} from '../../common/transformApi.js';
 
 // ////////////////

@@ -85,7 +85,7 @@ export default class LinksController {
    * action - действие, выполняемое при клике.
    * props - параметры, передаваемые в action.
    * @param {string} section
-   * @param {function} action
+   * @param {Function} action
    * @param {any} props
    * @return {LinksController}
    */

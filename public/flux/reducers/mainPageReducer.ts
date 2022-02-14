@@ -1,5 +1,5 @@
 import {MainPageTypes, CommonTypes, FluxStateObject, FluxAction} from '../types';
-import {Article, ArticleId} from './readerReducer';
+import {Article, ArticleId} from '../../common/types';
 
 const endOfFeedMarkerID = 'end';
 
@@ -17,7 +17,6 @@ const endOfFeedMarkerID = 'end';
  *                                       восстановления состояния при возвращении
  *                                       на MainPage
  */
-
 export interface MainPageStateObject extends FluxStateObject {
   isLoading: boolean,
   idLastLoaded: ArticleId,
@@ -93,7 +92,7 @@ export default function mainPageReducer(state: MainPageStateObject = InitialMain
         lastScrollPos: 0,
         isEndFound: false,
       };
-    case MainPageTypes.DELETE_CARD: {
+    case CommonTypes.DELETE_CARD: {
       const idx = state.cards.findIndex((card) => card.id === action.payload);
       if (idx !== -1) {
         return {
@@ -104,7 +103,7 @@ export default function mainPageReducer(state: MainPageStateObject = InitialMain
         return state;
       }
     }
-    case MainPageTypes.LIKE: {  // TODO: распространить на другие ленты, ридер
+    case CommonTypes.LIKE_CARD: {  // TODO: распространить на другие ленты, ридер
       const idx = state.cards.findIndex((card) => card.id===action.payload.id);
       if (idx !== -1) {
         const likeCardCopy = JSON.parse(JSON.stringify(state.cards[idx]));
@@ -116,7 +115,7 @@ export default function mainPageReducer(state: MainPageStateObject = InitialMain
           liked -1 | sign -1 => liked 0
           liked 1  | sign -1 => liked -1
         */
-        if (likeCardCopy.liked ^ action.payload.sign === 0) {
+        if ((likeCardCopy.liked ^ action.payload.sign) === 0) {
           likeCardCopy.liked = 0; // отменили оценку
         } else {
           likeCardCopy.liked = action.payload.sign;
