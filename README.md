@@ -5,7 +5,7 @@
 
 **[Деплой](https://sabernews.ru)**
 
-**[Репозиторий бекенда]**(https://github.com/go-park-mail-ru/2021_2_SaberDevs)
+**[Репозиторий бекенда](https://github.com/go-park-mail-ru/2021_2_SaberDevs)**
 
 ## О проекте
 Новостной сайт. 
@@ -55,8 +55,8 @@
 - сервер всегда возвращает структуры вида (описаны в JSDoc):
   ```
     response: {
-        msg: string?,      // текстовые сообщения/пояснения от сервера. Позволяет не нарушать http-rest Content-Type: application/json
-        data: object?,     // произвольный объект, который пробрасывается в пропсы компонента по окончанию выполнения запроса
+        msg: string?,      // текстовые сообщения от сервера согласно REST-API Content-Type: application/json
+        data: object?,     // произвольный объект, пробрасывается в пропсы компонента
         status: number,    // дубль HTTP status
     }
   ```
